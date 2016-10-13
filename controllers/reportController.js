@@ -15,6 +15,11 @@
 		$scope.undoLastAction = function() {
 			var action = $scope.undoService.undoLastAction($scope.isDetailView());
 
+			// keep row collapsed when undoing rows
+			if (action.type === 'row' && !action.item.isChild && !action.item.isCollapsed) {
+				action.item.isCollapsed = true;
+			}
+
 			// // expand parent row if any and currently collapsed
 			// if (action.type === 'row' && action.item.isChild) {
 			// 	var parent = _.find($scope.model.result.rows, function(row) {
@@ -24,7 +29,7 @@
 			// 		parent.isCollapsed = false;
 			// 	}
 			// }
-			
+
 			$scope.recalculate();
 		};
 
