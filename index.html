@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--base href="/"-->
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=5.0"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="audience" content="all"/>
+		<meta name="medium" content="mult"/>
+		<meta name="title" content="Test"/>
+
+		<title></title> 
+		<link href="css/bootstrap.min.css" rel="stylesheet"/>
+		<link href="css/font-awesome.min.css" rel="stylesheet"/>
+		<link href="css/ui-bootstrap-custom-2.1.4-csp.css" rel="stylesheet"/>
+		<link href="css/main.css" rel="stylesheet"/>
+		
+		<script src="js/underscore.min.js"></script>
+		<script src="js/angular.min.js"></script>
+		<script src="js/angular-route.min.js"></script>
+		<script src="js/angular-animate.min.js"></script>
+
+		<script src="js/ui-bootstrap-custom-2.1.4.min.js"></script>
+		<script src="js/ui-bootstrap-custom-tpls-2.1.4.min.js"></script>
+
+		<script src="services/utilsService.js"></script>
+		<script src="services/dataService.js"></script>
+		<script src="services/undoServiceFactory.js"></script>
+		<script src="services/reportService.js"></script>
+
+		<script src="controllers/reportController.js"></script>
+
+		<script src="app.js"></script>
+    </head>
+    <body ng-app="Main">
+		<div ng-view></div>
+    </body>
+</html>

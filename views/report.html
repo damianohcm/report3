@@ -1,0 +1,76 @@
+{{title}}
+
+<script type="text/ng-template" id="colHeaderPopoverTemplate.html">
+    <div style="color:black">
+        <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)"><i class="fa fa-expand"></i> Expand</a></div>
+        <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i> Remove</a></div>
+    </div>
+</script>
+
+<div class="container m-t-lg">
+    <div class="height-40">
+        <div>
+             <div class="pull-left now-viewing m-t-md">
+                <span ng-show="topLevelColumn">Now Viewing: <strong>{{topLevelColumn && topLevelColumn.name}}</strong> | </span>
+                <span>{{modifiedMessage()}}</span>
+            </div>
+            <div class="pull-right m-t-sm">
+                <button class="undo small" ng-show="undoService.undoState.length > 0" ng-click="undoLastAction()" title="Undo {{undoService.getLastActionMessage()}}">
+                    <i class="fa fa-undo"></i> Undo <span style="text-transform:none">({{undoService.getLastActionMessage()}})</span></button>
+                <button class="reset small m-l-sm" ng-show="undoService.undoState.length > 0" ng-click="undoAllActions()" title="Reset"><i class="fa fa-refresh"></i> Reset</button>
+                <button class="back-to-top small m-l-sm" ng-show="topLevelColumn" ng-click="backToTopLevel()" "Back to top level"><i class="fa fa-arrow-left"></i> Back to Top Level</button>
+            </div>
+       </div>
+    </div>
+
+    <div class="m-t-lg">
+
+        <table class="table">
+            <thead>
+                <tr class="tr-head">
+                    <th ng-repeat="c in model.columns" ng-show="c.show" ng-class="c.css + (c.position === 0 ? ' first' : '')">
+                        <button class="brand" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export CSV</button>
+                        <div ng-if="c.position > 0">
+                            <!-- begin: column header popover -->
+                            <div class="pull-right" ng-if="!c.locked">
+                                <div ng-if="!c.isChild" ng-init="c=c" 
+                                    uib-popover-template="colHeaderPopover.templateUrl" 
+                                    popover-trigger="'outsideClick'"
+                                    popover-placement="{{c.groupPosition < visibleColumns(c.isGroup).length ? 'right' : 'left'}}">
+                                    <a type="button">
+                                        <i class="fa fa-chevron-circle-up"></i>
+                                    </a>
+                                </div>
+
+                                <a ng-if="c.isChild" ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
+                            </div>
+                            <!-- end: column header popover -->
+
+                            <div class="clear">{{c.name}}<div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="row in model.result.rows" ng-show="row.show">
+                <tr>
+                    <td ng-repeat="c in model.columns" 
+                        ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position === 0)" 
+                        ng-click="toggleChildRows(model, row)">
+                        <div ng-if="c.position === 0 && row.isGroup" class="pull-left row-icon"><i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i></div>
+                        <div class="pull-left row-text">{{row[c.key].value}}{{row[c.key].suffix}}</div>
+                        <div ng-if="c.position === 0" class="pull-right row-icon"><a ng-show="displayHideRow()" ng-click="hideRow(row)"><i class="fa fa-minus-circle"></i></a></div>
+                    </td>
+                </tr>
+                <tr ng-repeat="child in row.children" ng-show="!row.isCollapsed && child.show">
+                    <td ng-repeat="c in model.columns" ng-class="child[c.key].css + (!c.show ? ' hidden' : '') + (c.position === 0 ? ' person' : '')">
+                        <div class="pull-left row-text">
+                            <span ng-class="c.position === 0 ? 'person' : ''">{{child[c.key].value}}{{child[c.key].suffix}}</span>
+                            <span ng-if="child[c.key].value2" class="person-title">{{child[c.key].value2}}</span>
+                        </div>
+                        <div ng-if="c.position === 0" class="pull-right row-icon"><a ng-show="displayHideRow(row)" ng-click="hideRow(child)"><i class="fa fa-minus-circle"></i></a></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
