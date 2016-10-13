@@ -35,7 +35,7 @@
 
 		$scope.undoAllActions = function() {
 			$scope.undoService.undoAllActions($scope.isDetailView());
-			$scope.recalculate();
+			$scope.backToTopLevel();
 		};
 
 		$scope.modifiedMessage = function() {
