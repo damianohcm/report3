@@ -35,7 +35,7 @@ $margin: 16px;
 
 body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	background: black; 
+	background-color: transparent; 
 }
 
 .clear {
@@ -43,7 +43,7 @@ body {
 }
 
 .pointer {
-	cursor:pointer!important;
+	cursor: pointer!important;
 }
 
 .m-l-sm {
@@ -387,23 +387,15 @@ div.height-40 {
 	border-radius: 8px;
 }
 
-@media (min-width: 1201px) {
-	.container {
-		width: 97%;
-	}
-}
-@media (max-width: 1200px) {
-	.container {
-		width: 1170px;
-	}
-}
+@media (min-width: 1200px) {
+  .container {
+    width: 1350px;
+    max-width: 1350px; } }
+
 @media (max-width: 992px) {
-	.container {
-		width: 970px;
-	}
-}
+  .container {
+    width: 970px; } }
+
 @media (max-width: 768px) {
-	.container {
-		width: 750px;
-	}
-}
+  .container {
+    width: 750px; } }
