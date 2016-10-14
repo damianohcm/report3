@@ -189,9 +189,9 @@
 			}, 0);
 		};
 
-		//var fileName = 'report3.json?' + Math.random();
-		//var fileName = 'report3-generated1.json?' + Math.random();
-		var fileName = 'report3-generated2.json?' + Math.random();
+		//var fileName = 'report.json?' + Math.random();
+		//var fileName = 'report-generated1.json?' + Math.random();
+		var fileName = 'report-generated2.json?' + Math.random();
 		dataService.getData(fileName)
 			.then(onDataComplete, onDataError);
 		

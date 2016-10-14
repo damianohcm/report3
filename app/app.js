@@ -11,8 +11,7 @@
 	// configure
 	app.config([
 		'$routeProvider',
-		'$locationProvider', 
-		function($routeProvider, $locationProvider) {
+		function($routeProvider) {
 		
 			$routeProvider
 				.when('/', {
@@ -22,9 +21,6 @@
 				.otherwise({
 					redirectTo: '/'
 				});
-
-			//$locationProvider.html5Mode(true);
-		
 		}]);
 	
 	// register services with angular

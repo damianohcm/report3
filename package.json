@@ -1,0 +1,11 @@
+{
+  "name": "learning-path-report",
+  "version": "1.0.0",
+  "devDependencies": {
+    "eslint": "3.6.1",
+    "grunt": "1.0.1",
+    "grunt-eslint": "19.0.0",
+    "grunt-sass": "1.2.1",
+    "load-grunt-tasks": "3.5.2"
+  }
+}

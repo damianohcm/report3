@@ -1,4 +1,5 @@
-/*global requirejs, describe, it, logger, chai, mocha*/
+/*global requirejs, describe, it, chai, mocha*/
+/* eslint-disable max-len */
 (function(){
 
 	requirejs(['../services/utilsService.js', '../services/reportService.js'], function() {

@@ -4,6 +4,7 @@
   
     window.services.utilsService = function() {
 
+		// eslint-disable-next-line no-unused-vars
         var safeLog = function(msg, data) {
             // if (arguments.length > 1) {
             //     console.log(msg, data);
