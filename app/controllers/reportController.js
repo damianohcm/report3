@@ -15,22 +15,24 @@
 		$scope.undoLastAction = function() {
 			var action = $scope.undoService.undoLastAction($scope.isDetailView());
 
-			// keep row collapsed when undoing rows
-			if (action.type === 'row' && !action.item.isChild && !action.item.isCollapsed) {
-				action.item.isCollapsed = true;
+			if (action) {
+				// keep row collapsed when undoing rows
+				if (action.type === 'row' && !action.item.isChild && !action.item.isCollapsed) {
+					action.item.isCollapsed = true;
+				}
+
+				// // expand parent row if any and currently collapsed
+				// if (action.type === 'row' && action.item.isChild) {
+				// 	var parent = _.find($scope.model.result.rows, function(row) {
+				// 		return row.id === action.item.parentId;
+				// 	});
+				// 	if (parent && parent.isCollapsed) {
+				// 		parent.isCollapsed = false;
+				// 	}
+				// }
+
+				$scope.recalculate();
 			}
-
-			// // expand parent row if any and currently collapsed
-			// if (action.type === 'row' && action.item.isChild) {
-			// 	var parent = _.find($scope.model.result.rows, function(row) {
-			// 		return row.id === action.item.parentId;
-			// 	});
-			// 	if (parent && parent.isCollapsed) {
-			// 		parent.isCollapsed = false;
-			// 	}
-			// }
-
-			$scope.recalculate();
 		};
 
 		$scope.undoAllActions = function() {

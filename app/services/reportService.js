@@ -612,7 +612,7 @@
 					position:  model.columns.length,
 					groupPosition: colGroupPosition,
 					locked: false,
-					css: 'th-course',
+					css: 'th-course valign-top',
 					name: course.name
 				};
 
@@ -630,7 +630,7 @@
 						position:  model.columns.length,
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
-						css: 'th-section',
+						css: 'th-section  valign-top',
 						name: section.name
 					};
 
