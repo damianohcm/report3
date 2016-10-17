@@ -546,7 +546,7 @@
 		 * @decsription
 		 * Helper to get a model with the aggregated data that can be used in a generic way
 		 */
-		var getModel = function(data) {
+		var getModel = function(data, reportTitle) {
 
             // TODO: check if the backend can easily add segmentId to each person Learning Object.
             // if not, we have to map it here:
@@ -591,7 +591,7 @@
 					show: true,
 					locked: true,
 					css: 'th-summary',
-					name:  'Tot Completion % for Learning Path'
+					name:  'Tot Completion % for ' + reportTitle
 				}],
 				result: {
 					tot: 10,

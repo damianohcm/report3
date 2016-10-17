@@ -13,7 +13,7 @@
     </div>
 </div>
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="http://10.0.0.6:8080"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="http://localhost:8080"></iframe>
 </div>
 <span id="intellasync"></span>
 window.onresize = function(event) {
@@ -29,7 +29,7 @@ $(function() {
 
         if (userData.csodToken != (undefined || '')){
             clearInterval(credsCheck);
-            $('#iframeTar').attr('src','http://10.0.0.6:8080/?token=' +userData.csodToken + '&brand=DD');    }    
+            $('#iframeTar').attr('src','http://localhost:8080/?token=' +userData.csodToken + '&brand=DD');    }    
     }, 100);
 });
 </script>

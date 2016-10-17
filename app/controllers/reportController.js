@@ -4,7 +4,8 @@
 	window.controllers = window.controllers || {};
   
     window.controllers.reportController = function($scope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
-		$scope.title = '';//report Controller';
+		$scope.reportTitle = 'Learning Path';
+		$scope.title = $scope.reportTitle + ' Report';
 
 		$scope.undoService = undoServiceFactory.getService('reportController');
 
@@ -181,7 +182,7 @@
 		var onDataComplete  = function(data) {
 			utilsService.safeLog('reportController.onDataComplete', data);
 			$scope.data = data;
-			$scope.model = reportService.getModel(data);
+			$scope.model = reportService.getModel(data, $scope.reportTitle);
 
 			// then rowGroups after angular bindings
 			$timeout(function(){
