@@ -6,6 +6,11 @@
     window.controllers.reportController = function($scope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
 		$scope.reportTitle = 'Learning Path';
 		$scope.title = $scope.reportTitle + ' Report';
+		
+		console.log('Controller $scope.brand and lang', {
+			brand: $scope.brand,
+			lang: $scope.lang,
+		});
 
 		$scope.undoService = undoServiceFactory.getService('reportController');
 
