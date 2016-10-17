@@ -132,37 +132,85 @@
         }.bind(this);
 
 
-		/**
-         * @method purgeAction
+        /**
+         * @method undoActionForItem
          * @dscription
-         * Purges a specific aciton property from the undoState
+         * Undo action for a specific item
          */
-        this.purgeAction = function(item, prop) {
+        this.undoActionForItem = function(item, isDetailView) {
             var action = _.find(this.undoState, function(state) {
                 return state.item === item;
             });
+            undoAction(action, isDetailView);
+            this.purgeAction(item);
+        }.bind(this);
 
-            if (action) {
-                var purgedState = [];
-                _.each(this.undoState, function(state) {
-                    if (state.item === item) {
-                        var hasProp = _.find(state.properties, function(p) {
-                            return p.name === prop;
+        /**
+         * @method purgeAction
+         * @dscription
+         * Purges an entire action property from the undoState
+         */
+        this.purgeAction = function(item) {
+            this.undoState = _.filter(this.undoState, function(state) {
+                return state.item !== item;
+            });
+        }.bind(this);
+
+		/**
+         * @method purgeActionProperty
+         * @dscription
+         * Purges a specific action property from the undoState
+         */
+        this.purgeActionProperty = function(item, prop) {
+
+            this.undoState = _.filter(this.undoState, function(state) {
+                // if there is an item that match, purge the specified prop from the undo state
+                if (state.item === item) {
+                    var hasProp = _.find(state.properties, function(p) {
+                        return p.name === prop;
+                    });
+
+                    if (hasProp && state.properties.length > 1) {
+                        // if has more than one property, keep in the undoState but purge only the property
+                        state.properties = _.filter(state.properties, function(p) {
+                            return p.name !== prop;
                         });
 
-                        // if has more than one property, keep in the undoState bu tpurge only the property
-                        if (hasProp && state.properties.length > 1) {
-
-                            state.properties = _.filter(state.properties, function(p) {
-                                return p.name !== prop;
-                            });
-
-                            purgedState.push(state);
-                        };
+                        return state;
+                    } else {
+                        // otherwise filter it out (purge)
+                        return false;
                     }
-                });
-                this.undoState = purgedState;
-            }
+                } else {
+                    return state;
+                }
+            });
+
+            // var action = _.find(this.undoState, function(state) {
+            //     return state.item === item;
+            // });
+
+            // if (action) {
+            //     var purgedState = [];
+            //     _.each(this.undoState, function(state) {
+            //         if (state.item === item) {
+            //             var hasProp = _.find(state.properties, function(p) {
+            //                 return p.name === prop;
+            //             });
+
+            //             // if has more than one property, keep in the undoState but purge only the property
+            //             if (hasProp && state.properties.length > 1) {
+
+            //                 state.properties = _.filter(state.properties, function(p) {
+            //                     return p.name !== prop;
+            //                 });
+
+            //                 purgedState.push(state);
+            //             };
+            //         }
+            //     });
+            //     this.undoState = purgedState;
+            // }
         }.bind(this);
 
         /**

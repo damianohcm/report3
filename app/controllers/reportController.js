@@ -37,6 +37,14 @@
 
 		$scope.undoAllActions = function() {
 			$scope.undoService.undoAllActions($scope.isDetailView());
+
+			// collapse all rows
+			utilsService.fastLoop($scope.model.result.rows, function(row) {
+				if (row.isGroup) {
+					row.isCollapsed = true;
+				}
+			});
+
 			$scope.backToTopLevel();
 		};
 
@@ -282,7 +290,7 @@
 				});
 
 				_.each(children, function(childCol) {
-					$scope.undoService.purgeAction(childCol, 'show');
+					$scope.undoService.undoActionForItem(childCol, false);
 				});
 			}
 
@@ -336,11 +344,11 @@
 					itemCol = $scope.model.columns[c];
 					if (itemCol.isGroup) {
 						itemCol.show = false;
-						//$scope.undoService.purgeAction(itemCol, 'show');
+						//$scope.undoService.purgeActionProperty(itemCol, 'show');
 					} else if (itemCol.isChild) {
 						itemCol.show = itemCol.parentId === groupCol.id;
 						if (itemCol.show) {
-							//$scope.undoService.purgeAction(itemCol, 'show');
+							//$scope.undoService.purgeActionProperty(itemCol, 'show');
 						}
 					} else if (itemCol.locked) {
 						// probably no need to do anything.. might remove this code
