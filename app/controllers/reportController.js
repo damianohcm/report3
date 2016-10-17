@@ -61,23 +61,23 @@
 				var msg = '', things = {
 					segments: {
 						count: 0,
-						singular: 'Segment',
-						plural: 'Segments'
+						singular: 'Learning Path',
+						plural: 'Learning Paths'
 					}
 					, los: {
 						count: 0,
-						singular: 'Learning Object', 
-						plural: 'Learning Objects'
+						singular: 'Course', 
+						plural: 'Courses'
 					}
 					, stores: {
 						count: 0,
-						singular: 'Store', 
-						plural: 'Stores'
+						singular: 'PC', 
+						plural: 'PCs'
 					}
 					, people: {
 						count: 0, 
-						singular: 'Person', 
-						plural: 'People'
+						singular: 'User', 
+						plural: 'Users'
 					}
 				};
 
@@ -117,50 +117,8 @@
 		};
 
 		$scope.exportToCsv = function() {
-			var fileName = 'Summary.csv',
-				mimeType = '',
-				csv = utilsService.getCsv($scope.model);
-			utilsService.safeLog('reportController.exportToCsv', csv);
-
-			if (navigator.msSaveBlob) { // IE10
-				utilsService.safeLog('reportController.exportToCsv INTERNET EXPLORER');
-				mimeType = 'application/octet-stream';
-				return navigator.msSaveBlob(new Blob([csv], {
-						type: mimeType
-					}),
-					fileName);
-			} else { //html5 A[download]
-				utilsService.safeLog('reportController.exportToCsv HTML5');
-				mimeType = 'attachment/csv';
-
-				var a = document.createElement('a');
-				a.href = 'data:' + mimeType + ',' + encodeURIComponent(csv);
-				
-				if ('download' in a) { //html5 A[download]
-					a.setAttribute('download', fileName);
-				} else {
-					a.setAttribute('target', '_blank');
-				}
-
-				document.body.appendChild(a);
-				a.click();
-				document.body.removeChild(a);
-				return true;
-
-			// } else {
-			// 	utilsService.safeLog('reportController.exportToCsv OTHERS');
-
-			// 	var f = document.createElement('iframe');
-			// 	document.body.appendChild(f);
-			// 	mimeType = 'text/plain';
-			// 	f.src = 'data:' + mimeType + ',' + encodeURIComponent(csv);
-
-			// 	setTimeout(function() {
-			// 		document.body.removeChild(f);
-			// 	}, 500);
-
-			// 	return true;
-			}
+			utilsService.exportModelToCsv($scope.model, 'Summary.csv');
+			return true;
 		};
 
 		$scope.colHeaderPopover = {
