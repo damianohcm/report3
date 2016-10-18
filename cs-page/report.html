@@ -6,30 +6,38 @@
 <div id="mainContainer">
 
 
-<link rel="stylesheet" href="br-learning-path-report-page.css?asd"/>
-<!--link rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/br-learning-path-report-page.css"/-->
+<link id="csPageStyle" rel="stylesheet" href="dd-learning-path-report-page.css"/>
+<!--link rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-learning-path-report-page.css"/-->
 <div id="page-header">
     <div class="banner learning-path-report">
         <img src="../img/lp-icon.png"/>
         <!--img src="//ux.tribridge-amplifyhr.com/static/clients/dbi/img/lp-icon.png"/-->
         <h2>Learning Path Report</h2>
-        
-        <a class="button return" id="return" href="javascript:alert('not implemented yet')">
+
+        <a class="button return" id="return" href="index.html">
             <img src="../img/back-arrow.png"/>
             <!--img src="/clientimg/dunkinbrands/welcome/forms/back-arrow.png"/-->
             Back to <strong>Reporting Center</strong></a>
-        <a class="button viewFor" id="viewFor" href="javascript:alert('not implemented yet')">
+        <a class="button viewFor" id="viewFor" href="javascript:window.toggleBrand()">
             <img src="../img/back-arrow.png"/>
             <!--img src="/clientimg/dunkinbrands/welcome/forms/back-arrow.png"/-->
-            View report for <strong>Dunkin Donuts</strong></a>
+            View report for <strong id="viewForCaption"></strong></a>
     </div>
 </div>
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-br.html"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
 <span id="intellasync"></span>
 <!--script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script-->
 <script>
+     window.toggleBrand = function() {
+        window.currentBrand = window.currentBrand === 'DD' ? 'BR' : 'DD';
+        document.getElementById('viewForCaption').innerHTML = window.currentBrand === 'DD' ? 'Baskin-Robbins' : 'Dunkin Donuts';
+        var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
+        console.log('csPageStyle', csPageStyle);
+        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
+        $('#iframeTar').attr('src', window.frameUrl + '?brand=' + window.currentBrand);
+    };
     window.onresize = function(event) {
         console.log('sizeFrame');
         sizeFrame();
@@ -50,14 +58,14 @@
                 clearInterval(credsCheck);
                 var baseUrl = 'http://localhost:8080/'; // for local development
                 //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/learning-path-report/app/'; // for production
-                var frameUrl = baseUrl
+                window.frameUrl = baseUrl
                     + '?token=' + userData.csodToken
                     + '&compKey=' + _company_key
-                    + '&baseUrl=' + _sync_url
-                    + '&brand=BR';
+                    + '&baseUrl=' + _sync_url;
                     //+ '&widgets=widgetList';
                 //console.log('frameUrl', frameUrl);
-                $('#iframeTar').attr('src', frameUrl);
+                window.currentBrand = 'BR';
+                window.toggleBrand();
             } 
         }, 100);
     });
