@@ -1,3 +1,6 @@
+/* background color for category cell (Store/PC) */
+/* background color for summary header cell */
+/* background color for segments header cell (colGroup) */
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: transparent; }
@@ -9,6 +12,9 @@ body {
   cursor: pointer !important; }
 
 .m-l-sm {
+  margin-left: 5px; }
+
+.m-r-sm {
   margin-left: 5px; }
 
 .m-t-sm {
@@ -31,7 +37,7 @@ a {
 
 i.fa {
   font-size: 14pt;
-  color: #FF8000; }
+  color: #e874c9; }
 
 .table > thead:first-child > tr:first-child > th {
   border-top: solid 1px rgba(0, 0, 0, 0.5); }
@@ -83,7 +89,7 @@ i.fa {
 
 .th-summary {
   color: white;
-  background-color: #FF8000;
+  background-color: #e874c9;
   min-width: 150px;
   width: 200px;
   max-width: 200px;
@@ -95,7 +101,7 @@ i.fa {
 
 .th-course {
   color: white;
-  background-color: #693900;
+  background-color: #0039A6;
   min-width: 100px; }
 
 .th-section {
@@ -103,7 +109,7 @@ i.fa {
   background-color: #BE854C; }
 
 td.category {
-  background-color: #F0E0C6;
+  background-color: #FCEDF8;
   font-size: 16px;
   font-weight: bold;
   line-height: 16px;
@@ -114,7 +120,7 @@ td.category {
 td.category .fa,
 td.first .fa,
 td.person .fa {
-  color: #693900; }
+  color: #0039A6; }
 
 /* group columns */
 td.col-group.completed {
@@ -267,6 +273,7 @@ button {
   border-radius: 8px;
   box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
+  text-decoration: none;
   /*text-shadow: 0 1px 2px rgba(0,0,0,0.5);*/
   transition: background-color 0.25s; }
 
@@ -291,19 +298,19 @@ button.undo {
   background-color: #BFBFBF; }
 
 button.undo:hover {
-  color: #693900;
+  color: #0039A6;
   background-color: #E8E8E8; }
 
 button.reset {
   color: #fff;
-  background-color: #693900; }
+  background-color: #0039A6; }
 
 button.reset:hover {
   background-color: #BE854C; }
 
 button.back-to-top {
   color: #fff;
-  background-color: #693900; }
+  background-color: #0039A6; }
 
 button.back-to-top:hover {
   background-color: #BE854C; }

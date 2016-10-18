@@ -9,14 +9,14 @@
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">
-                <span ng-show="topLevelColumn">Now Viewing: <strong>{{topLevelColumn && topLevelColumn.name}}</strong> | </span>
+                <span ng-show="topLevelColumn && !model.isDetailOnly">Now Viewing: <strong>{{topLevelColumn && topLevelColumn.name}}</strong> | </span>
                 <span>{{modifiedMessage()}}</span>
             </div>
             <div class="pull-right m-t-sm">
                 <button class="undo small" ng-show="undoService.undoState.length > 0" ng-click="undoLastAction()" title="Undo {{undoService.getLastActionMessage()}}">
                     <i class="fa fa-undo"></i> Undo <span style="text-transform:none">({{undoService.getLastActionMessage()}})</span></button>
                 <button class="reset small m-l-sm" ng-show="undoService.undoState.length > 0" ng-click="undoAllActions()" title="Reset"><i class="fa fa-refresh"></i> Reset</button>
-                <button class="back-to-top small m-l-sm" ng-show="topLevelColumn" ng-click="backToTopLevel()" "Back to top level"><i class="fa fa-arrow-left"></i> Back to Top Level</button>
+                <button class="back-to-top small m-l-sm" ng-show="topLevelColumn && !model.isDetailOnly" ng-click="backToTopLevel()" "Back to top level"><i class="fa fa-arrow-left"></i> Back to Top Level</button>
             </div>
        </div>
     </div>

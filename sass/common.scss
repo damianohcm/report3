@@ -1,5 +1,3 @@
-@import 'variables';
-
 body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	background-color: transparent; 
@@ -14,6 +12,9 @@ body {
 }
 
 .m-l-sm {
+	margin-left: 5px;
+}
+.m-r-sm {
 	margin-left: 5px;
 }
 
@@ -201,7 +202,7 @@ td.col-child.summary.zero {
 
 td.flash.ng-animate {
   color: white;
-  background-color: $dunkinBrand;
+  background-color: $brand;
 }
 td.flash {
   -webkit-transition: background-color 0.5s ease-in, color 0.5s ease-in;
@@ -300,6 +301,7 @@ button {
     border-radius: 8px;
     box-shadow: inset 0 -6px 0 rgba(0,0,0,0.5);
     text-transform: uppercase;
+	text-decoration: none;
     /*text-shadow: 0 1px 2px rgba(0,0,0,0.5);*/
     transition: background-color 0.25s;
 }
@@ -314,10 +316,10 @@ button.small i.fa {
 }
 button.brand {
     color: #fff;
-    background-color: $dunkinBrand;
+    background-color: $brand;
 }
 button.brand:hover {
-	background-color: $dunkinBrandOver;
+	background-color: $brandOver;
 }
 button.undo {
     color: $black;

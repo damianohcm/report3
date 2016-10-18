@@ -2,8 +2,7 @@
 
 #mainContainer {
   padding: 15px 0 !important;
-  background: url("../img/coffee-bg.jpg") no-repeat center fixed;
-  background-size: cover;
+  background: url("../img/spoonssmpink-bg.png") repeat center fixed;
   font-size: 12px; }
 
 
@@ -51,7 +50,6 @@
     background-color: #1F429B;
     margin-right: 10px;
 }
-
 
 .banner {
     width: 1350px;

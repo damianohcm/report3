@@ -14,12 +14,9 @@
 
 		$scope.undoService = undoServiceFactory.getService('reportController');
 
-		$scope.isDetailView = function() {
-			return $scope.model.topLevelColumn !== undefined;
-		};
-
 		$scope.undoLastAction = function() {
-			var action = $scope.undoService.undoLastAction($scope.isDetailView());
+			var isDetailView = $scope.model.topLevelColumn !== undefined;
+			var action = $scope.undoService.undoLastAction(isDetailView);
 
 			if (action) {
 				// keep row collapsed when undoing rows
@@ -42,7 +39,8 @@
 		};
 
 		$scope.undoAllActions = function() {
-			$scope.undoService.undoAllActions($scope.isDetailView());
+			var isDetailView = $scope.model.topLevelColumn !== undefined;
+			$scope.undoService.undoAllActions(isDetailView);
 
 			// collapse all rows
 			utilsService.fastLoop($scope.model.result.rows, function(row) {
@@ -51,7 +49,13 @@
 				}
 			});
 
-			$scope.backToTopLevel();
+			if ($scope.model.isDetailOnly) {
+				// if it is a detail-only report, just recalculate
+				$scope.recalculate();
+			} else {
+				// otherwise go bac to the top level (routine backToTopLevel will also invoke recalculate)
+				$scope.backToTopLevel();
+			}
 		};
 
 		$scope.modifiedMessage = function() {
@@ -147,6 +151,14 @@
 			$scope.data = data;
 			$scope.model = reportService.getModel(data, $scope.reportTitle);
 
+			if ($scope.model.isDetailOnly) {
+				// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
+				var firstColGroup = _.find($scope.model.columns, function(col) {
+					return col.isGroup;
+				});
+				$scope.expandChildColumns(firstColGroup);
+			}
+
 			// then rowGroups after angular bindings
 			$timeout(function(){
 				utilsService.safeLog('add');
@@ -166,6 +178,7 @@
 		//var fileName = 'report.json?' + Math.random();
 		//var fileName = 'report-generated1.json?' + Math.random();
 		var fileName = 'report-generated2.json?' + Math.random();
+		//var fileName = 'new-and-trending.json?' + Math.random();
 		dataService.getData(fileName)
 			.then(onDataComplete, onDataError);
 		
@@ -205,7 +218,8 @@
 		// 		}
 
 		// 		// reset undo history
-		// 		$scope.undoService.undoAllActions($scope.isDetailView());
+		//		var isDetailView = $scope.model.topLevelColumn !== undefined;
+		// 		$scope.undoService.undoAllActions(isDetailView);
 
 		// 		// update values
 		// 		//utilsService.safeLog('WARNING: code commented out');

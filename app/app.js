@@ -17,6 +17,11 @@
 			// 	brand: $rootScope.brand,
 			// 	lang: $rootScope.lang
 			// });
+
+			if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
+				console.log('set stylesheet href attribute');
+				document.getElementById('mainCss').setAttribute('href', 'css/main-br.css');
+			}
 		});
 	
 	// configure

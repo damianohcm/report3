@@ -73,13 +73,16 @@
 					_.each(visibleCols, function(col) {
 						var cell = row[col.key],
 							text = cell.value;
-							if (cell.value2) {
-								text += ' (' + cell.value2 + ')';
-							} else if (cell.suffix && cell.suffix.length > 0) {
-								text += ' ' + cell.suffix;
-							}
+
+						if (cell.value2) {
+							text += ' (' + cell.value2 + ')';
+						} else if (cell.suffix && cell.suffix.length > 0) {
+							text += ' ' + cell.suffix;
+						}
+
 						csvLine.push('"' + text + '"');
 					});
+					
 					ret.push(csvLine.join(','));
 
 					if (!row.isCollapsed) {
@@ -93,13 +96,16 @@
 								_.each(visibleCols, function(col) {
 									var cell = childRow[col.key],
 										text = cell.value;
-										if (cell.value2) {
-											text += ' (' + cell.value2 + ')';
-										} else if (cell.suffix && cell.suffix.length > 0) {
-											text += ' ' + cell.suffix;
-										}
+
+									if (cell.value2) {
+										text += ' (' + cell.value2 + ')';
+									} else if (cell.suffix && cell.suffix.length > 0) {
+										text += ' ' + cell.suffix;
+									}
+
 									csvChildLine.push('"' + text + '"');
 								});
+
 								ret.push(csvChildLine.join(','));
 							});
 						}
