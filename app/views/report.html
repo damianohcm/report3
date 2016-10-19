@@ -1,13 +1,13 @@
 <div class="banner">
     <img src="../img/learning-path-icon.png"/>
-    <h2 id="reportTitle">Learning Path Report</h2>
+    <h2>{{title}}</h2>
 
     <a class="banner-button return" href="#/">
         <img src="../img/back-arrow.png"/>
         Back to <br/><strong>Reporting Center</strong></a>
-    <a class="banner-button viewFor" ng-click="toggleBrand()">
+    <a class="banner-button viewFor" target="_parent" href="http://127.0.0.1:8080/cs-page/?a=1&brand={{brand === 'br' ? 'dd' : 'br'}}&reportId={{reportId}}">
         <img src="../img/back-arrow.png"/>
-        View report for <br/><strong>{{viewReportFor()}}</strong></a>
+        View report for <br/><strong>{{viewReportFor}}</strong></a>
 </div>
 
 <script type="text/ng-template" id="colHeaderPopoverTemplate.html">

@@ -27,12 +27,15 @@
         }
     }
 
-    window.toggleBrand = function() {
-        window.currentBrand = window.currentBrand === 'DD' ? 'BR' : 'DD';
+    window.setBrand = function() {
         var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
         console.log('csPageStyle', csPageStyle);
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
+    };
+    window.toggleBrand = function() {
+        window.currentBrand = window.currentBrand === 'dd' ? 'br' : 'dd';
+        window.setBrand();
     };
     window.onresize = function(event) {
         console.log('sizeFrame');
@@ -53,7 +56,8 @@
             if (userData.csodToken !== (undefined || '')) {
                 clearInterval(credsCheck);
 
-                window.reportId = window.getQueryStringValue('reportId', 'learning-path');
+                window.reportId = window.getQueryStringValue('reportId', '');
+                window.currentBrand = window.getQueryStringValue('brand', 'dd');
 
                 var baseUrl = 'http://localhost:8080/'; // for local development
                 //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/learning-path-report/app/'; // for production
@@ -64,8 +68,7 @@
                     + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
                 //console.log('frameUrl', frameUrl);
-                window.currentBrand = 'BR';
-                window.toggleBrand();
+                window.setBrand();
             } 
         }, 100);
     });

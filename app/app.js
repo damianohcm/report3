@@ -3,7 +3,6 @@
 	var getQueryStringValue = function (key, defaultValue) {  
         if (document.location.search && document.location.search.length > 0) {
             var arr = document.location.search.split(key + '=')[1];
-            console.log('arr', arr);
             if (arr && arr.length > 0) {
                 return arr.split('&')[0];
             } else {
@@ -38,6 +37,10 @@
 				console.log('set stylesheet href attribute');
 				$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
 			}
+
+			if ($rootScope.reportId && $rootScope.reportId.length > 0) {
+				document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+			}
 		});
 	
 	// configure
@@ -68,13 +71,15 @@
 	// register controllers
 	// home controllers
 	app.controller('homeController', [
-		'$scope', 
+		'$scope',
+		'$rootScope',  
 		'utilsService',
 		controllers.homeController]);
 	
 	// report controller
 	app.controller('reportController', [
 		'$scope', 
+		'$rootScope', 
 		'utilsService',
 		'undoServiceFactory', 
 		'dataService', 

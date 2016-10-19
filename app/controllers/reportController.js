@@ -3,26 +3,29 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
-		$scope.reportTitle = 'Learning Path';
-		$scope.title = $scope.reportTitle + ' Report';
-
+    window.controllers.reportController = function($scope, $rootScope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
-		console.log('Controller $scope.brand/lang/reportId', {
-			brand: $scope.brand,
-			lang: $scope.lang,
-			reportId: $scope.reportId
+		console.log('Controller $rootScope.brand/lang/reportId', {
+			brand: $rootScope.brand,
+			lang: $rootScope.lang,
+			reportId: $rootScope.reportId
 		});
 
-		$scope.viewReportFor = function() {
-			return $scope.brand === 'dd' ? 'Baskin-Robbins' : 'Dunkin Donuts';
-		};
+		$scope.reportTitle = $rootScope.reportId === 'learning-path' ? 'Learning Path' : $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
+		$scope.title = $scope.reportTitle + ' Report';
+
+		Object.defineProperty($scope, 'viewReportFor', {
+			get: function() {
+				console.log('viewReportFor ' + $rootScope.brand);
+				return $rootScope.brand === 'dd' ? 'Baskin-Robbins' : 'Dunkin Donuts';
+			}
+		});
 
 		$scope.toggleBrand = function() {
-			console.log('toggleBrand');
-			$scope.brand = $scope.brand === 'dd' ? 'br' : 'dd';
-			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $scope.brand));
+			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
+			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
+			console.log('toggleBrand ' + $rootScope.brand);
 		};
 
 		$scope.undoLastAction = function() {
@@ -190,7 +193,7 @@
 		//var fileName = 'report-generated1.json?' + Math.random();
 		//var fileName = 'report-generated2.json?' + Math.random();
 		//var fileName = 'new-and-trending.json?' + Math.random();
-		var fileName = $scope.reportId + '.json?' + Math.random();
+		var fileName = $rootScope.reportId + '.json?' + Math.random();
 		console.log('fileName', fileName);
 
 		dataService.getData(fileName)
