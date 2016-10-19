@@ -58,11 +58,19 @@
                 window.reportId = window.getQueryStringValue('reportId', '');
                 window.currentBrand = window.getQueryStringValue('brand', 'dd');
 
-                var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/learning-path-report/app/'; // for production
+                //// for local development
+                //var baseUrl = 'http://localhost:8080/',
+                //    csBaseUrl = baseUrl + 'cs-page/?a=1';
+                
+                // for production
+                var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/learning-path-report/app/',
+                    csBaseUrl = document.location.href.split('&')[0];
+
                 window.frameUrl = baseUrl
                     + '?token=' + userData.csodToken
                     + '&compKey=' + _company_key
                     + '&baseUrl=' + _sync_url
+                    + '&csBaseUrl=' + csBaseUrl
                     + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
                 //console.log('frameUrl', frameUrl);
