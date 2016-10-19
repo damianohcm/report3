@@ -1,3 +1,15 @@
+<div class="banner">
+    <img src="../img/learning-path-icon.png"/>
+    <h2 id="reportTitle">Learning Path Report</h2>
+
+    <a class="banner-button return" href="#/">
+        <img src="../img/back-arrow.png"/>
+        Back to <br/><strong>Reporting Center</strong></a>
+    <a class="banner-button viewFor" ng-click="toggleBrand()">
+        <img src="../img/back-arrow.png"/>
+        View report for <br/><strong>{{viewReportFor()}}</strong></a>
+</div>
+
 <script type="text/ng-template" id="colHeaderPopoverTemplate.html">
     <div style="color:black">
         <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)"><i class="fa fa-expand"></i> Expand</a></div>

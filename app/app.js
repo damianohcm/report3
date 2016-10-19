@@ -21,9 +21,9 @@
 			'ngAnimate', 
 			'ui.bootstrap'
 		]).run(function($rootScope) {
-			$rootScope.brand = getQueryStringValue('brand', 'dd');
-			$rootScope.lang = getQueryStringValue('lang', 'Eng');
-			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path');
+			$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
+			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
+			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();
 
 			console.log('brand/lang/reportID', {
 				'document.location.search': document.location.search,
@@ -32,9 +32,11 @@
 				reportId: $rootScope.reportId
 			});
 
+			$rootScope.mainCss = document.getElementById('mainCss');
+
 			if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
 				console.log('set stylesheet href attribute');
-				document.getElementById('mainCss').setAttribute('href', 'css/main-br.css');
+				$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
 			}
 		});
 	
@@ -45,6 +47,10 @@
 		
 			$routeProvider
 				.when('/', {
+					templateUrl: 'views/home.html',
+					controller: 'homeController'
+				})
+				.when('/report', {
 					templateUrl: 'views/report.html',
 					controller: 'reportController'
 				})
@@ -60,6 +66,13 @@
 	app.factory('reportService', ['utilsService', services.reportService]);
 
 	// register controllers
+	// home controllers
+	app.controller('homeController', [
+		'$scope', 
+		'utilsService',
+		controllers.homeController]);
+	
+	// report controller
 	app.controller('reportController', [
 		'$scope', 
 		'utilsService',

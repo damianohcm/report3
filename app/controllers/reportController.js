@@ -6,6 +6,8 @@
     window.controllers.reportController = function($scope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
 		$scope.reportTitle = 'Learning Path';
 		$scope.title = $scope.reportTitle + ' Report';
+
+		$scope.undoService = undoServiceFactory.getService('reportController');
 		
 		console.log('Controller $scope.brand/lang/reportId', {
 			brand: $scope.brand,
@@ -13,7 +15,15 @@
 			reportId: $scope.reportId
 		});
 
-		$scope.undoService = undoServiceFactory.getService('reportController');
+		$scope.viewReportFor = function() {
+			return $scope.brand === 'dd' ? 'Baskin-Robbins' : 'Dunkin Donuts';
+		};
+
+		$scope.toggleBrand = function() {
+			console.log('toggleBrand');
+			$scope.brand = $scope.brand === 'dd' ? 'br' : 'dd';
+			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $scope.brand));
+		};
 
 		$scope.undoLastAction = function() {
 			var isDetailView = $scope.model.topLevelColumn !== undefined;
