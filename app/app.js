@@ -1,5 +1,19 @@
 (function(angular) {
 
+	var getQueryStringValue = function (key, defaultValue) {  
+        if (document.location.search && document.location.search.length > 0) {
+            var arr = document.location.search.split(key + '=')[1];
+            console.log('arr', arr);
+            if (arr && arr.length > 0) {
+                return arr.split('&')[0];
+            } else {
+                return defaultValue;
+            }
+        } else {
+            return defaultValue;
+        }
+    };
+
 	// create module 'githubViewer'
 	var app = angular.module('Main', 
 		[
@@ -7,16 +21,16 @@
 			'ngAnimate', 
 			'ui.bootstrap'
 		]).run(function($rootScope) {
-			$rootScope.brand = '', $rootScope.lang = '';
-			var url = document.location.search.split('brand=')[1], lang = document.location.search.split('lang=')[1];
-			$rootScope.brand = url ? url.split('&')[0] : '';
-			$rootScope.lang = lang !== undefined ? lang.split('&')[0] : lang = 'Eng';
+			$rootScope.brand = getQueryStringValue('brand', 'dd');
+			$rootScope.lang = getQueryStringValue('lang', 'Eng');
+			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path');
 
-			// console.log('brand and lang', {
-			// 	'document.location.search': document.location.search,
-			// 	brand: $rootScope.brand,
-			// 	lang: $rootScope.lang
-			// });
+			console.log('brand/lang/reportID', {
+				'document.location.search': document.location.search,
+				brand: $rootScope.brand,
+				lang: $rootScope.lang,
+				reportId: $rootScope.reportId
+			});
 
 			if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
 				console.log('set stylesheet href attribute');

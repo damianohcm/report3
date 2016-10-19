@@ -1,7 +1,7 @@
 <link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-learning-path-report-page.css"/>
 <div id="page-header">
     <div class="banner learning-path-report">
-        <img src="//ux.tribridge-amplifyhr.com/static/clients/dbi/img/lp-icon.png"/>
+        <img src="//ux.tribridge-amplifyhr.com/static/clients/dbi/img/learning-path-icon.png"/>
         <h2>Learning Path Report</h2>
 
         <a class="button return" id="return" href="javascript:alert('not implemented yet')">
@@ -20,7 +20,7 @@
 <script>
     window.toggleBrand = function() {
         window.currentBrand = window.currentBrand === 'DD' ? 'BR' : 'DD';
-        viewForCaption.innerHTML = window.currentBrand === 'DD' ? 'Baskin-Robbins' : 'Dunkin Donuts';
+        document.getElementById('viewForCaption').innerHTML = window.currentBrand === 'DD' ? 'Baskin-Robbins' : 'Dunkin Donuts';
         var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
         console.log('csPageStyle', csPageStyle);
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);

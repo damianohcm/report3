@@ -7,9 +7,10 @@
 		$scope.reportTitle = 'Learning Path';
 		$scope.title = $scope.reportTitle + ' Report';
 		
-		console.log('Controller $scope.brand and lang', {
+		console.log('Controller $scope.brand/lang/reportId', {
 			brand: $scope.brand,
 			lang: $scope.lang,
+			reportId: $scope.reportId
 		});
 
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -177,8 +178,11 @@
 
 		//var fileName = 'report.json?' + Math.random();
 		//var fileName = 'report-generated1.json?' + Math.random();
-		var fileName = 'report-generated2.json?' + Math.random();
+		//var fileName = 'report-generated2.json?' + Math.random();
 		//var fileName = 'new-and-trending.json?' + Math.random();
+		var fileName = $scope.reportId + '.json?' + Math.random();
+		console.log('fileName', fileName);
+
 		dataService.getData(fileName)
 			.then(onDataComplete, onDataError);
 		
