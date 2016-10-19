@@ -29,7 +29,7 @@
 
     window.setBrand = function() {
         var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
-        console.log('csPageStyle', csPageStyle);
+        //console && console.log('csPageStyle', csPageStyle);
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
     };
@@ -38,7 +38,6 @@
         window.setBrand();
     };
     window.onresize = function(event) {
-        console.log('sizeFrame');
         sizeFrame();
     };
     function sizeFrame() {
@@ -60,7 +59,7 @@
                 window.currentBrand = window.getQueryStringValue('brand', 'dd');
 
                 // for local development
-                var baseUrl = 'http://localhost:8080/',
+                var baseUrl = 'http://10.12.6.83:8080/',
                     csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
                 // for production
@@ -74,7 +73,7 @@
                     + '&csBaseUrl=' + csBaseUrl
                     + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
-                //console.log('frameUrl', frameUrl);
+                //console && console.log('frameUrl', frameUrl);
                 window.setBrand();
             } 
         }, 100);

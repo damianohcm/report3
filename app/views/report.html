@@ -39,7 +39,7 @@
             <thead>
                 <tr class="tr-head">
                     <th ng-repeat="c in model.columns" ng-show="c.show" ng-class="c.css">
-                        <button class="brand" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export CSV</button>
+                        <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export CSV</button>
                         <div ng-if="c.position > 0">
                             <!-- begin: column header popover -->
                             <div class="pull-right" ng-if="!c.locked">

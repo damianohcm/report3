@@ -1,0 +1,30 @@
+{
+    "count": 2,
+    "next": null,
+    "previous": null,
+    "results": [{
+        "id": 1,
+        "name": "Title",
+        "los": [{
+            "type": "Curriculum",
+            "name": "Silver Community Badge",
+            "id": 10
+        }, {
+            "type": "Curriculum",
+            "name": "Bronze Community Badge",
+            "id": 12
+        }, {
+            "type": "Curriculum",
+            "name": "Gold Community Badge",
+            "id": 13
+        }]
+    }, {
+        "id": 2,
+        "name": "Welcome to Dunkin' Donuts",
+        "los": [{
+            "type": null,
+            "name": null,
+            "id": null
+        }]
+    }]
+}

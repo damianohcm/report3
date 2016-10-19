@@ -31,7 +31,7 @@
                 }
             });
         } else {
-            console.log('undoService.undoAction: Warning: invalid action or action.item');
+            console && console.log('undoService.undoAction: Warning: invalid action or action.item');
         }
     };
 

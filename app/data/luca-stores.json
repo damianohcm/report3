@@ -1,0 +1,1622 @@
+{
+    "count": 17375,
+    "next": "http://127.0.0.1:8000/api/curricula_report/v1/stores/?format=json&page=2",
+    "previous": null,
+    "results": [{
+        "id": 8373,
+        "name": "340292-Amerimax Plantation, LLC",
+        "people": [{
+            "id": 149994,
+            "name": "OK welco",
+            "title": "CML Manager",
+            "los": []
+        }, {
+            "id": 149995,
+            "name": "ok welco3",
+            "title": "CML Line Operator",
+            "los": []
+        }]
+    }, {
+        "id": 3469,
+        "name": "343474-Awale Bakery, Inc.",
+        "people": [{
+            "id": 17412,
+            "name": "William simprevil",
+            "title": "CML Manager",
+            "los": []
+        }, {
+            "id": 23815,
+            "name": "Adriana Hernandez",
+            "title": "CML Manager",
+            "los": []
+        }, {
+            "id": 130593,
+            "name": "Hani Khalife",
+            "title": "CML Manager",
+            "los": []
+        }]
+    }, {
+        "id": 11391,
+        "name": "344296-Hopewell Junction Donuts, LLC",
+        "people": []
+    }, {
+        "id": 11401,
+        "name": "347856-Hess Corporation",
+        "people": []
+    }, {
+        "id": 11402,
+        "name": "347860-Hess Corporation",
+        "people": []
+    }, {
+        "id": 11381,
+        "name": "348875-",
+        "people": []
+    }, {
+        "id": 11354,
+        "name": "350496-HBWD LLC",
+        "people": []
+    }, {
+        "id": 11400,
+        "name": "350750-ELIZABETH DONUTS, INC.",
+        "people": []
+    }, {
+        "id": 11405,
+        "name": "351225-Hudson Group (HG) Retail, LLC",
+        "people": [{
+            "id": 887,
+            "name": "Spencer Morrison",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 9263,
+            "name": "Cesar Delgado",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 11656,
+            "name": "Tara Henry",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 13127,
+            "name": "Kathya Reynoso",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 16925,
+            "name": "Max McClelland",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 30711,
+            "name": "Zulai Reyes",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 38108,
+            "name": "wilkin suriel",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 81635,
+            "name": "imran khan",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 85023,
+            "name": "sandra Foronda",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 90904,
+            "name": "John castro",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 90905,
+            "name": "deshunda dubose",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 91502,
+            "name": "quanasia carter",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 93089,
+            "name": "emerson stewart",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94209,
+            "name": "Celinda Hernandez",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94210,
+            "name": "Ani Solano",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94211,
+            "name": "Desiree Baxter",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 95094,
+            "name": "Devon Bryan",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 95111,
+            "name": "Melita Fahie",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 96698,
+            "name": "Alejandro Pulido",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 100705,
+            "name": "carolyne acevedo",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 100969,
+            "name": "kimberly sturlese",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 100970,
+            "name": "madelin bravo",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 108475,
+            "name": "monay toliver",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 110740,
+            "name": "loida bernardez",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 122931,
+            "name": "diego victoria",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 123308,
+            "name": "tiffany auguste",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 123310,
+            "name": "chester wright",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 123311,
+            "name": "tianna bullard",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124481,
+            "name": "jamyce nelson",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 126208,
+            "name": "amina karim",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 129034,
+            "name": "tempia jefferson",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 129795,
+            "name": "malaysia scott",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 129994,
+            "name": "daniel martinez",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 135424,
+            "name": "oliver guzman",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 137626,
+            "name": "tonya tatum",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 142570,
+            "name": "Tanasia ellington",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144260,
+            "name": "Achoy Lee",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11406,
+        "name": "351226-Hudson Group (HG) Retail, LLC",
+        "people": []
+    }, {
+        "id": 11385,
+        "name": "351259-ROSEMORE DONUTS INC.",
+        "people": []
+    }, {
+        "id": 11399,
+        "name": "351303-87 NORTHERN BLVD. LLC",
+        "people": []
+    }, {
+        "id": 11407,
+        "name": "351350-BC DONUTS LLC",
+        "people": []
+    }, {
+        "id": 11386,
+        "name": "351438-R & D #9, INC.",
+        "people": []
+    }, {
+        "id": 11390,
+        "name": "351517-KPV EPHRATA, LLC",
+        "people": []
+    }, {
+        "id": 11398,
+        "name": "351672-Rehoboth Donut Shops, Inc.",
+        "people": []
+    }, {
+        "id": 11404,
+        "name": "351811-KANKU, INC.",
+        "people": []
+    }, {
+        "id": 11393,
+        "name": "352210-INDUS QSR III INC.",
+        "people": []
+    }, {
+        "id": 11403,
+        "name": "352309-DALE DONUTS, LLC",
+        "people": []
+    }, {
+        "id": 11367,
+        "name": "352331-BHAKTINANDAN DONUTS INC.",
+        "people": []
+    }, {
+        "id": 11409,
+        "name": "352459-Livonia Coffee Inc",
+        "people": [{
+            "id": 6273,
+            "name": "Vijay Patel",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "715783ff-004d-40f6-a2a0-821b370f958a",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 77421,
+            "name": "Rebecca Laskos",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 82890,
+            "name": "Kyle Peters",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 82894,
+            "name": "Keshawn Thompson",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 82895,
+            "name": "Arlece Bertrand",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94349,
+            "name": "Layla Lynch",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94353,
+            "name": "Madelyn Vanwormer",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94356,
+            "name": "Zack Jankalski",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 94357,
+            "name": "Mark Lundy",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132731,
+            "name": "Fatmeh Mackie",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132884,
+            "name": "Aaron Cole",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132885,
+            "name": "Kameca Maddox",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132886,
+            "name": "Mekhi Glover",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132887,
+            "name": "Breana Douglas",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132888,
+            "name": "Jasmine Patrick",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132962,
+            "name": "Marie Wright",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 132967,
+            "name": "James Chisholm",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133075,
+            "name": "Jazmine Bass",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133359,
+            "name": "Hunter Jacobs",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 134726,
+            "name": "Destiny Swanigan",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11396,
+        "name": "352496-Star Dunkin', LP",
+        "people": []
+    }, {
+        "id": 11388,
+        "name": "352666-Pace Development LLC",
+        "people": []
+    }, {
+        "id": 11383,
+        "name": "353020-",
+        "people": []
+    }, {
+        "id": 11370,
+        "name": "353047-Doylestown Retail Foods LLC",
+        "people": []
+    }, {
+        "id": 11410,
+        "name": "353048-",
+        "people": []
+    }, {
+        "id": 11362,
+        "name": "353174-SMK Donuts, Inc.",
+        "people": []
+    }, {
+        "id": 11356,
+        "name": "353409-Rochester East Irondequoit Donuts, Inc.",
+        "people": []
+    }, {
+        "id": 11395,
+        "name": "353448-FULTON HUB LLC",
+        "people": []
+    }, {
+        "id": 11389,
+        "name": "353463-North Attleboro Donuts, Inc.",
+        "people": []
+    }, {
+        "id": 11369,
+        "name": "353596-JP FOODS, LLC",
+        "people": []
+    }, {
+        "id": 11375,
+        "name": "353651-Love's Travel Stops & Country Stores, Inc.",
+        "people": [{
+            "id": 106724,
+            "name": "Curtis Heap",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 106725,
+            "name": "John Love",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 106726,
+            "name": "Mary Love",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 116953,
+            "name": "David Alves",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 128701,
+            "name": "Jacob Christie",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 140409,
+            "name": "Dyllan Snyder",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 140410,
+            "name": "Sam Kessler",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 140414,
+            "name": "Kayla Hadsell",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 140415,
+            "name": "Hannah Borghi",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 140416,
+            "name": "crew Loves",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 146056,
+            "name": "Shawna Lynch",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 146199,
+            "name": "Mike Duff",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11378,
+        "name": "353742-NCDonut-Antiquity, LLC",
+        "people": []
+    }, {
+        "id": 11364,
+        "name": "353783-Sizzling Donuts, LLC",
+        "people": []
+    }, {
+        "id": 11365,
+        "name": "353784-Sizzling Donuts, LLC",
+        "people": []
+    }, {
+        "id": 11366,
+        "name": "353796-BINGLE, LLC",
+        "people": []
+    }, {
+        "id": 11355,
+        "name": "353800-BMG Consulting Services, LLC",
+        "people": [{
+            "id": 79,
+            "name": "Stephen Baldi",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124774,
+            "name": "Tariq Lodhi",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124776,
+            "name": "Stephen Robinson",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124827,
+            "name": "Jyron Douglas",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124833,
+            "name": "Janell Brown",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11408,
+        "name": "353838-MONROE DONUTS, INC",
+        "people": []
+    }, {
+        "id": 11358,
+        "name": "353902-Shallowford Donuts Holdings, LLC",
+        "people": []
+    }, {
+        "id": 11376,
+        "name": "353976-Chicagoland Commissary, LLC",
+        "people": []
+    }, {
+        "id": 11384,
+        "name": "354026-DJH Enterprises, Inc.",
+        "people": [{
+            "id": 9679,
+            "name": "April Poole",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 12194,
+            "name": "Tony Gonzalez",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 53255,
+            "name": "Justin Jones",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 63700,
+            "name": "Monica Wirick",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 139692,
+            "name": "Jaleel Buie",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 143264,
+            "name": "Crystal Ryan",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 143265,
+            "name": "Micheal Hofmann",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 143663,
+            "name": "Sally Lupia",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144378,
+            "name": "Shelby Beier",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144380,
+            "name": "Amanda Wade",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144381,
+            "name": "Summer Doughty",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144383,
+            "name": "Quran Jones",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144584,
+            "name": "Rebecca Traster",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 146063,
+            "name": "Charlotte Valery",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 147399,
+            "name": "Holly Green",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 147479,
+            "name": "Samantha Ortiz",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 149857,
+            "name": "Bruce Baker",
+            "title": "Crew Member",
+            "los": []
+        }]
+    }, {
+        "id": 11368,
+        "name": "354096-Donco MN BRD Washington 1, LLC",
+        "people": []
+    }, {
+        "id": 11392,
+        "name": "354102-KAVO Foods, LLC",
+        "people": [{
+            "id": 88687,
+            "name": "Ajaykumar Changela",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11379,
+        "name": "354220-MP ROCKHILL INC",
+        "people": []
+    }, {
+        "id": 11397,
+        "name": "354259-Panjwani Network Restaurants, Inc.",
+        "people": []
+    }, {
+        "id": 11373,
+        "name": "354290-KUSH DONUTS, LLC",
+        "people": []
+    }, {
+        "id": 11357,
+        "name": "354437-The Tasty Group, LLC",
+        "people": [{
+            "id": 115950,
+            "name": "David Ahn",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 116385,
+            "name": "Nara Ahn",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 131183,
+            "name": "David Ahn",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 17362,
+        "name": "354483-Leiszler Fare, LLC",
+        "people": [{
+            "id": 70881,
+            "name": "Lucas Bradbury",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 70883,
+            "name": "Natalie Leiszler",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133151,
+            "name": "Test Testing",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133163,
+            "name": "Christa Del Hoyo",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133164,
+            "name": "David Fischbacher",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133165,
+            "name": "Andrew Patterson",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133166,
+            "name": "Correen Lancaster",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133167,
+            "name": "Missy Long",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133170,
+            "name": "Saleen Gonzalez",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133171,
+            "name": "Danielle Edwards",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133172,
+            "name": "Crystal Thompson",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133389,
+            "name": "Philomena Sulzen",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133390,
+            "name": "Jhane Davis",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 133393,
+            "name": "Blake Nedich",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 142125,
+            "name": "Human Resources",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144296,
+            "name": "Chris Elliott",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 11359,
+        "name": "354497-CABARRUS CONCORD PARKWAY SO., LLC",
+        "people": []
+    }, {
+        "id": 11394,
+        "name": "354506-SHREE MALINATH CORPORATION",
+        "people": []
+    }, {
+        "id": 11360,
+        "name": "354559-PORTERS NECK WILMINGTON, LLC",
+        "people": [{
+            "id": 50207,
+            "name": "Eric Threadgill",
+            "title": "Learning Administrator",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "715783ff-004d-40f6-a2a0-821b370f958a",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 124764,
+            "name": "George White",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 128829,
+            "name": "Beth Gabb",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "767de583-b751-47b3-84d2-9119f5f997e5",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "d2fa5abc-6924-41c5-b169-4fd0df1bb3b1",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "e5aa549e-2679-4ca3-acb4-2076862806b9",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "3bf0d0e3-f578-4f28-a724-10d6c6b98ca4",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 144285,
+            "name": "Valerie Brown",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }, {
+                "id": "715783ff-004d-40f6-a2a0-821b370f958a",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 147270,
+            "name": "Carley Shafer",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 147273,
+            "name": "Kadi Herman",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 147548,
+            "name": "Addison Miles",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 147894,
+            "name": "Linda Funderburk",
+            "title": "Shift Leader",
+            "los": []
+        }, {
+            "id": 148456,
+            "name": "Caleb Hogan",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148457,
+            "name": "Will Craig",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148459,
+            "name": "Kashif El-Amin",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148606,
+            "name": "Downey Ryann",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148731,
+            "name": "Antoine Peterson",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148733,
+            "name": "Jessica Kelly",
+            "title": "Crew Member",
+            "los": []
+        }, {
+            "id": 148734,
+            "name": "Quentin Moyer",
+            "title": "Crew Member",
+            "los": []
+        }]
+    }, {
+        "id": 11387,
+        "name": "354569-THG - LEXINGTON FARM, LLC",
+        "people": []
+    }, {
+        "id": 11372,
+        "name": "354594-Four Dough, LLC",
+        "people": []
+    }, {
+        "id": 11361,
+        "name": "354600-RAFFIA PLAZA DONUTS, INC.",
+        "people": []
+    }, {
+        "id": 11382,
+        "name": "354603-ABAJEE DONUTS MANAGEMENT, LLC",
+        "people": []
+    }, {
+        "id": 11377,
+        "name": "354622-Love's Travel Stops & Country Stores, Inc.",
+        "people": []
+    }, {
+        "id": 11363,
+        "name": "354644-SMGR, Inc.",
+        "people": []
+    }, {
+        "id": 11380,
+        "name": "354675-HRG USC, LLC",
+        "people": []
+    }, {
+        "id": 11371,
+        "name": "354827-Rocket Donuts, LLC",
+        "people": []
+    }, {
+        "id": 11374,
+        "name": "354910-Kasa, LTD.",
+        "people": []
+    }, {
+        "id": 17364,
+        "name": "354964-MRCTC LLC",
+        "people": [{
+            "id": 413,
+            "name": "Kyle Robinson",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 116238,
+            "name": "Michael Crouch",
+            "title": "Above Restaurant Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 131510,
+            "name": "Brent Harrington",
+            "title": "Restaurant Manager",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 139708,
+            "name": "Montana Aters",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 139709,
+            "name": "Geoff Brothers",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 139710,
+            "name": "Erica Ray",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }, {
+            "id": 143583,
+            "name": "Ryan Russell",
+            "title": "Shift Leader",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 17363,
+        "name": "355092-M & DB ENTERPRISES LLC",
+        "people": [{
+            "id": 139646,
+            "name": "HEEREN BHAKTA",
+            "title": "Crew Member",
+            "los": [{
+                "id": "715783ff-004d-40f6-a2a0-821b370f958a",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 15116,
+        "name": "503143-Rong_Hua, chang-ning qu, rong hua xi dao, #99, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15118,
+        "name": "504002-Wu_xi, jian-su shen, wu-xi shi, chonganquzhongshan lu, #531, Jiagsu, CHINA",
+        "people": []
+    }, {
+        "id": 15119,
+        "name": "504130-Shui_Hong, hong-kou qu, lin-pin lu, #123, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15117,
+        "name": "504224-Famos Square Qibao, ming-hang qu, cao bao lu, #3509, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15121,
+        "name": "504428-Dalian Road, yang-pu qu, dalian lu, #970, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15122,
+        "name": "504429-Caoyang Road, pu-tuo qu, zhong-shanbei lu, #3018, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15120,
+        "name": "504755-Yu_Yuan Road, chang ni qu, yu-yuan lu, #1256, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 15114,
+        "name": "505134-Suzhou Xinghai Street, 199 Xinghai Street, Suzhou, Suzhou, CHINA",
+        "people": []
+    }, {
+        "id": 15115,
+        "name": "505251-Tongchuan Road, 1F No.68 Tongchuan Road, Shanghai, CHINA",
+        "people": []
+    }, {
+        "id": 1,
+        "name": "Dunkin' Brands",
+        "people": []
+    }, {
+        "id": 1860,
+        "name": "---Do Not Use---",
+        "people": [{
+            "id": 16373,
+            "name": "Int Admin17",
+            "title": "Crew Member",
+            "los": [{
+                "id": "8ffdeada-a7fe-4e2e-b242-103e18f7b31e",
+                "value": 0,
+                "segment": null
+            }]
+        }]
+    }, {
+        "id": 1880,
+        "name": "201115-DD COLOMBIA",
+        "people": []
+    }, {
+        "id": 11436,
+        "name": "13846-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11437,
+        "name": "13848-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11438,
+        "name": "13854-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11439,
+        "name": "13855-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11440,
+        "name": "13856-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11441,
+        "name": "13862-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11442,
+        "name": "13864-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11443,
+        "name": "13866-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11444,
+        "name": "13867-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11445,
+        "name": "13870-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11446,
+        "name": "13871-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11447,
+        "name": "13874-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11448,
+        "name": "13875-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11449,
+        "name": "13876-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11450,
+        "name": "13885-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11451,
+        "name": "13886-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11452,
+        "name": "13889-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11453,
+        "name": "16901-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11454,
+        "name": "16902-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11455,
+        "name": "16904-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11456,
+        "name": "16905-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11457,
+        "name": "16914-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11458,
+        "name": "16916-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11459,
+        "name": "16917-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11460,
+        "name": "16921-Donucol S.A.",
+        "people": []
+    }, {
+        "id": 11461,
+        "name": "16922-Donucol S.A.",
+        "people": []
+    }]
+}

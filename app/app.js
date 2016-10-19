@@ -25,7 +25,7 @@
 			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
 			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();
 
-			console.log('brand/lang/reportID', {
+			console && console.log('brand/lang/reportID', {
 				'document.location.search': document.location.search,
 				brand: $rootScope.brand,
 				lang: $rootScope.lang,
@@ -35,7 +35,6 @@
 			$rootScope.mainCss = document.getElementById('mainCss');
 
 			if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
-				console.log('set stylesheet href attribute');
 				$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
 			}
 

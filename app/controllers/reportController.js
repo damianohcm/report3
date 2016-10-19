@@ -6,7 +6,7 @@
     window.controllers.reportController = function($scope, $rootScope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
-		console.log('Controller $rootScope.brand/lang/reportId', {
+		console && console.log('Controller $rootScope.brand/lang/reportId', {
 			brand: $rootScope.brand,
 			lang: $rootScope.lang,
 			reportId: $rootScope.reportId
@@ -17,14 +17,12 @@
 
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
-				console.log('csBaseUrl ' + $rootScope.csBaseUrl);
 				return $rootScope.csBaseUrl;
 			}
 		});
 
 		Object.defineProperty($scope, 'viewReportFor', {
 			get: function() {
-				console.log('viewReportFor ' + $rootScope.brand);
 				return $rootScope.brand === 'dd' ? 'Baskin-Robbins' : 'Dunkin Donuts';
 			}
 		});
@@ -32,7 +30,7 @@
 		$scope.toggleBrand = function() {
 			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
 			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
-			console.log('toggleBrand ' + $rootScope.brand);
+			//console.log('toggleBrand ' + $rootScope.brand);
 		};
 
 		$scope.undoLastAction = function() {
@@ -196,15 +194,37 @@
 			}, 0);
 		};
 
-		//var fileName = 'report.json?' + Math.random();
-		//var fileName = 'report-generated1.json?' + Math.random();
-		//var fileName = 'report-generated2.json?' + Math.random();
-		//var fileName = 'new-and-trending.json?' + Math.random();
-		var fileName = $rootScope.reportId + '.json?' + Math.random();
-		console.log('fileName', fileName);
+//var fileName = 'report.json?' + Math.random();
+//var fileName = 'report-generated1.json?' + Math.random();
+//var fileName = 'report-generated2.json?' + Math.random();
+//var fileName = 'new-and-trending.json?' + Math.random();
+var fileName = $rootScope.reportId + '.json?' + Math.random();
+console && console.log('fileName', fileName);
+dataService.getData(fileName)
+	.then(onDataComplete, onDataError);
 
-		dataService.getData(fileName)
-			.then(onDataComplete, onDataError);
+		// var endPoints = [{
+		// 	key: 'segments',
+		// 	path: 'luca-segments.json?' + Math.random()
+		// }, {
+		// 	key: 'stores',
+		// 	path: 'luca-stores.json?' + Math.random()
+		// }];
+		
+		// var endPointsData = {}, endPointCount = 0;
+		// var onEndPointComplete = function(key, data) {
+		// 	endPointsData[key] = data.results;
+		// 	if (++endPointCount === endPoints.length) {
+		// 		onDataComplete(endPointsData);
+		// 	}
+		// };
+
+		// utilsService.fastLoop(endPoints, function(endPoint) {
+		// 	dataService.getData(endPoint.path)
+		// 		.then(function(data) {
+		// 			onEndPointComplete(endPoint.key, data);
+		// 		}, onDataError);
+		// });
 		
 		$scope.toggleChildRows = function(model, row) {
 			utilsService.safeLog('toggleChildRows', row.children.length);
