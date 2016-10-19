@@ -20,6 +20,7 @@
 			'ngAnimate', 
 			'ui.bootstrap'
 		]).run(function($rootScope) {
+			$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '').toLowerCase();
 			$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
 			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
 			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();

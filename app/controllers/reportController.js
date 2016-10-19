@@ -15,6 +15,13 @@
 		$scope.reportTitle = $rootScope.reportId === 'learning-path' ? 'Learning Path' : $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
 		$scope.title = $scope.reportTitle + ' Report';
 
+		Object.defineProperty($scope, 'csBaseUrl', {
+			get: function() {
+				console.log('csBaseUrl ' + $rootScope.csBaseUrl);
+				return $rootScope.csBaseUrl;
+			}
+		});
+
 		Object.defineProperty($scope, 'viewReportFor', {
 			get: function() {
 				console.log('viewReportFor ' + $rootScope.brand);
