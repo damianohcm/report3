@@ -392,6 +392,7 @@ div.height-40 {
     float: right;
     font-weight: normal;
     width: 204px;
+    height: 50px;
     border-radius: 4px;
     padding: 4px;
     background-color: #7cc13a;
@@ -409,6 +410,9 @@ div.height-40 {
 .banner-button:hover {
     color: $category;
     text-decoration: none;
+}
+.banner-button .text {
+    line-height: 1.3em;
 }
 .banner-button img {
     margin: 0 5px;
@@ -429,6 +433,12 @@ div.height-40 {
     text-align: left;
     background-color: #1F429B;
     margin-right: 10px;
+}
+.banner-button.return .text {
+    margin-top: 1px;
+}
+.banner-button.viewFor .text {
+    margin-top: 3px;
 }
 
 

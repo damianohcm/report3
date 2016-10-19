@@ -4,10 +4,12 @@
 
     <a class="banner-button return" href="#/">
         <img class="return" src="../img/back-arrow.png"/>
-        Back to <br/><strong>Reporting Center</strong></a>
+        <div class="text">Back to <br/><strong>Reporting Center</strong></div>
+    </a>
     <a class="banner-button viewFor" target="_parent" href="{{csBaseUrl}}&brand={{brand === 'br' ? 'dd' : 'br'}}&reportId={{reportId}}">
         <img class="{{brand}}" src="../img/{{brand}}_logo_btn_sm.png"/>
-        View report for <br/><strong>{{viewReportFor}}</strong></a>
+        <div class="text">View report for <br/><strong>{{viewReportFor}}</strong></div>
+    </a>
 </div>
 
 <script type="text/ng-template" id="colHeaderPopoverTemplate.html">
