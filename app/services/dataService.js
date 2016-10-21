@@ -4,8 +4,7 @@
   
     window.services.dataService = function($http) {
 
-		var getData = function(fileName) {
-			var url = 'data/' + fileName;
+		var getData = function(url) {
 
 			return $http
 				.get(url)

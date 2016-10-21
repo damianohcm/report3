@@ -27,8 +27,10 @@
 		 * 
 		 */
 		obj.fastLoop = function fastLoop(items, cb) {
-			for (var i = items.length; --i >= 0;) {
-				cb(items[items.length - i - 1], items.length - i);
+			if (items) {
+				for (var i = items.length; --i >= 0;) {
+					cb(items[items.length - i - 1], items.length - i);
+				}
 			}
 		};
 

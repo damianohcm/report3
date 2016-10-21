@@ -172,71 +172,6 @@
 			reportService.recalculate($scope.model);
 		};
 
-		var onDataError = function(err) {
-			utilsService.safeLog('reportController.onDataError', err);
-			$scope.error = 'Could not fetch data';
-		};
-
-		var onDataComplete  = function(data) {
-			utilsService.safeLog('reportController.onDataComplete', data);
-			$scope.data = data;
-			$scope.model = reportService.getModel(data, $scope.reportTitle);
-
-			if ($scope.model.isDetailOnly) {
-				// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
-				var firstColGroup = _.find($scope.model.columns, function(col) {
-					return col.isGroup;
-				});
-				$scope.expandChildColumns(firstColGroup);
-			}
-
-			// then rowGroups after angular bindings
-			$timeout(function(){
-				utilsService.safeLog('add');
-				var rowGroups = $scope.model.result._rowGroups;
-				var intervalId = $interval(function() {
-					if (rowGroups.length > 0) {
-						utilsService.safeLog('add row');
-						$scope.model.result.rows.push(rowGroups.pop());
-					} else {
-						utilsService.safeLog('clearInterval');
-						$interval.cancel(intervalId);
-					}
-				}, 20);
-			}, 0);
-		};
-
-// //var fileName = 'report.json?' + Math.random();
-// //var fileName = 'report-generated1.json?' + Math.random();
-// //var fileName = 'report-generated2.json?' + Math.random();
-// //var fileName = 'new-and-trending.json?' + Math.random();
-// var fileName = $rootScope.reportId + '.json?' + Math.random();
-// console && console.log('fileName', fileName);
-// dataService.getData(fileName)
-// 	.then(onDataComplete, onDataError);
-
-		var endPoints = [{
-			key: 'segments',
-			path: 'luca-segments.json?' + Math.random()
-		}, {
-			key: 'stores',
-			path: 'luca-stores.json?' + Math.random()
-		}];
-		
-		var endPointsData = {}, endPointCount = 0;
-		var onEndPointComplete = function(key, data) {
-			endPointsData[key] = data.results;
-			if (++endPointCount === endPoints.length) {
-				onDataComplete(endPointsData);
-			}
-		};
-
-		utilsService.fastLoop(endPoints, function(endPoint) {
-			dataService.getData(endPoint.path)
-				.then(function(data) {
-					onEndPointComplete(endPoint.key, data);
-				}, onDataError);
-		});
 		
 		$scope.toggleChildRows = function(model, row) {
 			utilsService.safeLog('toggleChildRows', row.children.length);
@@ -455,6 +390,90 @@
 		$scope.flashCss = function(css, value, hidden, first) {
 			return css + ' ' + value + (hidden? ' hidden' : '') + (first? ' first' : '');
 		};
+
+		var onDataError = function(err) {
+			utilsService.safeLog('reportController.onDataError', err);
+			$scope.error = 'Could not fetch data';
+		};
+
+		var onDataComplete  = function(data) {
+			utilsService.safeLog('reportController.onDataComplete', data);
+			$scope.data = data;
+			$scope.model = reportService.getModel(data, $scope.reportTitle);
+
+			if ($scope.model.isDetailOnly) {
+				// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
+				var firstColGroup = _.find($scope.model.columns, function(col) {
+					return col.isGroup;
+				});
+				$scope.expandChildColumns(firstColGroup);
+			}
+
+			// then rowGroups after angular bindings
+			$timeout(function(){
+				utilsService.safeLog('add');
+				var rowGroups = $scope.model.result._rowGroups;
+				var intervalId = $interval(function() {
+					if (rowGroups.length > 0) {
+						utilsService.safeLog('add row');
+						$scope.model.result.rows.push(rowGroups.pop());
+					} else {
+						utilsService.safeLog('clearInterval');
+						$interval.cancel(intervalId);
+					}
+				}, 20);
+			}, 0);
+		};
+
+		// helper to get the data
+		var getData = function(w) {
+			console && console.log('getData: reportId', $rootScope.reportId);
+
+			if (w === 'live') {
+				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
+				var _endPoints = [{
+					key: 'segments',
+					propertyOnData: 'learning_path_items',
+					path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
+						.replace('[user]', $rootScope.token)
+						.replace('[companyKey]', $rootScope.compKey)
+				}, {
+					key: 'stores',
+					propertyOnData: 'results',
+					path: 'data/luca-stores.json?' + Math.random()
+				}];
+
+				console.log('_endPoints', _endPoints);
+				
+				var _endPointsData = {}, _endPointCount = 0;
+				var onEndPointComplete = function(endPoint, data) {
+					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+					if (++_endPointCount === _endPoints.length) {
+						console.log('_endPointsData', _endPointsData);
+						onDataComplete(_endPointsData);
+					}
+				};
+
+				utilsService.fastLoop(_endPoints, function(endPoint) {
+					dataService.getData(endPoint.path)
+						.then(function(data) {
+							onEndPointComplete(endPoint, data);
+						}, onDataError);
+				});
+			} else {
+				//var fileName = 'report.json?' + Math.random();
+				//var fileName = 'report-generated1.json?' + Math.random();
+				//var fileName = 'report-generated2.json?' + Math.random();
+				//var fileName = 'new-and-trending.json?' + Math.random();
+				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				console && console.log('fileName', fileName);
+				dataService.getData(fileName)
+					.then(onDataComplete, onDataError);
+			}
+		};
+
+		// invoke getData
+		getData('test'); // or 'live'
 	};
 
 }());

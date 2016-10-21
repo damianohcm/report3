@@ -404,16 +404,20 @@
 								var childCell = rowGroup[colChild.key]
 									, childCellSuffix = '';
 
-								childCell.value = private.aggregateLoByStore(colChild, rowGroup, model);
-								childCell.css = private.getGroupCellCss(childCell);
-								
-								if (childCell.value === 'N/A') {
-									childCellSuffix = '';
-									naCoursesCount++;
+								if (childCell) {
+									childCell.value = private.aggregateLoByStore(colChild, rowGroup, model);
+									childCell.css = private.getGroupCellCss(childCell);
+									
+									if (childCell.value === 'N/A') {
+										childCellSuffix = '';
+										naCoursesCount++;
+									} else {
+										childCellSuffix = '%';
+									}
+									childCell.suffix = childCellSuffix+ (private.debug ? ' (aggregateLoByStore)' : '');
 								} else {
-									childCellSuffix = '%';
+									console && console.log('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
-								childCell.suffix = childCellSuffix+ (private.debug ? ' (aggregateLoByStore)' : '');
 
 							}); // end: course los (child columns) loop
 
@@ -581,7 +585,7 @@
 
 			// building model
 			var model = {
-				isDetailOnly: data.segments.length === 1, /* if there is only one segment, then we only display in detail view (i.e. New and Trending or Custom Report with one segment only) */
+				isDetailOnly: (data && data.segments || []).length === 1, /* if there is only one segment, then we only display in detail view (i.e. New and Trending or Custom Report with one segment only) */
 				columns: [{
 					id: 'category',
 					key: 'category',
@@ -619,14 +623,15 @@
 					groupPosition: colGroupPosition,
 					locked: false,
 					css: 'th-course valign-top',
-					name: course.name
+					name: (course.title || course.name )
 				};
 
 				// push row
 				model.columns.push(colGroup);
 
 				// add child columns
-				utilsService.fastLoop(course.los, function(section) {
+				var courseLos = (course.learning_objects || course.los);
+				utilsService.fastLoop(courseLos, function(section) {
 					// child cell
 					var colChild = {
 						isChild: true,
@@ -637,7 +642,7 @@
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
 						css: 'th-section  valign-top',
-						name: section.name
+						name: (section.title || section.name)
 					};
 
 					/*
@@ -726,9 +731,13 @@
 				});
 
 				utilsService.fastLoop(peopleByStore, function(person) {
-					var personRow = private.getPersonRow(data.segments, person);
-					personRow.parentId = rowGroup.id;
-					rowGroup.children.push(personRow);
+					if (data.segments && person) {
+						var personRow = private.getPersonRow(data.segments, person);
+						personRow.parentId = rowGroup.id;
+						rowGroup.children.push(personRow);
+					} else {
+						console.log('warning: no segments or person');
+					}
 				});
 
 				// push rowGroup

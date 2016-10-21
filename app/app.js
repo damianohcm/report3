@@ -20,13 +20,17 @@
 			'ngAnimate', 
 			'ui.bootstrap'
 		]).run(function($rootScope) {
+			$rootScope.token = getQueryStringValue('token', '').toLowerCase();
+			$rootScope.compKey = getQueryStringValue('compKey', '').toLowerCase();
 			$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '').toLowerCase();
 			$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
 			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
 			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();
 
-			console && console.log('brand/lang/reportID', {
+			console && console.log('token/compKey/brand/lang/reportID', {
 				'document.location.search': document.location.search,
+				token: $rootScope.token,
+				compKey: $rootScope.compKey,
 				brand: $rootScope.brand,
 				lang: $rootScope.lang,
 				reportId: $rootScope.reportId
