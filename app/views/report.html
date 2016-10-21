@@ -6,9 +6,9 @@
         <img class="return" src="../img/back-arrow.png"/>
         <div class="text">Back to <br/><strong>Reporting Center</strong></div>
     </a>
-    <a class="banner-button viewFor" target="_parent" href="{{csBaseUrl}}&brand={{brand === 'br' ? 'dd' : 'br'}}&reportId={{reportId}}">
-        <img class="{{brand}}" src="../img/{{brand}}_logo_btn_sm.png"/>
-        <div class="text">View report for <br/><strong>{{viewReportFor}}</strong></div>
+    <a class="banner-button viewFor" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}&reportId={{reportId}}">
+        <img class="{{viewReportFor.key}}" src="../img/{{viewReportFor.key}}_logo_btn_sm.png"/>
+        <div class="text">View report for <br/><strong>{{viewReportFor.title}}</strong></div>
     </a>
 </div>
 

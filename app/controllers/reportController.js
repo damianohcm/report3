@@ -15,6 +15,14 @@
 		$scope.reportTitle = $rootScope.reportId === 'learning-path' ? 'Learning Path' : $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
 		$scope.title = $scope.reportTitle + ' Report';
 
+		var _brBrandObj = {
+			key: 'br',
+			title: 'Baskin-Robbins'
+		}, _ddBrandObj = {
+			key: 'dd',
+			title: 'Dunkin Donuts'
+		};
+
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
 				return $rootScope.csBaseUrl;
@@ -23,7 +31,11 @@
 
 		Object.defineProperty($scope, 'viewReportFor', {
 			get: function() {
-				return $rootScope.brand === 'dd' ? 'Baskin-Robbins' : 'Dunkin Donuts';
+				if ($rootScope.brand === 'dd') {
+					return _brBrandObj;
+				} else {
+					return _ddBrandObj;
+				}
 			}
 		});
 
