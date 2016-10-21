@@ -194,37 +194,37 @@
 			}, 0);
 		};
 
-//var fileName = 'report.json?' + Math.random();
-//var fileName = 'report-generated1.json?' + Math.random();
-//var fileName = 'report-generated2.json?' + Math.random();
-//var fileName = 'new-and-trending.json?' + Math.random();
-var fileName = $rootScope.reportId + '.json?' + Math.random();
-console && console.log('fileName', fileName);
-dataService.getData(fileName)
-	.then(onDataComplete, onDataError);
+// //var fileName = 'report.json?' + Math.random();
+// //var fileName = 'report-generated1.json?' + Math.random();
+// //var fileName = 'report-generated2.json?' + Math.random();
+// //var fileName = 'new-and-trending.json?' + Math.random();
+// var fileName = $rootScope.reportId + '.json?' + Math.random();
+// console && console.log('fileName', fileName);
+// dataService.getData(fileName)
+// 	.then(onDataComplete, onDataError);
 
-		// var endPoints = [{
-		// 	key: 'segments',
-		// 	path: 'luca-segments.json?' + Math.random()
-		// }, {
-		// 	key: 'stores',
-		// 	path: 'luca-stores.json?' + Math.random()
-		// }];
+		var endPoints = [{
+			key: 'segments',
+			path: 'luca-segments.json?' + Math.random()
+		}, {
+			key: 'stores',
+			path: 'luca-stores.json?' + Math.random()
+		}];
 		
-		// var endPointsData = {}, endPointCount = 0;
-		// var onEndPointComplete = function(key, data) {
-		// 	endPointsData[key] = data.results;
-		// 	if (++endPointCount === endPoints.length) {
-		// 		onDataComplete(endPointsData);
-		// 	}
-		// };
+		var endPointsData = {}, endPointCount = 0;
+		var onEndPointComplete = function(key, data) {
+			endPointsData[key] = data.results;
+			if (++endPointCount === endPoints.length) {
+				onDataComplete(endPointsData);
+			}
+		};
 
-		// utilsService.fastLoop(endPoints, function(endPoint) {
-		// 	dataService.getData(endPoint.path)
-		// 		.then(function(data) {
-		// 			onEndPointComplete(endPoint.key, data);
-		// 		}, onDataError);
-		// });
+		utilsService.fastLoop(endPoints, function(endPoint) {
+			dataService.getData(endPoint.path)
+				.then(function(data) {
+					onEndPointComplete(endPoint.key, data);
+				}, onDataError);
+		});
 		
 		$scope.toggleChildRows = function(model, row) {
 			utilsService.safeLog('toggleChildRows', row.children.length);

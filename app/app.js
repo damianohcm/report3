@@ -65,7 +65,7 @@
 	// register services with angular
     app.factory('utilsService', [services.utilsService]);
 	app.factory('dataService', ['$http', services.dataService]);
-	app.factory('undoServiceFactory', [services.serviceFactory]);
+	app.factory('undoServiceFactory', [services.undoServiceFactory]);
 	app.factory('reportService', ['utilsService', services.reportService]);
 
 	// register controllers

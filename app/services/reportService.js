@@ -550,6 +550,11 @@
 
             // TODO: check if the backend can easily add segmentId to each person Learning Object.
             // if not, we have to map it here:
+			data.stores = _.filter(data.stores, function(store) {
+				return _.find(store.people, function (person) {
+					return person.los && person.los.length > 0;
+				});
+			});
             if (!data.stores[0].people[0].los[0].segmentId) {
                 utilsService.safeLog('Adding segmentId to people learning objects');
 

@@ -256,7 +256,7 @@
     // service to be exported to angular
 	window.services = window.services || {};
   
-    window.services.serviceFactory = function() {
+    window.services.undoServiceFactory = function() {
         return {
             getService: getService
         };
