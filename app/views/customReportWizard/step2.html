@@ -1,0 +1,48 @@
+<div class="step-content">
+    <h1>Select Learners</h1>
+    <div class="sub-title">Do you want to include All Crew and Managers within the selected PC(s), or only those hired since a certain date?</div>
+
+    <div class="scroll-container">
+        <div class="scroll-pane">
+
+            <div class="row">
+                <div class="col-md-2"><label>Audience:</label></div>
+                <div class="col-md-9 p-l-30">
+                    <label class="radio" ng-repeat="option in audienceOptions">
+                        <input type="radio" name="audience" ng-model="model.audience" ng-value="option" /> 
+                        <i class="fa fa-circle fa-fw"></i>
+                        <span>{{option.text}}</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row m-t-lg">
+                <div class="col-md-2"><label>Hired:</label></div>
+                <div class="col-md-9 p-l-30">
+                    <label class="radio" ng-repeat="option in hiredOptions">
+                        <input type="radio" name="hired" ng-model="model.hired" ng-value="option" ng-change="hiredChanged(option)" /> 
+                        <i class="fa fa-circle fa-fw"></i>
+                        <span>{{option.text}}</span>
+                    </label>
+
+                    <!--div uib-datepicker ng-model="model.hiredAfter" class="well well-sm" datepicker-options="datePickerOptions"></div-->
+
+                    <div class="input-group m-t-md" ng-show="showHiredAfterDateinput">
+                        <span class="input-group-addon">Select date:</span>
+                        <input type="text" class="form-control" uib-datepicker-popup="shortDate" 
+                            datepicker-append-to-body="true" 
+                            show-button-bar="false" 
+                            datepicker-options="datePickerOptions" 
+                            ng-model="model.hiredAfter" 
+                            is-open="hiredAfterDatepickerPopup.opened" ng-required="true" close-text="Close" 
+                            alt-input-formats="'M!/d!/yyyy'" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn" ng-click="hiredAfterDatepickerPopup.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -7,7 +7,7 @@
         <div class="report-menu-row">
             <div class="report-menu-cell">
                 <div class="report-menu-item learning-path">
-                    <a ng-click="menuItemClick('learning-path')">
+                    <a ng-click="menuItemClick('openReport', 'learning-path')">
                         <img src="../img/learning-path-icon.png"/>
                         <div class="item-text">
                             <div class="item-title">LEARNING PATH REPORT</div>
@@ -18,7 +18,7 @@
             </div>
             <div class="report-menu-cell">
                 <div class="report-menu-item new-and-trending">
-                    <a ng-click="menuItemClick('new-and-trending')">
+                    <a ng-click="menuItemClick('openReport', 'new-and-trending')">
                         <img src="../img/new-and-trending-icon.png"/>
                         <div class="item-text">
                             <div class="item-title">NEW &amp; TRENDING</div>
@@ -31,13 +31,13 @@
         <div class="report-menu-row">
             <div class="report-menu-cell">
                 <div class="report-menu-item create-report">
-                    <div>
+                    <a ng-click="menuItemClick('customReport')">
                         <img src="../img/create-icon.png"/>
                         <div class="item-text">
                             <div class="item-title">CREATE A REPORT</div>
                             <div class="item-descr">Create a new report with new filters</div>
                         </div>
-                    </div>
+                    </a>
                     <div class="ribbon-wrapper-green"><div class="ribbon-green">COMING SOON</div></div>
                 </div>
             </div>

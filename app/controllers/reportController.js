@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
+    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
 		console && console.log('Controller $rootScope.brand/lang/reportId', {
@@ -475,7 +475,9 @@
 					key: 'stores',
 					propertyOnData: 'results',
 					//path: 'data/luca-stores.json?' + Math.random()
-					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15'
+					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15&user=[user]&companyKey=[companyKey]'
+						.replace('[user]', $rootScope.token)
+						.replace('[companyKey]', $rootScope.compKey)
 				}];
 
 				console.log('_endPoints', _endPoints);

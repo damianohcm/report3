@@ -1,0 +1,26 @@
+<div class="step-content">
+    <h1>Select PCs</h1>
+    <div class="sub-title">From the options below, choose a PC to focus the report on. You can select your store PC, or browse other PCs.</div>
+
+    <div class="scroll-container">
+        <div class="scroll-pane">
+            <div class="select-all">
+                <label class="checkbox">
+                    <input type="checkbox" ng-checked="allStoresChecked" customcheck data-checked-state="allStoresCheckedState" data-child-list="data.stores" data-property="selected" />
+                     
+                    <i class="fa fa-fw {{allStoresCheckedState ? 'checked fa-check' : allStoresCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
+                    Select/Deselect All [{{allStoresCheckedState}}] 
+                </label>
+            </div>
+
+            <div ng-repeat="store in model.stores" class="checkboxContainer">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="store.selected"/> 
+                    <i class="fa fa-check fa-fw"></i>
+                    <span>{{store.name}} [{{store.selected}}]</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+</div>

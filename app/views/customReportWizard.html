@@ -1,0 +1,48 @@
+<div class="wizard-container">
+    <div class="wizard vertical">
+
+        <div class="wizard-header">
+            <button type="button" class="close" ng-click="cancel()">
+                <i class="fa fa-arrow-left"></i> Exit
+            </button>
+
+            <div class="title">Create a PC Report</div>
+        </div>
+
+        <div class="wizard-body">
+            <div class="wizard clearfix">
+                <div class="steps clearfix">
+                    <a role="tab" ng-repeat="step in wizard.steps" 
+                        ng-class="step.liClass" 
+                        aria-disabled="{{step.disabled}}" aria-selected="{{step.id === activeStep.id}}" 
+                        ng-click="clickOnStep(step)"> <!--clickOnStep is only for faster develeopemt - should be removed before releasing to production -->
+                        <span class="current-info audible">current step: </span>
+                        <span class="number">{{step.id}}.</span> <span>{{step.title}}</span>
+                        <span class="indicator" ng-show="step.isDone || step.hasError" title="{{step.errorMsg || 'Done'}}"><i ng-class="step.hasError ? 'fa fa-exclamation' : 'fa fa-check'"></i></span>
+                    </a>
+
+                    <a role="tab" aria-disabled="true" aria-selected="false">
+                        &nbsp;
+                    </a>
+
+                    <a role="tab" aria-disabled="false" aria-selected="false" 
+                        ng-click="clickOnStep(step)">
+                        <span>My Saved Reports</span>
+                    </a>
+                </div>
+
+                <div ng-class="wizard.activeStep.hasError ? 'content error' : 'content'"><ng-include src="wizard.activeStep.path"></ng-include></div>
+
+                <div class="wizard-navigation">
+                    <div class="actions clearfix">
+                        <ul role="menu" aria-label="Pagination">
+                            <li ng-repeat="item in wizard.navigationItems" class="{{item.cssClass}}" aria-disabled="{{!item.isActive}}">
+                                <a ng-click="navigationAction(item)">{{item.title}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

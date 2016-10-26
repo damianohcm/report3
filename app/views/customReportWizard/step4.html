@@ -1,0 +1,46 @@
+<div class="step-content">
+    <h1>Summary</h1>
+    <div class="sub-title">
+        Review the report summary below and verify that the information is the correct preferences to report on. 
+        Additionally, you can save the settings by selecting “Save as Report”.
+    </div>
+
+    <div class="scroll-container">
+        <div class="scroll-pane wizard-summary">
+
+            <div>
+                <label>PCs:</label>
+                <span>
+                    <span class="btn pc" ng-repeat="store in summary.stores">{{store.name}}</span>
+                </span>
+            </div>
+
+            <div>
+                <label>Learners:</label>
+                <span>
+                    <span class="btn pc">{{summary.learners}}</span>
+                </span>
+            </div>
+
+            <div>
+                <label>Hire Date:</label>
+                <span>
+                    <span class="btn pc" ng-if="summary.hired">{{summary.hired}}</span>
+                    <span class="btn pc" ng-if="!summary.hired">After: {{summary.hiredAfter}}</span>
+                </span>
+            </div>
+
+            <div>
+                <label>Courses:</label>
+                <span>
+                    <span class="btn pc" ng-if="summary.entireLearningPath">{{summary.entireLearningPath}}</span>
+                    <span ng-if="!summary.entireLearningPath">
+                        <span class="btn pc" ng-repeat="course in summary.courses">{{course.name}}</span>
+                    </span>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+</div>
