@@ -75,21 +75,17 @@
 	// register controllers
 	// home controllers
 	app.controller('homeController', [
-		'$scope',
-		'$rootScope',  
+		'$scope', '$rootScope', 
 		'utilsService',
 		controllers.homeController]);
 	
 	// report controller
 	app.controller('reportController', [
-		'$scope', 
-		'$rootScope', 
+		'$scope', '$rootScope', '$timeout', '$interval', 
 		'utilsService',
 		'undoServiceFactory', 
 		'dataService', 
 		'reportService', 
-		'$timeout',
-		'$interval',
 		controllers.reportController]);
 
 }(window.angular));

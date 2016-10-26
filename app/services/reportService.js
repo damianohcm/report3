@@ -154,7 +154,10 @@
 					row[cell.key] = cell;
 
 					var currentLos = _.filter(person.los, function(lo) {
-						return lo.segmentId === course.id;
+						if (!lo) {
+							console.log('WARNING: person.lo is null', person);
+						}
+						return lo && lo.segmentId === course.id;
 					});
 
 					if (currentLos && currentLos.length > 0) {
@@ -550,7 +553,18 @@
 		 * @decsription
 		 * Helper to get a model with the aggregated data that can be used in a generic way
 		 */
-		var getModel = function(data, reportTitle) {
+		var getModel = function(data, totCompletionTitle) {
+
+			// TODO: for now just mapping field names to exepcted field names
+			utilsService.fastLoop(data.segments, function(seg) {
+				seg.los = (seg.learning_objects || seg.los);
+
+				utilsService.fastLoop(seg.los, function(lo) {
+					lo.id = (lo.object_id || lo.id);
+					lo.type = (lo.type || lo.learning_type);
+					lo.name = (lo.title || lo.name);
+				});
+			});
 
             // TODO: check if the backend can easily add segmentId to each person Learning Object.
             // if not, we have to map it here:
@@ -559,22 +573,25 @@
 					return person.los && person.los.length > 0;
 				});
 			});
+
             if (!data.stores[0].people[0].los[0].segmentId) {
                 utilsService.safeLog('Adding segmentId to people learning objects');
 
 				utilsService.fastLoop(data.stores, function(store) {
                     utilsService.fastLoop(store.people, function(person) {
                         utilsService.fastLoop(person.los, function(personLo) {
-                            var itemLo;
-                            utilsService.fastLoop (data.segments, function(segm) {
-                                itemLo = _.find(segm.los, function(lookupLo) {
-                                    return lookupLo.id === personLo.id;
-                                });
+							if (personLo) {
+								var itemLo;
+								utilsService.fastLoop (data.segments, function(segm) {
+									itemLo = _.find(segm.los, function(lookupLo) {
+										return lookupLo.id === personLo.id;
+									});
 
-                                if (itemLo) {
-                                    personLo.segmentId = segm.id;
-                                }
-                            });
+									if (itemLo) {
+										personLo.segmentId = segm.id;
+									}
+								});
+							}
                         });
                     });
                 });
@@ -586,6 +603,7 @@
 			// building model
 			var model = {
 				isDetailOnly: (data && data.segments || []).length === 1, /* if there is only one segment, then we only display in detail view (i.e. New and Trending or Custom Report with one segment only) */
+				totCompletionTitle: totCompletionTitle,
 				columns: [{
 					id: 'category',
 					key: 'category',
@@ -600,14 +618,21 @@
 					position:  1,
 					show: true,
 					locked: true,
-					css: 'th-summary',
-					name:  'Tot Completion % for ' + reportTitle
+					css: 'th-summary'
+					//name:  this.totCompletionTitle /* 'Tot Completion % for ...' */
 				}],
 				result: {
 					tot: 10,
 					rows: []
 				}
 			};
+
+			// computed property for summary columne name
+			Object.defineProperty(model.columns[1], 'name', {
+				get: function() {
+					return this.totCompletionTitle;
+				}.bind(model)
+			});
 
 			// 1. Add to model.columns collection
 			// loop through each course and add a column for each course

@@ -12,14 +12,19 @@
     </a>
 </div>
 
-<script type="text/ng-template" id="colHeaderPopoverTemplate.html">
-    <div style="color:black">
-        <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)"><i class="fa fa-expand"></i> Expand</a></div>
-        <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i> Remove</a></div>
-    </div>
-</script>
+<div class="container loading-msg" ng-show="loading">
+    <h1>Loading, please wait...</h1>
+    <img src="../img/dd-loader.gif">
+    <uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar>
+</div>
 
-<div class="container m-t-lg">
+<div class="container report m-t-lg" ng-show="!loading">
+    <script type="text/ng-template" id="colHeaderPopoverTemplate.html">
+        <div style="color:black">
+            <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)"><i class="fa fa-expand"></i> Expand</a></div>
+            <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i> Remove</a></div>
+        </div>
+    </script>
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">

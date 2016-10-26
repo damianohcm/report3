@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, utilsService, undoServiceFactory, dataService, reportService, $timeout, $interval) {
+    window.controllers.reportController = function($scope, $rootScope, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
 		console && console.log('Controller $rootScope.brand/lang/reportId', {
@@ -12,7 +12,10 @@
 			reportId: $rootScope.reportId
 		});
 
-		$scope.reportTitle = $rootScope.reportId === 'learning-path' ? 'Learning Path' : $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
+		$scope.reportTitle = $rootScope.reportId === 'learning-path' 
+			? 'Learning Path' 
+			: $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
+		
 		$scope.title = $scope.reportTitle + ' Report';
 
 		var _brBrandObj = {
@@ -38,6 +41,17 @@
 				}
 			}
 		});
+
+		$scope.progressBar = {
+			type: 'warning',
+			value: 0,
+			intervalId: undefined
+		};
+
+		$scope.increaseProgressBar = function() {
+			$scope.progressBar.value += $scope.progressBar.value < 100 ? 10 : 0;
+			console.log('increaseProgressBar', $scope.progressBar.value);
+		};
 
 		$scope.toggleBrand = function() {
 			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
@@ -96,8 +110,8 @@
 				var msg = '', things = {
 					segments: {
 						count: 0,
-						singular: 'Learning Path',
-						plural: 'Learning Paths'
+						singular: 'Category',
+						plural: 'Categories'
 					}
 					, los: {
 						count: 0,
@@ -325,6 +339,9 @@
 				}
 
 				$scope.topLevelColumn = groupCol;
+				// save current summary colunn title 
+				$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
+				$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
 
 				// update values
 				$scope.recalculate();
@@ -340,6 +357,8 @@
 			if ($scope.model) {
 
 				$scope.topLevelColumn = undefined;
+				// restore previous summary column title
+				$scope.model.totCompletionTitle = $scope.model._prevTotCompletionTitle;
 
 				for (var c in $scope.model.columns) {
 					var itemCol = $scope.model.columns[c];
@@ -397,9 +416,13 @@
 		};
 
 		var onDataComplete  = function(data) {
+			if (angular.isDefined($scope.progressBar.intervalId)) {
+				$interval.cancel($scope.progressBar.intervalId);
+			}
 			utilsService.safeLog('reportController.onDataComplete', data);
 			$scope.data = data;
-			$scope.model = reportService.getModel(data, $scope.reportTitle);
+			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
+			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
 
 			if ($scope.model.isDetailOnly) {
 				// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
@@ -408,6 +431,9 @@
 				});
 				$scope.expandChildColumns(firstColGroup);
 			}
+
+			// hide loader
+			$scope.loading = false;
 
 			// then rowGroups after angular bindings
 			$timeout(function(){
@@ -427,7 +453,15 @@
 
 		// helper to get the data
 		var getData = function(w) {
+			// show loader
+			$scope.loading = true;
+
 			console && console.log('getData: reportId', $rootScope.reportId);
+
+			$scope.progressBar.value = 0;
+			$scope.progressBar.intervalId = $interval(function() {
+				$scope.increaseProgressBar();
+			}, 1000);
 
 			if (w === 'live') {
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
@@ -440,7 +474,8 @@
 				}, {
 					key: 'stores',
 					propertyOnData: 'results',
-					path: 'data/luca-stores.json?' + Math.random()
+					//path: 'data/luca-stores.json?' + Math.random()
+					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15'
 				}];
 
 				console.log('_endPoints', _endPoints);
@@ -467,13 +502,16 @@
 				//var fileName = 'new-and-trending.json?' + Math.random();
 				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				console && console.log('fileName', fileName);
-				dataService.getData(fileName)
-					.then(onDataComplete, onDataError);
+				// simulate delay
+				setTimeout(function() {
+					dataService.getData(fileName)
+						.then(onDataComplete, onDataError);
+				}, 6000);
 			}
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());

@@ -1,6 +1,14 @@
 $brand: #e49;
 $brandOver: lighten($brand, 25%);
 
+$black: #000;
+$orange: #FF8000; /* background color for summary header cell */
+$brown: #693900; /* background color for segments header cell (colGroup) */
+$lightbrown: #BE854C;
+
+$blue: #3bbfce;
+$margin: 16px;
+
 $category: #F0E0C6; /* background color for category cell (Store/PC) */
 
 $completedGroup: #AEE874;
@@ -20,13 +28,5 @@ $naChildSummary: #E8E8E8;
 
 $completed: #D5FFAB;
 $inprogress: #FFF7AB;
-$zero: #FFF;
-$na: #FFF;
-
-$black: #000;
-$orange: #FF8000; /* background color for summary header cell */
-$brown: #693900; /* background color for segments header cell (colGroup) */
-$lightbrown: #BE854C;
-
-$blue: #3bbfce;
-$margin: 16px;
+$zero: white;
+$na: white;
