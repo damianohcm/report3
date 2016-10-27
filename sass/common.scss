@@ -518,12 +518,23 @@ div.height-40 {
 }
 
 .report-menu-item {
+    clear: both;
     position: relative;
     width: 454px;
-    height: 148px;
     box-shadow: inset 0 -8px 0 0 black;
     border-radius: 10px;
-    padding: 10px 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+}
+.menu-item-inner {
+    display: table-cell;
+    vertical-align: middle;
+    height: 148px;
+}
+.menu-item-inner.fill {
+    min-width: 320px;
 }
 .report-menu-item .cs-ribbon {
     position: absolute;
@@ -531,15 +542,12 @@ div.height-40 {
     right: 0;
 }
 .report-menu-item img {
-    float: left;
-    margin: 15px 15px 0px 5px;
 	max-width: 90px;
 	width: 90px;
+    margin: 0 5px;
 }
 .report-menu-item .item-text {
-    float: left;
-    max-width: 310px;
-    width: 310px;
+    margin-left: 8px;
 }
 .report-menu-item .item-title {
     font-family: 'Gotham', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -561,26 +569,33 @@ div.height-40 {
 
 .report-menu-item.learning-path {
     background-color: #E874C9;
+    box-shadow: inset 0 -8px 0 0 #AD5796;
+}
+.report-menu-item.learning-path:hover {
+    background-color: lighten(#E874C9, 5%);
 }
 .report-menu-item.new-and-trending {
     background-color: #663600;
+    box-shadow: inset 0 -8px 0 0 #532D01;
+}
+.report-menu-item.new-and-trending:hover {
+    background-color: lighten(#663600, 10%);
 }
 .report-menu-item.create-report {
     background-color: #F58220;
+    box-shadow: inset 0 -8px 0 0 #B76117;
+}
+.report-menu-item.create-report:hover {
+    background-color: lighten(#F58220, 5%);
 }
 .report-menu-item.saved-reports {
     background-color: #0039A6;
+    box-shadow: inset 0 -8px 0 0 #012B7C;
+}
+.report-menu-item.saved-reports:hover {
+    background-color: lighten(#0039A6, 5%);
 }
 
-.report-menu-item.learning-path img {
-    margin-top: 25px;
-}
-.report-menu-item.create-report .item-title {
-    margin-top: 25px;
-}
-.report-menu-item.saved-reports .item-title {
-    margin-top: 25px;
-}
 
 /* ribbon css */
 .ribbon-wrapper-green {
