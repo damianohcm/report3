@@ -381,7 +381,7 @@ label.radio,
 .scroll-container > .scroll-pane div > label.radio {
     margin-bottom: 8px;
 }
-.checkbox i {
+label.checkbox > i {
     color: transparent;
     font-size: 12pt;
     width: 22px;
@@ -392,7 +392,7 @@ label.radio,
     padding: 1px 0 0 1px;
 }
 
-.checkbox i.undetermined {
+label.checkbox > i.undetermined {
     display: inline-block;
     color: black;
     font-size: 12pt;
@@ -402,12 +402,13 @@ label.radio,
     border-radius: 5px;
     margin-right: 8px;
 }
+
 label.checkbox > input:checked + i {
     color: black;
 }
 
 /* radios */
-.radio i {
+label.radio i {
     color: transparent;
     font-size: 14px;
     border: solid 2px #F48205;

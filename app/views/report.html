@@ -46,24 +46,28 @@
             <thead>
                 <tr class="tr-head">
                     <th ng-repeat="c in model.columns" ng-show="c.show" ng-class="c.css">
-                        <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export CSV</button>
+                        <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
                         <div ng-if="c.position > 0">
                             <!-- begin: column header popover -->
-                            <div class="pull-right" ng-if="!c.locked">
-                                <div ng-if="!c.isChild" ng-init="c=c" 
+                            <div class="th-top">
+                                <span ng-if="!c.locked && !c.isChild" ng-init="c=c" 
                                     uib-popover-template="colHeaderPopover.templateUrl" 
                                     popover-trigger="'outsideClick'"
                                     popover-placement="{{c.groupPosition < visibleColumns(c.isGroup).length ? 'right' : 'left'}}">
                                     <a type="button">
                                         <i class="fa fa-chevron-circle-up"></i>
                                     </a>
-                                </div>
-
-                                <a ng-if="c.isChild" ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
+                                </span>
+                                <a ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
                             </div>
                             <!-- end: column header popover -->
-
-                            <div class="clear">{{c.name}}<div>
+                            <div class="th-middle">
+                                <div class="th-middle-inner">
+                                    <div class="th-text">
+                                        {{c.name}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </th>
                 </tr>
@@ -71,9 +75,8 @@
             <tbody ng-repeat="row in model.result.rows" ng-show="row.show">
                 <tr>
                     <td ng-repeat="c in model.columns" 
-                        ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position === 0)" 
-                        ng-click="toggleChildRows(model, row)">
-                        <div ng-if="c.position === 0 && row.isGroup" class="pull-left row-icon"><i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i></div>
+                        ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position === 0)">
+                        <div ng-if="c.position === 0 && row.isGroup" ng-click="toggleChildRows(model, row)" class="pull-left row-icon"><i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i></div>
                         <div class="pull-left row-text">{{row[c.key].value}}{{row[c.key].suffix}}</div>
                         <div ng-if="c.position === 0" class="pull-right row-icon"><a ng-show="displayHideRow()" ng-click="hideRow(row)"><i class="fa fa-minus-circle"></i></a></div>
                     </td>

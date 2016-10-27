@@ -297,9 +297,7 @@
 
 		$scope.wizard.start();
 
-		console.log('navigationItems', $scope.wizard.navigationItems)
-
-		
+		console.log('navigationItems', $scope.wizard.navigationItems);
 
 		$scope.showHiredAfterDateinput = false;
 		$scope.hiredChanged = function(option) {
@@ -374,7 +372,7 @@ $scope.datePickerOptions = {
 				};
 			});
 			return _temp.filter(function(course) {
-				return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1
+				return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
 			});
 		};
 

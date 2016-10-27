@@ -125,8 +125,8 @@
 					}
 					, people: {
 						count: 0, 
-						singular: 'User', 
-						plural: 'Users'
+						singular: 'Learner', 
+						plural: 'Learners'
 					}
 				};
 
@@ -387,9 +387,11 @@
 		};
 
 		$scope.displayHideChildCol = function(col) {
-			return _.filter($scope.model.columns, function (c) {
-				return c.parentId === col.parentId && c.show;
-			}).length > 1;
+			return !col.locked 
+				&& col.isChild 
+				&& _.filter($scope.model.columns, function (c) {
+					return c.parentId === col.parentId && c.show;
+				}).length > 1;
 		};
 
 		$scope.displayHideRow = function(parentRow) {
@@ -508,12 +510,12 @@
 				setTimeout(function() {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
-				}, 6000);
+				}, 3000);
 			}
 		};
 
 		// invoke getData
-		getData('live'); // or 'live'
+		getData('test'); // or 'live'
 	};
 
 }());
