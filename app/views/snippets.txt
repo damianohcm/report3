@@ -13,3 +13,32 @@
                                 <a ng-if="c.isChild" ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
                             </div>
                             <!-- end: column header popover -->
+
+
+
+
+
+                        <div ng-if="c.position === 0">
+                            <!-- begin: row header popover -->
+                            <div class="th-top" ng-if="c.position === 0">
+                                <i class="fa fa-spinner fa-spin fa-3x fa-fw" ng-show="!!row.expanding"></i>
+
+                                <span ng-init="c=c" 
+                                    uib-popover-template="colHeaderPopover.templateUrl" 
+                                    popover-trigger="'outsideClick'"
+                                    popover-placement="right">
+                                    <a type="button">
+                                        <i class="fa fa-chevron-circle-up"></i>
+                                    </a>
+                                </span>
+                                <a ng-show="displayHideRow()" ng-click="hideRow(row)"><i class="fa fa-minus-circle"></i></a>
+                            </div>
+                            <!-- end: row header popover -->
+                            <div class="th-middle">
+                                <div class="th-middle-inner">
+                                    <div class="th-text" ng-click="onRowCellClick(c, row)">
+                                        {{row[c.key].value}}{{row[c.key].suffix}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>

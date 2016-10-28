@@ -174,6 +174,9 @@
 		$scope.colHeaderPopover = {
 			templateUrl: 'colHeaderPopoverTemplate.html'
 		};
+		$scope.rowHeaderPopover = {
+			templateUrl: 'rowHeaderPopoverTemplate.html'
+		};
 
 		$scope.visibleColumns = function(isGroup) {
 			return _.filter($scope.model.columns, function(col) {
@@ -223,12 +226,12 @@
 					strategy(col, row);
 				} else {
 					$scope.expandChildColumns(col);
-					$scope.toggleChildRows(row);
+					$scope.toggleChildRows(row, true);
 				}
 			}
 		};
 		
-		$scope.toggleChildRows = function(row) {
+		$scope.toggleChildRows = function(row, forceExpand) {
 			utilsService.safeLog('toggleChildRows', row.children.length);
 
 			// // // add state item to undo history
@@ -244,7 +247,18 @@
 			// // 	msg: msgPrefix + row.category.value
 			// // });
 
-			row.isCollapsed = !row.isCollapsed;
+			if ($scope.model && row.isGroup) {
+				var newState = !row.isCollapsed;
+				if (forceExpand) {
+					newState = false;
+				}
+				row.refreshing = true;
+				row.isCollapsed = newState;
+
+				$timeout(function() {
+					row.refreshing = false;
+				}, 125);
+			}
 		};
 
 		// /**
@@ -336,7 +350,7 @@
 		 * Mark a row.show false. This will hide the row but also causes its property "calculate" to return false
 		 * so that it will be excluded from the calculations.
 		 */
-		$scope.hideRow = function(row) {
+		$scope.hideRow = function(row, parentRow) {
 
 			// add state item to undo history
 			$scope.undoService.addState({
@@ -350,10 +364,15 @@
 				msg: 'Hide row ' + row.category.value
 			});
 
+			parentRow.refreshing = true;
 			row.show = false;
 
 			// update values
 			$scope.recalculate();
+
+			$timeout(function() {
+				parentRow.refreshing = false;
+			}, 125);
 		};
 
 		/**
@@ -362,7 +381,7 @@
 		 */
 		$scope.expandChildColumns = function(groupCol) {
 			if ($scope.model && $scope.topLevelColumn === undefined) {
-				groupCol.expanding = true;
+				groupCol.refreshing = true;
 
 				$timeout(function() {
 					var itemCol;
@@ -387,7 +406,7 @@
 					$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
 					$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
 
-					groupCol.expanding = false;
+					groupCol.refreshing = false;
 
 					// update values
 					$scope.recalculate();
@@ -442,8 +461,8 @@
 		};
 
 		$scope.displayHideRow = function(parentRow) {
-			// if it's a child row and at least two of its sibilings are still visibile
 			if (parentRow) {
+				// if it's a child row and at least one of its sibilings is still visibile
 				return _.filter(parentRow.children, function (r) {
 					return r.show;
 				}).length > 1;

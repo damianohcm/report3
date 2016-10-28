@@ -25,6 +25,12 @@
             <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i> Remove</a></div>
         </div>
     </script>
+    <script type="text/ng-template" id="rowHeaderPopoverTemplate.html">
+        <div style="color:black">
+            <div><a ng-click="toggleChildRows(r)"><i ng-class="'fa fa-' + (r.isCollapsed ? 'expand' : 'compress')"></i> {{r.isCollapsed ? 'Expand' : 'Collapse' }}</a></div>
+            <div><a ng-if="displayHideRow()" ng-click="hideRow(r)"><i class="fa fa-minus-circle"></i> Remove</a></div>
+        </div>
+    </script>
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">
@@ -61,14 +67,14 @@
                         <div ng-if="c.position > 0">
                             <!-- begin: column header popover -->
                             <div class="th-top">
-                                <i class="fa fa-spinner fa-spin fa-3x fa-fw" ng-show="!!c.expanding"></i>
+                                <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
 
                                 <span ng-if="!c.locked && !c.isChild" ng-init="c=c" 
                                     uib-popover-template="colHeaderPopover.templateUrl" 
                                     popover-trigger="'outsideClick'"
                                     popover-placement="{{c.groupPosition < visibleColumns(c.isGroup).length ? 'right' : 'left'}}">
                                     <a type="button">
-                                        <i class="fa fa-chevron-circle-up"></i>
+                                        <i class="fa fa-pencil-square-o"></i>
                                     </a>
                                 </span>
                                 <a ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
@@ -89,17 +95,38 @@
                 <tr>
                     <td ng-repeat="c in model.columns" 
                         ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position === 0)">
-                        <div ng-if="false && c.position === 0 && row.isGroup" 
-                            ng-click="toggleChildRows(model, row)" class="pull-left row-icon">
-                            <i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i>
-                        </div>
-                        
-                        <div ng-click="onRowCellClick(c, row)" 
-                            class="pull-left row-text">{{row[c.key].value}}{{row[c.key].suffix}}</div>
 
-                        <div ng-if="c.position === 0" class="pull-right row-icon">
-                            <a ng-show="displayHideRow()" ng-click="hideRow(row)"><i class="fa fa-minus-circle"></i></a>
+            <!--div ng-if="false && c.position === 0 && row.isGroup" 
+                ng-click="toggleChildRows(row)" class="pull-left row-icon">
+                <i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i>
+            </div-->
+
+                        <div ng-if="c.position === 0">
+                            <!-- begin: row header popover -->
+                            <div class="row-th-top">
+                                <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
+
+                                <span ng-init="r=row" 
+                                    uib-popover-template="rowHeaderPopover.templateUrl" 
+                                    popover-trigger="'outsideClick'"
+                                    popover-placement="right">
+                                    <a type="button">
+                                        <i class="fa fa fa-pencil-square-o"></i>
+                                    </a>
+                                </span>
+                            </div>
+                            <!-- end: row header popover -->
                         </div>
+
+
+                        <div ng-class="c.position === 0 ? 'row-th-middle' : 'row-text'">
+                            <div ng-class="c.position === 0 ? 'row-th-middle-inner' : ''">
+                                <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)">
+                                    {{row[c.key].value}}{{row[c.key].suffix}}
+                                </div>
+                            </div>
+                        </div>
+            
                     </td>
                 </tr>
                 <tr ng-repeat="child in row.children" ng-show="!row.isCollapsed && child.show">
@@ -108,7 +135,9 @@
                             <span ng-class="c.position === 0 ? 'person' : ''">{{child[c.key].value}}{{child[c.key].suffix}}</span>
                             <span ng-if="child[c.key].value2" class="person-title">{{child[c.key].value2}}</span>
                         </div>
-                        <div ng-if="c.position === 0" class="pull-right row-icon"><a ng-show="displayHideRow(row)" ng-click="hideRow(child)"><i class="fa fa-minus-circle"></i></a></div>
+                        <div ng-if="c.position === 0" class="pull-right row-icon">
+                            <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)"><i class="fa fa-minus-circle"></i></a>
+                        </div>
                     </td>
                 </tr>
             </tbody>
