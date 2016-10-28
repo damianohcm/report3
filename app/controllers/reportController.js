@@ -17,6 +17,7 @@
 			: $rootScope.reportId === 'new-and-trending' ? 'New & Trending' : 'Unknown report id';
 		
 		$scope.title = $scope.reportTitle + ' Report';
+		$scope.refreshing = false;
 
 		var _brBrandObj = {
 			key: 'br',
@@ -182,12 +183,52 @@
 
 		// shortcut to service.recalculate
 		$scope.recalculate = function() {
+			$scope.refreshing = true;
 			$scope.model.topLevelColumn = $scope.topLevelColumn;
 			reportService.recalculate($scope.model);
+			console.log('recalculate completed');
+
+			$timeout(function() {
+				$scope.refreshing = false;
+			}, 500);
 		};
 
+		// method that handles clicks on the header cell text
+		$scope.onHeaderCellClick = function(col) {
+			//console.log('onHeaderCellClick');
+			console.log('onHeaderCellClick col', col);
+			if (col.position > 1) {
+				$scope.expandChildColumns(col);
+			}
+		};
+
+		// method that handles clicks within a row cell (not the headers cells)
+		$scope.onRowCellClick = function(col, row) {
+			console.log('onRowCellClick');
+			//console.log('onRowCellClick col', col);
+			//console.log('onRowCellClick row', row);
+
+			var rowGroupStrategies  = {
+				category: function(c, r) {
+					$scope.toggleChildRows(r);
+				}, 
+				summary: function(c, r) {
+					$scope.toggleChildRows(r);
+				}
+			};
+
+			if (row.isGroup) {
+				var strategy = rowGroupStrategies[col.key];
+				if (strategy) {
+					strategy(col, row);
+				} else {
+					$scope.expandChildColumns(col);
+					$scope.toggleChildRows(row);
+				}
+			}
+		};
 		
-		$scope.toggleChildRows = function(model, row) {
+		$scope.toggleChildRows = function(row) {
 			utilsService.safeLog('toggleChildRows', row.children.length);
 
 			// // // add state item to undo history
@@ -320,31 +361,37 @@
 		 * @description Hides group columns and shows children columns for a specific group.
 		 */
 		$scope.expandChildColumns = function(groupCol) {
-			if ($scope.model) {
+			if ($scope.model && $scope.topLevelColumn === undefined) {
+				groupCol.expanding = true;
 
-				var itemCol;
-				for (var c in $scope.model.columns) {
-					itemCol = $scope.model.columns[c];
-					if (itemCol.isGroup) {
-						itemCol.show = false;
-						//$scope.undoService.purgeActionProperty(itemCol, 'show');
-					} else if (itemCol.isChild) {
-						itemCol.show = itemCol.parentId === groupCol.id;
-						if (itemCol.show) {
+				$timeout(function() {
+					var itemCol;
+					for (var c in $scope.model.columns) {
+						itemCol = $scope.model.columns[c];
+						if (itemCol.isGroup) {
+							itemCol.show = false;
 							//$scope.undoService.purgeActionProperty(itemCol, 'show');
+						} else if (itemCol.isChild) {
+							itemCol.show = itemCol.parentId === groupCol.id;
+							if (itemCol.show) {
+								//$scope.undoService.purgeActionProperty(itemCol, 'show');
+							}
+						} else if (itemCol.locked) {
+							// probably no need to do anything.. might remove this code
 						}
-					} else if (itemCol.locked) {
-						// probably no need to do anything.. might remove this code
 					}
-				}
 
-				$scope.topLevelColumn = groupCol;
-				// save current summary colunn title 
-				$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
-				$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+					$scope.topLevelColumn = groupCol;
 
-				// update values
-				$scope.recalculate();
+					// save current summary colunn title 
+					$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
+					$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+
+					groupCol.expanding = false;
+
+					// update values
+					$scope.recalculate();
+				}, 10);
 			}
 		};
 
@@ -434,11 +481,12 @@
 				$scope.expandChildColumns(firstColGroup);
 			}
 
-			// hide loader
-			$scope.loading = false;
-
 			// then rowGroups after angular bindings
 			$timeout(function(){
+
+				// hide loader
+				$scope.loading = false;
+				
 				utilsService.safeLog('add');
 				var rowGroups = $scope.model.result._rowGroups;
 				var intervalId = $interval(function() {
@@ -449,8 +497,8 @@
 						utilsService.safeLog('clearInterval');
 						$interval.cancel(intervalId);
 					}
-				}, 20);
-			}, 0);
+				}, 25);
+			}, 25);
 		};
 
 		// helper to get the data
@@ -510,7 +558,7 @@
 				setTimeout(function() {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
-				}, 3000);
+				}, 500);
 			}
 		};
 

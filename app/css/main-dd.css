@@ -235,6 +235,12 @@ td.flash {
   -o-transition: background-color 0.5s ease-in, color 0.5s ease-in;
   transition: background-color 0.5s ease-in, color 0.5s ease-in; }
 
+.calculating {
+  display: block;
+  float: left;
+  margin-top: 5px;
+  color: #e49; }
+
 td.hidden {
   display: none; }
 

@@ -231,6 +231,13 @@ td.flash {
   transition: background-color 0.5s ease-in, color 0.5s ease-in;
 }
 
+.calculating {
+  display: block;
+  float: left;
+  margin-top: 5px;
+  color: $brand;
+}
+
 td.hidden {
 	display:none;
 }
