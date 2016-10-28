@@ -564,9 +564,10 @@
 				var _endPoints = [{
 					key: 'segments',
 					propertyOnData: 'learning_path_items',
-					path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
-						.replace('[user]', $rootScope.token)
-						.replace('[companyKey]', $rootScope.compKey)
+					path: //_apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
+						_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&user=[user]&companyKey=[companyKey]'
+							.replace('[user]', $rootScope.token)
+							.replace('[companyKey]', $rootScope.compKey)
 				}, {
 					key: 'stores',
 					propertyOnData: 'results',
