@@ -177,6 +177,17 @@
 		$scope.rowHeaderPopover = {
 			templateUrl: 'rowHeaderPopoverTemplate.html'
 		};
+		$scope.closePopovers = function() {
+			var popups = document.querySelectorAll('.popover');
+            if (popups) {
+                for (var i = 0; i < popups.length; i++) {
+                    var popup = popups[i];
+                    var popupElement = angular.element(popup);
+                    popupElement.scope().$parent.isOpen = false;
+                    //popupElement.scope().$parent.$apply();
+                }
+            }
+		};
 
 		$scope.visibleColumns = function(isGroup) {
 			return _.filter($scope.model.columns, function(col) {
@@ -232,6 +243,8 @@
 		};
 		
 		$scope.toggleChildRows = function(row, forceExpand) {
+			$scope.closePopovers();
+			
 			utilsService.safeLog('toggleChildRows', row.children.length);
 
 			// // // add state item to undo history
@@ -293,7 +306,8 @@
 		 * Mark a col.show false.
 		 */
 		$scope.hideCol = function(col) {
-
+			$scope.closePopovers();
+			
 			// properties changed on this column for undo history
 			var undoProperties = [{
 				name: 'show',
@@ -351,7 +365,8 @@
 		 * so that it will be excluded from the calculations.
 		 */
 		$scope.hideRow = function(row, parentRow) {
-
+			$scope.closePopovers();
+			
 			// add state item to undo history
 			$scope.undoService.addState({
 				type: 'row',
@@ -380,6 +395,8 @@
 		 * @description Hides group columns and shows children columns for a specific group.
 		 */
 		$scope.expandChildColumns = function(groupCol) {
+			$scope.closePopovers();
+
 			if ($scope.model && $scope.topLevelColumn === undefined) {
 				groupCol.refreshing = true;
 
@@ -420,6 +437,8 @@
 		 * This will revert the expandChildColumns operation
 		 */
 		$scope.backToTopLevel = function() {
+			$scope.closePopovers();
+			
 			if ($scope.model) {
 
 				$scope.topLevelColumn = undefined;

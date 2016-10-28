@@ -21,14 +21,18 @@
 <div class="container report m-t-lg" ng-show="!loading">
     <script type="text/ng-template" id="colHeaderPopoverTemplate.html">
         <div style="color:black">
-            <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)"><i class="fa fa-expand"></i> Expand</a></div>
-            <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i> Remove</a></div>
+            <div><a ng-if="!c.locked && !c.isChild" ng-click="expandChildColumns(c)">
+                <i class="fa fa-expand"></i> Expand Category</a></div>
+            <div><a ng-if="!c.locked" ng-show="displayHideGroupCol()" ng-click="hideCol(c)">
+                <i class="fa fa-minus-circle"></i> Remove Category</a></div>
         </div>
     </script>
     <script type="text/ng-template" id="rowHeaderPopoverTemplate.html">
         <div style="color:black">
-            <div><a ng-click="toggleChildRows(r)"><i ng-class="'fa fa-' + (r.isCollapsed ? 'expand' : 'compress')"></i> {{r.isCollapsed ? 'Expand' : 'Collapse' }}</a></div>
-            <div><a ng-if="displayHideRow()" ng-click="hideRow(r)"><i class="fa fa-minus-circle"></i> Remove</a></div>
+            <div><a ng-click="toggleChildRows(r)">
+                <i ng-class="'fa fa-' + (r.isCollapsed ? 'expand' : 'compress')"></i> {{r.isCollapsed ? 'Show' : 'Hide' }} all Learners in this PC</a></div>
+            <div><a ng-if="displayHideRow()" ng-click="hideRow(r)">
+                <i class="fa fa-minus-circle"></i> Remove this PC from the Report</a></div>
         </div>
     </script>
     <div class="height-40">
@@ -71,7 +75,8 @@
 
                                 <span ng-if="!c.locked && !c.isChild" ng-init="c=c" 
                                     uib-popover-template="colHeaderPopover.templateUrl" 
-                                    popover-trigger="'outsideClick'"
+                                    popover-append-to-body="true" 
+                                    popover-trigger="'click outsideClick'"
                                     popover-placement="{{c.groupPosition < visibleColumns(c.isGroup).length ? 'right' : 'left'}}">
                                     <a type="button">
                                         <i class="fa fa-pencil-square-o"></i>
@@ -108,7 +113,8 @@
 
                                 <span ng-init="r=row" 
                                     uib-popover-template="rowHeaderPopover.templateUrl" 
-                                    popover-trigger="'outsideClick'"
+                                    popover-append-to-body="true" 
+                                    popover-trigger="'click outsideClick'"
                                     popover-placement="right">
                                     <a type="button">
                                         <i class="fa fa fa-pencil-square-o"></i>
