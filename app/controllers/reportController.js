@@ -50,7 +50,11 @@
 		};
 
 		$scope.increaseProgressBar = function() {
-			$scope.progressBar.value += $scope.progressBar.value < 100 ? 10 : 0;
+			var step = 10;
+			if ($scope.progressBar.value > 70) {
+				step = 1;
+			}
+			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
 			console.log('increaseProgressBar', $scope.progressBar.value);
 		};
 
@@ -379,15 +383,19 @@
 				msg: 'Hide row ' + row.category.value
 			});
 
-			parentRow.refreshing = true;
+			if (parentRow) {
+				parentRow.refreshing = true;
+			}
 			row.show = false;
 
 			// update values
 			$scope.recalculate();
 
-			$timeout(function() {
-				parentRow.refreshing = false;
-			}, 125);
+			if (parentRow) {
+				$timeout(function() {
+					parentRow.refreshing = false;
+				}, 125);
+			}
 		};
 
 		/**
@@ -549,7 +557,7 @@
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
 				$scope.increaseProgressBar();
-			}, 1000);
+			}, 2000);
 
 			if (w === 'live') {
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
