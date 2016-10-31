@@ -560,8 +560,7 @@
 			}, 25);
 		};
 
-		$scope.$on('$routeChangeStart', function (scope, next, current) {
-			console.log('routeChangeStart', next);
+		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
@@ -569,6 +568,122 @@
 
 		// helper to get the data
 		var getData = function(w) {
+
+			// helper to bring deep-dested data from segment api down one level
+			const _fixData = function(endPointsData) {
+				var segments = endPointsData.segments;
+
+				/*
+{
+    "learning_path_id": "15",
+    "learning_path_name": "Dunkin Donuts Crew",
+    "learning_path_items": [{
+        "item_type": "Section",
+        "id": 4,
+        "title": "Guest Service"
+        "los": [{
+            "item_type": "Curriculum",
+            "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+            "name": "Guest Service",
+            "los": [{
+                "loid": "27279562-cc7c-40d2-91e2-e412fd04b3b5",
+                "name": "Dunkin' Donuts Guest Service: Serving Guests with Disabilities"
+            }, {
+                "loid": "02aa0e43-fb99-4f50-9616-cc0f4939c3ea",
+                "name": "Dunkin' Donuts Guest Service: Meeting Guest Expectations"
+            }, {
+                "loid": "2e16e99d-1d52-4c13-8640-d020f0249fa4",
+                "name": "Dunkin' Donuts Guest Service: L.A.S.T Resolution and Recovery"
+            }, {
+                "loid": "14558d01-6254-4434-9ead-de9534d337cc",
+                "name": "Dunkin' Donuts Best In Class Guest Service"
+            }, {
+                "loid": "3b293dcf-5dc9-4c9b-bd18-98edae8e828c",
+                "name": "Dunkin' Donuts Guest Service: Voice of the Guest"
+            }, {
+                "loid": "e1bb63b0-c113-4e03-8830-52697b9765f4",
+                "name": "Dunkin' Donuts Guest Service: Assessment"
+            }, {
+                "loid": "66c6c39f-b053-47da-983f-ca4da77285ad",
+                "name": "Dunkin' Donuts Guest Service: Guest First Commitment"
+            }, {
+                "loid": "ebbaefb8-1d8d-4628-ac63-3f1db8cf0e80",
+                "name": "Dunkin' Donuts Guest Service: The Six Steps of Guest Service"
+            }]
+        }]
+    }]
+}
+				*/
+
+				// helper to map lo fields and ensure consistency
+				const mapLoFields = function(lo) {
+					lo.id = (lo.loid || lo.object_id || lo.id);
+					lo.type = (lo.item_type || lo.type || 'Not Set');
+					lo.name = (lo.name || lo.title);
+					return lo;
+				};
+
+				utilsService.fastLoop(segments, function(seg) {
+					seg.name = (seg.title || seg.name);
+
+					var mappedLos = (seg.los || seg.learning_objects);
+					utilsService.fastLoop(seg.los, function(lo) {
+						lo = mapLoFields(lo);
+
+						// do not add Curriculum type
+						if (lo.type !== 'Curriculum') {
+							mappedLos.push(lo);
+						}
+
+						// if there are children los, add them all
+						if (lo.los && lo.los.length > 0) {
+							utilsService.fastLoop(lo.los, function(childLo) {
+								childLo = mapLoFields(childLo);
+								mappedLos.push(childLo);
+							});
+						}
+					});
+
+					seg.los = mappedLos;
+				});
+
+				endPointsData.segments = segments;
+
+				// map store people lo id to lookup
+				var stores = endPointsData.stores;
+				var stores = endPointsData.stores 
+					&& endPointsData.stores.length 
+					&& _.filter(endPointsData.stores, function(store) {
+						return store.people 
+							&& store.people.length > 0 
+							&& _.find(store.people, function (person) {
+								return person.los && person.los.length > 0;
+							});
+					})
+					|| [];
+
+				utilsService.fastLoop(stores, function(store) {
+					utilsService.fastLoop(store.people, function(person) {
+                        utilsService.fastLoop(person.los, function(personLo) {
+							if (personLo) {
+								utilsService.fastLoop(segments, function(segm) {
+									var itemLo = _.find(segm.los, function(lookupLo) {
+										return lookupLo.id === personLo.id;
+									});
+
+									if (itemLo) {
+										personLo.segmentId = segm.id;
+									}
+								});
+							}
+                        });
+                    });
+				});
+
+
+				endPointsData.stores = stores;
+			};
+
 			// show loader
 			$scope.loading = true;
 
@@ -583,9 +698,11 @@
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
 				var _endPoints = [{
 					key: 'segments',
-					propertyOnData: 'results',
-					path: //_apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
-						_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=15&user=[user]&companyKey=[companyKey]'
+					propertyOnData: 'learning_path_items',
+					path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+						//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+						_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+							.replace('[path_id]', 15) // TODO: we need to figure out what is the best way to pass the path id without hard coding it
 							.replace('[user]', $rootScope.token)
 							.replace('[companyKey]', $rootScope.compKey)
 				}, {
@@ -602,8 +719,12 @@
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+
 					if (++_endPointCount === _endPoints.length) {
 						console.log('_endPointsData', _endPointsData);
+
+						_fixData(_endPointsData);
+
 						onDataComplete(_endPointsData);
 					}
 				};

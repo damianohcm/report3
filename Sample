@@ -1,0 +1,32 @@
+{
+    "count": 10,
+    "next": null,
+    "previous": null,
+    "results": [ // segments
+        {
+            "id": "[id of guest service]",
+            "name": "Guest Service",
+            "item_type": "Section",
+            "los": [
+                {
+                    "item_type": "Curriculum",
+                    "name": "Guest Service",
+                    "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                    "los": [
+                        {
+                            "loid": "guid",
+                            "name": "Food Safety"
+                        }
+                    ]
+                }, 
+                {
+                    "item_type": "Video",
+                    "loid": "guid"
+                    "name": "Some other viedep"
+                }
+            ]
+        }, {
+            ... another segment
+        }
+    ]
+

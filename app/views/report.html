@@ -2,11 +2,11 @@
     <img src="../img/learning-path-icon.png"/>
     <h2>{{title}}</h2>
 
-    <a class="banner-button return" href="#/">
+    <a class="banner-button return" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}">
         <img class="return" src="../img/back-arrow.png"/>
         <div class="text">Back to <br/><strong>Reporting Center</strong></div>
     </a>
-    <a class="banner-button viewFor" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}&reportId={{reportId}}">
+    <a class="banner-button viewFor" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}&reportId={{reportId}}" title="{{csBaseUrl}}">
         <img class="{{viewReportFor.key}}" src="../img/{{viewReportFor.key}}_logo_btn_sm.png"/>
         <div class="text">View report for <br/><strong>{{viewReportFor.title}}</strong></div>
     </a>
@@ -127,7 +127,8 @@
 
                         <div ng-class="c.position === 0 ? 'row-th-middle' : 'row-text'">
                             <div ng-class="c.position === 0 ? 'row-th-middle-inner' : ''">
-                                <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)">
+                                <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)" 
+                                    title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
                                     {{row[c.key].value}}{{row[c.key].suffix}}
                                 </div>
                             </div>

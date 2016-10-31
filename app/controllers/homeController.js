@@ -16,6 +16,11 @@
 				action: function() {
 					document.location = '#/customReport';
 				}
+			},
+			savedReports: {
+				action: function() {
+					document.location = '#/savedReports';
+				}
 			}
 		};
 

@@ -21,10 +21,17 @@
 /* background color for category cell (Store/PC) */
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* for development */
+  /*background: url(../img/coffee-bg.jpg) no-repeat center fixed;
+    background-size: cover;*/
+  /* for production */
   background-color: transparent; }
 
 .clear {
   clear: both !important; }
+
+.full-width {
+  width: 100% !important; }
 
 .pointer {
   cursor: pointer !important; }
@@ -1065,3 +1072,27 @@ tags-input .tags {
 
 .text-muted {
   color: #999; }
+
+.wizard-container.saved-reports {
+  width: 896px; }
+
+.saved-reports-menu .menu-item {
+  height: 40px;
+  border: 2px solid #F48205;
+  border-radius: 5px;
+  padding: 6px 19px; }
+
+.saved-reports-menu .menu-item > label {
+  font-family: Gotham;
+  font-size: 16px;
+  font-weight: 300;
+  color: #444444; }
+
+.saved-reports-menu .menu-item > label.status {
+  width: 132px;
+  font-family: Gotham;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: right;
+  line-height: 16px;
+  color: #999999; }

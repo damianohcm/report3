@@ -20,33 +20,45 @@
 			'ngAnimate', 
 			'ui.bootstrap',
 			'ngTagsInput'
-		]).run(function($rootScope) {
-			$rootScope.token = getQueryStringValue('token', '');
-			$rootScope.compKey = getQueryStringValue('compKey', '');
-			$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '')
-			$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
-			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
-			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();
+		]).run(['$rootScope','$location', '$routeParams', function($rootScope, $location, $routeParams) {
+			$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
+				var routePath = $location.path();
+				console.log('Current route: ', routePath);
+				// Get all URL parameter
+				console.log('Current route params: ', $routeParams);
 
-			console && console.log('token/compKey/brand/lang/reportID', {
-				'document.location.search': document.location.search,
-				token: $rootScope.token,
-				compKey: $rootScope.compKey,
-				brand: $rootScope.brand,
-				lang: $rootScope.lang,
-				reportId: $rootScope.reportId
+				var reportId = getQueryStringValue('reportId', '').toLowerCase();
+				if (['/', '/report'].indexOf(routePath) > -1 && reportId.length > 0) {
+					$rootScope.reportId = reportId;
+				}
+
+				$rootScope.token = getQueryStringValue('token', '');
+				$rootScope.compKey = getQueryStringValue('compKey', '');
+				$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '');
+				$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
+				$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
+
+				console && console.log('token/compKey/brand/lang/reportID', {
+					'document.location.search': document.location.search,
+					token: $rootScope.token,
+					compKey: $rootScope.compKey,
+					brand: $rootScope.brand,
+					lang: $rootScope.lang,
+					reportId: $rootScope.reportId
+				});
+
+				$rootScope.mainCss = document.getElementById('mainCss');
+
+				if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
+					$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
+				}
+
+				if ($rootScope.reportId && $rootScope.reportId.length > 0) {
+					console.log('$rootScope.reportId exists: redirect ro /report');
+					document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+				}
 			});
-
-			$rootScope.mainCss = document.getElementById('mainCss');
-
-			if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
-				$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
-			}
-
-			if ($rootScope.reportId && $rootScope.reportId.length > 0) {
-				document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
-			}
-		});
+		}]);
 
 	// indeterminate-checkbox directive for tri-state checkbox
 	app.directive('customcheck', function() {
@@ -167,6 +179,10 @@
 					templateUrl: 'views/customReportWizard.html',
 					controller: 'customReportWizardController'
 				})
+				.when('/savedReports', {
+					templateUrl: 'views/savedReports.html',
+					controller: 'savedReportsController'
+				})
 				.otherwise({
 					redirectTo: '/'
 				});
@@ -204,5 +220,16 @@
 		'dataService',
 		'wizardServiceFactory',
 		controllers.customReportWizardController]);
+
+	// saved reports controller
+	app.controller('savedReportsController', [
+		'$scope',
+		'$rootScope',
+		'$route', '$routeParams', '$location', '$filter', 
+		'utilsService',
+		'dataService',
+		controllers.savedReportsController]);
+
+		
 
 }(window.angular));

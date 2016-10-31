@@ -553,52 +553,7 @@
 		 * @decsription
 		 * Helper to get a model with the aggregated data that can be used in a generic way
 		 */
-		var getModel = function(data, totCompletionTitle) {
-
-			// TODO: for now just mapping field names to exepcted field names
-			utilsService.fastLoop(data.segments, function(seg) {
-				seg.los = (seg.learning_objects || seg.los);
-
-				utilsService.fastLoop(seg.los, function(lo) {
-					lo.id = (lo.object_id || lo.id);
-					lo.type = (lo.type || lo.learning_type);
-					lo.name = (lo.title || lo.name);
-				});
-			});
-
-            // TODO: check if the backend can easily add segmentId to each person Learning Object.
-            // if not, we have to map it here:
-			data.stores = _.filter(data.stores, function(store) {
-				return _.find(store.people, function (person) {
-					return person.los && person.los.length > 0;
-				});
-			});
-
-            if (!data.stores[0].people[0].los[0].segmentId) {
-                utilsService.safeLog('Adding segmentId to people learning objects');
-
-				utilsService.fastLoop(data.stores, function(store) {
-                    utilsService.fastLoop(store.people, function(person) {
-                        utilsService.fastLoop(person.los, function(personLo) {
-							if (personLo) {
-								var itemLo;
-								utilsService.fastLoop (data.segments, function(segm) {
-									itemLo = _.find(segm.los, function(lookupLo) {
-										return lookupLo.id === personLo.id;
-									});
-
-									if (itemLo) {
-										personLo.segmentId = segm.id;
-									}
-								});
-							}
-                        });
-                    });
-                });
-
-                utilsService.safeLog('Data with segmentId on people learning object', data);
-            }
-            
+		var getModel = function(data, totCompletionTitle) {            
 
 			// building model
 			var model = {
@@ -709,7 +664,7 @@
 						key: 'category',
 						css: 'category',
 						locked: true,
-						value: store.id + '-' + store.name
+						value: store.name
 					}, 
 					summary: {
 						id: 'summary',

@@ -1,0 +1,46 @@
+<div class="wizard-container saved-reports">
+    <div class="wizard vertical">
+
+        <div class="wizard-header">
+            <button type="button" class="close" ng-click="cancel()">
+                <i class="fa fa-arrow-left"></i> Exit
+            </button>
+
+            <div class="title">My Saved Reports</div>
+        </div>
+
+        <div class="wizard-body">
+            <div class="wizard clearfix">
+                <div class="content clear full-width">
+
+                    <div class="step-content">
+                        <h1>SYour saved reports</h1>
+                        <div class="sub-title">Select a report that you’ve saved below to run the report. You can rename or delete a saved report.</div>
+
+                        <div class="scroll-container">
+                            <div class="scroll-pane saved-reports-menu">
+
+                                <div ng-repeat="report in model.reports" class="menu-item">
+                                    <label>{{report.name}}</label>
+
+                                    <label class="status">{{report.statusMsg}}</label>
+
+                                    <a type="button">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </a>
+
+                                    <a type="button">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

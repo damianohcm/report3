@@ -5,6 +5,16 @@
   
 	window.controllers.customReportWizardController = function($scope, $rootScope, $route, $routeParams, $location, $filter, utilsService, dataService, wizardServiceFactory) {
 
+		/**
+		 * @method cancel
+		 * @description
+		 * Users click on a step directly
+		 */
+		$scope.cancel = function cancel() {
+			//this.hide();
+			$location.path('#/');
+		};
+
 		this.params = $routeParams;
 
 		// model lookups 
@@ -165,16 +175,6 @@
 		 */
 		$scope.finishStep = function finishStep() {
 			this.nextStep();
-		};
-
-		/**
-		 * @method cancel
-		 * @description
-		 * Users click on a step directly
-		 */
-		$scope.cancel = function cancel() {
-			//this.hide();
-			$location.path('#/');
 		};
 		
 		/**
