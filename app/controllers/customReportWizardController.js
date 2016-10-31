@@ -168,7 +168,7 @@
 		};
 
 		/**
-		 * @method clickOnStep
+		 * @method cancel
 		 * @description
 		 * Users click on a step directly
 		 */
@@ -187,6 +187,25 @@
 			//this.dataService.save(() => {
 				$scope.wizard.setActiveStep(step);
 			//});
+		};
+
+		/**
+		 * @method backToStepById
+		 * @description
+		 * Users click on a step directly
+		 */
+		$scope.backToStepById = function backToStepById(id) {
+			console.log('backToStepById', id);
+			var step = _.find($scope.wizard.steps, (item) => {
+				return item.id === id;
+			});
+
+			if (step) {
+				// TODO:  Do we save data?
+				//this.dataService.save(() => {
+					$scope.wizard.setActiveStep(step);
+				//});
+			}
 		};
 
 		/**

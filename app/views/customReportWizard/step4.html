@@ -8,21 +8,21 @@
     <div class="scroll-container">
         <div class="scroll-pane wizard-summary">
 
-            <div>
+            <div ng-click="$parent.backToStepById(1)">
                 <label>PCs:</label>
                 <span>
                     <span class="btn pc" ng-repeat="store in summary.stores">{{store.name}}</span>
                 </span>
             </div>
 
-            <div>
+            <div ng-click="$parent.backToStepById(2)">
                 <label>Learners:</label>
                 <span>
                     <span class="btn pc">{{summary.learners}}</span>
                 </span>
             </div>
 
-            <div>
+            <div ng-click="$parent.backToStepById(2)">
                 <label>Hire Date:</label>
                 <span>
                     <span class="btn pc" ng-if="summary.hired">{{summary.hired}}</span>
@@ -30,7 +30,7 @@
                 </span>
             </div>
 
-            <div>
+            <div ng-click="$parent.backToStepById(3)">
                 <label>Courses:</label>
                 <span>
                     <span class="btn pc" ng-if="summary.entireLearningPath">{{summary.entireLearningPath}}</span>
