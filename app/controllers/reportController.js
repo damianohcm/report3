@@ -563,9 +563,9 @@
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
 				var _endPoints = [{
 					key: 'segments',
-					propertyOnData: 'learning_path_items',
+					propertyOnData: 'results',
 					path: //_apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
-						_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&user=[user]&companyKey=[companyKey]'
+						_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=15&user=[user]&companyKey=[companyKey]'
 							.replace('[user]', $rootScope.token)
 							.replace('[companyKey]', $rootScope.compKey)
 				}, {
@@ -610,7 +610,7 @@
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());
