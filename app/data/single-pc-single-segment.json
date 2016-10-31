@@ -1,0 +1,72 @@
+{
+    "stores": [{
+        "id": 302068, 
+        "name": "Gallion Group, Inc.", 
+        "people": [{ 
+                "id": 6543, 
+                "name": "Ella Cunningham", 
+                "title": "Manager", 
+                "los": [{
+                        "id": "guest-services-1",
+                        "value": 2,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-2",
+                        "value": 2,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-3",
+                        "value": 1,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-4",
+                        "value": 0,
+                        "segmentId": "guest-services" 
+                    }] 
+            }, {
+                "id": 6544,
+                "name": "Max Garcia",
+                "title": "Crew Member",
+                "los": [{
+                        "id": "guest-services-1",
+                        "value": 2,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-2",
+                        "value": 1,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-3",
+                        "value": 0,
+                        "segmentId": "guest-services" 
+                    }, {
+                        "id": "guest-services-4",
+                        "value": 0,
+                        "segmentId": "guest-services" 
+                    }]
+                }]
+            
+        }], 
+
+    "segments": [{
+            "id": "guest-services",
+            "name": "Guest Services",
+            "los": [{
+                    "id": "guest-services-1",
+                    "name": "Guest First Commitment",
+                    "type": "Online Class"
+                }, {
+                    "id": "guest-services-2",
+                    "name": "The Six Steps of Guest Services",
+                    "type": "Online Class"
+                }, {
+                    "id": "guest-services-3",
+                    "name": "Serving Guest with Disabilities",
+                    "type": "Online Class"
+                }, {
+                    "id": "guest-services-4",
+                    "name": "Meeting Guest Expectations",
+                    "type": "Online Class"
+                }]
+        }] 
+}

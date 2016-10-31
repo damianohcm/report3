@@ -53,14 +53,14 @@
 		return {
 			// Restrict the directive so it can only be used as an attribute
 			restrict: 'A',
-            //require: 'ngModel',
-            link(scope, elem, attrs, ngModel) {
+			link(scope, elem, attrs) {
 				//console.log('attrs', attrs);
 				var childList = scope.$eval(attrs.childList),
             		property = attrs.property;
 
 				var areAllSelected = function(arr) {
-					return arr.every(function(item) {
+					console.log('areAllSelected function: arr.length:', arr.length);
+					return arr && arr.length > 0 && arr.every(function(item) {
 						return item.selected === true;
 					});
 				};
@@ -72,13 +72,15 @@
 				};
 
 				var setAllSelected = function(val) {
+					childList = scope.$eval(attrs.childList);
 					angular.forEach(childList, function(child) {
 						child[property] = val;
 					});
 				};
 
 				// Watch the children for changes
-				var childListWatcher = scope.$watch(function(scope) {
+				var childListWatcher = scope.$watch(function() {
+					childList = scope.$eval(attrs.childList);
 					if (childList) {
 						return childList.map(function(obj) {
 								return {
@@ -96,10 +98,10 @@
 					if (!someSelected) {
 						var allSelected = areAllSelected(items);
 						//setAllSelected(allSelected);
-						console.log('attrs.ngChecked', attrs.ngChecked);
+						//console.log('attrs.ngChecked', attrs.ngChecked);
+						//console.log('allSelected', allSelected);
 						//attrs.ngChecked = allSelected;
 						scope.$eval(attrs.ngChecked + ' = ' + allSelected);
-						//scope.$apply();
 					} else {
 						scope.$eval(attrs.ngChecked + ' = false');
 					}

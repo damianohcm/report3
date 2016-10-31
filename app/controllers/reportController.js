@@ -99,11 +99,16 @@
 				}
 			});
 
+			var rows = $scope.model.result.rows;
+				if (rows && rows.length === 1) {
+					$scope.toggleChildRows(rows[0]);
+				}
+
 			if ($scope.model.isDetailOnly) {
 				// if it is a detail-only report, just recalculate
 				$scope.recalculate();
 			} else {
-				// otherwise go bac to the top level (routine backToTopLevel will also invoke recalculate)
+				// otherwise go back to the top level (routine backToTopLevel will also invoke recalculate)
 				$scope.backToTopLevel();
 			}
 		};
@@ -519,13 +524,20 @@
 			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
 			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
 
-			if ($scope.model.isDetailOnly) {
-				// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
-				var firstColGroup = _.find($scope.model.columns, function(col) {
-					return col.isGroup;
-				});
-				$scope.expandChildColumns(firstColGroup);
-			}
+			var onRowsCompleted = function() {
+				var rows = $scope.model.result.rows;
+				if (rows && rows.length === 1) {
+					$scope.toggleChildRows(rows[0]);
+				}
+
+				if ($scope.model.isDetailOnly) {
+					// expand first colGroup. "New and Tranding" or some Custom reports will have only one colGroup
+					var firstColGroup = _.find($scope.model.columns, function(col) {
+						return col.isGroup;
+					});
+					$scope.expandChildColumns(firstColGroup);
+				}
+			};
 
 			// then rowGroups after angular bindings
 			$timeout(function(){
@@ -542,10 +554,18 @@
 					} else {
 						utilsService.safeLog('clearInterval');
 						$interval.cancel(intervalId);
+						onRowsCompleted();
 					}
 				}, 25);
 			}, 25);
 		};
+
+		$scope.$on('$routeChangeStart', function (scope, next, current) {
+			console.log('routeChangeStart', next);
+			if (angular.isDefined($scope.progressBar.intervalId)) {
+				$interval.cancel($scope.progressBar.intervalId);
+			}
+		});
 
 		// helper to get the data
 		var getData = function(w) {
@@ -595,11 +615,13 @@
 						}, onDataError);
 				});
 			} else {
-				//var fileName = 'report.json?' + Math.random();
-				//var fileName = 'report-generated1.json?' + Math.random();
-				//var fileName = 'report-generated2.json?' + Math.random();
-				//var fileName = 'new-and-trending.json?' + Math.random();
-				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				//var fileName = 'data/report.json?' + Math.random();
+				//var fileName = 'data/report-generated1.json?' + Math.random();
+				//var fileName = 'data/report-generated2.json?' + Math.random();
+				//var fileName = 'data/single-pc.json?' + Math.random();
+				var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+
+				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				console && console.log('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {

@@ -6,7 +6,11 @@
         <div class="scroll-pane">
             <div class="select-all">
                 <label class="checkbox">
-                    <input type="checkbox" ng-checked="allStoresChecked" customcheck data-checked-state="allStoresCheckedState" data-child-list="data.stores" data-property="selected" />
+                    <input type="checkbox" ng-checked="allStoresChecked" 
+                        customcheck 
+                        data-checked-state="allStoresCheckedState" 
+                        data-child-list="data.stores" 
+                        data-property="selected" />
                      
                     <i class="fa fa-fw {{allStoresCheckedState ? 'checked fa-check' : allStoresCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
                     Select/Deselect All [{{allStoresCheckedState}}] 
