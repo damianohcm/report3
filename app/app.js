@@ -21,9 +21,9 @@
 			'ui.bootstrap',
 			'ngTagsInput'
 		]).run(function($rootScope) {
-			$rootScope.token = getQueryStringValue('token', '').toLowerCase();
-			$rootScope.compKey = getQueryStringValue('compKey', '').toLowerCase();
-			$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '').toLowerCase();
+			$rootScope.token = getQueryStringValue('token', '');
+			$rootScope.compKey = getQueryStringValue('compKey', '');
+			$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '')
 			$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
 			$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
 			$rootScope.reportId = getQueryStringValue('reportId', 'learning-path').toLowerCase();
