@@ -109,7 +109,7 @@
                     "type": "Online Class"
                 }, {
                     "id": "guest-services-3",
-                    "name": "Serving Guest with Disabilities",
+                    "name": "Serving Guest with Disabilities: WMF Station Overview",
                     "type": "Online Class"
                 }, {
                     "id": "guest-services-4",
@@ -118,7 +118,7 @@
                 }]
         }, {
             "id": "crew-only",
-            "name": "Crew only",
+            "name": "Crew only Espresso Beverages: WMF Station Overview",
             "los": [{
                     "id": "crew-only-1",
                     "name": "Crew Beginners",

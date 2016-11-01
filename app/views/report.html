@@ -66,18 +66,18 @@
         <table class="table">
             <thead>
                 <tr class="tr-head">
-                    <th ng-repeat="c in model.columns" ng-show="c.show" ng-class="c.css">
+                    <th ng-repeat="c in model.columns" ng-show="c.show" ng-class="colHeaderCss(c)">
                         <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
                         <div ng-if="c.position > 0">
                             <!-- begin: column header popover -->
                             <div class="th-top">
                                 <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
 
-                                <span ng-if="!c.locked && !c.isChild" ng-init="c=c" 
+                                <span ng-if="!c.locked && c.isGroup" ng-init="c=c" 
                                     uib-popover-template="colHeaderPopover.templateUrl" 
                                     popover-append-to-body="true" 
                                     popover-trigger="'click outsideClick'"
-                                    popover-placement="{{c.groupPosition < visibleColumns(c.isGroup).length ? 'right' : 'left'}}">
+                                    popover-placement="{{popoverPlacement(c)}}">
                                     <a type="button">
                                         <i class="fa fa-pencil-square-o"></i>
                                     </a>
@@ -87,8 +87,8 @@
                             <!-- end: column header popover -->
                             <div class="th-middle">
                                 <div class="th-middle-inner">
-                                    <div class="th-text {{c.position > 1 ? 'pointer' : ''}}" ng-click="onHeaderCellClick(c)">
-                                        {{c.name}}
+                                    <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)">
+                                        {{c.name}} [{{popoverPlacement(c)}}]
                                     </div>
                                 </div>
                             </div>

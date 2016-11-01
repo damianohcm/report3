@@ -198,10 +198,51 @@
             }
 		};
 
-		$scope.visibleColumns = function(isGroup) {
-			return _.filter($scope.model.columns, function(col) {
-				return col.isGroup === isGroup && col.show;
+		$scope.visibleColumns = function(col) {
+			if (col.parentId) {
+				var parent = _.find($scope.model.columns, function(c) {
+					return c.id === col.parentId;
+				});
+				return _.filter($scope.model.columns, function(c) {
+					return c.show && c.isChild && c.parentId === parent.id;
+				});
+			} else if (col.isGroup) {
+				return _.filter($scope.model.columns, function(c) {
+					return c.show && c.isGroup;
+				});
+			} else {
+				return [];
+			}
+		};
+
+		$scope.columnVisiblePosition = function(col) {
+			var result = 0, cols;
+
+			if (col.parentId) {
+				var parent = _.find($scope.model.columns, function(c) {
+					return c.id === col.parentId;
+				});
+				cols = _.filter($scope.model.columns, function(c) {
+					return c.show && c.isChild && c.parentId === parent.id;
+				});
+			} else if (col.isGroup) {
+				cols = _.filter($scope.model.columns, function(c) {
+					return c.show && c.isGroup;
+				});
+			}
+
+			utilsService.fastLoop(cols, function(c, i) {
+				if (c.id === col.id) {
+					result = i;
+				}
 			});
+
+			return result;
+		};
+
+		$scope.popoverPlacement = function(col) {
+			var visibilePos = $scope.columnVisiblePosition(col);
+			return visibilePos < $scope.visibleColumns(col).length ? 'right' : 'left';
 		};
 
 		// shortcut to service.recalculate
@@ -510,6 +551,30 @@
 			return css + ' ' + value + (hidden? ' hidden' : '') + (first? ' first' : '');
 		};
 
+		$scope.colHeaderCss = function(col) {
+			// get total visible columns
+			var totColumns = $scope.visibleColumns(col).length;
+			if (totColumns < 1) {
+				totColumns = 10;
+			}
+
+			var result = col.css;
+			if (totColumns > 0 && totColumns < 11) {
+				result += ' width-' + Math.round(20 / totColumns);
+				console.log(col.name + ' colHeaderCss', result);
+ 			}
+			 return result;
+		};
+
+		$scope.thTextCss = function(c) {
+			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
+			if ((c.isGroup || c.isChild) && c.name.length > 35) {
+				result += ' smaller-text';
+			}
+
+			return result;
+		};
+
 		var onDataError = function(err) {
 			utilsService.safeLog('reportController.onDataError', err);
 			$scope.error = 'Could not fetch data';
@@ -740,9 +805,9 @@
 				//var fileName = 'data/report-generated1.json?' + Math.random();
 				//var fileName = 'data/report-generated2.json?' + Math.random();
 				//var fileName = 'data/single-pc.json?' + Math.random();
-				var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+				//var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				console && console.log('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
@@ -753,7 +818,7 @@
 		};
 
 		// invoke getData
-		getData('live'); // or 'live'
+		getData('test'); // or 'live'
 	};
 
 }());

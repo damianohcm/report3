@@ -1,16 +1,22 @@
 (function(angular) {
 
-	var getQueryStringValue = function (key, defaultValue) {  
-        if (document.location.search && document.location.search.length > 0) {
-            var arr = document.location.search.split(key + '=')[1];
-            if (arr && arr.length > 0) {
-                return arr.split('&')[0];
-            } else {
-                return defaultValue;
-            }
-        } else {
-            return defaultValue;
-        }
+	var getRouteParamValue = function ($routeParams, key, defaultValue) {  
+        // if (document.location.search && document.location.search.length > 0) {
+        //     var arr = document.location.search.split(key + '=')[1];
+        //     if (arr && arr.length > 0) {
+        //         return arr.split('&')[0];
+        //     } else {
+        //         return defaultValue;
+        //     }
+        // } else {
+        //     return defaultValue;
+        // }
+
+		if ($routeParams && $routeParams[key]) {
+			return $routeParams[key];
+		} else {
+			return defaultValue;
+		}
     };
 
 	// create module 'githubViewer'
@@ -27,16 +33,16 @@
 				// Get all URL parameter
 				console.log('Current route params: ', $routeParams);
 
-				var reportId = getQueryStringValue('reportId', '').toLowerCase();
+				var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
 				if (['/', '/report'].indexOf(routePath) > -1 && reportId.length > 0) {
 					$rootScope.reportId = reportId;
 				}
 
-				$rootScope.token = getQueryStringValue('token', '');
-				$rootScope.compKey = getQueryStringValue('compKey', '');
-				$rootScope.csBaseUrl = getQueryStringValue('csBaseUrl', '');
-				$rootScope.brand = getQueryStringValue('brand', 'dd').toLowerCase();
-				$rootScope.lang = getQueryStringValue('lang', 'eng').toLowerCase();
+				$rootScope.token = getRouteParamValue($routeParams, 'token', '');
+				$rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
+				$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
+				$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
+				$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
 
 				console && console.log('token/compKey/brand/lang/reportID', {
 					'document.location.search': document.location.search,
