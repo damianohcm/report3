@@ -6,7 +6,7 @@
     window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
-		console && console.log('Controller $rootScope.brand/lang/reportId', {
+		utilsService.safeLog('Controller $rootScope.brand/lang/reportId', {
 			brand: $rootScope.brand,
 			lang: $rootScope.lang,
 			reportId: $rootScope.reportId
@@ -26,6 +26,12 @@
 			key: 'dd',
 			title: 'Dunkin Donuts'
 		};
+
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return ($rootScope.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
 
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
@@ -55,13 +61,13 @@
 				step = 1;
 			}
 			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
-			console.log('increaseProgressBar', $scope.progressBar.value);
+			utilsService.safeLog('increaseProgressBar', $scope.progressBar.value);
 		};
 
 		$scope.toggleBrand = function() {
 			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
 			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
-			//console.log('toggleBrand ' + $rootScope.brand);
+			//utilsService.safeLog('toggleBrand ' + $rootScope.brand);
 		};
 
 		$scope.undoLastAction = function() {
@@ -250,7 +256,7 @@
 			$scope.refreshing = true;
 			$scope.model.topLevelColumn = $scope.topLevelColumn;
 			reportService.recalculate($scope.model);
-			console.log('recalculate completed');
+			utilsService.safeLog('recalculate completed');
 
 			$timeout(function() {
 				$scope.refreshing = false;
@@ -259,8 +265,8 @@
 
 		// method that handles clicks on the header cell text
 		$scope.onHeaderCellClick = function(col) {
-			//console.log('onHeaderCellClick');
-			console.log('onHeaderCellClick col', col);
+			//utilsService.safeLog('onHeaderCellClick');
+			utilsService.safeLog('onHeaderCellClick col', col);
 			if (col.position > 1) {
 				$scope.expandChildColumns(col);
 			}
@@ -268,9 +274,9 @@
 
 		// method that handles clicks within a row cell (not the headers cells)
 		$scope.onRowCellClick = function(col, row) {
-			console.log('onRowCellClick');
-			//console.log('onRowCellClick col', col);
-			//console.log('onRowCellClick row', row);
+			utilsService.safeLog('onRowCellClick');
+			//utilsService.safeLog('onRowCellClick col', col);
+			//utilsService.safeLog('onRowCellClick row', row);
 
 			var rowGroupStrategies  = {
 				category: function(c, r) {
@@ -295,7 +301,7 @@
 		$scope.toggleChildRows = function(row, forceExpand) {
 			$scope.closePopovers();
 			
-			utilsService.safeLog('toggleChildRows', row.children.length);
+			utilsService.safeLog('toggleChildRows', row.children.length, true);
 
 			// // // add state item to undo history
 			// // var msgPrefix = row.isCollapsed ? 'Expand store ' : 'Collapse store ';
@@ -561,7 +567,7 @@
 			var result = col.css;
 			if (totColumns > 0 && totColumns < 11) {
 				result += ' width-' + Math.round(20 / totColumns);
-				console.log(col.name + ' colHeaderCss', result);
+				utilsService.safeLog(col.name + ' colHeaderCss', result);
  			}
 			 return result;
 		};
@@ -715,17 +721,17 @@
 				endPointsData.segments = segments;
 
 				// map store people lo id to lookup
-				var stores = endPointsData.stores;
 				var stores = endPointsData.stores 
 					&& endPointsData.stores.length 
-					&& _.filter(endPointsData.stores, function(store) {
+					? endPointsData.stores
+					/* _.filter(endPointsData.stores, function(store) {
 						return store.people 
 							&& store.people.length > 0 
 							&& _.find(store.people, function (person) {
 								return person.los && person.los.length > 0;
 							});
-					})
-					|| [];
+					})*/
+					: [];
 
 				utilsService.fastLoop(stores, function(store) {
 					utilsService.fastLoop(store.people, function(person) {
@@ -752,7 +758,7 @@
 			// show loader
 			$scope.loading = true;
 
-			console && console.log('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportId', $rootScope.reportId);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
@@ -774,19 +780,19 @@
 					key: 'stores',
 					propertyOnData: 'results',
 					//path: 'data/luca-stores.json?' + Math.random()
-					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15&user=[user]&companyKey=[companyKey]'
+					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=15&user=[user]&companyKey=[companyKey]'
 						.replace('[user]', $rootScope.token)
 						.replace('[companyKey]', $rootScope.compKey)
 				}];
 
-				console.log('_endPoints', _endPoints);
+				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 
 					if (++_endPointCount === _endPoints.length) {
-						console.log('_endPointsData', _endPointsData);
+						utilsService.safeLog('_endPointsData', _endPointsData);
 
 						_fixData(_endPointsData);
 
@@ -808,7 +814,7 @@
 				//var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
 				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
-				console && console.log('fileName', fileName);
+				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
 					dataService.getData(fileName)
@@ -818,7 +824,11 @@
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		if ($scope.tokenError.length > 0) {
+			alert($scope.tokenError);
+		} else {
+			getData('live'); // or 'live'
+		}
 	};
 
 }());

@@ -155,7 +155,7 @@
 
 					var currentLos = _.filter(person.los, function(lo) {
 						if (!lo) {
-							console.log('WARNING: person.lo is null', person);
+							utilsService.safeLog('WARNING: person.lo is null', person);
 						}
 						return lo && lo.segmentId === course.id;
 					});
@@ -419,7 +419,7 @@
 									}
 									childCell.suffix = childCellSuffix+ (private.debug ? ' (aggregateLoByStore)' : '');
 								} else {
-									console && console.log('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
+									console && utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
 
 							}); // end: course los (child columns) loop
@@ -647,6 +647,20 @@
 				});
 			});
 
+			// default sort by PC name (store)
+			// and people by descending title and then ascending name
+			data.stores = _.sortBy(data.stores, 'name').reverse();
+
+			var peopleSorter = function(person) {
+				var expr = person.title.toLowerCase().indexOf('manager') === -1 ? person.name : -1;
+				console.log('expr', expr);
+				return expr;
+			};
+
+			utilsService.fastLoop(data.stores, function(store) {
+				store.people = _.sortBy(store.people, peopleSorter);
+			});
+			
 			// 2. Aggregate data and add to model.result.rows collection
 			// loop through each store and add a row for each store
 			var rowGroups = [];
@@ -716,7 +730,7 @@
 						personRow.parentId = rowGroup.id;
 						rowGroup.children.push(personRow);
 					} else {
-						console.log('warning: no segments or person');
+						utilsService.safeLog('warning: no segments or person');
 					}
 				});
 
@@ -724,15 +738,19 @@
 				rowGroups.push(rowGroup);
 			});
 
+			// temporarily set rows to allow for calculation
 			model.result.rows = rowGroups;
 			model.result._rowGroups = rowGroups;
 			model.topLevelColumn = undefined;
 
 			utilsService.safeLog('model', JSON.stringify(model));
 
+			// calculate
 			recalculate(model, data);
 
+			// remove rows - they will load in the controller from _rowGroups with a timeout for performance
 			model.result.rows = [];
+
 			return model;
 		};
 		

@@ -111,7 +111,7 @@
 		 * Users clicks on previous
 		 */
 		$scope.previousStep = function() {
-			console.log('previousStep');
+			utilsService.safeLog('previousStep');
 			var wizard = $scope.wizard;
 			if (wizard.activeStep.id !== 1) {
 				//this['validationStep' + this.activeStep.id].clear();
@@ -132,7 +132,7 @@
 		 * Users click on next
 		 */
 		$scope.nextStep = function() {
-			console.log('nextStep');
+			utilsService.safeLog('nextStep');
 			var wizard = $scope.wizard, currentStep = wizard.activeStep;
 			// wizard.validateStep(currentStep).then((isValid) => {
 			// 	if (isValid) {
@@ -143,7 +143,7 @@
 						if (next.id > currentStep.id) {
 							if (currentStep.validateAction) {
 								var validateResult = currentStep.validateAction();
-								console.log(currentStep.title + ' validateResult: ' + validateResult);
+								utilsService.safeLog(currentStep.title + ' validateResult: ' + validateResult);
 								if (validateResult) {
 									wizard.setActiveStep(next);
 								} else {
@@ -195,7 +195,7 @@
 		 * Users click on a step directly
 		 */
 		$scope.backToStepById = function backToStepById(id) {
-			console.log('backToStepById', id);
+			utilsService.safeLog('backToStepById', id);
 			var step = _.find($scope.wizard.steps, (item) => {
 				return item.id === id;
 			});
@@ -214,7 +214,7 @@
 		 * Users click on a step directly
 		 */
 		$scope.navigationAction = function navigationAction(item) {
-			console.log('navigationAction');
+			utilsService.safeLog('navigationAction');
 			item.action();
 		};
 
@@ -232,7 +232,7 @@
 				}).length < 1;
 				this.errorMsg = this.hasError ? 'Please select at least on PC before proceeding' : undefined;
 				this.isDone = !this.hasError;
-				console.log('validateStep1 this.hasError ' + this.hasError);
+				utilsService.safeLog('validateStep1 this.hasError ' + this.hasError);
 				return this.hasError === false;
 			}
 		}, {
@@ -251,7 +251,7 @@
 					this.hasError = false;
 				}
 				this.isDone = !this.hasError;
-				console.log('validateStep2 this.hasError ' + this.hasError);
+				utilsService.safeLog('validateStep2 this.hasError ' + this.hasError);
 				return this.hasError === false;
 			}
 		}, {
@@ -271,7 +271,7 @@
 					this.hasError = false;
 				}
 				this.isDone = !this.hasError;
-				console.log('validateStep3 this.hasError ' + this.hasError);
+				utilsService.safeLog('validateStep3 this.hasError ' + this.hasError);
 				return this.hasError === false;
 			}
 		}, {
@@ -316,11 +316,11 @@
 
 		$scope.wizard.start();
 
-		console.log('navigationItems', $scope.wizard.navigationItems);
+		utilsService.safeLog('navigationItems', $scope.wizard.navigationItems);
 
 		$scope.showHiredAfterDateinput = false;
 		$scope.hiredChanged = function(option) {
-			console.log('hiredChanged', option);
+			utilsService.safeLog('hiredChanged', option);
 			$scope.showHiredAfterDateinput = (option.otherField);
 		};
 
@@ -373,7 +373,7 @@ $scope.datePickerOptions = {
 
 		$scope.getCourses = function(str) {
 			str = str.toLowerCase().trim();
-			console.log('getCourses', str);
+			utilsService.safeLog('getCourses', str);
 			// return $http.get('//api/path/to/courses', {
 			// 	params: {
 			// 		searchString: str
@@ -410,7 +410,7 @@ $scope.datePickerOptions = {
 
 		// helper to get the data
 		var getData = function(w) {
-			console && console.log('getData: reportId', $rootScope.reportId);
+			console && utilsService.safeLog('getData: reportId', $rootScope.reportId);
 
 			if (w === 'live') {
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
@@ -426,13 +426,13 @@ $scope.datePickerOptions = {
 					path: 'data/luca-stores.json?' + Math.random()
 				}];
 
-				console.log('_endPoints', _endPoints);
+				utilsService.safeLog('_endPoints', _endPoints);
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 					if (++_endPointCount === _endPoints.length) {
-						console.log('_endPointsData', _endPointsData);
+						utilsService.safeLog('_endPointsData', _endPointsData);
 						onDataComplete(_endPointsData);
 					}
 				};
@@ -449,7 +449,7 @@ $scope.datePickerOptions = {
 				//var fileName = 'data/new-and-trending.json?' + Math.random();
 				//var fileName = 'data/report.json?' + Math.random();
 				var fileName = 'data/learning-path.json?' + Math.random();
-				console && console.log('fileName', fileName);
+				console && utilsService.safeLog('fileName', fileName);
 				dataService.getData(fileName)
 					.then(onDataComplete, onDataError);
 			}

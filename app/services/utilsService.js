@@ -1,6 +1,9 @@
 (function() {
   
     window.services = window.services || {};
+
+	// set to false for production
+	window.logEnabled = false;
   
     window.services.utilsService = function() {
 
@@ -10,15 +13,18 @@
 		 /**
 		 * @method safeLog
 		 * @description
-		 * 
+		 * Wrap console.log and makes sure it will log only if browser supports console and window.logEnabled is true.
+		 * When passing force as true, it will always log, no matter what window.logEnable value is.
 		 */
 		// eslint-disable-next-line no-unused-vars
-        obj.safeLog = function(msg, data) {
-            // if (arguments.length > 1) {
-            //     console.log(msg, data);
-            // } else {
-            //     console.log(msg);
-            // }
+        obj.safeLog = function(msg, data, force) {
+			if ((window.logEnabled || force) && console && console.log) {
+				if (arguments.length > 1) {
+					console.log(msg, data);
+				} else {
+					console.log(msg);
+				}
+			}
         };
 
         /**

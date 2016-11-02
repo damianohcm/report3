@@ -1,21 +1,19 @@
 (function(angular) {
 
 	var getRouteParamValue = function ($routeParams, key, defaultValue) {  
-        // if (document.location.search && document.location.search.length > 0) {
-        //     var arr = document.location.search.split(key + '=')[1];
-        //     if (arr && arr.length > 0) {
-        //         return arr.split('&')[0];
-        //     } else {
-        //         return defaultValue;
-        //     }
-        // } else {
-        //     return defaultValue;
-        // }
-
-		if ($routeParams && $routeParams[key]) {
+        if ($routeParams && $routeParams[key]) {
 			return $routeParams[key];
 		} else {
-			return defaultValue;
+			if (document.location.search && document.location.search.length > 0) {
+			    var arr = document.location.search.split(key + '=')[1];
+			    if (arr && arr.length > 0) {
+			        return arr.split('&')[0];
+			    } else {
+			        return defaultValue;
+			    }
+			} else {
+			    return defaultValue;
+			}
 		}
     };
 
@@ -26,12 +24,12 @@
 			'ngAnimate', 
 			'ui.bootstrap',
 			'ngTagsInput'
-		]).run(['$rootScope','$location', '$routeParams', function($rootScope, $location, $routeParams) {
+		]).run(['$rootScope','$location', '$routeParams', 'utilsService', function($rootScope, $location, $routeParams, utilsService) {
 			$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
 				var routePath = $location.path();
-				console.log('Current route: ', routePath);
+				utilsService.safeLog('Current route: ', routePath, true);
 				// Get all URL parameter
-				console.log('Current route params: ', $routeParams);
+				utilsService.safeLog('Current route params: ', $routeParams, true);
 
 				var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
 				if (['/', '/report'].indexOf(routePath) > -1 && reportId.length > 0) {
@@ -44,14 +42,14 @@
 				$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
 				$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
 
-				console && console.log('token/compKey/brand/lang/reportID', {
+				utilsService.safeLog('token/compKey/brand/lang/reportID', {
 					'document.location.search': document.location.search,
 					token: $rootScope.token,
 					compKey: $rootScope.compKey,
 					brand: $rootScope.brand,
 					lang: $rootScope.lang,
 					reportId: $rootScope.reportId
-				});
+				}, true);
 
 				$rootScope.mainCss = document.getElementById('mainCss');
 
@@ -60,7 +58,7 @@
 				}
 
 				if ($rootScope.reportId && $rootScope.reportId.length > 0) {
-					console.log('$rootScope.reportId exists: redirect ro /report');
+					utilsService.safeLog('$rootScope.reportId exists: redirect ro /report');
 					document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
 				}
 			});
@@ -110,8 +108,8 @@
 					}
 				}, function (items) {
 					//console.log('childListWatcher items', items);
-					console.log('childListWatcher areAllSelected', areAllSelected(items));
-					console.log('childListWatcher areSomeSelected', areSomeSelected(items));
+					//console.log('childListWatcher areAllSelected', areAllSelected(items));
+					//console.log('childListWatcher areSomeSelected', areSomeSelected(items));
 					var someSelected = areSomeSelected(items);
 					if (!someSelected) {
 						var allSelected = areAllSelected(items);
@@ -127,8 +125,8 @@
 				}, true);
 
 				var checkedWatcher = scope.$watch(attrs.checked, function(value) {
-					console.log('checkedWatcher', value);
-					console.log('checkedWatcher loop set set property on children');
+					//console.log('checkedWatcher', value);
+					//console.log('checkedWatcher loop set set property on children');
 					setAllSelected(value);
 				});
 
@@ -155,7 +153,7 @@
 				elem.bind('change', function() {
 					scope.$apply(function () {
 						var isChecked = elem.prop('checked');
-						console.log('isChecked', isChecked);
+						//console.log('isChecked', isChecked);
 						
 						// Set each child's selected property to the checkbox's checked property
 						angular.forEach(childList, function(child) {

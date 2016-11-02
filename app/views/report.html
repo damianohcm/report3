@@ -29,7 +29,7 @@
     </script>
     <script type="text/ng-template" id="rowHeaderPopoverTemplate.html">
         <div style="color:black">
-            <div><a ng-click="toggleChildRows(r)">
+            <div ng-show="r.children.length > 0"><a ng-click="toggleChildRows(r)">
                 <i ng-class="'fa fa-' + (r.isCollapsed ? 'expand' : 'compress')"></i> {{r.isCollapsed ? 'Show' : 'Hide' }} all Learners in this PC</a></div>
             <div><a ng-if="displayHideRow()" ng-click="hideRow(r)">
                 <i class="fa fa-minus-circle"></i> Remove this PC from the Report</a></div>
@@ -130,6 +130,7 @@
                                 <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)" 
                                     title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
                                     {{row[c.key].value}}{{row[c.key].suffix}}
+                                    <div ng-if="c.position === 0 && row.children.length < 1" style="font-weight:normal;font-size:0.9em">(No learners)</div>
                                 </div>
                             </div>
                         </div>

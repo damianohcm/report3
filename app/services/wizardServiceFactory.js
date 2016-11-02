@@ -130,7 +130,7 @@
         },
 
         cancel() {
-            console.log('cancel');
+            utilsService.safeLog('cancel');
             this.close();
         },
 
