@@ -75,6 +75,14 @@
 			var action = $scope.undoService.undoLastAction(isDetailView);
 
 			if (action) {
+				// {
+				// "type":"column",
+				// "properties":[{"name":"show","oldValue":true,"newValue":false},
+				// "msg":"Exclude column Guest Service",
+				// "item":{"isGroup":true,"id":"guest-services","key":"guest-services","show":true,"position":14,"groupPosition":4,"locked":false,
+				// "css":"th-course valign-top","name":"Guest Service","$$hashKey":"object:35"}]
+				// }
+
 				// keep row collapsed when undoing rows
 				if (action.type === 'row' && !action.item.isChild && !action.item.isCollapsed) {
 					action.item.isCollapsed = true;
@@ -89,8 +97,17 @@
 				// 		parent.isCollapsed = false;
 				// 	}
 				// }
-
-				$scope.recalculate();
+			
+				// when in detail view, if un-hiding a top level column, 
+				// we have to also return to top level view or otherwise the un-hidden group column will show next to the current detail columns
+				if (isDetailView && action.type === 'column' && action.item.isGroup 
+					&& _.some(action.properties, function (p) {
+						return p.name === 'show' && p.oldValue;
+					})) {
+					$scope.backToTopLevel(); // this will also invoke recalculate
+				} else {
+					$scope.recalculate();
+				}
 			}
 		};
 
@@ -574,7 +591,7 @@
 
 		$scope.thTextCss = function(c) {
 			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
-			if ((c.isGroup || c.isChild) && c.name.length > 35) {
+			if ((c.isGroup || c.isChild || c.key === 'summary') && c.name.length > 39) {
 				result += ' smaller-text';
 			}
 

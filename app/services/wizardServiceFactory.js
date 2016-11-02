@@ -1,5 +1,7 @@
 (function() {
 
+    var utilsService;
+    
     // service to be exported to angular
 	window.services = window.services || {};
 
@@ -169,7 +171,8 @@
         return new WizardModel();
     };
   
-    window.services.wizardServiceFactory = function() {
+    window.services.wizardServiceFactory = function(utils) {
+        utilsService = utils;
         return {
             getService: getService
             //destroyService: destroyService

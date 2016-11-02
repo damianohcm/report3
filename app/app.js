@@ -194,10 +194,10 @@
 	
 	// register services with angular
     app.factory('utilsService', [services.utilsService]);
-	app.factory('dataService', ['$http', services.dataService]);
-	app.factory('undoServiceFactory', [services.undoServiceFactory]);
+	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
+	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
 	app.factory('reportService', ['utilsService', services.reportService]);
-	app.factory('wizardServiceFactory', [services.wizardServiceFactory]);
+	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
 	// register controllers
 	// home controllers

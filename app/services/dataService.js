@@ -1,9 +1,11 @@
 (function() {
 
+	var utilsService;
 	window.services = window.services || {};
   
-    window.services.dataService = function($http) {
-
+    window.services.dataService = function($http, utils) {
+		utilsService = utils;
+		
 		var getData = function(url) {
 
 			return $http

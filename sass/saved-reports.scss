@@ -3,26 +3,70 @@
     width: 896px;
 }
 
-.saved-reports-menu .menu-item {
+.saved-reports-menu .row.menu-item {
     height: 40px;
     border: 2px solid #F48205;
     border-radius: 5px;
     padding: 6px 19px;
+    margin: 8px 0;
+    cursor: pointer;
+}
+.saved-reports-menu .row.menu-item:hover {
+    color: white;
+    background-color: $brand;
 }
 
-.saved-reports-menu .menu-item > label {
+.saved-reports-menu .menu-item .col {
+    height: 22px;
+}
+
+.saved-reports-menu .menu-item .col.name {
     font-family: Gotham;
     font-size: 16px;
     font-weight: 300;
     color: #444444;
+    padding-left: 0;
+    cursor: pointer;
+}
+.saved-reports-menu .row.menu-item:hover .col.name {
+    color:white;
 }
 
-.saved-reports-menu .menu-item > label.status {
-    width: 132px;
+.saved-reports-menu .menu-item .col.status {
     font-family: Gotham;
     font-size: 14px;
     font-weight: 300;
     text-align: right;
-    line-height: 16px;
+    line-height: 1.7em;
     color: #999999;
+}
+.saved-reports-menu .row.menu-item:hover .col.status {
+    color:white;
+}
+
+.saved-reports-menu .menu-item .col.buttons {
+    text-align: right;
+    line-height: 1.9em;
+    padding-right: 0;
+}
+.saved-reports-menu .row.menu-item:hover .col.buttons i.fa {
+    color:white;
+}
+
+.saved-reports-menu .menu-item .col.buttons a.edit {
+    height: 22px;
+    float: right;
+    margin: 2px 8px 0px 0px;
+}
+.saved-reports-menu .menu-item .col.buttons a.edit i.fa {
+    font-size: 20px;
+}
+.saved-reports-menu .menu-item .col.buttons a.trash {
+    height: 22px;
+    float: right;
+}
+
+.saved-reports-menu .row.menu-item:hover .col.buttons i.fa:hover {
+    color: yellow;
+    font-size: 1.5em;
 }

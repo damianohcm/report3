@@ -419,7 +419,7 @@
 									}
 									childCell.suffix = childCellSuffix+ (private.debug ? ' (aggregateLoByStore)' : '');
 								} else {
-									console && utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
+									utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
 
 							}); // end: course los (child columns) loop
@@ -652,9 +652,7 @@
 			data.stores = _.sortBy(data.stores, 'name').reverse();
 
 			var peopleSorter = function(person) {
-				var expr = person.title.toLowerCase().indexOf('manager') === -1 ? person.name : -1;
-				console.log('expr', expr);
-				return expr;
+				return person.title.toLowerCase().indexOf('manager') === -1 ? person.name : -1;
 			};
 
 			utilsService.fastLoop(data.stores, function(store) {

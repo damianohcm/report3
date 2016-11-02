@@ -73,8 +73,9 @@
                             <div class="th-top">
                                 <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
 
-                                <span ng-if="!c.locked && c.isGroup" ng-init="c=c" 
+                                <span ng-if="!c.locked && c.isGroup && c.show" ng-init="c=c" 
                                     uib-popover-template="colHeaderPopover.templateUrl" 
+             
                                     popover-append-to-body="true" 
                                     popover-trigger="'click outsideClick'"
                                     popover-placement="{{popoverPlacement(c)}}">
@@ -88,7 +89,7 @@
                             <div class="th-middle">
                                 <div class="th-middle-inner">
                                     <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)">
-                                        {{c.name}} [{{popoverPlacement(c)}}]
+                                        {{c.name}}
                                     </div>
                                 </div>
                             </div>

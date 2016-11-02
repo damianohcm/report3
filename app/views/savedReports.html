@@ -14,24 +14,26 @@
                 <div class="content clear full-width">
 
                     <div class="step-content">
-                        <h1>SYour saved reports</h1>
+                        <h1>Your saved reports</h1>
                         <div class="sub-title">Select a report that you’ve saved below to run the report. You can rename or delete a saved report.</div>
 
                         <div class="scroll-container">
                             <div class="scroll-pane saved-reports-menu">
 
-                                <div ng-repeat="report in model.reports" class="menu-item">
-                                    <label>{{report.name}}</label>
+                                <div ng-repeat="report in model.reports" class="row menu-item" ng-click="viewReport(report)">
+                                    <div class="col col-md-6 name">{{report.name}}</div>
 
-                                    <label class="status">{{report.statusMsg}}</label>
+                                    <div class="col col-md-4 status">{{report.statusMsg}}</div>
 
-                                    <a type="button">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
+                                    <div class="col col-md-2 buttons">
 
-                                    <a type="button">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                        <a class="trash" type="button" ng-click="deleteReport(report, $event)">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        <a class="edit" type="button" ng-click="editReport(report, $event)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 
                             </div>

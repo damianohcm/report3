@@ -1,6 +1,6 @@
 (function() {
 
-    var serviceInstances = {};
+    var serviceInstances = {}, utilsService;
 
     /* private */
     var undoItemProperty = function(item, propertyName, oldValue) {
@@ -256,7 +256,8 @@
     // service to be exported to angular
 	window.services = window.services || {};
   
-    window.services.undoServiceFactory = function() {
+    window.services.undoServiceFactory = function(utils) {
+        utilsService = utils;
         return {
             getService: getService
         };

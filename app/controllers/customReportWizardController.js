@@ -410,7 +410,7 @@ $scope.datePickerOptions = {
 
 		// helper to get the data
 		var getData = function(w) {
-			console && utilsService.safeLog('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportId', $rootScope.reportId);
 
 			if (w === 'live') {
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
@@ -449,7 +449,7 @@ $scope.datePickerOptions = {
 				//var fileName = 'data/new-and-trending.json?' + Math.random();
 				//var fileName = 'data/report.json?' + Math.random();
 				var fileName = 'data/learning-path.json?' + Math.random();
-				console && utilsService.safeLog('fileName', fileName);
+				utilsService.safeLog('fileName', fileName);
 				dataService.getData(fileName)
 					.then(onDataComplete, onDataError);
 			}
