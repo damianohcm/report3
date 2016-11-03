@@ -32,7 +32,7 @@
 				utilsService.safeLog('Current route params: ', $routeParams, true);
 
 				var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
-				if (['/', '/report'].indexOf(routePath) > -1 && reportId.length > 0) {
+				if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
 					$rootScope.reportId = reportId;
 				}
 
@@ -43,7 +43,7 @@
 				$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
 
 				utilsService.safeLog('token/compKey/brand/lang/reportID', {
-					'document.location.search': document.location.search,
+					//'document.location.search': document.location.search,
 					token: $rootScope.token,
 					compKey: $rootScope.compKey,
 					brand: $rootScope.brand,
@@ -57,8 +57,9 @@
 					$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
 				}
 
-				if ($rootScope.reportId && $rootScope.reportId.length > 0) {
+				if ($rootScope.reportId && $rootScope.reportId.length > 0 && $rootScope.reportId !== 'custom') {
 					utilsService.safeLog('$rootScope.reportId exists: redirect ro /report');
+					// use document.location here; do not use $location 
 					document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
 				}
 			});
@@ -180,6 +181,10 @@
 					controller: 'reportController'
 				})
 				.when('/customReport', {
+					templateUrl: 'views/customReport.html',
+					controller: 'customReportController'
+				})
+				.when('/customReportWizard', {
 					templateUrl: 'views/customReportWizard.html',
 					controller: 'customReportWizardController'
 				})
@@ -199,6 +204,8 @@
 	app.factory('reportService', ['utilsService', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
+	app.component('modalSaveComponent', components.modalSaveComponent);
+
 	// register controllers
 	// home controllers
 	app.controller('homeController', [
@@ -214,6 +221,15 @@
 		'dataService', 
 		'reportService', 
 		controllers.reportController]);
+	
+	// custom report controller (same as report controller - but for now keeping separate to not affect current functionality)
+	app.controller('customReportController', [
+		'$scope', '$rootScope', '$location', '$timeout', '$interval', '$uibModal', 
+		'utilsService',
+		'undoServiceFactory', 
+		'dataService', 
+		'reportService', 
+		controllers.customReportController]);
 	
 	// custom report wizard controller
 	app.controller('customReportWizardController', [

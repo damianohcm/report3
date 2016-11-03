@@ -13,7 +13,17 @@
 				.then(function(response) {
 					return response.data;
 				});
+		
 		};
+
+		// var postData = function(url) {
+
+		// 	return $http
+		// 		.get(url)
+		// 		.then(function(response) {
+		// 			return response.data;
+		// 		});
+		// };
 
 		return {
 			getData: getData

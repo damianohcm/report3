@@ -3,10 +3,10 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
-		$scope.undoService = undoServiceFactory.getService('reportController');
+    window.controllers.customReportController = function($scope, $rootScope, $location, $timeout, $interval, $uibModal, utilsService, undoServiceFactory, dataService, reportService) {
+		$scope.undoService = undoServiceFactory.getService('customReportController');
 		
-		utilsService.safeLog('reportController: $rootScope.brand/lang/reportId', {
+		utilsService.safeLog('customReportController: $rootScope.brand/lang/reportId', {
 			brand: $rootScope.brand,
 			lang: $rootScope.lang,
 			reportId: $rootScope.reportId
@@ -75,6 +75,47 @@
 			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
 			//utilsService.safeLog('toggleBrand ' + $rootScope.brand);
 		};
+
+		$scope.saveCustomReport = function() {
+			console.log('saveCustomReport');
+			$scope.modalSave.open();
+		};
+
+$scope.modalSaveData = {
+	title: 'Save Report',
+	reportName: ''
+};
+
+$scope.modalSave = {
+	open: function (size, parentSelector) {
+		var parentElem = undefined; //parentSelector ? 
+			//angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+		var modalInstance = $uibModal.open({
+			animation: false,
+			// ariaLabelledBy: 'modal-title',
+			// ariaDescribedBy: 'modal-body',
+			// templateUrl: 'modalSave.html',
+			// //controller: 'customReportController',
+			// //controllerAs: '$ctrl',
+			// size: size,
+			// appendTo: parentElem,
+			component: 'modalSaveComponent',
+			resolve: {
+				data: function () {
+					console.log('Modal resolve: pass modalSaveData');
+					return $scope.modalSaveData;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (result) {
+			console.log('Modal result', result);
+		}, function () {
+			console.log('Modal dismissed at');
+		});
+	}
+};
+
 
 		$scope.undoLastAction = function() {
 			var isDetailView = $scope.model.topLevelColumn !== undefined;
@@ -605,7 +646,7 @@
 		};
 
 		var onDataError = function(err) {
-			utilsService.safeLog('reportController.onDataError', err);
+			utilsService.safeLog('customReportController.onDataError', err);
 			$scope.error = 'Could not fetch data';
 		};
 
@@ -613,7 +654,7 @@
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
-			utilsService.safeLog('reportController.onDataComplete', data);
+			utilsService.safeLog('customReportController.onDataComplete', data);
 			$scope.data = data;
 			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
 			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
@@ -789,60 +830,23 @@
 			}, 2000);
 
 			if (w === 'live') {
-				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
-				var _endPoints = [{
-					key: 'segments',
-					propertyOnData: 'learning_path_items',
-					path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-						//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-						_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-							.replace('[path_id]', 15) // TODO: we need to figure out what is the best way to pass the path id without hard coding it
-							.replace('[user]', $rootScope.token)
-							.replace('[companyKey]', $rootScope.compKey)
-				}, {
-					key: 'stores',
-					propertyOnData: 'results',
-					//path: 'data/luca-stores.json?' + Math.random()
-					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=15&user=[user]&companyKey=[companyKey]'
-						.replace('[user]', $rootScope.token)
-						.replace('[companyKey]', $rootScope.compKey)
-				}];
-
-				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-				
-				var _endPointsData = {}, _endPointCount = 0;
-				var onEndPointComplete = function(endPoint, data) {
-					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
-
-					if (++_endPointCount === _endPoints.length) {
-						utilsService.safeLog('_endPointsData', _endPointsData);
-
-						_fixData(_endPointsData);
-
-						onDataComplete(_endPointsData);
-					}
-				};
-
-				utilsService.fastLoop(_endPoints, function(endPoint) {
-					dataService.getData(endPoint.path)
-						.then(function(data) {
-							onEndPointComplete(endPoint, data);
-						}, onDataError);
-				});
+				alert('not implemented');
 			} else {
-				//var fileName = 'data/report.json?' + Math.random();
+				var fileName = 'data/report.json?' + Math.random();
 				//var fileName = 'data/report-generated1.json?' + Math.random();
 				//var fileName = 'data/report-generated2.json?' + Math.random();
 				//var fileName = 'data/single-pc.json?' + Math.random();
 				//var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
 				}, 500);
+				console.log('customReportontroller: $rootScope.newCustomReportModel', $rootScope.newCustomReportModel);
+				alert('TODO: need to load segments and stores and filtered them based on $rootScope.newCustomReportModel');
 			}
 		};
 
@@ -850,7 +854,7 @@
 		if ($scope.tokenError.length > 0) {
 			alert($scope.tokenError);
 		} else {
-			getData('live'); // or 'live'
+			getData('test'); // or 'live'
 		}
 	};
 

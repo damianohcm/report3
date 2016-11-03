@@ -155,13 +155,14 @@
 							}
 						}
 					} else {
-
 						if (currentStep.validateAction) {
 							alert('need to validate step');
 						} else {
 							currentStep.isDone = true;
 							wizard.isComplete = true;
-							wizard.close();
+							//wizard.close();
+							$rootScope.newCustomReportModel = JSON.parse(JSON.stringify($scope.model));
+							document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}
 				//});

@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 
-const text = fs.readFileSync('report-base.json');
-const dataModel = JSON.parse(text.toString());
-//console.log('base data model', dataModel);
+const getRandomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 const personLoModel = { 
     id: '', 
@@ -12,39 +12,77 @@ const personLoModel = {
     segmentId: ''
 };
 
-var rand;
+const generate = (dataModel, filename) => {
+    var rand;
 
-dataModel.stores.forEach((store) => {
-    console.log('store', store.id);
-    store.people.forEach((person) => {
-        console.log('person ' + person.id, person.los);
+    let randomStoreIndex = getRandomInt(0, dataModel.stores.length - 1);
 
-        dataModel.segments.forEach((segment) => {
-            console.log('segment', segment.id);
+    dataModel.stores.forEach((store, storeIndex) => {
+        console.log('store', store.id);
 
-            // occcasionally mark the whole segment completed so we can see the green color on the summaries
-            rand = Math.random();
-            var segmCheck = rand > 0.7 ? 2 : 0;
+        let randomPersonIndex = getRandomInt(0, store.people.length - 1);
+        let randomSegmentIndex = getRandomInt(0, dataModel.segments.length - 1);
+        let storeComplete = false;
+        if (storeIndex === randomStoreIndex) {
+            console.log('make it completed ', store.name);
+            storeComplete = true;
+        }
 
-            segment.los.forEach((lo) => {
-                console.log('lo', lo);
+        store.people.forEach((person, personIndex) => {
+            console.log('person (' + personIndex + ') ' + person.id);
+            console.log('randomPersonIndex ' + randomPersonIndex);
 
-                if (person.title === 'Manager' && lo.id.indexOf('crew') > -1) {
-                    // ignore
+            dataModel.segments.forEach((segment, segmentIndex) => {
+                //console.log('segment', segment.id);
+                console.log('segmentIndex ' + segmentIndex);
+                console.log('randomSegmentIndex ' + randomSegmentIndex);
+
+                var segmCheck = 2;
+
+                if (storeComplete || (personIndex === randomPersonIndex && segmentIndex === randomSegmentIndex)) {
+                    console.log('make it completed ', segment.name, person.name);
+                    segmCheck = 2;
                 } else {
+                    // occcasionally mark the whole segment completed so we can see the green color on the summaries
                     rand = Math.random();
-                    personLoModel.id = lo.id;
-                    personLoModel.segmentId = segment.id;
-                    personLoModel.value = segmCheck === 2 || rand > 0.7 ? 2 : rand > 0.3 ? 1 : 0;
-                    
-                    person.los.push(JSON.parse(JSON.stringify(personLoModel)));
+                    segmCheck = rand > 0.2 ? 2 : 0;
                 }
+
+                segment.los.forEach((lo) => {
+                    //console.log('lo', lo);
+
+                    if (person.title === 'Manager' && lo.id.indexOf('crew') > -1) {
+                        // ignore
+                    } else {
+                        rand = Math.random();
+                        personLoModel.id = lo.id;
+                        personLoModel.segmentId = segment.id;
+                        personLoModel.value = segmCheck === 2 || rand > 0.2 ? 2 : rand > 0.5 ? 1 : 0;
+                        
+                        person.los.push(JSON.parse(JSON.stringify(personLoModel)));
+                    }
+                });
             });
+
         });
-
     });
-});
 
-console.log('final data model', JSON.stringify(dataModel));
-//fs.writeFileSync(JSON.stringify(dataModel), 'report-generated.json');
+    //console.log('final data model', JSON.stringify(dataModel));
+    fs.writeFileSync(__dirname + '/../app/data/[filename].json'.replace('[filename]', filename), 
+        JSON.stringify(dataModel));
+
+
+};
+
+
+/// generate a "learning-path" report
+let text = fs.readFileSync('report-base.json'),
+    dataModel = JSON.parse(text.toString());
+generate(dataModel, 'learning-path');
+//console.log('base data model', dataModel);
+
+text = fs.readFileSync('new-and-trending-base.json');
+dataModel = JSON.parse(text.toString());
+generate(dataModel, 'new-and-trending');
+//console.log('base data model', dataModel);
 

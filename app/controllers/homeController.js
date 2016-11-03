@@ -11,21 +11,25 @@
 			}
 		});
 
+		// use document.location here; do not use $location 
 		var menuItemsStrategy = {
 			openReport: {
 				action: function(reportId) {
 					$rootScope.reportId = reportId;
-					document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+					//document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+					$location.path('/report?a=1&reportId=' + $rootScope.reportId);
 				}
 			},
-			customReport: {
+			customReportWizard: {
 				action: function() {
-					document.location = '#/customReport';
+					//document.location = '#/customReportWizard';
+					$location.path('/customReportWizard');
 				}
 			},
 			savedReports: {
 				action: function() {
-					document.location = '#/savedReports';
+					//document.location = '#/savedReports';
+					$location.path('/savedReports');
 				}
 			}
 		};
