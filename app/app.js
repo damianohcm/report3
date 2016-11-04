@@ -25,6 +25,7 @@
 			'ui.bootstrap',
 			'ngTagsInput'
 		]).run(['$rootScope','$location', '$routeParams', 'utilsService', function($rootScope, $location, $routeParams, utilsService) {
+
 			$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
 				var routePath = $location.path();
 				utilsService.safeLog('Current route: ', routePath, true);
@@ -41,10 +42,13 @@
 				$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
 				$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
 				$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
-
+				$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand);
+				
+				utilsService.safeLog('document.location.search', document.location.search);
 				utilsService.safeLog('token/compKey/brand/lang/reportID', {
 					//'document.location.search': document.location.search,
 					token: $rootScope.token,
+					organization: $rootScope.organization,
 					compKey: $rootScope.compKey,
 					brand: $rootScope.brand,
 					lang: $rootScope.lang,
@@ -70,7 +74,7 @@
 		return {
 			// Restrict the directive so it can only be used as an attribute
 			restrict: 'A',
-			link(scope, elem, attrs) {
+			link: function link(scope, elem, attrs) {
 				//console.log('attrs', attrs);
 				var childList = scope.$eval(attrs.childList),
             		property = attrs.property;
@@ -198,10 +202,11 @@
 		}]);
 	
 	// register services with angular
-    app.factory('utilsService', [services.utilsService]);
+	app.factory('utilsService', [services.utilsService]);
 	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
-	app.factory('reportService', ['utilsService', services.reportService]);
+	app.factory('reportServiceConfig', ['utilsService', services.reportServiceConfig]);
+	app.factory('reportService', ['utilsService', 'reportServiceConfig', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
 	app.component('modalSaveComponent', components.modalSaveComponent);

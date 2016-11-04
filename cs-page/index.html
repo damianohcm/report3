@@ -47,7 +47,8 @@
         var _company_key = 'Rgy9IrAKS1rp49rk6oZhPUiCf';
         var _sync_url = 'https://sync2-dev.tribridge-amplifyhr.com/';
         var userData = {
-            csodToken: 'testtoken'
+            csodToken: 'testtoken',
+            organization: 'dd' // can be 'dd', 'br' or 'ddbr' (if ddbr we wont show the "View Report For ..." button)
         };
 
         var credsCheck = setInterval(function(){
@@ -59,9 +60,9 @@
                 window.currentBrand = window.getQueryStringValue('brand', 'dd');
 
                 // for local development
-                //var baseUrl = 'http://10.12.6.83:8080/',
-                //var baseUrl = 'http://10.0.0.6:8080/',
-                var baseUrl = 'http://localhost:8080/',
+                //var baseUrl = 'http://10.12.6.129:8080/',
+                var baseUrl = 'http://10.0.0.6:8080/',
+                //var baseUrl = 'http://localhost:8080/',
                     csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
                 // for production
@@ -70,6 +71,7 @@
 
                 window.frameUrl = baseUrl
                     + '?token=' + userData.csodToken
+                    + '&organization=' + userData.organization
                     + '&compKey=' + _company_key
                     + '&baseUrl=' + _sync_url
                     + '&csBaseUrl=' + csBaseUrl

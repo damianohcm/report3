@@ -147,7 +147,22 @@
                         "value": 2,
                         "segmentId": "guest-services" 
                     }]
-                }]
+            }]
+
+        }, {
+            "id": 307821,
+            "name": "Third Store",
+            "people": [{
+                "id": 4322,
+                "name": "John Doe",
+                "title": "Manager",
+                "los": []
+            }, {
+                "id": 4323,
+                "name": "Michael McDonald",
+                "title": "Crew Member",
+                "los": []
+            }]
 
         }], 
 

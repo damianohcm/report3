@@ -74,34 +74,38 @@
     };
 
     WizardModel.prototype = {
-        addStep (args) {
+        addStep: function addStep(args) {
             this.steps.push(new WizardStep(args));
         },
 
-        addSteps (argsItems) {
+        addSteps: function addSteps(argsItems) {
             for (var i = argsItems.length; --i >= 0;) {
 				this.addStep(argsItems[argsItems.length - i - 1]);
 			}
         },
 
-        addNavigationItem (args) {
+        addNavigationItem: function addNavigationItem(args) {
             this.navigationItems.push(new NavigationItem(args));
         },
 
-        addNavigationItems (argsItems) {
+        addNavigationItems: function addNavigationItems(argsItems) {
             for (var i = argsItems.length; --i >= 0;) {
 				this.addNavigationItem(argsItems[argsItems.length - i - 1]);
 			}
         },
 
-        setActiveStep(step) {
+        setActiveStep: function setActiveStep(step) {
             this.activeStep = step;
-            this.steps.forEach((s) => {
+            //this.steps.forEach((s) => {
+            for (var i = this.steps.length; --i >= 0;) {
+                var s = this.steps[i];
                 s.isCurrent = s.id === step.id;
                 s.isDone = s.id < step.id;
-            });
+            };
 
-            this.navigationItems.forEach((n) => {
+            //this.navigationItems.forEach((n) => {
+            for (var i = this.navigationItems.length; --i >= 0;) {
+                var n = this.navigationItems[i];
                 if (n.key === 'cancel') {
                     n.isActive = true;
                 } else if (n.key === 'prev') {
@@ -113,37 +117,39 @@
                 } else {
                     n.isActive = false;
                 }
-            });
+            };
         },
 
-        start() {
+        start: function start() {
             this.isComplete = false;
             this.setActiveStep(this.steps[0]);
         },
 
-        restart() {
+        restart: function restart() {
             this.isComplete = false;
             this.setActiveStep(this.steps[0]);
         },
 
-        finishStep() {
+        finishStep: function finishStep() {
             this.nextStep();
             // TODO: might have to navigate somewhere else
         },
 
-        cancel() {
+        cancel: function cancel() {
             utilsService.safeLog('cancel');
             this.close();
         },
 
-        close() {
+        close: function close() {
             // TODO: figure out how to correctly close wizard
-        },
-
-        get isLastPage() {
-            return this.activeStep.id === this.steps[this.steps.length - 1].id;
         }
     };
+
+    Object.defineProperty(WizardModel.prototype, 'isLastPage', {
+        get: function() {
+            return this.activeStep.id === this.steps[this.steps.length - 1].id;
+        }
+    });
 
 
     //var _instances = {};

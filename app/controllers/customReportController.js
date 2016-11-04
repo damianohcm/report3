@@ -45,6 +45,12 @@
 			}
 		});
 
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return $rootScope.organization;
+			}
+		});
+
 		Object.defineProperty($scope, 'viewReportFor', {
 			get: function() {
 				if ($rootScope.brand === 'dd') {
@@ -704,7 +710,7 @@ $scope.modalSave = {
 		// helper to get the data
 		var getData = function(w) {
 
-			// helper to bring deep-dested data from segment api down one level
+			// helper to bring deep-nested data from segment api down one level
 			const _fixData = function(endPointsData) {
 				var segments = endPointsData.segments;
 

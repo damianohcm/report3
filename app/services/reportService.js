@@ -2,9 +2,23 @@
 
 	window.services = window.services || {};
   
-	window.services.reportService = function(utilsService) {
+	window.services.reportService = function(utilsService, reportConfigService) {
+		var reportConfig = reportConfigService.getConfig();
+		// label to be used when learning objects are missing
+		// (missing los are considered N/A - not applicable)
+		var notApplicableLabel = reportConfig.notApplicableLabel,
+			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc
+			_debug = reportConfig.debug;
+
 		var private = {
-			debug: false
+		};
+
+		var _getDebugMessage = function(val) {
+			if (_debug) {
+				return ' (val)'.replace('val', val);
+			} else {
+				return '';
+			}
 		};
 
 		// helper to get % cell css
@@ -59,18 +73,19 @@
 		};
 
 		// helper to get person segment cell css
+		var _personSegmentCellCssWithColor = reportConfig.colorPersonSegmentCell ? ' with-color' : '';
 		private.getPersonSegmentCellCss = function(cell) {
 			if (!cell || typeof cell !== 'object' || !cell.hasOwnProperty('value')) {
 				throw Error('getPersonSegmentCellCss: Invalid argument');
 			} else {
 				if (isNaN(cell.value)) {
-					return 'col-group person na';
+					return 'col-group person na' + _personSegmentCellCssWithColor;
 				} else if (cell.value === 100) {
-					return 'col-group person completed';
+					return 'col-group person completed' + _personSegmentCellCssWithColor;
 				} else if (cell.value > 0) {
-					return 'col-group person in-progress';
+					return 'col-group person in-progress' + _personSegmentCellCssWithColor;
 				} else {
-					return 'col-group person';
+					return 'col-group person' + _personSegmentCellCssWithColor;
 				}
 			}
 		};
@@ -80,7 +95,7 @@
 			'-1': {
 				isChild: true,
 				realValue: -1,
-				value: 'N/A',
+				value: notApplicableLabel, /* missing learning objects are considered N/A - Not Applicable */
 				css: 'col-child na'
 			},
 			0: {
@@ -167,7 +182,7 @@
 								return plo.id === lo.id;
 							});
 							
-							// if person lo is missing, we assume N/A for the lo
+							// if person lo is missing, we assume N/A (which is -1) for the lo
 							var loValue = personLo ? personLo.value : -1;
 
 							// child cell
@@ -179,7 +194,7 @@
 						});
 					} else {
 						cell.isNA = true;
-						cell.value = 'N/A';
+						cell.value = notApplicableLabel;
 						cell.suffix = '';
 
 						utilsService.fastLoop(course.los, function(lo) {
@@ -274,7 +289,7 @@
 					finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount) : 0;
 				} else {
 					// if all people are N/A, then aggregated value is also N/A
-					finalValue = 'N/A';
+					finalValue = notApplicableLabel;
 				}
 
 				return finalValue;
@@ -342,7 +357,7 @@
 				finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount * 100) : 0;
 			} else {
 				// if all people are N/A, then aggregated value is also N/A
-				finalValue = 'N/A';
+				finalValue = notApplicableLabel;
 			}
 			return finalValue;
 		};
@@ -388,15 +403,17 @@
 							groupCell.value = private.aggregateSegmentByStore(colGroup, rowGroup, model);
 							groupCell.css = private.getGroupCellCss(groupCell);
 
-							if (groupCell.value === 'N/A') {
+							if (groupCell.value === notApplicableLabel) {
 								cellSuffix = '';
 								naCoursesCount++;
-								coursesCount = coursesCount > 0 ? --coursesCount : 0;
+								if (notApplicableIncludeInCalc === false) {
+									coursesCount = coursesCount > 0 ? --coursesCount : 0;
+								}
 							} else {
 								cellSuffix = '%';
 								storeAggregated += groupCell.value;
 							}
-							groupCell.suffix = cellSuffix + (private.debug ? ' (aggregateSegmentByStore)' : '');
+							groupCell.suffix = cellSuffix + _getDebugMessage('aggregateSegmentByStore');
 
 							// get all child columns (course los)
 							var colChildren = _.filter(model.columns, function(col) {
@@ -411,13 +428,13 @@
 									childCell.value = private.aggregateLoByStore(colChild, rowGroup, model);
 									childCell.css = private.getGroupCellCss(childCell);
 									
-									if (childCell.value === 'N/A') {
+									if (childCell.value === notApplicableLabel) {
 										childCellSuffix = '';
 										naCoursesCount++;
 									} else {
 										childCellSuffix = '%';
 									}
-									childCell.suffix = childCellSuffix+ (private.debug ? ' (aggregateLoByStore)' : '');
+									childCell.suffix = childCellSuffix + _getDebugMessage('aggregateLoByStore');
 								} else {
 									utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
@@ -438,14 +455,14 @@
 						rowGroupSummarySuffix = '%';
 					} else {
 						// if all courses are N/A, then aggregated value is also N/A
-						rowGroupSummaryValue = 'N/A';
+						rowGroupSummaryValue = notApplicableLabel;
 						rowGroupSummarySuffix = '';
 					}
 
 					// store value in rowGroup summary cell 
 					rowGroup.summary.value = rowGroupSummaryValue;
 					rowGroup.summary.css = private.getGroupSummaryCellCss(rowGroup.summary);
-					rowGroup.summary.suffix = rowGroupSummarySuffix + (private.debug ? ' (rowGroup.summary)' : '');
+					rowGroup.summary.suffix = rowGroupSummarySuffix + _getDebugMessage('rowGroup.summary');
 
 
 					// get all child rows (people)
@@ -491,12 +508,16 @@
 												aggregatedLos += lo.realValue === 2 ? 1 : 0;
 											} else {
 												naLosCount++;
-												losCount = losCount > 0 ? --losCount : 0;
+												if (notApplicableIncludeInCalc === false) {
+													losCount = losCount > 0 ? --losCount : 0;
+												}
 											}
 										} else {
 											utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' [' + lo.id + ' is hidden]', lo);
 											naLosCount++;
-											losCount = losCount > 0 ? --losCount : 0;
+											if (notApplicableIncludeInCalc === false) {
+												losCount = losCount > 0 ? --losCount : 0;
+											}
 										}
 									});
 
@@ -507,10 +528,12 @@
 										utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' personCourseCell.value', personCourseCell.value);
 									} else {
 										naCoursesCount++;
-										coursesCount--;
+										if (notApplicableIncludeInCalc === false) {
+											coursesCount--;
+										}
 										personCourseCell.isNA = true;
-										personCourseCell.value = 'N/A';
-										personCourseCell.prefix = '%';
+										personCourseCell.value = notApplicableLabel;
+										personCourseCell.suffix = '';
 									}
 
 									personCourseCell.css = private.getPersonSegmentCellCss(personCourseCell);
@@ -527,14 +550,14 @@
 								personRowSummarySuffix = '%';
 							} else {
 								// if all courses are N/A, then aggregated value is also N/A
-								personRowSummaryValue = 'N/A';
+								personRowSummaryValue = notApplicableLabel;
 								personRowSummarySuffix = '';
 							}
 
 							// set person row summary
 							personRow.summary.value = personRowSummaryValue;
 							personRow.summary.css = private.getChildSummaryCellCss(personRow.summary);
-							personRow.summary.suffix = personRowSummarySuffix + (private.debug ? ' (personRow.summary)' : '');
+							personRow.summary.suffix = personRowSummarySuffix + _getDebugMessage('personRow.summary');
 
 						} else {
 							//ignore... might want to remove this code eventually;
@@ -755,7 +778,8 @@
 		return {
 			getModel: getModel,
 			recalculate: recalculate,
-			private: private
+			private: private,
+			reportConfig: reportConfig
 		};
 	};
   

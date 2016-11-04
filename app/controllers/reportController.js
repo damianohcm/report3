@@ -39,6 +39,12 @@
 			}
 		});
 
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return $rootScope.organization;
+			}
+		});
+
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
 				return $rootScope.csBaseUrl;
@@ -581,18 +587,22 @@
 		};
 
 		$scope.colHeaderCss = function(col) {
-			// get total visible columns
-			var totColumns = $scope.visibleColumns(col).length;
-			if (totColumns < 1) {
-				totColumns = 10;
-			}
+			if (['category', 'summary'].indexOf(col.key) === -1) {
+				// get total visible columns
+				var totColumns = $scope.visibleColumns(col).length;
+				if (totColumns < 1) {
+					totColumns = 10;
+				}
 
-			var result = col.css;
-			if (totColumns > 0 && totColumns < 11) {
-				result += ' width-' + Math.round(20 / totColumns);
-				utilsService.safeLog(col.name + ' colHeaderCss', result);
- 			}
-			 return result;
+				var result = col.css;
+				if (totColumns > 0 && totColumns < 11) {
+					result += ' width-' + Math.round(20 / totColumns);
+					utilsService.safeLog(col.name + ' colHeaderCss', result);
+				}
+				return result;
+			} else {
+				return col.css + (col.key === 'category' ? ' width-5' : ' width-3');
+			}
 		};
 
 		$scope.thTextCss = function(c) {
@@ -830,13 +840,13 @@
 						}, onDataError);
 				});
 			} else {
-				//var fileName = 'data/report.json?' + Math.random();
-				//var fileName = 'data/report-generated1.json?' + Math.random();
-				//var fileName = 'data/report-generated2.json?' + Math.random();
-				//var fileName = 'data/single-pc.json?' + Math.random();
-				//var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+				var fileName = 'data/report.json?' + Math.random();
+				// //var fileName = 'data/report-generated1.json?' + Math.random();
+				// //var fileName = 'data/report-generated2.json?' + Math.random();
+				// //var fileName = 'data/single-pc.json?' + Math.random();
+				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
@@ -850,7 +860,8 @@
 		if ($scope.tokenError.length > 0) {
 			alert($scope.tokenError);
 		} else {
-			getData('live'); // or 'live'
+			var what = reportService.reportConfig.useTestData ? 'test' : 'live';
+			getData(what);
 		}
 	};
 

@@ -116,7 +116,7 @@
 			if (wizard.activeStep.id !== 1) {
 				//this['validationStep' + this.activeStep.id].clear();
 				// TODO: here we might have to call some other funciton that saves the data
-				//this.dataService.save(() => {
+				//this.dataService.save(function() {
 					var prev = wizard.steps[wizard.activeStep.id - 2];
 					if (prev.id < wizard.activeStep.id) {
 						wizard.activeStep.isDone = false;
@@ -134,10 +134,10 @@
 		$scope.nextStep = function() {
 			utilsService.safeLog('nextStep');
 			var wizard = $scope.wizard, currentStep = wizard.activeStep;
-			// wizard.validateStep(currentStep).then((isValid) => {
+			// wizard.validateStep(currentStep).then(function(isValid) {
 			// 	if (isValid) {
 				// TODO: here we might have to call some other funciton that saves the data
-				//this.dataService.save(() => {
+				//this.dataService.save(function() {
 					if (currentStep.id !== wizard.steps.length) {
 						var next = wizard.steps[currentStep.id];
 						if (next.id > currentStep.id) {
@@ -185,7 +185,7 @@
 		 */
 		$scope.clickOnStep = function clickOnStep(step) {
 			// TODO: Do we save data?
-			//this.dataService.save(() => {
+			//this.dataService.save(function() {
 				$scope.wizard.setActiveStep(step);
 			//});
 		};
@@ -197,13 +197,13 @@
 		 */
 		$scope.backToStepById = function backToStepById(id) {
 			utilsService.safeLog('backToStepById', id);
-			var step = _.find($scope.wizard.steps, (item) => {
+			var step = _.find($scope.wizard.steps, function(item) {
 				return item.id === id;
 			});
 
 			if (step) {
 				// TODO:  Do we save data?
-				//this.dataService.save(() => {
+				//this.dataService.save(function() {
 					$scope.wizard.setActiveStep(step);
 				//});
 			}
