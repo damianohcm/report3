@@ -1,7 +1,10 @@
 (function() {
     window.services = window.services || {};
 
-  
+    /**
+     * @service reportServiceConfig
+     * Use this to set config values for reportService
+     */
 	window.services.reportServiceConfig = function() {
 
         var getConfig = function() {
