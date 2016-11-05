@@ -216,6 +216,31 @@
 		};
 
 		/**
+		 * @method decreaseCount
+		 * Helper to safely decrease a counter
+		 */
+		private.decreaseCount = function(count) {
+			return count > 0 ? --count : 0;
+		};
+
+		/**
+		 * @method convertLoRealValue
+		 * Convert lo value of either 0, 1 or 2 into only 0 or 1
+		 */
+		private.convertLoRealValue = function(value) {
+			return value === 2 ? 1 : 0;
+		};
+
+		/**
+		 * @method safePercent
+		 * Safely performs a division and applies a multipler if passed in
+		 */
+		private.safePercent = function(nominator, denominator, multiplier) {
+			multiplier = multiplier || 1; 
+			return denominator > 0 ? Math.round(nominator / denominator * multiplier) : 0;
+		};
+
+		/**
 		 * @method aggregateSegmentByStore
 		 * @decription
 		 * A colGroup represents a course (segment)
@@ -234,8 +259,10 @@
 					aggregated = 0;
 
 				utilsService.fastLoop(peopleRows, function(personRow) {
+
 					// include row in calculation only if personRow.show is true
 					if (personRow.show) {
+
 						var currentLos = [];
 						utilsService.fastLoop(Object.keys(personRow), function(k) {
 							if (personRow[k].hasOwnProperty('parentId') && personRow[k].parentId === colGroup.id) {
@@ -256,41 +283,48 @@
 							// check if col.calculate is true
 							if (colChild.calculate) {
 								if (lo.realValue > -1) {
-									aggregatedLos += lo.realValue === 2 ? 1 : 0;
+									aggregatedLos += private.convertLoRealValue(lo.realValue);
 								} else {
+									// if person does not have a learning object increase naLosCount
 									naLosCount++;
+									// decrease losCount only if notApplicableIncludeInCalc is false
 									if (notApplicableIncludeInCalc === false) {
-										losCount = losCount > 0 ? --losCount : 0;
+										losCount = private.decreaseCount(losCount);
 									}
 								}
 							} else {
+								// col is hidden and should not be calculated
 								utilsService.safeLog('aggregateSegmentByStore [' + colChild.id + ' is hidden]', colChild);
-								losCount = losCount > 0 ? --losCount : 0;
+								losCount = private.decreaseCount(losCount);
 							}
 							
 						});
 
+						// if naLosCount is not equal to currentLos.length means person has at least one or more los so aggregate
 						if (naLosCount !== currentLos.length) {
-							aggregated += losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
+							////aggregated += losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
+							aggregated += private.safePercent(aggregatedLos, losCount, 100);
 						} else {
-							// if person does not have any learning objects for this course, reduce peopleRowsCount and increase naCount
-							if (notApplicableIncludeInCalc === false) {
-								peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
-							}
+							// if person does not have any learning objects for this course increase naCount
 							naCount++;
+							// decrease peopleRowsCount only if notApplicableIncludeInCalc is false
+							if (notApplicableIncludeInCalc === false) {
+								peopleRowsCount = private.decreaseCount(peopleRowsCount);
+							}
 						}
 					} else {
-						// reduce people count for each row that is hidden and increase naCount
-						peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+						// row is hidden: increase naCount and reduce people count
 						naCount++;
+						peopleRowsCount = private.decreaseCount(peopleRowsCount);
 					}
 				});
 
 				// calculate percentage
-				utilsService.safeLog('aggregateSegmentByStore peopleCount: ' + peopleRowsCount + ' naCount: ' + naCount, aggregated, true);
+				//utilsService.safeLog('aggregateSegmentByStore peopleCount: ' + peopleRowsCount + ' naCount: ' + naCount, aggregated, true);
 				var finalValue;
 				if (naCount !== peopleRows.length) {
-					finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount) : 0;
+					////finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount) : 0;
+					finalValue = private.safePercent(aggregated, peopleRowsCount);
 				} else {
 					// if all people are N/A, then aggregated value is also N/A
 					finalValue = notApplicableLabel;
@@ -313,6 +347,7 @@
 
 			// loop through all store people
 			utilsService.fastLoop(peopleRows, function(personRow) {
+
 				// include row in calculation only if personaRow.show is true
 				if (personRow.show) {
 					// find matching person lo
@@ -338,29 +373,31 @@
 						// check if col.calculate is true
 						if (lookupLo.calculate) {
 							if (currentLo.realValue > -1) {
-								aggregated += currentLo.realValue === 2 ? 1 : 0;
+								aggregated += private.convertLoRealValue(currentLo.realValue);
 							}
 						} else {
 							utilsService.safeLog('aggregateSegmentByStore [' + lookupLo.id + ' is hidden]', lookupLo);
 						}
 
 					} else {
-						// if person does not have learning object, reduce peopleRowsCount and increase naCount
-						if (notApplicableIncludeInCalc === false) {
-							peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
-						}
+						// if person does not have any learning objects for this course increase naCount
 						naCount++;
+						if (notApplicableIncludeInCalc === false) {
+							// reduce people count only if notApplicableIncludeInCalc is false
+							peopleRowsCount = private.decreaseCount(peopleRowsCount);
+						}
 					}
 				} else {
-					// reduce people count for each row that is hidden and increase naCount
-					peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+					// row is hidden: increase naCount and reduce people count
 					naCount++;
+					peopleRowsCount = private.decreaseCount(peopleRowsCount);
 				}
 			});
 
 			var finalValue = 0;
 			if (naCount !== peopleRows.length) {
-				finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount * 100) : 0;
+				////finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount * 100) : 0;
+				finalValue = private.safePercent(aggregated, peopleRowsCount, 100);
 			} else {
 				// if all people are N/A, then aggregated value is also N/A
 				finalValue = notApplicableLabel;
@@ -416,7 +453,7 @@
 								cellSuffix = '';
 								naCoursesCount++;
 								if (notApplicableIncludeInCalc === false) {
-									coursesCount = coursesCount > 0 ? --coursesCount : 0;
+									coursesCount = private.decreaseCount(coursesCount);
 								}
 							} else {
 								cellSuffix = '%';
@@ -456,7 +493,8 @@
 							}); // end: course los (child columns) loop
 
 						} else {
-							coursesCount = coursesCount > 0 ? --coursesCount : 0;
+							// col is hidden or we are in details view
+							coursesCount = private.decreaseCount(coursesCount);
 						}
 
 					}); // end: course (columnGroup) loop
@@ -466,7 +504,8 @@
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
 					console.log('coursesCount naCoursesCount colGroups.length storeAggregated', coursesCount, naCoursesCount, colGroups.length, storeAggregated);
 					if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
-						rowGroupSummaryValue = coursesCount > 0 ? Math.round(storeAggregated / coursesCount) : 0;
+						////rowGroupSummaryValue = coursesCount > 0 ? Math.round(storeAggregated / coursesCount) : 0;
+						rowGroupSummaryValue = private.safePercent(storeAggregated, coursesCount);
 						rowGroupSummarySuffix = '%';
 					} else {
 						// if all courses are N/A, then aggregated value is also N/A
@@ -521,23 +560,25 @@
 										if (colChild.calculate) {
 											utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' [' + lo.id + ']', lo);
 											if (lo.realValue > -1) {
-												aggregatedLos += lo.realValue === 2 ? 1 : 0;
+												aggregatedLos += private.convertLoRealValue(lo.realValue);
 											} else {
 												naLosCount++;
 												if (notApplicableIncludeInCalc === false) {
-													losCount = losCount > 0 ? --losCount : 0;
+													// decrease los count only if notApplicableIncludeInCalc is false
+													losCount = private.decreaseCount(losCount);
 												}
 											}
 										} else {
 											utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' [' + lo.id + ' is hidden]', lo);
 											naLosCount++;
-											losCount = losCount > 0 ? --losCount : 0;
+											losCount = private.decreaseCount(losCount);
 										}
 									});
 
 									if (naLosCount !== currentLos.length) {
 										// person course aggregated
-										personCourseCell.value = losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
+										////personCourseCell.value = losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
+										personCourseCell.value = private.safePercent(aggregatedLos, losCount, 100);
 										aggregatedPerson += personCourseCell.value;
 										utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' personCourseCell.value', personCourseCell.value);
 									} else {
@@ -553,14 +594,15 @@
 									personCourseCell.css = private.getPersonSegmentCellCss(personCourseCell);
 
 								} else {
-									coursesCount = coursesCount > 0 ? --coursesCount : 0;
+									coursesCount = private.decreaseCount(coursesCount);
 								}
 							});
 
 							// the row (horizontal) percentage for all the course sections for this person
 							var personRowSummaryValue = 0, personRowSummarySuffix = '';
 							if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
-								personRowSummaryValue = coursesCount > 0 ? Math.round(aggregatedPerson / coursesCount) : 0;
+								////personRowSummaryValue = coursesCount > 0 ? Math.round(aggregatedPerson / coursesCount) : 0;
+								personRowSummaryValue = private.safePercent(aggregatedPerson, coursesCount);
 								personRowSummarySuffix = '%';
 							} else {
 								// if all courses are N/A, then aggregated value is also N/A
@@ -574,10 +616,12 @@
 							personRow.summary.suffix = personRowSummarySuffix + _getDebugMessage('prs');
 
 						} else {
-							//ignore... might want to remove this code eventually;
+							// Person row is hidden
+							// ignore... might want to remove this code eventually;
 						}
 					});
 				} else {
+					// PC row is hidden
 					// just ignore, no need to do anything... might want to remove this code after development is complete
 				}
 
