@@ -490,12 +490,12 @@ div.height-40 {
   height: 50px;
   border-radius: 4px;
   padding: 4px;
+  margin-left: 10px;
   background-color: #7cc13a;
   /*background-image: -webkit-linear-gradient(#7cc13a,#65b617);
     background-image: linear-gradient(#7cc13a,#65b617);*/
   font-size: 14px;
   box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.25);
-  padding-bottom: 5px;
   display: block;
   color: #fff;
   font-family: "Verdana",Helvetica,Arial,sans-serif;
@@ -526,8 +526,7 @@ div.height-40 {
 
 .banner-button.viewFor {
   text-align: left;
-  background-color: #1F429B;
-  margin-right: 10px; }
+  background-color: #1F429B; }
 
 .banner-button.return .text {
   margin-top: 1px; }

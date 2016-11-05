@@ -7,7 +7,7 @@
 		// label to be used when learning objects are missing
 		// (missing los are considered N/A - not applicable)
 		var notApplicableLabel = reportConfig.notApplicableLabel,
-			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc
+			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc,
 			_debug = reportConfig.debug;
 
 		var private = {
@@ -95,7 +95,7 @@
 			'-1': {
 				isChild: true,
 				realValue: -1,
-				value: notApplicableLabel, /* missing learning objects are considered N/A - Not Applicable */
+				value: 'Not Started*', /* missing learning objects are considered N/A - Not Applicable */
 				css: 'col-child na'
 			},
 			0: {
@@ -259,7 +259,9 @@
 									aggregatedLos += lo.realValue === 2 ? 1 : 0;
 								} else {
 									naLosCount++;
-									losCount = losCount > 0 ? --losCount : 0;
+									if (notApplicableIncludeInCalc === false) {
+										losCount = losCount > 0 ? --losCount : 0;
+									}
 								}
 							} else {
 								utilsService.safeLog('aggregateSegmentByStore [' + colChild.id + ' is hidden]', colChild);
@@ -272,7 +274,9 @@
 							aggregated += losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
 						} else {
 							// if person does not have any learning objects for this course, reduce peopleRowsCount and increase naCount
-							peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+							if (notApplicableIncludeInCalc === false) {
+								peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+							}
 							naCount++;
 						}
 					} else {
@@ -283,7 +287,7 @@
 				});
 
 				// calculate percentage
-				//utilsService.safeLog('aggregateSegmentByStore peopleCount: ' + peopleRowsCount + ' naCount: ' + naCount, aggregated);
+				utilsService.safeLog('aggregateSegmentByStore peopleCount: ' + peopleRowsCount + ' naCount: ' + naCount, aggregated, true);
 				var finalValue;
 				if (naCount !== peopleRows.length) {
 					finalValue = peopleRowsCount > 0 ? Math.round(aggregated / peopleRowsCount) : 0;
@@ -342,7 +346,9 @@
 
 					} else {
 						// if person does not have learning object, reduce peopleRowsCount and increase naCount
-						peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+						if (notApplicableIncludeInCalc === false) {
+							peopleRowsCount = peopleRowsCount > 0 ? --peopleRowsCount : 0;
+						}
 						naCount++;
 					}
 				} else {
@@ -393,7 +399,8 @@
 
 					utilsService.fastLoop(colGroups, function(colGroup) {
 
-						// only include colGroup in calculation if group column is visible and we are not in detail view (topLevelColumn will be undefined)
+						// only include colGroup in calculation if group column is visible 
+						// and we are not in detail view (topLevelColumn will be undefined)
 						if (!topLevelColumn && colGroup.show || (topLevelColumn && topLevelColumn.id === colGroup.id)) {
 							// get group cell (course cell)
 							var groupCell = rowGroup[colGroup.key]
@@ -402,6 +409,8 @@
 							// aggregate current segment
 							groupCell.value = private.aggregateSegmentByStore(colGroup, rowGroup, model);
 							groupCell.css = private.getGroupCellCss(groupCell);
+
+							console.log('groupCell.value', groupCell.value);
 
 							if (groupCell.value === notApplicableLabel) {
 								cellSuffix = '';
@@ -413,12 +422,15 @@
 								cellSuffix = '%';
 								storeAggregated += groupCell.value;
 							}
-							groupCell.suffix = cellSuffix + _getDebugMessage('aggregateSegmentByStore');
+
+							groupCell.suffix = cellSuffix + _getDebugMessage('aggSegByPC'); /* groupCell is segment - this is aggregated Segment by PC */
 
 							// get all child columns (course los)
 							var colChildren = _.filter(model.columns, function(col) {
 								return col.parentId === colGroup.id;
 							});
+							
+							//var losCount = colChildren.length, naLosCount = 0;
 
 							utilsService.fastLoop(colChildren, function(colChild) {
 								var childCell = rowGroup[colChild.key]
@@ -430,11 +442,13 @@
 									
 									if (childCell.value === notApplicableLabel) {
 										childCellSuffix = '';
-										naCoursesCount++;
+										//naCoursesCount++;
 									} else {
 										childCellSuffix = '%';
 									}
-									childCell.suffix = childCellSuffix + _getDebugMessage('aggregateLoByStore');
+
+									// aggregateLoByStore 
+									childCell.suffix = childCellSuffix + _getDebugMessage('aLoByS');
 								} else {
 									utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
@@ -450,6 +464,7 @@
 
 					// the row (horizontal) percentage for the rowGroup (store)
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
+					console.log('coursesCount naCoursesCount colGroups.length storeAggregated', coursesCount, naCoursesCount, colGroups.length, storeAggregated);
 					if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
 						rowGroupSummaryValue = coursesCount > 0 ? Math.round(storeAggregated / coursesCount) : 0;
 						rowGroupSummarySuffix = '%';
@@ -462,7 +477,7 @@
 					// store value in rowGroup summary cell 
 					rowGroup.summary.value = rowGroupSummaryValue;
 					rowGroup.summary.css = private.getGroupSummaryCellCss(rowGroup.summary);
-					rowGroup.summary.suffix = rowGroupSummarySuffix + _getDebugMessage('rowGroup.summary');
+					rowGroup.summary.suffix = rowGroupSummarySuffix + _getDebugMessage('pcSum'); /* rowGroup is PC - this is the summary cell for the PC */
 
 
 					// get all child rows (people)
@@ -483,7 +498,8 @@
 
 							utilsService.fastLoop(colGroups, function(colGroup) {
 							
-								// only include colGroup in calculation if group column is visible and we are not in detail view (topLevelColumn will be undefined)
+								// only include colGroup in calculation if group column is visible and 
+								// we are not in detail view (topLevelColumn will be undefined)
 								if (!topLevelColumn && colGroup.show || (topLevelColumn && topLevelColumn.id === colGroup.id)) {
 									var personCourseCell = personRow[colGroup.key];
 
@@ -515,9 +531,7 @@
 										} else {
 											utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' [' + lo.id + ' is hidden]', lo);
 											naLosCount++;
-											if (notApplicableIncludeInCalc === false) {
-												losCount = losCount > 0 ? --losCount : 0;
-											}
+											losCount = losCount > 0 ? --losCount : 0;
 										}
 									});
 
@@ -557,7 +571,7 @@
 							// set person row summary
 							personRow.summary.value = personRowSummaryValue;
 							personRow.summary.css = private.getChildSummaryCellCss(personRow.summary);
-							personRow.summary.suffix = personRowSummarySuffix + _getDebugMessage('personRow.summary');
+							personRow.summary.suffix = personRowSummarySuffix + _getDebugMessage('prs');
 
 						} else {
 							//ignore... might want to remove this code eventually;

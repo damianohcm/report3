@@ -840,13 +840,13 @@
 						}, onDataError);
 				});
 			} else {
-				var fileName = 'data/report.json?' + Math.random();
+				//var fileName = 'data/report.json?' + Math.random();
 				// //var fileName = 'data/report-generated1.json?' + Math.random();
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
