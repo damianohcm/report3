@@ -1,0 +1,33 @@
+Things the front end will need for the Custom Report Wizard (used to both create and update a custom report):
+1.	PCs end point: An endpoint that returns the list of PCs that will populate the “Select PCs” list (Step 1 of the wizard). 
+I’m guessing the existing stores end point from Luca should be enough, but let me know your thoughts
+https://dunk-dev.tribridge-amplifyhr.com/api/curricula_report/v1/stores/?format=json&lpath_id=15&user=…..
+
+Each store should have id and name, i.e. : { id: 58594, name: ‘300364-CHEHAR, CORP.’ }
+
+(I’m basing my assumptions on this mockup https://tribridge.invisionapp.com/d/main#/console/8065101/173404924/preview)
+
+2.	SEGMENTS and LOs end point: An endpoint that returns the list of Segments and their LOs. 
+I’m guessing the current segments endpoint will work (https://dunk-dev.tribridge-amplifyhr.com/api/curricula_report/v1/segments-list/15/?format=json&user=), but again let me know your thoughts.
+(I’m basing my assumptions on this mockup https://tribridge.invisionapp.com/d/main#/console/8065101/198942647/preview)
+
+3.	CUSTOM REPORT SAVE/UPDATE end point: An endpoint to call for saving the custom report definition created with the wizard.
+This endpoint should accept a user (or customerId, need to discuss more with John), reportId, reportName, and a model. I.e.:
+{
+	user (or customer) id: [TODO: need to discuss more],
+	reportId: -1, // -1 will mean it’s brand new
+	reportName: “My new custom report”, // user/customer will enter this when saving the report
+	model: “string containing the serialized JSON model for the report selections” // this will just be a string
+}
+
+The backend for this endpoint should check that an existing report does not exists already with the same name for the same user/customer.
+If it does, it should return an error code the front end can understand to display the appropriate message.
+I’ll be performing the same check on the frontend, but the backend should do the same.
+
+IF report does not exists (reportId: -1), backend will proceed saving the new report and returning the newly created report id and a success code.
+If report exists (reportId <> -1), backend will proceed updating the existing report name and model and return a success code.
+
+4.	CUSTOM REPORT DELETE end point: An end point that allows deleting an existing custom report.
+
+
+
