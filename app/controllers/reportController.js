@@ -615,6 +615,136 @@
 			return result;
 		};
 
+		// helper to bring deep-dested data from segment api down one level
+		const _fixData = function(dataToFix) {
+
+			// // if (reportConfigStrategy.oneLevel) {
+			// // 	debugger;
+			// // 	// wrap within "fake" segment
+			// // 	dataToFix.segments = [{
+			// // 		//item_type: 'Section',
+			// // 		id: -1,
+			// // 		title: reportConfigStrategy.title,
+			// // 		los: dataToFix.segments
+			// // 	}];
+			// // }
+
+			var segments = dataToFix.segments;
+
+			/*
+{
+"learning_path_id": "15",
+"learning_path_name": "Dunkin Donuts Crew",
+"learning_path_items": [{
+	"item_type": "Section",
+	"id": 4,
+	"title": "Guest Service"
+	"los": [{
+		"item_type": "Curriculum",
+		"id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+		"name": "Guest Service",
+		"los": [{
+			"loid": "27279562-cc7c-40d2-91e2-e412fd04b3b5",
+			"name": "Dunkin' Donuts Guest Service: Serving Guests with Disabilities"
+		}, {
+			"loid": "02aa0e43-fb99-4f50-9616-cc0f4939c3ea",
+			"name": "Dunkin' Donuts Guest Service: Meeting Guest Expectations"
+		}, {
+			"loid": "2e16e99d-1d52-4c13-8640-d020f0249fa4",
+			"name": "Dunkin' Donuts Guest Service: L.A.S.T Resolution and Recovery"
+		}, {
+			"loid": "14558d01-6254-4434-9ead-de9534d337cc",
+			"name": "Dunkin' Donuts Best In Class Guest Service"
+		}, {
+			"loid": "3b293dcf-5dc9-4c9b-bd18-98edae8e828c",
+			"name": "Dunkin' Donuts Guest Service: Voice of the Guest"
+		}, {
+			"loid": "e1bb63b0-c113-4e03-8830-52697b9765f4",
+			"name": "Dunkin' Donuts Guest Service: Assessment"
+		}, {
+			"loid": "66c6c39f-b053-47da-983f-ca4da77285ad",
+			"name": "Dunkin' Donuts Guest Service: Guest First Commitment"
+		}, {
+			"loid": "ebbaefb8-1d8d-4628-ac63-3f1db8cf0e80",
+			"name": "Dunkin' Donuts Guest Service: The Six Steps of Guest Service"
+		}]
+	}]
+}]
+}
+			*/
+
+			// helper to map lo fields and ensure consistency
+			const mapLoFields = function(lo) {
+				lo.id = (lo.loid || lo.object_id || lo.id);
+				lo.type = (lo.item_type || lo.type || 'Not Set');
+				lo.name = (lo.name || lo.title);
+				return lo;
+			};
+
+			utilsService.fastLoop(segments, function(seg) {
+				seg.id = (seg.id || seg.item_id);
+				seg.name = (seg.title || seg.name);
+
+				var mappedLos = reportConfigStrategy.oneLevel ? [] : (seg.los || seg.learning_objects);
+				utilsService.fastLoop(seg.los, function(lo) {
+					lo = mapLoFields(lo);
+
+					// do not add Curriculum type
+					if (lo.type !== 'Curriculum') {
+						mappedLos.push(lo);
+					}
+
+					// if there are children los, add them all
+					if (lo.los && lo.los.length > 0) {
+						utilsService.fastLoop(lo.los, function(childLo) {
+							childLo = mapLoFields(childLo);
+							mappedLos.push(childLo);
+						});
+					}
+				});
+
+				seg.los = mappedLos;
+			});
+
+			dataToFix.segments = segments;
+			utilsService.safeLog('dataToFix.segments', dataToFix.segments, true);
+
+			// map store people lo id to lookup
+			var stores = dataToFix.stores 
+				&& dataToFix.stores.length 
+				? dataToFix.stores
+				/* _.filter(dataToFix.stores, function(store) {
+					return store.people 
+						&& store.people.length > 0 
+						&& _.find(store.people, function (person) {
+							return person.los && person.los.length > 0;
+						});
+				})*/
+				: [];
+
+			utilsService.fastLoop(stores, function(store) {
+				utilsService.fastLoop(store.people, function(person) {
+					utilsService.fastLoop(person.los, function(personLo) {
+						if (personLo) {
+							utilsService.fastLoop(segments, function(segm) {
+								var itemLo = _.find(segm.los, function(lookupLo) {
+									return lookupLo.id === personLo.id;
+								});
+
+								if (itemLo) {
+									personLo.segmentId = segm.id;
+								}
+							});
+						}
+					});
+				});
+			});
+
+
+			dataToFix.stores = stores;
+			return dataToFix;
+		};
+
 		var onDataError = function(err) {
 			utilsService.safeLog('reportController.onDataError', err);
 			$scope.error = 'Could not fetch data';
@@ -625,7 +755,7 @@
 				$interval.cancel($scope.progressBar.intervalId);
 			}
 			utilsService.safeLog('reportController.onDataComplete', data);
-			$scope.data = data;
+			$scope.data = _fixData(data);
 			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
 			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
 
@@ -674,135 +804,6 @@
 		// helper to get the data
 		var getData = function(w) {
 
-			// helper to bring deep-dested data from segment api down one level
-			const _fixData = function(endPointsData) {
-
-				// // if (reportConfigStrategy.oneLevel) {
-				// // 	debugger;
-				// // 	// wrap within "fake" segment
-				// // 	endPointsData.segments = [{
-				// // 		//item_type: 'Section',
-				// // 		id: -1,
-				// // 		title: reportConfigStrategy.title,
-				// // 		los: endPointsData.segments
-				// // 	}];
-				// // }
-
-				var segments = endPointsData.segments;
-
-				/*
-{
-    "learning_path_id": "15",
-    "learning_path_name": "Dunkin Donuts Crew",
-    "learning_path_items": [{
-        "item_type": "Section",
-        "id": 4,
-        "title": "Guest Service"
-        "los": [{
-            "item_type": "Curriculum",
-            "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
-            "name": "Guest Service",
-            "los": [{
-                "loid": "27279562-cc7c-40d2-91e2-e412fd04b3b5",
-                "name": "Dunkin' Donuts Guest Service: Serving Guests with Disabilities"
-            }, {
-                "loid": "02aa0e43-fb99-4f50-9616-cc0f4939c3ea",
-                "name": "Dunkin' Donuts Guest Service: Meeting Guest Expectations"
-            }, {
-                "loid": "2e16e99d-1d52-4c13-8640-d020f0249fa4",
-                "name": "Dunkin' Donuts Guest Service: L.A.S.T Resolution and Recovery"
-            }, {
-                "loid": "14558d01-6254-4434-9ead-de9534d337cc",
-                "name": "Dunkin' Donuts Best In Class Guest Service"
-            }, {
-                "loid": "3b293dcf-5dc9-4c9b-bd18-98edae8e828c",
-                "name": "Dunkin' Donuts Guest Service: Voice of the Guest"
-            }, {
-                "loid": "e1bb63b0-c113-4e03-8830-52697b9765f4",
-                "name": "Dunkin' Donuts Guest Service: Assessment"
-            }, {
-                "loid": "66c6c39f-b053-47da-983f-ca4da77285ad",
-                "name": "Dunkin' Donuts Guest Service: Guest First Commitment"
-            }, {
-                "loid": "ebbaefb8-1d8d-4628-ac63-3f1db8cf0e80",
-                "name": "Dunkin' Donuts Guest Service: The Six Steps of Guest Service"
-            }]
-        }]
-    }]
-}
-				*/
-
-				// helper to map lo fields and ensure consistency
-				const mapLoFields = function(lo) {
-					lo.id = (lo.loid || lo.object_id || lo.id);
-					lo.type = (lo.item_type || lo.type || 'Not Set');
-					lo.name = (lo.name || lo.title);
-					return lo;
-				};
-
-				utilsService.fastLoop(segments, function(seg) {
-					seg.id = (seg.id || seg.item_id);
-					seg.name = (seg.title || seg.name);
-
-					var mappedLos = reportConfigStrategy.oneLevel ? [] : (seg.los || seg.learning_objects);
-					utilsService.fastLoop(seg.los, function(lo) {
-						lo = mapLoFields(lo);
-
-						// do not add Curriculum type
-						if (lo.type !== 'Curriculum') {
-							mappedLos.push(lo);
-						}
-
-						// if there are children los, add them all
-						if (lo.los && lo.los.length > 0) {
-							utilsService.fastLoop(lo.los, function(childLo) {
-								childLo = mapLoFields(childLo);
-								mappedLos.push(childLo);
-							});
-						}
-					});
-
-					seg.los = mappedLos;
-				});
-
-				endPointsData.segments = segments;
-				utilsService.safeLog('endPointsData.segments', endPointsData.segments, true);
-
-				// map store people lo id to lookup
-				var stores = endPointsData.stores 
-					&& endPointsData.stores.length 
-					? endPointsData.stores
-					/* _.filter(endPointsData.stores, function(store) {
-						return store.people 
-							&& store.people.length > 0 
-							&& _.find(store.people, function (person) {
-								return person.los && person.los.length > 0;
-							});
-					})*/
-					: [];
-
-				utilsService.fastLoop(stores, function(store) {
-					utilsService.fastLoop(store.people, function(person) {
-                        utilsService.fastLoop(person.los, function(personLo) {
-							if (personLo) {
-								utilsService.fastLoop(segments, function(segm) {
-									var itemLo = _.find(segm.los, function(lookupLo) {
-										return lookupLo.id === personLo.id;
-									});
-
-									if (itemLo) {
-										personLo.segmentId = segm.id;
-									}
-								});
-							}
-                        });
-                    });
-				});
-
-
-				endPointsData.stores = stores;
-			};
-
 			// show loader
 			$scope.loading = true;
 
@@ -849,8 +850,6 @@
 						if (++_endPointCount === _endPoints.length) {
 							utilsService.safeLog('_endPointsData', _endPointsData);
 
-							_fixData(_endPointsData);
-
 							onDataComplete(_endPointsData);
 						}
 					};
@@ -869,7 +868,9 @@
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				var fileName = 'data/janic-' + $rootScope.reportId + '.json?' + Math.random();
+
+				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
