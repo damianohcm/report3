@@ -2,12 +2,18 @@
 /* eslint-disable max-len */
 (function(){
 
-	requirejs(['../services/utilsService.js', '../services/reportService.js'], function() {
+	requirejs([
+		'../services/utilsService.js', 
+		'../services/reportServiceConfig.js', 
+		'../services/reportService.js'
+	], function() {
 		mocha.setup('bdd');
 
 		var utilsService = window.services.utilsService()
-			, reportService = window.services.reportService(utilsService);
-		utilsService.safeLog('loaded');
+			, reportConfig = window.services.reportServiceConfig(utilsService)
+			, reportService = window.services.reportService(utilsService, reportConfig);
+		
+		utilsService.safeLog('loaded', Object.keys(utilsService), true);
 
 		var expect = chai.expect,
 			_refErr = new Error('Unit test reference error'),
@@ -33,6 +39,8 @@
 				expect(utilsService).to.respondTo('safeLog');
 				expect(utilsService).to.respondTo('fastLoop');
 				expect(utilsService).to.respondTo('getCsv');
+				expect(utilsService).to.respondTo('csvHtml5Download');
+				expect(utilsService).to.respondTo('exportModelToCsv');
 				done();
 			});
 
@@ -76,6 +84,42 @@
 					try {
 						var csvData = utilsService.getCsv(_refModel);
 						console.log(test.title + ': csvData:', csvData);
+					} catch (e) {
+						debugger;
+						throw _refErr;
+					}
+				};
+
+				// expect to not throw
+				expect(fn).to.not.throw(_refErr);
+				done();
+			});
+
+			// csvHtml5Download tests
+			it('utilsService.csvHtml5Download: should not throw', function(done) {
+				var test = this.test;
+				var fn = function () { 
+					try {
+						var result = utilsService.csvHtml5Download('dummy,csv,data', 'dyummy-file-name.csv');
+						console.log(test.title + ': result:', result);
+					} catch (e) {
+						debugger;
+						throw _refErr;
+					}
+				};
+
+				// expect to not throw
+				expect(fn).to.not.throw(_refErr);
+				done();
+			});
+
+			// exportModelToCsv tests
+			it('utilsService.exportModelToCsv: should not throw', function(done) {
+				var test = this.test;
+				var fn = function () { 
+					try {
+						var result = utilsService.exportModelToCsv(_refModel, 'dyummy-file-name.csv');
+						console.log(test.title + ': result:', result);
 					} catch (e) {
 						debugger;
 						throw _refErr;

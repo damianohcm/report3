@@ -447,7 +447,7 @@
 							groupCell.value = private.aggregateSegmentByStore(colGroup, rowGroup, model);
 							groupCell.css = private.getGroupCellCss(groupCell);
 
-							console.log('groupCell.value', groupCell.value);
+							//utilsService.safeLog('groupCell.value', groupCell.value, true);
 
 							if (groupCell.value === notApplicableLabel) {
 								cellSuffix = '';
@@ -502,7 +502,7 @@
 
 					// the row (horizontal) percentage for the rowGroup (store)
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
-					console.log('coursesCount naCoursesCount colGroups.length storeAggregated', coursesCount, naCoursesCount, colGroups.length, storeAggregated);
+					//utilsService.safeLog('coursesCount naCoursesCount colGroups.length storeAggregated', coursesCount, naCoursesCount, colGroups.length, storeAggregated);
 					if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
 						////rowGroupSummaryValue = coursesCount > 0 ? Math.round(storeAggregated / coursesCount) : 0;
 						rowGroupSummaryValue = private.safePercent(storeAggregated, coursesCount);

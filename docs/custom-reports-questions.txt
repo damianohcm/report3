@@ -1,0 +1,12 @@
+VARIOUS QUESTIONS ABOUT CUSTOM REPORTS
+
+1)  If a customer retrieves a saved report that store "STORE_XYZ" selected, but that store is no longer available, what should we do?
+    Possible solutions would be:
+    - just ignore it
+    - warn the user that their custom report had original STORE_XYZ selected but that is no longer available
+
+2)  If a customer retrieves a saved report that has segments "SEG_XYZ" selected, but that segment is no longer available, what should we do?
+    Possible solutions would be:
+    - just ignore it
+    - warn the user that their custom report had original SEG_XYZ selected but that is no longer available
+
