@@ -593,70 +593,29 @@
 			return css + ' ' + value + (hidden? ' hidden' : '') + (pos === 0 ? ' first' : '');
 		};
 
-		$scope.colHeaderCss = function(col) {
-			// if (['category', 'summary'].indexOf(col.key) === -1) {
-			// 	// get total visible columns
-			// 	var totColumns = $scope.visibleColumns(col).length;
-			// 	if (totColumns < 1) {
-			// 		totColumns = 10;
-			// 	}
-
-			// 	var result = col.css;
-			// 	if (totColumns > 0 && totColumns < 11) {
-			// 		result += ' width-' + Math.round(20 / totColumns);
-			// 		utilsService.safeLog(col.name + ' colHeaderCss', result);
-			// 	}
-			// 	return result;
-			// } else {
-			// 	return col.css + (col.key === 'category' ? ' width-5' : ' width-3');
-			// }
-
-			var totColumns;
-			if (col.key === 'category') {
-				return col.css; // + (col.key === 'category' ? ' width-5' : ' width-3');
-			} else {
-				// get total visible columns
-				if ($scope.topLevelColumn) {
-					totColumns = $scope.visibleColumns(col).length;
-				} else {
-					totColumns = $scope.visibleGroupColumns().length;
-				}
-				
-				if (totColumns < 1) {
-					totColumns = 9;
-				} else {
-					totColumns += 2; // add 1 for summary col
-				}
-
-				var result = col.css;
-				if (totColumns > 0 && totColumns < 17) {
-					result += ' width-' + Math.round(90 / totColumns);
-					//utilsService.safeLog(col.name + ' colHeaderCss', result, true);
-				}
-				return result;
-			}
-		};
-
 		$scope.colHeaderStyle = function(col) {
 			// get total visible columns
 			var totColumns;
-			if ($scope.topLevelColumn) {
+			if ($scope.topLevelColumn && ['category', 'summary'].indexOf(col.key) === -1) {
 				totColumns = $scope.visibleColumns(col).length;
 			} else {
 				totColumns = $scope.visibleGroupColumns().length;
 			}
 
+			totColumns += 1;
 			totColumns = totColumns < 3 ? 3 : totColumns;
 
-			var storeWidthPercent = 10, summaryWidthPercent = 0;
+			var storeWidthPercent = 10, summaryWidthPercent = 5;
 			var useFixedWidth = totColumns > 10;
 			var styleObj = {
 			};
 
 			if (col.key === 'category') {
-				styleObj.width = useFixedWidth ? '200px' : storeWidthPercent + '%';
-			// } else if (col.key === 'summary') {
-			// 	styleObj.width = useFixedWidth ? '130px' : summaryWidthPercent + '%';
+				styleObj.width = '200px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj['min-width'] = styleObj.width;
+			} else if (col.key === 'summary') {
+			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+				 styleObj['min-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
 					styleObj.width = '130px';
@@ -664,11 +623,12 @@
 					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
 					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
 				}
-			}
 
-			if (useFixedWidth) {
-				styleObj['min-width'] = styleObj.width;
+				if (useFixedWidth) {
+					styleObj['min-width'] = styleObj.width;
+				}
 			}
+			
 			return styleObj;
 		};
 
@@ -791,13 +751,6 @@
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
 				? dataToFix.stores
-				/* _.filter(dataToFix.stores, function(store) {
-					return store.people 
-						&& store.people.length > 0 
-						&& _.find(store.people, function (person) {
-							return person.los && person.los.length > 0;
-						});
-				})*/
 				: [];
 
 			utilsService.fastLoop(stores, function(store) {
@@ -820,6 +773,7 @@
 
 
 			dataToFix.stores = stores;
+			return dataToFix;
 		};
 
 		var onDataError = function(err) {
@@ -832,9 +786,7 @@
 				$interval.cancel($scope.progressBar.intervalId);
 			}
 			utilsService.safeLog('reportController.onDataComplete', data);
-			_fixData(data);
-
-			$scope.data = data;
+			$scope.data = _fixData(data);
 			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
 			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
 
@@ -928,8 +880,6 @@
 
 						if (++_endPointCount === _endPoints.length) {
 							utilsService.safeLog('_endPointsData', _endPointsData);
-
-							_fixData(_endPointsData);
 
 							onDataComplete(_endPointsData);
 						}
