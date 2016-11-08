@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.homeController = function($scope, $rootScope, $location, utilsService) {
+    window.controllers.homeController = function($scope, $rootScope, $location, utilsService, configService) {
 
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {

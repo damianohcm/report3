@@ -42,3 +42,17 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        @media (min-width: 1200px) {
+  .container {
+    width: 1350px;
+    max-width: 1350px; } }
+
+@media (max-width: 992px) {
+  .container {
+    width: 970px; } }
+
+@media (max-width: 768px) {
+  .container {
+    width: 750px; } }

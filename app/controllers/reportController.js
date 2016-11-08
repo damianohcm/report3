@@ -3,24 +3,25 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, utilsService, undoServiceFactory, dataService, reportService) {
+    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, 
+		utilsService, configService, undoServiceFactory, dataService, reportService) {
+		
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
 		utilsService.safeLog('reportController: $rootScope.brand/lang/reportId', {
 			brand: $rootScope.brand,
 			lang: $rootScope.lang,
 			reportId: $rootScope.reportId
-		});
+		}, true);
 
-		var reportTitleStrategy = {
-			'learning-path': 'Learning Path',
-			'new-and-trending': 'New & Trending',
-			custom: 'Custom'
-		};
+		var brandConfig = configService.getBrandConfig($rootScope.brand);
+		var reportStrategies = brandConfig.reportStrategies;
+		var reportConfigStrategy = reportStrategies && reportStrategies[$rootScope.reportId] || {
+				pathId: -1,
+				title: 'Unknown report id'
+			};
 
-		$scope.reportTitle = reportTitleStrategy[$rootScope.reportId]
-			? reportTitleStrategy[$rootScope.reportId]
-			: 'Unknown report id';
+		$scope.reportTitle = reportConfigStrategy.title;
 		
 		$scope.title = $scope.reportTitle + ' Report';
 		$scope.refreshing = false;
@@ -675,6 +676,18 @@
 
 			// helper to bring deep-dested data from segment api down one level
 			const _fixData = function(endPointsData) {
+
+				// // if (reportConfigStrategy.oneLevel) {
+				// // 	debugger;
+				// // 	// wrap within "fake" segment
+				// // 	endPointsData.segments = [{
+				// // 		//item_type: 'Section',
+				// // 		id: -1,
+				// // 		title: reportConfigStrategy.title,
+				// // 		los: endPointsData.segments
+				// // 	}];
+				// // }
+
 				var segments = endPointsData.segments;
 
 				/*
@@ -728,9 +741,10 @@
 				};
 
 				utilsService.fastLoop(segments, function(seg) {
+					seg.id = (seg.id || seg.item_id);
 					seg.name = (seg.title || seg.name);
 
-					var mappedLos = (seg.los || seg.learning_objects);
+					var mappedLos = reportConfigStrategy.oneLevel ? [] : (seg.los || seg.learning_objects);
 					utilsService.fastLoop(seg.los, function(lo) {
 						lo = mapLoFields(lo);
 
@@ -752,6 +766,7 @@
 				});
 
 				endPointsData.segments = segments;
+				utilsService.safeLog('endPointsData.segments', endPointsData.segments, true);
 
 				// map store people lo id to lookup
 				var stores = endPointsData.stores 
@@ -799,46 +814,54 @@
 			}, 2000);
 
 			if (w === 'live') {
-				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
-				var _endPoints = [{
-					key: 'segments',
-					propertyOnData: 'learning_path_items',
-					path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-						//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-						_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-							.replace('[path_id]', 15) // TODO: we need to figure out what is the best way to pass the path id without hard coding it
+				if (reportConfigStrategy.pathId < 1) {
+					debugger;
+					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
+				} else {
+					var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
+					var _endPoints = [{
+						key: 'segments',
+						propertyOnData: 'learning_path_items',
+						path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+							//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+							_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+								.replace('[path_id]', reportConfigStrategy.pathId)
+								.replace('[user]', $rootScope.token)
+								.replace('[companyKey]', $rootScope.compKey)
+					}, {
+						key: 'stores',
+						propertyOnData: 'results',
+						//path: 'data/luca-stores.json?' + Math.random()
+						path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+							.replace('[path_id]', reportConfigStrategy.pathId)
 							.replace('[user]', $rootScope.token)
 							.replace('[companyKey]', $rootScope.compKey)
-				}, {
-					key: 'stores',
-					propertyOnData: 'results',
-					//path: 'data/luca-stores.json?' + Math.random()
-					path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=15&user=[user]&companyKey=[companyKey]'
-						.replace('[user]', $rootScope.token)
-						.replace('[companyKey]', $rootScope.compKey)
-				}];
+					}];
 
-				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-				
-				var _endPointsData = {}, _endPointCount = 0;
-				var onEndPointComplete = function(endPoint, data) {
-					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+					
+					var _endPointsData = {}, _endPointCount = 0;
+					var onEndPointComplete = function(endPoint, data) {
+						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 
-					if (++_endPointCount === _endPoints.length) {
-						utilsService.safeLog('_endPointsData', _endPointsData);
+						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
-						_fixData(_endPointsData);
+						if (++_endPointCount === _endPoints.length) {
+							utilsService.safeLog('_endPointsData', _endPointsData);
 
-						onDataComplete(_endPointsData);
-					}
-				};
+							_fixData(_endPointsData);
 
-				utilsService.fastLoop(_endPoints, function(endPoint) {
-					dataService.getData(endPoint.path)
-						.then(function(data) {
-							onEndPointComplete(endPoint, data);
-						}, onDataError);
-				});
+							onDataComplete(_endPointsData);
+						}
+					};
+
+					utilsService.fastLoop(_endPoints, function(endPoint) {
+						dataService.getData(endPoint.path)
+							.then(function(data) {
+								onEndPointComplete(endPoint, data);
+							}, onDataError);
+					});
+				}
 			} else {
 				//var fileName = 'data/report.json?' + Math.random();
 				// //var fileName = 'data/report-generated1.json?' + Math.random();

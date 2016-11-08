@@ -442,6 +442,7 @@ div.height-40 {
 
 .container {
 	border-radius: 8px;
+    width: 100%;
 }
 
 .container.report {
@@ -718,16 +719,3 @@ div.height-40 {
 /* end: ribbon css */
 
 /* end: report home*/
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1350px;
-    max-width: 1350px; } }
-
-@media (max-width: 992px) {
-  .container {
-    width: 970px; } }
-
-@media (max-width: 768px) {
-  .container {
-    width: 750px; } }

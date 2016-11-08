@@ -19,55 +19,66 @@
 
 	// create module 'githubViewer'
 	var app = angular.module('Main', 
-		[
-			'ngRoute', 
-			'ngAnimate', 
-			'ui.bootstrap',
-			'ngTagsInput'
-		]).run(['$rootScope','$location', '$routeParams', 'utilsService', function($rootScope, $location, $routeParams, utilsService) {
+			[
+				'ngRoute', 
+				'ngAnimate', 
+				'ui.bootstrap',
+				'ngTagsInput'
+			]
+		).run(
+			[
+				'$rootScope',
+				'$location', 
+				'$routeParams', 
+				'utilsService', 
+				'configService', 
 
-			$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
-				var routePath = $location.path();
-				utilsService.safeLog('Current route: ', routePath, true);
-				// Get all URL parameter
-				utilsService.safeLog('Current route params: ', $routeParams, true);
+				function($rootScope, $location, $routeParams, utilsService, configService) {
 
-				var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
-				if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
-					$rootScope.reportId = reportId;
+					$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
+						var routePath = $location.path();
+						utilsService.safeLog('Current route: ', routePath, true);
+						// Get all URL parameter
+						utilsService.safeLog('Current route params: ', $routeParams, true);
+
+						var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
+						if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
+							$rootScope.reportId = reportId;
+						}
+
+						$rootScope.token = getRouteParamValue($routeParams, 'token', '');
+						$rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
+						$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
+						$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
+						$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
+						$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand);
+						
+						utilsService.safeLog('document.location.search', document.location.search);
+						utilsService.safeLog('token/compKey/brand/lang/reportID', {
+							//'document.location.search': document.location.search,
+							token: $rootScope.token,
+							organization: $rootScope.organization,
+							compKey: $rootScope.compKey,
+							brand: $rootScope.brand,
+							lang: $rootScope.lang,
+							reportId: $rootScope.reportId
+						}, true);
+
+						$rootScope.mainCss = document.getElementById('mainCss');
+
+						if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
+							$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
+						}
+
+						if ($rootScope.reportId && $rootScope.reportId.length > 0 && $rootScope.reportId !== 'custom') {
+							utilsService.safeLog('$rootScope.reportId exists: redirect ro /report');
+							// use document.location here; do not use $location 
+							document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+						}
+					});
 				}
-
-				$rootScope.token = getRouteParamValue($routeParams, 'token', '');
-				$rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
-				$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
-				$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
-				$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
-				$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand);
-				
-				utilsService.safeLog('document.location.search', document.location.search);
-				utilsService.safeLog('token/compKey/brand/lang/reportID', {
-					//'document.location.search': document.location.search,
-					token: $rootScope.token,
-					organization: $rootScope.organization,
-					compKey: $rootScope.compKey,
-					brand: $rootScope.brand,
-					lang: $rootScope.lang,
-					reportId: $rootScope.reportId
-				}, true);
-
-				$rootScope.mainCss = document.getElementById('mainCss');
-
-				if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
-					$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
-				}
-
-				if ($rootScope.reportId && $rootScope.reportId.length > 0 && $rootScope.reportId !== 'custom') {
-					utilsService.safeLog('$rootScope.reportId exists: redirect ro /report');
-					// use document.location here; do not use $location 
-					document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
-				}
-			});
-		}]);
+			]
+		);
 
 	// indeterminate-checkbox directive for tri-state checkbox
 	app.directive('customcheck', function() {
@@ -205,6 +216,7 @@
 	app.factory('utilsService', [services.utilsService]);
 	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
+	app.factory('configService', ['utilsService', services.configService]);
 	app.factory('reportServiceConfig', ['utilsService', services.reportServiceConfig]);
 	app.factory('reportService', ['utilsService', 'reportServiceConfig', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
@@ -215,13 +227,13 @@
 	// home controllers
 	app.controller('homeController', [
 		'$scope', '$rootScope', '$location', 
-		'utilsService',
+		'utilsService', 'configService', 
 		controllers.homeController]);
 	
 	// report controller
 	app.controller('reportController', [
 		'$scope', '$rootScope', '$location', '$timeout', '$interval', 
-		'utilsService',
+		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
 		'reportService', 
