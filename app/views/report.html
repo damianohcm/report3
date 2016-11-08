@@ -78,93 +78,102 @@
 
     <div class="m-t-lg">
 
-        <table class="table">
-            <thead>
-                <tr class="tr-head">
-                    <th ng-repeat="c in model.columns track by $index" ng-show="c.show" ng-class="colHeaderCss(c)">
-                        <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
-                        <div ng-if="c.position > 0">
-                            <!-- begin: column header popover -->
-                            <div class="th-top">
-                                <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
+        <!-- begin: table container -->
+        <div class="table-outer">
+            <div class="table-inner">
 
-                                <span ng-if="!c.locked && c.isGroup && c.show" ng-init="c=c" 
-                                    uib-popover-template="colHeaderPopover.templateUrl" 
-             
-                                    popover-append-to-body="true" 
-                                    popover-trigger="'click outsideClick'"
-                                    popover-placement="{{popoverPlacement(c)}}">
-                                    <a type="button">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                </span>
-                                <a ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
-                            </div>
-                            <!-- end: column header popover -->
-                            <div class="th-middle">
-                                <div class="th-middle-inner">
-                                    <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)">
-                                        {{c.name}}
+                <table class="table">
+                    <thead>
+                        <tr class="tr-head">
+                            <th ng-repeat="c in model.columns track by $index" ng-show="c.show" ng-class="colHeaderCss(c)" ng-style="colHeaderStyle(c)">
+                                <button class="csv" ng-if="c.position === 0" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
+                                <div ng-if="c.position > 0">
+                                    <!-- begin: column header popover -->
+                                    <div class="th-top">
+                                        <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
+
+                                        <span ng-if="!c.locked && c.isGroup && c.show" ng-init="c=c" 
+                                            uib-popover-template="colHeaderPopover.templateUrl" 
+                    
+                                            popover-append-to-body="true" 
+                                            popover-trigger="'click outsideClick'"
+                                            popover-placement="{{popoverPlacement(c)}}">
+                                            <a type="button">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </span>
+                                        <a ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
+                                    </div>
+                                    <!-- end: column header popover -->
+                                    <div class="th-middle">
+                                        <div class="th-middle-inner">
+                                            <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)">
+                                                {{c.name}}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody ng-repeat="row in model.result.rows track by $index" ng-show="row.show">
-                <tr>
-                    <td ng-repeat="c in model.columns track by $index" 
-                        ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position === 0)">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="row in model.result.rows track by $index" ng-show="row.show">
+                        <tr>
+                            <td ng-repeat="c in model.columns track by $index" 
+                                ng-class="'flash ' + flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position)">
 
-            <!--div ng-if="false && c.position === 0 && row.isGroup" 
-                ng-click="toggleChildRows(row)" class="pull-left row-icon">
-                <i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i>
-            </div-->
+                    <!--div ng-if="false && c.position === 0 && row.isGroup" 
+                        ng-click="toggleChildRows(row)" class="pull-left row-icon">
+                        <i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i>
+                    </div-->
 
-                        <div ng-if="c.position === 0">
-                            <!-- begin: row header popover -->
-                            <div class="row-th-top">
-                                <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
+                                <div ng-if="c.position === 0">
+                                    <!-- begin: row header popover -->
+                                    <div class="row-th-top">
+                                        <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
 
-                                <span ng-init="r=row" 
-                                    uib-popover-template="rowHeaderPopover.templateUrl" 
-                                    popover-append-to-body="true" 
-                                    popover-trigger="'click outsideClick'"
-                                    popover-placement="right">
-                                    <a type="button">
-                                        <i class="fa fa fa-pencil-square-o"></i>
-                                    </a>
-                                </span>
-                            </div>
-                            <!-- end: row header popover -->
-                        </div>
-
-
-                        <div ng-class="c.position === 0 ? 'row-th-middle' : 'row-text'">
-                            <div ng-class="c.position === 0 ? 'row-th-middle-inner' : ''">
-                                <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)" 
-                                    title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
-                                    {{row[c.key].value}}{{row[c.key].suffix}}
-                                    <div ng-if="c.position === 0 && row.children.length < 1" style="font-weight:normal;font-size:0.9em">(No learners)</div>
+                                        <span ng-init="r=row" 
+                                            uib-popover-template="rowHeaderPopover.templateUrl" 
+                                            popover-append-to-body="true" 
+                                            popover-trigger="'click outsideClick'"
+                                            popover-placement="right">
+                                            <a type="button">
+                                                <i class="fa fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <!-- end: row header popover -->
                                 </div>
-                            </div>
-                        </div>
-            
-                    </td>
-                </tr>
-                <tr ng-repeat="child in row.children track by $index" ng-show="!row.isCollapsed && child.show">
-                    <td ng-repeat="c in model.columns" ng-class="child[c.key].css + (!c.show ? ' hidden' : '') + (c.position === 0 ? ' person' : '')">
-                        <div class="pull-left row-text">
-                            <span ng-class="c.position === 0 ? 'person' : ''">{{child[c.key].value}}{{child[c.key].suffix}}</span>
-                            <span ng-if="child[c.key].value2" class="person-title">{{child[c.key].value2}}</span>
-                        </div>
-                        <div ng-if="c.position === 0" class="pull-right row-icon">
-                            <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)"><i class="fa fa-minus-circle"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+
+                                <div ng-class="c.position === 0 ? 'row-th-middle' : 'row-text'">
+                                    <div ng-class="c.position === 0 ? 'row-th-middle-inner' : ''">
+                                        <div ng-class="c.position === 0 ? 'row-th-text' : ''" ng-click="onRowCellClick(c, row)" 
+                                            title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
+                                            {{row[c.key].value}}{{row[c.key].suffix}}
+                                            <div ng-if="c.position === 0 && row.children.length < 1" style="font-weight:normal;font-size:0.9em">(No learners)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </td>
+                        </tr>
+                        <tr ng-repeat="child in row.children track by $index" ng-show="!row.isCollapsed && child.show">
+                            <td ng-repeat="c in model.columns" ng-class="child[c.key].css + (!c.show ? ' hidden' : '') + (c.position === 0 ? ' person' : '')">
+                                <div class="pull-left row-text">
+                                    <span ng-class="c.position === 0 ? 'person' : ''">{{child[c.key].value}}{{child[c.key].suffix}}</span>
+                                    <span ng-if="child[c.key].value2" class="person-title">{{child[c.key].value2}}</span>
+                                </div>
+                                <div ng-if="c.position === 0" class="pull-right row-icon">
+                                    <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)"><i class="fa fa-minus-circle"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- end: table container -->
+
     </div>
 </div>

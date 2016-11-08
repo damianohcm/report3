@@ -719,6 +719,20 @@ div.height-40 {
 
 /* end: ribbon css */
 /* end: report home*/
+.table {
+  outline: solid 0px red;
+  width: inherit; }
+
+div.table-outer {
+  outline: solid 0px green;
+  width: 1320px;
+  max-width: 1320px;
+  overflow-y: scroll; }
+
+div.table-inner {
+  outline: solid 0px yellow;
+  width: auto; }
+
 .wizard-container {
   background-color: #F3F3F3;
   width: 1000px;
@@ -1115,7 +1129,7 @@ tags-input .tags {
   color: #999; }
 
 body.notie .table {
-  table-layout: fixed; }
+  /*table-layout: fixed;*/ }
 
 .wizard-container.saved-reports {
   width: 896px; }

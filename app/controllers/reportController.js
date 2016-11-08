@@ -637,6 +637,41 @@
 			}
 		};
 
+		$scope.colHeaderStyle = function(col) {
+			// get total visible columns
+			var totColumns;
+			if ($scope.topLevelColumn) {
+				totColumns = $scope.visibleColumns(col).length;
+			} else {
+				totColumns = $scope.visibleGroupColumns().length;
+			}
+
+			totColumns = totColumns < 3 ? 3 : totColumns;
+
+			var storeWidthPercent = 10, summaryWidthPercent = 0;
+			var useFixedWidth = totColumns > 10;
+			var styleObj = {
+			};
+
+			if (col.key === 'category') {
+				styleObj.width = useFixedWidth ? '200px' : storeWidthPercent + '%';
+			// } else if (col.key === 'summary') {
+			// 	styleObj.width = useFixedWidth ? '130px' : summaryWidthPercent + '%';
+			} else {
+				if (useFixedWidth) {
+					styleObj.width = '130px';
+				} else {
+					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
+					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
+				}
+			}
+
+			if (useFixedWidth) {
+				styleObj['min-width'] = styleObj.width;
+			}
+			return styleObj;
+		};
+
 		$scope.thTextCss = function(c) {
 			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
 			if ((c.isGroup || c.isChild || c.key === 'summary') && c.name.length > 39) {
