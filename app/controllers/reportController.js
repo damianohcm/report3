@@ -898,7 +898,7 @@
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
-				//var fileName = 'data/janic.json?' + Math.random();
+
 				var fileName = 'data/janic-' + $rootScope.reportId + '.json?' + Math.random();
 
 				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
