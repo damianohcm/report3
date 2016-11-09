@@ -65,7 +65,7 @@
 			}
 		});
 
-		/* TODO: refactoring in progress */
+		// set current brand and "other" brand (other will be the one that is not equal to the current params.brand or brandConfig.key)
 		$scope.currentBrandObj = brandConfig;
 		$scope.otherBrandObj = _.find(configService.getBrands(), function (item) {
 			return item.key !== params.brand;
