@@ -5,7 +5,9 @@
 	// set to false for production
 	window.logEnabled = false;
   
-    window.services.utilsService = function() {
+    window.services.utilsService = function(configService) {
+
+		var commonConfig = configService.getCommonConfig();
 
 		var obj = {
 		};
@@ -13,16 +15,18 @@
 		 /**
 		 * @method safeLog
 		 * @description
-		 * Wrap console.log and makes sure it will log only if browser supports console and window.logEnabled is true.
-		 * When passing force as true, it will always log, no matter what window.logEnable value is.
+		 * Wrap console.log and makes sure it will log only if browser supports console and commonConfig.logEnabled is true.
+		 * When passing force as true, it will always log, no matter what commonConfig.logEnable value is.
 		 */
 		// eslint-disable-next-line no-unused-vars
         obj.safeLog = function(msg, data, force) {
-			if ((window.logEnabled || force) && console && console.log) {
-				if (arguments.length > 1) {
-					console.log(msg, data);
-				} else {
-					console.log(msg);
+			if (commonConfig.logEnabled && (window.logEnabled || force)) {
+				if (console && console.log) {
+					if (arguments.length > 1) {
+						console.log(msg, data);
+					} else {
+						console.log(msg);
+					}
 				}
 			}
         };

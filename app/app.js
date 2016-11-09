@@ -3,14 +3,8 @@
 	var getRouteParamValue = function ($routeParams, key, defaultValue) {
 		
         if ($routeParams && $routeParams[key]) {
-			if (key==='brand') {
-				debugger;
-			}
 			return $routeParams[key];
 		} else {
-			if (key==='brand') {
-				debugger;
-			}
 			if (document.location.search && document.location.search.length > 0) {
 			    var arr = document.location.search.split(key + '=')[1];
 			    if (arr && arr.length > 0) {
@@ -248,10 +242,10 @@
 		}]);
 	
 	// register services with angular
-	app.factory('utilsService', [services.utilsService]);
+	app.factory('configService', [services.configService]);
+	app.factory('utilsService', ['configService', services.utilsService]);
 	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
-	app.factory('configService', ['utilsService', services.configService]);
 	app.factory('reportServiceConfig', ['utilsService', services.reportServiceConfig]);
 	app.factory('reportService', ['utilsService', 'reportServiceConfig', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);

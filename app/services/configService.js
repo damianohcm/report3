@@ -27,7 +27,8 @@
                     csBaseUrl: '',
                     lang: '',
                     organization: ''
-                }
+                },
+                logEnabled: false /* if true, utilsService.safeLog will output message to the console.log (also dependends on window.logEnabled) */
             },
             brands: [
                 {

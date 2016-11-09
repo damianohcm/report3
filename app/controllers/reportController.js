@@ -16,8 +16,8 @@
 				title: 'Unknown report id'
 			};
 
-		console.log('reportController params', params);
-		console.log('reportController reportConfigStrategy', reportConfigStrategy);
+		utilsService.safeLog('reportController params', params);
+		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -653,7 +653,7 @@
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
-			utilsService.safeLog('reportController.onDataComplete', data);
+			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
 			// get the report model from reportService
