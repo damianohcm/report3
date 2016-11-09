@@ -61,7 +61,7 @@
 		Object.defineProperty($scope, 'displayViewReportFor', {
 			get: function() {
 				// logic specific to Dunkin
-				return ['dd', 'ddbr'].indexOf(sessionParams.organization) > -1;
+				return sessionParams.organization === 'ddbr';
 			}
 		});
 

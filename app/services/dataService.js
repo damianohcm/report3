@@ -88,11 +88,7 @@
 				seg.name = (seg.title || seg.name);
 				seg.type = (seg.item_type || seg.type || 'Not Set');
 
-				var mappedLos = reportConfigStrategy.oneLevel 
-					? [] 
-					: _.filter((seg.los || seg.learning_objects), function(lo) {
-						return (lo.item_type || lo.type || '').toLowerCase() !== 'curriculum';
-					});
+				var mappedLos = [];
 
 				utilsService.fastLoop(seg.los, function(lo) {
 					lo = mapLoFields(lo);
