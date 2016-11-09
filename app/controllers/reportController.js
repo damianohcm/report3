@@ -60,35 +60,16 @@
 
 		Object.defineProperty($scope, 'displayViewReportFor', {
 			get: function() {
+				// logic specific to Dunkin
 				return ['dd', 'ddbr'].indexOf(sessionParams.organization) > -1;
 			}
 		});
 
 		/* TODO: refactoring in progress */
-		var _brBrandObj = {
-			key: 'br',
-			title: 'Baskin-Robbins'
-		}, _ddBrandObj = {
-			key: 'dd',
-			title: 'Dunkin Donuts'
-		};
-
-		$scope.currentBrandObj = params.brand === 'dd' ? _ddBrandObj : _brBrandObj;
-		$scope.otherBrandObj = params.brand === 'dd' ? _brBrandObj : _ddBrandObj;
-
-
-		// // $scope.toggleBrand = function() {
-		// // 	var otherBrand = $scope.otherBrandObj.key;
-		// // 	var path = sessionParams.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
-		// // 	utilsService.safeLog('toggleBrand', path, true);
-		// // 	parent.document.location = path;	
-		// // };
-
-		// // $scope.onBackToClick = function() {
-		// // 	var path = sessionParams.csBaseUrl + '&brand=' + params.brand;
-		// // 	utilsService.safeLog('onBackToClick', path, true);
-		// // 	parent.document.location = path;
-		// // };
+		$scope.currentBrandObj = brandConfig;
+		$scope.otherBrandObj = _.find(configService.getBrands(), function (item) {
+			return item.key !== params.brand;
+		});
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {

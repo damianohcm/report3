@@ -29,52 +29,69 @@
                     organization: ''
                 }
             },
-            dd: {
-                reportStrategies: {
-                    'learning-path': {
-                        pathId: 15,
-                        title: 'Learning Path',
-                        oneLevel: false
-                    },
-                    'new-and-trending': {
-                        pathId: 18,
-                        title: 'New & Trending',
-                        oneLevel: true
-                    },
-                    custom: {
-                        pathId: -1,
-                        title: 'Custom',
-                        oneLevel: false
+            brands: [
+                {
+                    key: 'br',
+                    title: 'Baskin-Robbins',
+                    reportStrategies: {
+                        'learning-path': {
+                            pathId: 15,
+                            title: 'Learning Path',
+                            oneLevel: false
+                        },
+                        'new-and-trending': {
+                            pathId: 18,
+                            title: 'New & Trending',
+                            oneLevel: true
+                        },
+                        custom: {
+                            pathId: -1,
+                            title: 'Custom',
+                            oneLevel: false
+                        }
+                    }
+                }, {
+                    key: 'dd',
+                    title: 'Dunkin Donuts',
+                    reportStrategies: {
+                        'learning-path': {
+                            pathId: 15,
+                            title: 'Learning Path',
+                            oneLevel: false
+                        },
+                        'new-and-trending': {
+                            pathId: 18,
+                            title: 'New & Trending',
+                            oneLevel: true
+                        },
+                        custom: {
+                            pathId: -1,
+                            title: 'Custom',
+                            oneLevel: false
+                        }
                     }
                 }
-            },
-            br: {
-                reportStrategies: {
-                    'learning-path': {
-                        pathId: 15, /* TODO: need to update this with new value once John has created the new Learning Path for BR */
-                        title: 'Learning Path (BR)',
-                        oneLevel: false
-                    },
-                    'new-and-trending': {
-                        pathId: 18, /* TODO: need to update this with new value once John has created the new New and Trending for BR */
-                        title: 'New & Trending (BR)',
-                        oneLevel: true
-                    },
-                    custom: {
-                        pathId: -1,
-                        title: 'Custom',
-                        oneLevel: false
-                    }
-                }
-            }
+            ]
         };
+
 
         var getCommonConfig = function() {
             return config.common;
         };
 
-        var getBrandConfig = function(brand) {
-            return config[brand] || alert('homeConfig: could not find brand ' + brand + ' in config');
+        var getBrands = function() {
+            return config.brands;
+        };
+
+        var getBrandConfig = function(key) {
+            var brandConfig;
+            for (var i = 0; i < config.brands.length; i++) {
+                if (config.brands[i].key === key) {
+                    brandConfig = config.brands[i];
+                    break;
+                }
+            }
+            return brandConfig || alert('homeConfig: could not find brand ' + key + ' in config');
         };
 
         var setParam = function(key, value) {
@@ -99,6 +116,7 @@
 
         return {
 			getCommonConfig: getCommonConfig,
+            getBrands: getBrands,
             getBrandConfig: getBrandConfig,
             setParam: setParam,
             setSessionParam: setSessionParam,
