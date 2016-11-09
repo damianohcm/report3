@@ -9,7 +9,9 @@
 
         var config = {
             common: {
-                // any config that is not specific to a single brand should go here
+                // any config that is not specific to a single brand should go here,
+                totCompletionTitlePrefix: 'Tot Completion % for ',
+                apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com'
             },
             dd: {
                 reportStrategies: {

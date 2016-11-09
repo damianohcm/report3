@@ -14,6 +14,7 @@
 			reportId: $rootScope.reportId
 		}, true);
 
+		var commonConfig = configService.getCommonConfig();
 		var brandConfig = configService.getBrandConfig($rootScope.brand);
 		var reportStrategies = brandConfig.reportStrategies;
 		var reportConfigStrategy = reportStrategies && reportStrategies[$rootScope.reportId] || {
@@ -366,32 +367,6 @@
 			}
 		};
 
-		// /**
-		//  * @method showAllColumns
-		//  * @description
-		//  * Will show all columns, including child columns. Currently used only for debugging.
-		//  */
-		// $scope.showAllColumns = function() {
-		// 	utilsService.safeLog('showAllColumns');
-		// 	if ($scope.model) {
-		// 		for (var c in $scope.model.columns) {
-		// 			var col = $scope.model.columns[c];
-		// 			col.show = true;
-		// 			if (col.isChild) {
-		// 				col.calculate = true;
-		// 			}
-		// 		}
-
-		// 		// reset undo history
-		//		var isDetailView = $scope.model.topLevelColumn !== undefined;
-		// 		$scope.undoService.undoAllActions(isDetailView);
-
-		// 		// update values
-		// 		//utilsService.safeLog('WARNING: code commented out');
-		// 		$scope.recalculate();
-		// 	}
-		// };
-
 		/**
 		 * @method hideCol
 		 * @description 
@@ -517,7 +492,7 @@
 
 					// save current summary colunn title 
 					$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
-					$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+					$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + (groupCol.name || groupCol.title);
 
 					groupCol.refreshing = false;
 
@@ -655,9 +630,10 @@
 			utilsService.safeLog('reportController.onDataComplete', data);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
-			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
-			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
+			// get the report model from reportService
+			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 
+			// helper that will be called after all rows have been added
 			var onRowsCompleted = function() {
 				var rows = $scope.model.result.rows;
 				if (rows && rows.length === 1) {
@@ -673,7 +649,7 @@
 				}
 			};
 
-			// then rowGroups after angular bindings
+			// add rows one at the time with an interval for better UX and avoid angular binding performance issues
 			$timeout(function(){
 
 				// hide loader
@@ -718,13 +694,11 @@
 					debugger;
 					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 				} else {
-					var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
 					var _endPoints = [{
 						key: 'segments',
 						propertyOnData: 'learning_path_items',
-						path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-							//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-							_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+						path: commonConfig.apiBaseUrl 
+							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
 								.replace('[user]', $rootScope.token)
 								.replace('[companyKey]', $rootScope.compKey)
@@ -732,10 +706,11 @@
 						key: 'stores',
 						propertyOnData: 'results',
 						//path: 'data/luca-stores.json?' + Math.random()
-						path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-							.replace('[path_id]', reportConfigStrategy.pathId)
-							.replace('[user]', $rootScope.token)
-							.replace('[companyKey]', $rootScope.compKey)
+						path: commonConfig.apiBaseUrl 
+							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+								.replace('[path_id]', reportConfigStrategy.pathId)
+								.replace('[user]', $rootScope.token)
+								.replace('[companyKey]', $rootScope.compKey)
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
