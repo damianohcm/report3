@@ -21,7 +21,7 @@
         <img class="return" src="../img/back-arrow.png"/>
         <div class="text">Back to <br/><strong>Reporting Center</strong></div>
     </a>
-    <a class="banner-button viewFor" ng-show="organization === 'ddbr'" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}&reportId={{reportId}}" title="{{csBaseUrl}}">
+    <a class="banner-button viewFor" ng-show="displayViewReportFor" target="_parent" href="{{csBaseUrl}}&brand={{viewReportFor.key}}&reportId={{reportId}}" title="{{csBaseUrl}}">
         <img class="{{viewReportFor.key}}" src="../img/{{viewReportFor.key}}_logo_btn_sm.png"/>
         <div class="text">View report for <br/><strong>{{viewReportFor.title}}</strong></div>
     </a>

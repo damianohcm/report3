@@ -43,7 +43,7 @@
 
 		Object.defineProperty($scope, 'organization', {
 			get: function() {
-				return $rootScope.organization;
+				return ($rootScope.organization && $rootScope.organization.toLowerCase || '');
 			}
 		});
 
@@ -60,6 +60,12 @@
 				} else {
 					return _ddBrandObj;
 				}
+			}
+		});
+
+		Object.defineProperty($scope, 'displayViewReportFor', {
+			get: function() {
+				return ['dd', 'ddbr'].indexOf($scope.organization) > -1;
 			}
 		});
 
