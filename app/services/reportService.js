@@ -703,7 +703,7 @@
 						position:  model.columns.length,
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
-						css: 'th-section  valign-top',
+						css: 'th-section valign-top',
 						name: (section.title || section.name),
 						type: section.type
 					};

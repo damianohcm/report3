@@ -751,16 +751,28 @@ div.height-40 {
 /* end: ribbon css */
 
 /* end: report home*/
+
+
+/* begin: css for horiz table scrolling */
 .table {
   outline: solid 0px red;
-  width: inherit; }
+  width: inherit; 
+}
 
 div.table-outer {
   outline: solid 0px green;
   width: 1320px;
   max-width: 1320px;
-  overflow-y: scroll; }
+  overflow-y: scroll; 
+}
 
 div.table-inner {
   outline: solid 0px yellow;
-  width: auto; }
+  width: auto;
+}
+/* end: css for horiz table scrolling */
+
+/* begin: css for fixed headers */
+
+/* end: css for fixed headers */
+

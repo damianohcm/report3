@@ -719,6 +719,7 @@ div.height-40 {
 
 /* end: ribbon css */
 /* end: report home*/
+/* begin: css for horiz table scrolling */
 .table {
   outline: solid 0px red;
   width: inherit; }
@@ -733,6 +734,9 @@ div.table-inner {
   outline: solid 0px yellow;
   width: auto; }
 
+/* end: css for horiz table scrolling */
+/* begin: css for fixed headers */
+/* end: css for fixed headers */
 .wizard-container {
   background-color: #F3F3F3;
   width: 1000px;
