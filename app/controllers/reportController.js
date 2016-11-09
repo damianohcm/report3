@@ -6,9 +6,8 @@
     window.controllers.reportController = function($scope, $location, $timeout, $interval, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
-		$scope.undoService = undoServiceFactory.getService('reportController');
-		
 		var commonConfig = configService.getCommonConfig(),
+		 sessionParams = commonConfig.sessionParams,
 		 params = commonConfig.params,
 		 brandConfig = configService.getBrandConfig(params.brand),
 		 reportStrategies = brandConfig.reportStrategies,
@@ -16,15 +15,20 @@
 				pathId: -1,
 				title: 'Unknown report id'
 			};
-	
+
+		// get undo service instance
+		$scope.undoService = undoServiceFactory.getService('reportController');
+		
 		// switch css
 		var elMainCss = document.getElementById('mainCss');
 		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
 		
-		utilsService.safeLog('reportController: params.brand/lang/reportId', {
-			token: params.token,
+		utilsService.safeLog('reportController: token/lang/brand/reportId', {
+			token: sessionParams.token,
+			lang: sessionParams.lang,
+			csBaseUrl: sessionParams.csBaseUrl,
+			organization: sessionParams.organization,
 			brand: params.brand,
-			lang: params.lang,
 			reportId: params.reportId
 		}, true);
 
@@ -35,25 +39,25 @@
 
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
-				return (params.token || '').length === 0 ? 'Invalid token or missing token' : '';
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
 			}
 		});
 
 		Object.defineProperty($scope, 'organization', {
 			get: function() {
-				return (params.organization && params.organization.toLowerCase || '');
+				return (sessionParams.organization && sessionParams.organization.toLowerCase || '');
 			}
 		});
 
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
-				return params.csBaseUrl;
+				return sessionParams.csBaseUrl;
 			}
 		});
 
 		Object.defineProperty($scope, 'displayViewReportFor', {
 			get: function() {
-				return ['dd', 'ddbr'].indexOf(params.organization) > -1;
+				return ['dd', 'ddbr'].indexOf(sessionParams.organization) > -1;
 			}
 		});
 
@@ -72,26 +76,26 @@
 
 		// // $scope.toggleBrand = function() {
 		// // 	var otherBrand = $scope.otherBrandObj.key;
-		// // 	var path = params.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
+		// // 	var path = sessionParams.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
 		// // 	utilsService.safeLog('toggleBrand', path, true);
 		// // 	parent.document.location = path;	
 		// // };
 
 		// // $scope.onBackToClick = function() {
-		// // 	var path = params.csBaseUrl + '&brand=' + params.brand;
+		// // 	var path = sessionParams.csBaseUrl + '&brand=' + params.brand;
 		// // 	utilsService.safeLog('onBackToClick', path, true);
 		// // 	parent.document.location = path;
 		// // };
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				return params.csBaseUrl + '&brand=' + $scope.otherBrandObj.key + '&reportId=' + params.reportId;
+				return sessionParams.csBaseUrl + '&brand=' + $scope.otherBrandObj.key + '&reportId=' + params.reportId;
 			}
 		});
 
 		Object.defineProperty($scope, 'backToHref', {
 			get: function() {
-				return params.csBaseUrl + '&brand=' + $scope.otherBrandObj.key;
+				return sessionParams.csBaseUrl + '&brand=' + $scope.otherBrandObj.key;
 			}
 		});
 
@@ -727,8 +731,8 @@
 						path: commonConfig.apiBaseUrl 
 							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', params.token)
-								.replace('[companyKey]', params.compKey)
+								.replace('[user]', sessionParams.token)
+								.replace('[companyKey]', sessionParams.compKey)
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
@@ -736,8 +740,8 @@
 						path: commonConfig.apiBaseUrl 
 							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', params.token)
-								.replace('[companyKey]', params.compKey)
+								.replace('[user]', sessionParams.token)
+								.replace('[companyKey]', sessionParams.compKey)
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param

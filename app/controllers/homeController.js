@@ -6,11 +6,12 @@
     window.controllers.homeController = function($scope, $location, utilsService, configService) {
 
 		var commonConfig = configService.getCommonConfig(),
-			params = commonConfig.params;
+			sessionParams = commonConfig.sessionParams,
+		 	params = commonConfig.params;
 		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
-				return (params.token || '').length === 0 ? 'Invalid token or missing token' : '';
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
 			}
 		});
 
@@ -18,7 +19,7 @@
 		var menuItemsStrategy = {
 			openReport: {
 				action: function(reportId) {
-					configService.setCommonParam('reportId', reportId);
+					configService.setParam('reportId', reportId);
 					document.location = '#/report?a=1&reportId=' + params.reportId;
 					//$location.path('/report?a=1&reportId=' + params.reportId);
 				}

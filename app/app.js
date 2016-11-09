@@ -34,49 +34,59 @@
 				'configService', 
 
 				function($rootScope, $location, $routeParams, utilsService, configService) {
+					console.log('********** run **********');
 
-					$rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
+					// handler for route change success event
+					$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 						var routePath = $location.path();
-						utilsService.safeLog('Current route: ', routePath, true);
+						utilsService.safeLog('*** Current route: routePath', routePath, true);
+						//utilsService.safeLog('*** Current route: current ', current, true);
+						//utilsService.safeLog('*** Current route: previous ', previous, true);
 						// Get all URL parameter
-						utilsService.safeLog('Current route params: ', $routeParams, true);
+						utilsService.safeLog('*** Current route params: ', $routeParams, true);
+						utilsService.safeLog('document.location.search', document.location.search);
+						
+						// set session params (this should not change so set them only once)
+						if (!configService.sessionParamsSet) {
+							var token = getRouteParamValue($routeParams, 'token', ''),
+								compKey = getRouteParamValue($routeParams, 'compKey', ''),
+								csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
+								lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
+								organization = getRouteParamValue($routeParams, 'organization', 'dd').toLowerCase();
+							
+							configService.setSessionParam('token', token);
+							configService.setSessionParam('compKey', compKey);
+							configService.setSessionParam('csBaseUrl', csBaseUrl);
+							configService.setSessionParam('lang', lang);
+							configService.setSessionParam('organization', organization);
 
-						var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
-						if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
-							////$rootScope.reportId = reportId;
-							configService.setCommonParam('reportId', reportId);
+							// mark flag so that we do not set them next time routeChangeSuccess is invoked
+							configService.sessionParamsSet = true;
+
+							utilsService.safeLog('*** session params (set only once)', {
+								//'document.location.search': document.location.search,
+								token: token,
+								compKey: compKey,
+								lang: lang,
+								organization: organization,
+							}, true);
 						}
 
-						// // $rootScope.token = getRouteParamValue($routeParams, 'token', '');
-						// // $rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
-						// // $rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
-						// // $rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
-						// // $rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
-						// // $rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand).toLowerCase();
+						// set params passed via query string (these are params that can change)
+						var brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase(),
+							reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
 
-						var token = getRouteParamValue($routeParams, 'token', ''),
-							compKey = getRouteParamValue($routeParams, 'compKey', ''),
-							csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
-							brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase(),
-							lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
-							organization = getRouteParamValue($routeParams, 'organization', brand).toLowerCase();
-						
-						configService.setCommonParam('token', token);
-						configService.setCommonParam('compKey', compKey);
-						configService.setCommonParam('csBaseUrl', csBaseUrl);
-						configService.setCommonParam('brand', brand);
-						configService.setCommonParam('lang', lang);
-						configService.setCommonParam('organization', organization);
-						
-						utilsService.safeLog('document.location.search', document.location.search);
-						utilsService.safeLog('token/compKey/brand/lang/reportID', {
+						configService.setParam('brand', brand);
+
+						if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
+							////$rootScope.reportId = reportId;
+							configService.setParam('reportId', reportId);
+						}
+
+						utilsService.safeLog('brand/reportID', {
 							//'document.location.search': document.location.search,
-							token: token,
-							compKey: compKey,
-							reportId: reportId,
 							brand: brand,
-							lang: lang,
-							organization: organization,
+							reportId: reportId
 						}, true);
 
 						if ((brand && brand.toLowerCase()) === 'br') {
@@ -258,7 +268,7 @@
 		'$scope', 
 		'$rootScope', /* TODO remove rootScope as in reportController */
 		'$location', '$timeout', '$interval', '$uibModal', 
-		'utilsService',
+		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
 		'reportService', 
@@ -268,7 +278,7 @@
 	app.controller('customReportWizardController', [
 		'$scope',
 		'$route', '$routeParams', '$location', '$filter', 
-		'utilsService',
+		'utilsService', 'configService',
 		'dataService',
 		'wizardServiceFactory',
 		controllers.customReportWizardController]);
@@ -277,7 +287,7 @@
 	app.controller('savedReportsController', [
 		'$scope',
 		'$route', '$routeParams', '$location', '$filter', 
-		'utilsService',
+		'utilsService', 'configService',
 		'dataService',
 		controllers.savedReportsController]);
 

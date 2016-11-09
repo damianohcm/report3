@@ -166,7 +166,7 @@
 							wizard.isComplete = true;
 							//wizard.close();
 
-							configService.setCommonParam('newCustomReportModel', JSON.stringify($scope.model));
+							configService.setParam('newCustomReportModel', JSON.stringify($scope.model));
 							document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}

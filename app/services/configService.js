@@ -13,17 +13,20 @@
                 totCompletionTitlePrefix: 'Tot Completion % for ',
                 apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com',
                 params: {
-                    // these will contain query string and session params
+                    // these will contain query string params that we keep passing around
+                    // and will be set in angular.run, instead of saving them on $rootScope or $scope
+                    brand: '',
+                    reportId: '',
+                    newCustomReportModel: ''
+                },
+                sessionParams: {
+                    // these will contain session params set only once from query string the first time the / path is called
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
                     token: '',
                     compKey: '',
                     csBaseUrl: '',
-                    brand: '',
                     lang: '',
-                    organization: '',
-                    reportId: '',
-
-                    newCustomReportModel: ''
+                    organization: ''
                 }
             },
             dd: {
@@ -74,19 +77,32 @@
             return config[brand] || alert('homeConfig: could not find brand ' + brand + ' in config');
         };
 
-        var setCommonParam = function(key, value) {
+        var setParam = function(key, value) {
             if (Object.keys(config.common.params).indexOf(key) > -1) {
                 config.common.params[key] = value;
             } else {
-                console.log('configService.setCommonParam: exception: unknown key', key);
+                console.log('configService.setParam: exception: unknown key', key);
                 debugger;
             }
         };
 
+        var setSessionParam = function(key, value) {
+            if (Object.keys(config.common.sessionParams).indexOf(key) > -1) {
+                config.common.sessionParams[key] = value;
+            } else {
+                console.log('configService.setSessionParam: exception: unknown key', key);
+                debugger;
+            }
+        };
+
+        var sessionParamsSet = false;
+
         return {
 			getCommonConfig: getCommonConfig,
             getBrandConfig: getBrandConfig,
-            setCommonParam: setCommonParam
+            setParam: setParam,
+            setSessionParam: setSessionParam,
+            sessionParamsSet: sessionParamsSet
 		};
     };
 

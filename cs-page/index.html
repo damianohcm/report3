@@ -33,6 +33,7 @@
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
     };
+
     window.toggleBrand = function() {
         window.currentBrand = window.currentBrand === 'dd' ? 'br' : 'dd';
         window.setBrand();
@@ -61,12 +62,12 @@
 
                 // for local development
                 //var baseUrl = 'http://10.12.6.129:8080/',
-                var baseUrl = 'http://10.0.0.6:8080/',
-                //var baseUrl = 'http://localhost:8080/',
+                //var baseUrl = 'http://10.0.0.6:8080/',
+                var baseUrl = 'http://localhost:8080/',
                     csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
                 // for production
-                //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/',
+                //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/#/',
                 //    csBaseUrl = document.location.href.split('&')[0];
 
                 window.frameUrl = baseUrl
