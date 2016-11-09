@@ -51,7 +51,7 @@
 						$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
 						$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
 						$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
-						$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand);
+						$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand).toLowerCase();
 						
 						utilsService.safeLog('document.location.search', document.location.search);
 						utilsService.safeLog('token/compKey/brand/lang/reportID', {

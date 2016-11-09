@@ -65,7 +65,7 @@
 
 		Object.defineProperty($scope, 'displayViewReportFor', {
 			get: function() {
-				return ['dd', 'ddbr'].indexOf($scope.organization) > -1;
+				return ['dd', 'ddbr'].indexOf($rootScope.organization) > -1;
 			}
 		});
 

@@ -35,13 +35,13 @@
             br: {
                 reportStrategies: {
                     'learning-path': {
-                        pathId: 17,
-                        title: 'Learning Path',
+                        pathId: 15, /* TODO: need to update this with new value once John has created the new Learning Path for BR */
+                        title: 'Learning Path (BR)',
                         oneLevel: false
                     },
                     'new-and-trending': {
-                        pathId: 19,
-                        title: 'New & Trending',
+                        pathId: 18, /* TODO: need to update this with new value once John has created the new New and Trending for BR */
+                        title: 'New & Trending (BR)',
                         oneLevel: true
                     },
                     custom: {
