@@ -69,18 +69,32 @@
 		$scope.currentBrandObj = params.brand === 'dd' ? _ddBrandObj : _brBrandObj;
 		$scope.otherBrandObj = params.brand === 'dd' ? _brBrandObj : _ddBrandObj;
 
-		$scope.toggleBrand = function() {
-			var otherBrand = $scope.otherBrandObj.key;
-			var path = params.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
-			utilsService.safeLog('toggleBrand', path, true);
-			parent.document.location = path;	
-		};
 
-		$scope.onBackToClick = function() {
-			var path = params.csBaseUrl + '&brand=' + params.brand;
-			utilsService.safeLog('onBackToClick', path, true);
-			parent.document.location = path;
-		};
+		// // $scope.toggleBrand = function() {
+		// // 	var otherBrand = $scope.otherBrandObj.key;
+		// // 	var path = params.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
+		// // 	utilsService.safeLog('toggleBrand', path, true);
+		// // 	parent.document.location = path;	
+		// // };
+
+		// // $scope.onBackToClick = function() {
+		// // 	var path = params.csBaseUrl + '&brand=' + params.brand;
+		// // 	utilsService.safeLog('onBackToClick', path, true);
+		// // 	parent.document.location = path;
+		// // };
+
+		Object.defineProperty($scope, 'viewReportForHref', {
+			get: function() {
+				return params.csBaseUrl + '&brand=' + $scope.otherBrandObj.key + '&reportId=' + params.reportId;
+			}
+		});
+
+		Object.defineProperty($scope, 'backToHref', {
+			get: function() {
+				return params.csBaseUrl + '&brand=' + $scope.otherBrandObj.key;
+			}
+		});
+
 
 		$scope.progressBar = {
 			type: 'warning',

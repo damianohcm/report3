@@ -2,11 +2,11 @@
     <img src="../img/learning-path-icon.png"/>
     <h2>{{title}}</h2>
 
-    <a class="banner-button return" target="_parent" ng-click="onBackToClick()">
+    <a class="banner-button return" target="_parent" href="{{backToHref}}">
         <img class="return" src="../img/back-arrow.png"/>
         <div class="text">Back to <br/><strong>Reporting Center</strong></div>
     </a>
-    <a class="banner-button viewFor" ng-show="displayViewReportFor" target="_parent" ng-click="toggleBrand()">
+    <a class="banner-button viewFor" ng-show="displayViewReportFor" target="_parent" href="{{viewReportForHref}}">
         <img class="{{otherBrandObj.key}}" ng-src="../img/{{otherBrandObj.key}}_logo_btn_sm.png"/>
         <div class="text">View report for <br/><strong>{{otherBrandObj.title}}</strong></div>
     </a>
