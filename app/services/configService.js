@@ -11,7 +11,20 @@
             common: {
                 // any config that is not specific to a single brand should go here,
                 totCompletionTitlePrefix: 'Tot Completion % for ',
-                apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com'
+                apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com',
+                params: {
+                    // these will contain query string and session params
+                    // and will be set in angular.run, instead of saving them on $rootScope or $scope
+                    token: '',
+                    compKey: '',
+                    csBaseUrl: '',
+                    brand: '',
+                    lang: '',
+                    organization: '',
+                    reportId: '',
+
+                    newCustomReportModel: ''
+                }
             },
             dd: {
                 reportStrategies: {
@@ -61,9 +74,19 @@
             return config[brand] || alert('homeConfig: could not find brand ' + brand + ' in config');
         };
 
+        var setCommonParam = function(key, value) {
+            if (Object.keys(config.common.params).indexOf(key) > -1) {
+                config.common.params[key] = value;
+            } else {
+                console.log('configService.setCommonParam: exception: unknown key', key);
+                debugger;
+            }
+        };
+
         return {
 			getCommonConfig: getCommonConfig,
-            getBrandConfig: getBrandConfig
+            getBrandConfig: getBrandConfig,
+            setCommonParam: setCommonParam
 		};
     };
 

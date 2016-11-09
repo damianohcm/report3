@@ -3,11 +3,14 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.homeController = function($scope, $rootScope, $location, utilsService, configService) {
+    window.controllers.homeController = function($scope, $location, utilsService, configService) {
 
+		var commonConfig = configService.getCommonConfig(),
+			params = commonConfig.params;
+		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
-				return ($rootScope.token || '').length === 0 ? 'Invalid token or missing token' : '';
+				return (params.token || '').length === 0 ? 'Invalid token or missing token' : '';
 			}
 		});
 
@@ -15,9 +18,9 @@
 		var menuItemsStrategy = {
 			openReport: {
 				action: function(reportId) {
-					$rootScope.reportId = reportId;
-					//document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
-					$location.path('/report?a=1&reportId=' + $rootScope.reportId);
+					configService.setCommonParam('reportId', reportId);
+					document.location = '#/report?a=1&reportId=' + params.reportId;
+					//$location.path('/report?a=1&reportId=' + params.reportId);
 				}
 			},
 			customReportWizard: {

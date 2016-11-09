@@ -1,6 +1,6 @@
 (function(angular) {
 
-	var getRouteParamValue = function ($routeParams, key, defaultValue) {  
+	var getRouteParamValue = function ($routeParams, key, defaultValue) {
         if ($routeParams && $routeParams[key]) {
 			return $routeParams[key];
 		} else {
@@ -43,37 +43,51 @@
 
 						var reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
 						if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
-							$rootScope.reportId = reportId;
+							////$rootScope.reportId = reportId;
+							configService.setCommonParam('reportId', reportId);
 						}
 
-						$rootScope.token = getRouteParamValue($routeParams, 'token', '');
-						$rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
-						$rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
-						$rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
-						$rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
-						$rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand).toLowerCase();
+						// // $rootScope.token = getRouteParamValue($routeParams, 'token', '');
+						// // $rootScope.compKey = getRouteParamValue($routeParams, 'compKey', '');
+						// // $rootScope.csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', '');
+						// // $rootScope.brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase();
+						// // $rootScope.lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase();
+						// // $rootScope.organization = getRouteParamValue($routeParams, 'organization', $rootScope.brand).toLowerCase();
+
+						var token = getRouteParamValue($routeParams, 'token', ''),
+							compKey = getRouteParamValue($routeParams, 'compKey', ''),
+							csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
+							brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase(),
+							lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
+							organization = getRouteParamValue($routeParams, 'organization', brand).toLowerCase();
+						
+						configService.setCommonParam('token', token);
+						configService.setCommonParam('compKey', compKey);
+						configService.setCommonParam('csBaseUrl', csBaseUrl);
+						configService.setCommonParam('brand', brand);
+						configService.setCommonParam('lang', lang);
+						configService.setCommonParam('organization', organization);
 						
 						utilsService.safeLog('document.location.search', document.location.search);
 						utilsService.safeLog('token/compKey/brand/lang/reportID', {
 							//'document.location.search': document.location.search,
-							token: $rootScope.token,
-							organization: $rootScope.organization,
-							compKey: $rootScope.compKey,
-							brand: $rootScope.brand,
-							lang: $rootScope.lang,
-							reportId: $rootScope.reportId
+							token: token,
+							compKey: compKey,
+							reportId: reportId,
+							brand: brand,
+							lang: lang,
+							organization: organization,
 						}, true);
 
-						$rootScope.mainCss = document.getElementById('mainCss');
-
-						if (($rootScope.brand && $rootScope.brand.toLowerCase()) === 'br') {
-							$rootScope.mainCss.setAttribute('href', 'css/main-br.css');
+						if ((brand && brand.toLowerCase()) === 'br') {
+							var elMainCss = document.getElementById('mainCss');
+							elMainCss.setAttribute('href', 'css/main-br.css');
 						}
 
-						if ($rootScope.reportId && $rootScope.reportId.length > 0 && $rootScope.reportId !== 'custom') {
-							utilsService.safeLog('$rootScope.reportId exists: redirect ro /report');
+						if (reportId && reportId.length > 0 && reportId !== 'custom') {
+							utilsService.safeLog('app.js: reportId exists: redirect ro /report');
 							// use document.location here; do not use $location 
-							document.location = '#/report?a=1&reportId=' + $rootScope.reportId;
+							document.location = '#/report?a=1&reportId=' + reportId;
 						}
 					});
 				}
@@ -226,13 +240,13 @@
 	// register controllers
 	// home controllers
 	app.controller('homeController', [
-		'$scope', '$rootScope', '$location', 
+		'$scope', '$location', 
 		'utilsService', 'configService', 
 		controllers.homeController]);
 	
 	// report controller
 	app.controller('reportController', [
-		'$scope', '$rootScope', '$location', '$timeout', '$interval', 
+		'$scope', '$location', '$timeout', '$interval', 
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
@@ -241,7 +255,9 @@
 	
 	// custom report controller (same as report controller - but for now keeping separate to not affect current functionality)
 	app.controller('customReportController', [
-		'$scope', '$rootScope', '$location', '$timeout', '$interval', '$uibModal', 
+		'$scope', 
+		'$rootScope', /* TODO remove rootScope as in reportController */
+		'$location', '$timeout', '$interval', '$uibModal', 
 		'utilsService',
 		'undoServiceFactory', 
 		'dataService', 
@@ -251,7 +267,6 @@
 	// custom report wizard controller
 	app.controller('customReportWizardController', [
 		'$scope',
-		'$rootScope',
 		'$route', '$routeParams', '$location', '$filter', 
 		'utilsService',
 		'dataService',
@@ -261,7 +276,6 @@
 	// saved reports controller
 	app.controller('savedReportsController', [
 		'$scope',
-		'$rootScope',
 		'$route', '$routeParams', '$location', '$filter', 
 		'utilsService',
 		'dataService',

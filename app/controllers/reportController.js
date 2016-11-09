@@ -3,30 +3,61 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, 
+    window.controllers.reportController = function($scope, $location, $timeout, $interval, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
-		utilsService.safeLog('reportController: $rootScope.brand/lang/reportId', {
-			brand: $rootScope.brand,
-			lang: $rootScope.lang,
-			reportId: $rootScope.reportId
-		}, true);
-
-		var commonConfig = configService.getCommonConfig();
-		var brandConfig = configService.getBrandConfig($rootScope.brand);
-		var reportStrategies = brandConfig.reportStrategies;
-		var reportConfigStrategy = reportStrategies && reportStrategies[$rootScope.reportId] || {
+		var commonConfig = configService.getCommonConfig(),
+		 params = commonConfig.params,
+		 brandConfig = configService.getBrandConfig(params.brand),
+		 reportStrategies = brandConfig.reportStrategies,
+		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportId] || {
 				pathId: -1,
 				title: 'Unknown report id'
 			};
+	
+		// switch css
+		var elMainCss = document.getElementById('mainCss');
+		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
+		
+		utilsService.safeLog('reportController: params.brand/lang/reportId', {
+			token: params.token,
+			brand: params.brand,
+			lang: params.lang,
+			reportId: params.reportId
+		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
 		
 		$scope.title = $scope.reportTitle + ' Report';
 		$scope.refreshing = false;
 
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return (params.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
+
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return (params.organization && params.organization.toLowerCase || '');
+			}
+		});
+
+		Object.defineProperty($scope, 'csBaseUrl', {
+			get: function() {
+				return params.csBaseUrl;
+			}
+		});
+
+		Object.defineProperty($scope, 'displayViewReportFor', {
+			get: function() {
+				return ['dd', 'ddbr'].indexOf(params.organization) > -1;
+			}
+		});
+
+		/* TODO: refactoring in progress */
 		var _brBrandObj = {
 			key: 'br',
 			title: 'Baskin-Robbins'
@@ -35,39 +66,21 @@
 			title: 'Dunkin Donuts'
 		};
 
-		Object.defineProperty($scope, 'tokenError', {
-			get: function() {
-				return ($rootScope.token || '').length === 0 ? 'Invalid token or missing token' : '';
-			}
-		});
+		$scope.currentBrandObj = params.brand === 'dd' ? _ddBrandObj : _brBrandObj;
+		$scope.otherBrandObj = params.brand === 'dd' ? _brBrandObj : _ddBrandObj;
 
-		Object.defineProperty($scope, 'organization', {
-			get: function() {
-				return ($rootScope.organization && $rootScope.organization.toLowerCase || '');
-			}
-		});
+		$scope.toggleBrand = function() {
+			var otherBrand = $scope.otherBrandObj.key;
+			var path = params.csBaseUrl + '&brand=' + otherBrand + '&reportId=' + params.reportId;
+			utilsService.safeLog('toggleBrand', path, true);
+			parent.document.location = path;	
+		};
 
-		Object.defineProperty($scope, 'csBaseUrl', {
-			get: function() {
-				return $rootScope.csBaseUrl;
-			}
-		});
-
-		Object.defineProperty($scope, 'viewReportFor', {
-			get: function() {
-				if ($rootScope.brand === 'dd') {
-					return _brBrandObj;
-				} else {
-					return _ddBrandObj;
-				}
-			}
-		});
-
-		Object.defineProperty($scope, 'displayViewReportFor', {
-			get: function() {
-				return ['dd', 'ddbr'].indexOf($rootScope.organization) > -1;
-			}
-		});
+		$scope.onBackToClick = function() {
+			var path = params.csBaseUrl + '&brand=' + params.brand;
+			utilsService.safeLog('onBackToClick', path, true);
+			parent.document.location = path;
+		};
 
 		$scope.progressBar = {
 			type: 'warning',
@@ -82,12 +95,6 @@
 			}
 			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
 			utilsService.safeLog('increaseProgressBar', $scope.progressBar.value);
-		};
-
-		$scope.toggleBrand = function() {
-			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
-			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
-			//utilsService.safeLog('toggleBrand ' + $rootScope.brand);
 		};
 
 		$scope.undoLastAction = function() {
@@ -688,7 +695,7 @@
 			// show loader
 			$scope.loading = true;
 
-			utilsService.safeLog('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportId', params.reportId);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
@@ -706,8 +713,8 @@
 						path: commonConfig.apiBaseUrl 
 							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', $rootScope.token)
-								.replace('[companyKey]', $rootScope.compKey)
+								.replace('[user]', params.token)
+								.replace('[companyKey]', params.compKey)
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
@@ -715,8 +722,8 @@
 						path: commonConfig.apiBaseUrl 
 							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', $rootScope.token)
-								.replace('[companyKey]', $rootScope.compKey)
+								.replace('[user]', params.token)
+								.replace('[companyKey]', params.compKey)
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
@@ -748,9 +755,9 @@
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/janic-' + $rootScope.reportId + '.json?' + Math.random();
+				var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
 
-				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {
