@@ -9,6 +9,18 @@
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params;
 		
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
+			}
+		});
+
+		Object.defineProperty($scope, 'csBaseUrl', {
+			get: function() {
+				return sessionParams.csBaseUrl || '';
+			}
+		});
+
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
 				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
@@ -20,8 +32,12 @@
 			openReport: {
 				action: function(reportId) {
 					configService.setParam('reportId', reportId);
-					document.location = '#/report?a=1&reportId=' + params.reportId;
-					//$location.path('/report?a=1&reportId=' + params.reportId);
+					document.location = '#/report?a=1&brand=[brand]&reportId=[reportId]'
+						.replace('[brand]', params.brand)
+						.replace('[reportId]', params.reportId);
+					// $location.path('/report?a=1&brand=[brand]&reportId=[reportId]'
+					// 	.replace('[brand]', params.brand)
+					// 	.replace('[reportId]', params.reportId));
 				}
 			},
 			customReportWizard: {

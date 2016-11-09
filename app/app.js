@@ -1,9 +1,16 @@
 (function(angular) {
 
 	var getRouteParamValue = function ($routeParams, key, defaultValue) {
+		
         if ($routeParams && $routeParams[key]) {
+			if (key==='brand') {
+				debugger;
+			}
 			return $routeParams[key];
 		} else {
+			if (key==='brand') {
+				debugger;
+			}
 			if (document.location.search && document.location.search.length > 0) {
 			    var arr = document.location.search.split(key + '=')[1];
 			    if (arr && arr.length > 0) {
@@ -44,15 +51,15 @@
 						//utilsService.safeLog('*** Current route: previous ', previous, true);
 						// Get all URL parameter
 						utilsService.safeLog('*** Current route params: ', $routeParams, true);
-						utilsService.safeLog('document.location.search', document.location.search);
-						
+						utilsService.safeLog('document.location.search', document.location.search, true);
+
 						// set session params (this should not change so set them only once)
-						if (!configService.sessionParamsSet) {
+						if (routePath === '/' && !configService.sessionParamsSet) {
 							var token = getRouteParamValue($routeParams, 'token', ''),
 								compKey = getRouteParamValue($routeParams, 'compKey', ''),
 								csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
 								lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
-								organization = getRouteParamValue($routeParams, 'organization', 'dd').toLowerCase();
+								organization = getRouteParamValue($routeParams, 'organization', '').toLowerCase();
 							
 							configService.setSessionParam('token', token);
 							configService.setSessionParam('compKey', compKey);
@@ -73,17 +80,19 @@
 						}
 
 						// set params passed via query string (these are params that can change)
-						var brand = getRouteParamValue($routeParams, 'brand', 'dd').toLowerCase(),
+						var brand = getRouteParamValue($routeParams, 'brand', '').toLowerCase(),
 							reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
 
-						configService.setParam('brand', brand);
-
-						if (['/', '/report', '/customReport'].indexOf(routePath) > -1 && reportId.length > 0) {
+						if (['/', '/report', '/customReport'].indexOf(routePath) > -1) {
 							////$rootScope.reportId = reportId;
-							configService.setParam('reportId', reportId);
+							configService.setParam('brand', brand);
+
+							if (reportId.length > 0) {
+								configService.setParam('reportId', reportId);
+							}
 						}
 
-						utilsService.safeLog('brand/reportID', {
+						utilsService.safeLog('app.js: brand/reportID', {
 							//'document.location.search': document.location.search,
 							brand: brand,
 							reportId: reportId
@@ -97,7 +106,9 @@
 						if (reportId && reportId.length > 0 && reportId !== 'custom') {
 							utilsService.safeLog('app.js: reportId exists: redirect ro /report');
 							// use document.location here; do not use $location 
-							document.location = '#/report?a=1&reportId=' + reportId;
+							document.location = '#/report?a=1&brand=[brand]&reportId=[reportId]'
+								.replace('[brand]', brand)
+								.replace('[reportId]', reportId);
 						}
 					});
 				}

@@ -16,6 +16,9 @@
 				title: 'Unknown report id'
 			};
 
+		console.log('reportController params', params);
+		console.log('reportController reportConfigStrategy', reportConfigStrategy);
+		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
 		
@@ -45,7 +48,7 @@
 
 		Object.defineProperty($scope, 'organization', {
 			get: function() {
-				return (sessionParams.organization && sessionParams.organization.toLowerCase || '');
+				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
 			}
 		});
 
@@ -89,13 +92,24 @@
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				return sessionParams.csBaseUrl + '&brand=' + $scope.otherBrandObj.key + '&reportId=' + params.reportId;
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportId=[reportId]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
+					.replace('[brand]', $scope.otherBrandObj.key)
+					.replace('[reportId]', params.reportId);
+				//utilsService.safeLog('viewReportForHref', result, true);
+				return result;
 			}
 		});
 
 		Object.defineProperty($scope, 'backToHref', {
 			get: function() {
-				return sessionParams.csBaseUrl + '&brand=' + $scope.otherBrandObj.key;
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
+					.replace('[brand]', $scope.currentBrandObj.key);
+				//utilsService.safeLog('backToHref', result, true);
+				return result;
 			}
 		});
 
