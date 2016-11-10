@@ -75,7 +75,8 @@
 					return col.show;
 				});
 				var colNames = _.map(visibleCols, function(col) {
-					return col.name;
+					// strip out commas from column headers or they will break the csv format
+					return col.name && col.name.replace(/[\,\"]+/gi, '');
 				});
 
 				ret.push('"' + colNames.join('","') + '"');
@@ -92,6 +93,7 @@
 							text += ' ' + cell.suffix;
 						}
 
+						text = text.replace(/[\,\"]+/gi, '');
 						csvLine.push('"' + text + '"');
 					});
 					
@@ -140,7 +142,7 @@
 			var mimeType = 'attachment/csv';
 
 			var a = document.createElement('a');
-			a.href = 'data:' + mimeType + ',' + encodeURIComponent(csv);
+			a.href = 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(csv);
 			
 			if ('download' in a) { //html5 A[download]
 				a.setAttribute('download', fileName);
