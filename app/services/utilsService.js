@@ -93,7 +93,7 @@
 							text += ' ' + cell.suffix;
 						}
 
-						text = text.replace(/[\,\"]+/gi, '');
+						text = (text && text.replace(/[\,\"]+/gi, ''));
 						csvLine.push('"' + text + '"');
 					});
 					

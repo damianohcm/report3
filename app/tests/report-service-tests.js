@@ -3,13 +3,15 @@
 (function(){
 
 	requirejs([
+			'../services/configService.js',
 			'../services/utilsService.js', 
 			'../services/reportServiceConfig.js', 
 			'../services/reportService.js'
 		], function() {
 		mocha.setup('bdd');
 
-		var utilsService = window.services.utilsService()
+		var configService = window.services.configService()
+			, utilsService = window.services.utilsService(configService)
 			, reportConfig = window.services.reportServiceConfig(utilsService)
 			, service = window.services.reportService(utilsService, reportConfig);
 		
