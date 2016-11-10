@@ -73,3 +73,18 @@
 // var mappedLos = _.filter((seg.los || seg.learning_objects), function(lo) {
 // 		return (lo.item_type || lo.type || '').toLowerCase() !== 'curriculum';
 // 	});
+
+
+var segs = _.map(dataToFix.segments, function(item) {
+				return item.id + '	' + item.name	+ '	' + (item.item_type || item.type);
+			}).join('\n');
+			//console.log('segs', segs);
+
+			var los = _.map(dataToFix.segments, function(seg) {
+				return _.map(seg.los, function(lo) {
+					return '"' + lo.id + '"\t' + seg.id + '\t' + lo.name	+ '\t' + (lo.item_type || lo.type);
+				}).join('\n');
+			}).join('\n');
+			console.log('los', los);
+
+			debugger;

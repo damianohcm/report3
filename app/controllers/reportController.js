@@ -630,7 +630,7 @@
 
 		$scope.thTextCss = function(c) {
 			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
-			if ((c.isGroup || c.isChild || c.key === 'summary') && c.name.length > 39) {
+			if ((c.isGroup || c.isChild || c.key === 'summary') && (c.name || '').length > 39) {
 				result += ' smaller-text';
 			}
 
@@ -653,7 +653,7 @@
 			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
-			
+		
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
 			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
@@ -762,14 +762,14 @@
 				}
 			} else {
 				//var fileName = 'data/report.json?' + Math.random();
-				// //var fileName = 'data/report-generated1.json?' + Math.random();
+				//var fileName = 'data/report-generated1.json?' + Math.random();
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
+				//var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
 
-				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
+				var fileName = 'data/' + params.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {

@@ -75,14 +75,42 @@ const generate = (dataModel, filename) => {
 };
 
 
+let fakeSegments = JSON.parse(fs.readFileSync('fake-segments.json')).segments,
+    fakeStores = JSON.parse(fs.readFileSync('fake-stores.json')).stores,
+    fakePeople = JSON.parse(fs.readFileSync('fake-people.json')).people;
+
+let howManyStores = 25, howManyPeople = 25;
+
+let people = fakePeople.slice(0, howManyPeople).map((p, index) => {
+    return {
+        "id": p.id,
+        "name": p.name,
+        "title": index > 0 ? 'Manager' : 'Crew',
+        "org_guid": 75, 
+        "los": []
+    };
+});
+
+let stores = fakeStores.slice(0, howManyStores).map((store) => {
+    return {
+        "id": store.id,
+        "name": store.name,
+        "people": JSON.parse(JSON.stringify(people))
+    };
+});
+
+// build a model with some base data
+let dataModel = {
+    segments: fakeSegments,
+    stores: stores
+};
+
 /// generate a "learning-path" report
-let text = fs.readFileSync('report-base.json'),
-    dataModel = JSON.parse(text.toString());
 generate(dataModel, 'learning-path');
 //console.log('base data model', dataModel);
 
-text = fs.readFileSync('new-and-trending-base.json');
-dataModel = JSON.parse(text.toString());
-generate(dataModel, 'new-and-trending');
-//console.log('base data model', dataModel);
+// text = fs.readFileSync('new-and-trending-base.json');
+// dataModel = JSON.parse(text.toString());
+// generate(dataModel, 'new-and-trending');
+// //console.log('base data model', dataModel);
 

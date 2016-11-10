@@ -160,6 +160,7 @@
 			
 			// returned fixed data
 			dataToFix.stores = stores;
+
 			return dataToFix;
 		};
 
