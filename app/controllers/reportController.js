@@ -656,7 +656,7 @@
 			
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
-			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 0;
+			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
 
 			// helper that will be called after all rows have been added
 			var onRowsCompleted = function() {
