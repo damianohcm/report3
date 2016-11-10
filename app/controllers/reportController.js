@@ -58,12 +58,7 @@
 			}
 		});
 
-		Object.defineProperty($scope, 'displayViewReportFor', {
-			get: function() {
-				// logic specific to Dunkin
-				return sessionParams.organization === 'ddbr';
-			}
-		});
+		$scope.displayViewReportFor = false;
 
 		// set current brand and "other" brand (other will be the one that is not equal to the current params.brand or brandConfig.key)
 		$scope.currentBrandObj = brandConfig;
@@ -658,6 +653,10 @@
 			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
+			
+			// distinct peopleOrgs
+			$scope.peopleOrgs = data.peopleOrgs;
+			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 0;
 
 			// helper that will be called after all rows have been added
 			var onRowsCompleted = function() {

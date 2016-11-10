@@ -112,15 +112,33 @@
 			dataToFix.segments = segments;
 			utilsService.safeLog('dataService: dataToFix.segments', dataToFix.segments, true);
 
-			// map store people lo id to lookup
-			// this is because the backend does not return whigh parent Segment id the person LOs belong to
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
 				? dataToFix.stores
 				: [];
 
+			// map store people lo id to lookup
+			// this is because the backend does not return which parent Segment id the person LOs belong to
+			// also determine if all people org_quid are the same
+			var peopleOrgStrategy = {
+				74: 'br', //Baskin-Robbins
+				75: 'dd', // Dunkin' Donuts
+				76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
+			};
+
+			var peopleOrgs = [];
 			utilsService.fastLoop(stores, function(store) {
 				utilsService.fastLoop(store.people, function(person) {
+					// build a unique list of people org_guid values
+					var org = peopleOrgStrategy[person.org_guid];
+					if (!org) {
+						var msg = 'dataService.fixReportData: could not find mapping for org_guid ' + person.org_guid;
+						console.log(msg);
+						alert(msg);
+					} else if (peopleOrgs.indexOf(org) === -1) {
+						peopleOrgs.push(org);
+					}
+
 					utilsService.fastLoop(person.los, function(personLo) {
 						if (personLo) {
 							utilsService.fastLoop(segments, function(segm) {
@@ -137,6 +155,9 @@
 				});
 			});
 
+			dataToFix.peopleOrgs = peopleOrgs;
+			console.log('distinct people org_guid values', dataToFix.peopleOrgs);
+			
 			// returned fixed data
 			dataToFix.stores = stores;
 			return dataToFix;
