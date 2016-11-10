@@ -673,7 +673,7 @@
 			// 1. Add to model.columns collection
 			// loop through each course and add a column for each course
 			utilsService.fastLoop(data.segments, function(course, colGroupPosition) {
-				
+
 				// group cell
 				var colGroup = {
 					isGroup: true,
@@ -684,7 +684,8 @@
 					groupPosition: colGroupPosition,
 					locked: false,
 					css: 'th-course valign-top',
-					name: (course.title || course.name )
+					name: (course.title || course.name),
+					type: course.type
 				};
 
 				// push row
@@ -702,8 +703,9 @@
 						position:  model.columns.length,
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
-						css: 'th-section  valign-top',
-						name: (section.title || section.name)
+						css: 'th-section valign-top',
+						name: (section.title || section.name),
+						type: section.type
 					};
 
 					/*

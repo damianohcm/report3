@@ -3,64 +3,92 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $rootScope, $location, $timeout, $interval, 
+    window.controllers.reportController = function($scope, $location, $timeout, $interval, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
-		$scope.undoService = undoServiceFactory.getService('reportController');
-		
-		utilsService.safeLog('reportController: $rootScope.brand/lang/reportId', {
-			brand: $rootScope.brand,
-			lang: $rootScope.lang,
-			reportId: $rootScope.reportId
-		}, true);
-
-		var brandConfig = configService.getBrandConfig($rootScope.brand);
-		var reportStrategies = brandConfig.reportStrategies;
-		var reportConfigStrategy = reportStrategies && reportStrategies[$rootScope.reportId] || {
+		var commonConfig = configService.getCommonConfig(),
+		 sessionParams = commonConfig.sessionParams,
+		 params = commonConfig.params,
+		 brandConfig = configService.getBrandConfig(params.brand),
+		 reportStrategies = brandConfig.reportStrategies,
+		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportId] || {
 				pathId: -1,
 				title: 'Unknown report id'
 			};
+
+		utilsService.safeLog('reportController params', params);
+		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
+		
+		// get undo service instance
+		$scope.undoService = undoServiceFactory.getService('reportController');
+		
+		// switch css
+		var elMainCss = document.getElementById('mainCss');
+		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
+		
+		utilsService.safeLog('reportController: token/lang/brand/reportId', {
+			token: sessionParams.token,
+			lang: sessionParams.lang,
+			csBaseUrl: sessionParams.csBaseUrl,
+			organization: sessionParams.organization,
+			brand: params.brand,
+			reportId: params.reportId
+		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
 		
 		$scope.title = $scope.reportTitle + ' Report';
 		$scope.refreshing = false;
 
-		var _brBrandObj = {
-			key: 'br',
-			title: 'Baskin-Robbins'
-		}, _ddBrandObj = {
-			key: 'dd',
-			title: 'Dunkin Donuts'
-		};
-
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
-				return ($rootScope.token || '').length === 0 ? 'Invalid token or missing token' : '';
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
 			}
 		});
 
 		Object.defineProperty($scope, 'organization', {
 			get: function() {
-				return $rootScope.organization;
+				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
 			}
 		});
 
 		Object.defineProperty($scope, 'csBaseUrl', {
 			get: function() {
-				return $rootScope.csBaseUrl;
+				return sessionParams.csBaseUrl;
 			}
 		});
 
-		Object.defineProperty($scope, 'viewReportFor', {
+		$scope.displayViewReportFor = false;
+
+		// set current brand and "other" brand (other will be the one that is not equal to the current params.brand or brandConfig.key)
+		$scope.currentBrandObj = brandConfig;
+		$scope.otherBrandObj = _.find(configService.getBrands(), function (item) {
+			return item.key !== params.brand;
+		});
+
+		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				if ($rootScope.brand === 'dd') {
-					return _brBrandObj;
-				} else {
-					return _ddBrandObj;
-				}
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportId=[reportId]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
+					.replace('[brand]', $scope.otherBrandObj.key)
+					.replace('[reportId]', params.reportId);
+				//utilsService.safeLog('viewReportForHref', result, true);
+				return result;
 			}
 		});
+
+		Object.defineProperty($scope, 'backToHref', {
+			get: function() {
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
+					.replace('[brand]', $scope.currentBrandObj.key);
+				//utilsService.safeLog('backToHref', result, true);
+				return result;
+			}
+		});
+
 
 		$scope.progressBar = {
 			type: 'warning',
@@ -75,12 +103,6 @@
 			}
 			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
 			utilsService.safeLog('increaseProgressBar', $scope.progressBar.value);
-		};
-
-		$scope.toggleBrand = function() {
-			$rootScope.brand = $rootScope.brand === 'dd' ? 'br' : 'dd';
-			$scope.mainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', $rootScope.brand));
-			//utilsService.safeLog('toggleBrand ' + $rootScope.brand);
 		};
 
 		$scope.undoLastAction = function() {
@@ -219,9 +241,11 @@
 		$scope.colHeaderPopover = {
 			templateUrl: 'colHeaderPopoverTemplate.html'
 		};
+
 		$scope.rowHeaderPopover = {
 			templateUrl: 'rowHeaderPopoverTemplate.html'
 		};
+
 		$scope.closePopovers = function() {
 			var popups = document.querySelectorAll('.popover');
             if (popups) {
@@ -234,6 +258,12 @@
             }
 		};
 
+		$scope.visibleGroupColumns = function() {
+			return _.filter($scope.model.columns, function(c) {
+				return c.show && c.isGroup;
+			});
+		};
+
 		$scope.visibleColumns = function(col) {
 			if (col.parentId) {
 				var parent = _.find($scope.model.columns, function(c) {
@@ -243,9 +273,7 @@
 					return c.show && c.isChild && c.parentId === parent.id;
 				});
 			} else if (col.isGroup) {
-				return _.filter($scope.model.columns, function(c) {
-					return c.show && c.isGroup;
-				});
+				return $scope.visibleGroupColumns();
 			} else {
 				return [];
 			}
@@ -359,32 +387,6 @@
 				}, 125);
 			}
 		};
-
-		// /**
-		//  * @method showAllColumns
-		//  * @description
-		//  * Will show all columns, including child columns. Currently used only for debugging.
-		//  */
-		// $scope.showAllColumns = function() {
-		// 	utilsService.safeLog('showAllColumns');
-		// 	if ($scope.model) {
-		// 		for (var c in $scope.model.columns) {
-		// 			var col = $scope.model.columns[c];
-		// 			col.show = true;
-		// 			if (col.isChild) {
-		// 				col.calculate = true;
-		// 			}
-		// 		}
-
-		// 		// reset undo history
-		//		var isDetailView = $scope.model.topLevelColumn !== undefined;
-		// 		$scope.undoService.undoAllActions(isDetailView);
-
-		// 		// update values
-		// 		//utilsService.safeLog('WARNING: code commented out');
-		// 		$scope.recalculate();
-		// 	}
-		// };
 
 		/**
 		 * @method hideCol
@@ -511,7 +513,7 @@
 
 					// save current summary colunn title 
 					$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
-					$scope.model.totCompletionTitle = $scope._totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+					$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + (groupCol.name || groupCol.title);
 
 					groupCol.refreshing = false;
 
@@ -583,27 +585,47 @@
 			}
 		};
 
-		$scope.flashCss = function(css, value, hidden, first) {
-			return css + ' ' + value + (hidden? ' hidden' : '') + (first? ' first' : '');
+		$scope.flashCss = function(css, value, hidden, pos) {
+			return css + ' ' + value + (hidden? ' hidden' : '') + (pos === 0 ? ' first' : '');
 		};
 
-		$scope.colHeaderCss = function(col) {
-			if (['category', 'summary'].indexOf(col.key) === -1) {
-				// get total visible columns
-				var totColumns = $scope.visibleColumns(col).length;
-				if (totColumns < 1) {
-					totColumns = 10;
+		$scope.colHeaderStyle = function(col) {
+			// get total visible columns
+			var totColumns;
+			if ($scope.topLevelColumn && ['category', 'summary'].indexOf(col.key) === -1) {
+				totColumns = $scope.visibleColumns(col).length;
+			} else {
+				totColumns = $scope.visibleGroupColumns().length;
+			}
+
+			totColumns += 1;
+			totColumns = totColumns < 3 ? 3 : totColumns;
+
+			var storeWidthPercent = 10, summaryWidthPercent = 5;
+			var useFixedWidth = totColumns > 10;
+			var styleObj = {
+			};
+
+			if (col.key === 'category') {
+				styleObj.width = '200px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj['min-width'] = styleObj.width;
+			} else if (col.key === 'summary') {
+			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+				 styleObj['min-width'] = styleObj.width;
+			} else {
+				if (useFixedWidth) {
+					styleObj.width = '130px';
+				} else {
+					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
+					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
 				}
 
-				var result = col.css;
-				if (totColumns > 0 && totColumns < 11) {
-					result += ' width-' + Math.round(20 / totColumns);
-					utilsService.safeLog(col.name + ' colHeaderCss', result);
+				if (useFixedWidth) {
+					styleObj['min-width'] = styleObj.width;
 				}
-				return result;
-			} else {
-				return col.css + (col.key === 'category' ? ' width-5' : ' width-3');
 			}
+			
+			return styleObj;
 		};
 
 		$scope.thTextCss = function(c) {
@@ -615,6 +637,7 @@
 			return result;
 		};
 
+<<<<<<< HEAD
 		// helper to bring deep-dested data from segment api down one level
 		const _fixData = function(dataToFix) {
 
@@ -744,21 +767,37 @@
 			dataToFix.stores = stores;
 			return dataToFix;
 		};
+=======
+>>>>>>> dev1
 
 		var onDataError = function(err) {
 			utilsService.safeLog('reportController.onDataError', err);
 			$scope.error = 'Could not fetch data';
 		};
+	
 
 		var onDataComplete  = function(data) {
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
+<<<<<<< HEAD
 			utilsService.safeLog('reportController.onDataComplete', data);
 			$scope.data = _fixData(data);
 			$scope._totCompletionTitlePrefix = 'Tot Completion % for ';
 			$scope.model = reportService.getModel(data, $scope._totCompletionTitlePrefix + $scope.reportTitle);
+=======
+			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
+			// fix data as the backend endpoint return inconsistent data and also not mapped properties
+			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
+			// get the report model from reportService
+			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
+			
+			// distinct peopleOrgs
+			$scope.peopleOrgs = data.peopleOrgs;
+			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
+>>>>>>> dev1
 
+			// helper that will be called after all rows have been added
 			var onRowsCompleted = function() {
 				var rows = $scope.model.result.rows;
 				if (rows && rows.length === 1) {
@@ -774,7 +813,7 @@
 				}
 			};
 
-			// then rowGroups after angular bindings
+			// add rows one at the time with an interval for better UX and avoid angular binding performance issues
 			$timeout(function(){
 
 				// hide loader
@@ -807,7 +846,7 @@
 			// show loader
 			$scope.loading = true;
 
-			utilsService.safeLog('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportId', params.reportId);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
@@ -819,24 +858,23 @@
 					debugger;
 					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 				} else {
-					var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
 					var _endPoints = [{
 						key: 'segments',
 						propertyOnData: 'learning_path_items',
-						path: //_apiBaseUrl + '/curricula_player/api/v1/path/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-							//_apiBaseUrl + '/api/curricula_report/v1/segments/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-							_apiBaseUrl + '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+						path: commonConfig.apiBaseUrl 
+							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
 								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', $rootScope.token)
-								.replace('[companyKey]', $rootScope.compKey)
+								.replace('[user]', sessionParams.token)
+								.replace('[companyKey]', sessionParams.compKey)
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
 						//path: 'data/luca-stores.json?' + Math.random()
-						path: _apiBaseUrl + '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-							.replace('[path_id]', reportConfigStrategy.pathId)
-							.replace('[user]', $rootScope.token)
-							.replace('[companyKey]', $rootScope.compKey)
+						path: commonConfig.apiBaseUrl 
+							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+								.replace('[path_id]', reportConfigStrategy.pathId)
+								.replace('[user]', sessionParams.token)
+								.replace('[companyKey]', sessionParams.compKey)
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
@@ -868,9 +906,15 @@
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
+<<<<<<< HEAD
 				var fileName = 'data/janic-' + $rootScope.reportId + '.json?' + Math.random();
 
 				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+=======
+				var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
+
+				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
+>>>>>>> dev1
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				setTimeout(function() {

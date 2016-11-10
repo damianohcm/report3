@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.savedReportsController = function($scope, $rootScope, $route, $routeParams, $location, $filter, utilsService, dataService) {
+    window.controllers.savedReportsController = function($scope, $route, $routeParams, $location, $filter, utilsService, dataService) {
 
 		/**
 		 * @method cancel

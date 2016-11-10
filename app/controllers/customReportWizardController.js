@@ -3,7 +3,11 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-	window.controllers.customReportWizardController = function($scope, $rootScope, $route, $routeParams, $location, $filter, utilsService, dataService, wizardServiceFactory) {
+	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $filter, 
+		utilsService, configService, dataService, wizardServiceFactory) {
+
+		var commonConfig = configService.getCommonConfig(),
+			params = commonConfig.params;
 
 		/**
 		 * @method cancel
@@ -161,7 +165,8 @@
 							currentStep.isDone = true;
 							wizard.isComplete = true;
 							//wizard.close();
-							$rootScope.newCustomReportModel = JSON.parse(JSON.stringify($scope.model));
+
+							configService.setParam('newCustomReportModel', JSON.stringify($scope.model));
 							document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}
@@ -411,7 +416,7 @@ $scope.datePickerOptions = {
 
 		// helper to get the data
 		var getData = function(w) {
-			utilsService.safeLog('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportId', params.reportId);
 
 			if (w === 'live') {
 				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
@@ -419,8 +424,8 @@ $scope.datePickerOptions = {
 					key: 'segments',
 					propertyOnData: 'learning_path_items',
 					path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
-						.replace('[user]', $rootScope.token)
-						.replace('[companyKey]', $rootScope.compKey)
+						.replace('[user]', params.token)
+						.replace('[companyKey]', params.compKey)
 				}, {
 					key: 'stores',
 					propertyOnData: 'results',

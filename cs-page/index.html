@@ -33,16 +33,15 @@
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
     };
-    window.toggleBrand = function() {
-        window.currentBrand = window.currentBrand === 'dd' ? 'br' : 'dd';
-        window.setBrand();
-    };
+
     window.onresize = function(event) {
         sizeFrame();
     };
+
     function sizeFrame() {
         var availableHeight = 200;
     }
+    
     $(function() {
         var _company_key = 'Rgy9IrAKS1rp49rk6oZhPUiCf';
         var _sync_url = 'https://sync2-dev.tribridge-amplifyhr.com/';
@@ -56,28 +55,37 @@
             if (userData.csodToken !== (undefined || '')) {
                 clearInterval(credsCheck);
 
+                // organization will be passed as query string parameter to this cs custom page via query string all the time
+                window.organization = window.getQueryStringValue('organization', '').trim().toLowerCase();
+                if (!window.organization || window.organization.length === 0) {
+                    alert('Missing organization query string parameter')
+                }
+                var defaultBrand = window.organization.indexOf('dd') > -1 ? 'dd' : 'br';
+
+                // reportId and brand might change while user is interacting with reporting
                 window.reportId = window.getQueryStringValue('reportId', '');
-                window.currentBrand = window.getQueryStringValue('brand', 'dd');
+                window.currentBrand = window.getQueryStringValue('brand', defaultBrand);
 
                 // for local development
                 //var baseUrl = 'http://10.12.6.129:8080/',
-                var baseUrl = 'http://10.0.0.6:8080/',
-                //var baseUrl = 'http://localhost:8080/',
+                //var baseUrl = 'http://10.0.0.6:8080/',
+                var baseUrl = 'http://localhost:8080/',
                     csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
                 // for production
-                //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/',
+                //var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/#/',
                 //    csBaseUrl = document.location.href.split('&')[0];
 
                 window.frameUrl = baseUrl
                     + '?token=' + userData.csodToken
-                    + '&organization=' + userData.organization
+                    + '&organization=' + window.organization
                     + '&compKey=' + _company_key
                     + '&baseUrl=' + _sync_url
                     + '&csBaseUrl=' + csBaseUrl
                     + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
-                //console && console.log('frameUrl', frameUrl);
+                
+                console && console.log('frameUrl', frameUrl);
                 window.setBrand();
             } 
         }, 100);

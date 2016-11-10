@@ -56,3 +56,20 @@
 @media (max-width: 768px) {
   .container {
     width: 750px; } }
+
+
+74 Baskin-Robbins
+75 Dunkin' Donuts
+76 Dunkin' Donuts/Baskin-Robbins Combo
+
+
+
+
+// var mappedLos = reportConfigStrategy.oneLevel 
+// 	? [] 
+// 	: _.filter((seg.los || seg.learning_objects), function(lo) {
+// 		return (lo.item_type || lo.type || '').toLowerCase() !== 'curriculum';
+// 	});
+// var mappedLos = _.filter((seg.los || seg.learning_objects), function(lo) {
+// 		return (lo.item_type || lo.type || '').toLowerCase() !== 'curriculum';
+// 	});

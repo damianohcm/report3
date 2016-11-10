@@ -1,9 +1,15 @@
 (function() {
 
+	// ****************** refactoring in progress - need to bring more recent code from reportController into here ********** //
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.customReportController = function($scope, $rootScope, $location, $timeout, $interval, $uibModal, utilsService, undoServiceFactory, dataService, reportService) {
+    window.controllers.customReportController = function($scope, $rootScope, $location, $timeout, $interval, $uibModal, 
+		utilsService, configService, undoServiceFactory, dataService, reportService) {
+
+		var commonConfig = configService.getCommonConfig(),
+			params = commonConfig.params;
+
 		$scope.undoService = undoServiceFactory.getService('customReportController');
 		
 		utilsService.safeLog('customReportController: $rootScope.brand/lang/reportId', {
@@ -851,8 +857,10 @@ $scope.modalSave = {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
 				}, 500);
-				console.log('customReportontroller: $rootScope.newCustomReportModel', $rootScope.newCustomReportModel);
-				alert('TODO: need to load segments and stores and filtered them based on $rootScope.newCustomReportModel');
+
+				var newCustomReportModel = params.newCustomReportModel;
+				console.log('customReportontroller: newCustomReportModel', newCustomReportModel);
+				alert('TODO: need to load segments and stores and filtered them based on newCustomReportModel');
 			}
 		};
 
