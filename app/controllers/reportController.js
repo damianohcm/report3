@@ -556,18 +556,17 @@
 			}
 		};
 
-		$scope.displayHideGroupCol = function() {
-			return _.filter($scope.model.columns, function (c) {
-				return c.isGroup && c.show;
-			}).length > 1;
-		};
-
-		$scope.displayHideChildCol = function(col) {
-			return !col.locked 
-				&& col.isChild 
+		$scope.displayRemoveCol = function(col) {
+			if (col.isChild) {
+				return !col.locked 
 				&& _.filter($scope.model.columns, function (c) {
 					return c.parentId === col.parentId && c.show;
 				}).length > 1;
+			} else {
+				return _.filter($scope.model.columns, function (c) {
+					return c.isGroup && c.show;
+				}).length > 1;
+			}
 		};
 
 		$scope.displayHideRow = function(parentRow) {

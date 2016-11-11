@@ -22,6 +22,7 @@
 	var app = angular.module('Main', 
 			[
 				'ngRoute', 
+				'ngSanitize', 
 				/*'ngAnimate', */
 				'ui.bootstrap',
 				'ngTagsInput'
