@@ -740,7 +740,9 @@
 			data.stores = _.sortBy(data.stores, 'name').reverse();
 
 			var peopleSorter = function(person) {
-				return person.title.toLowerCase().indexOf('manager') === -1 ? person.name : -1;
+				return person.title.toLowerCase().indexOf('manager') === -1 
+					? (person.name && person.name.length && person.name.substring(0, 1)) 
+					: '';
 			};
 
 			utilsService.fastLoop(data.stores, function(store) {
