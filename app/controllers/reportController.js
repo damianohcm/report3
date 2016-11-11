@@ -323,8 +323,7 @@
 
 		// method that handles clicks on the header cell text
 		$scope.onHeaderCellClick = function(col) {
-			//utilsService.safeLog('onHeaderCellClick');
-			utilsService.safeLog('onHeaderCellClick col', col);
+			//utilsService.safeLog('onHeaderCellClick col', col);
 			if (col.position > 1) {
 				$scope.expandChildColumns(col);
 			}
@@ -629,14 +628,12 @@
 		};
 
 		$scope.thTextCss = function(c) {
-			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
 			if ((c.isGroup || c.isChild || c.key === 'summary') && (c.name || '').length > 39) {
-				result += ' smaller-text';
+				return 'th-text smaller-text';
+			} else {
+				return 'th-text';
 			}
-
-			return result;
 		};
-
 
 		var onDataError = function(err) {
 			utilsService.safeLog('reportController.onDataError', err);

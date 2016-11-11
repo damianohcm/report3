@@ -675,6 +675,7 @@
 			utilsService.fastLoop(data.segments, function(course, colGroupPosition) {
 
 				// group cell
+				var colName = (course.title || course.name);
 				var colGroup = {
 					isGroup: true,
 					id: course.id,
@@ -683,9 +684,11 @@
 					position:  model.columns.length,
 					groupPosition: colGroupPosition,
 					locked: false,
-					css: 'th-course valign-top',
-					name: (course.title || course.name),
-					type: course.type
+					css: 'th-course valign-top pointer',
+					name: colName,
+					type: course.type,
+					title: 'Click to expand Category',
+					removeTitle: 'Remove Category'
 				};
 
 				// push row
@@ -705,7 +708,9 @@
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
 						css: 'th-section valign-top',
 						name: (section.title || section.name),
-						type: section.type
+						type: section.type,
+						title: '',
+						removeTitle: 'Remove Course'
 					};
 
 					/*

@@ -58,19 +58,22 @@
                 <table class="table">
                     <thead>
                         <tr class="tr-head">
-                            <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)">
+                            <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)" 
+                                ng-click="onHeaderCellClick(c)"
+                                title="{{::c.title}}">
                                 <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
                                 <div ng-if="::(c.position > 0)">
                                     <!-- begin: column header popover -->
                                     <div class="th-top">
                                         <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
-                                        <a ng-if="::(!c.locked)" ng-show="c.isChild ? displayHideChildCol(c) : displayHideGroupCol()" ng-click="hideCol(c)" title="Remove Category"><i class="fa fa-minus-circle"></i></a></div>
+                                        <a ng-if="::(!c.locked)" ng-show="c.isChild ? displayHideChildCol(c) : displayHideGroupCol()" 
+                                            ng-click="hideCol(c)" title="{{::c.removeTitle}}"><i class="fa fa-minus-circle"></i></a></div>
                                     </div>
                                     <!-- end: column header popover -->
                                     <div class="th-middle">
                                         <div class="th-middle-inner">
                                              <!-- column text -->
-                                            <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)" ng-bind="c.name"></div>
+                                            <div ng-class="thTextCss(c)" ng-bind="::c.name"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +83,9 @@
                     <tbody ng-repeat="row in model.result.rows track by $index" ng-if="row.show">
                         <tr>
                             <td ng-repeat="c in ::model.columns track by $index" 
-                                ng-class="flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position)">
+                                ng-class="flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position)"
+                                ng-click="onRowCellClick(c, row)"
+                                title="Click to show all learners for this PC">
 
                                 <div ng-if="::(c.position === 0)">
                                     <!-- begin: row header popover -->
@@ -93,8 +98,7 @@
 
                                 <div ng-class="::(c.position === 0 ? 'row-th-middle' : 'row-text')">
                                     <div ng-class="::(c.position === 0 ? 'row-th-middle-inner' : '')">
-                                        <div ng-class="::(c.position === 0 ? 'row-th-text' : '')" ng-click="onRowCellClick(c, row)" 
-                                            title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
+                                        <div ng-class="::(c.position === 0 ? 'row-th-text' : '')">
                                             {{row[c.key].value}}{{row[c.key].suffix}}
                                             <div ng-if="::(c.position === 0 && row.children.length < 1)" style="font-weight:normal;font-size:0.9em">(No learners)</div>
                                         </div>
@@ -110,7 +114,7 @@
                                     <span ng-if="::child[c.key].value2" class="person-title" ng-bind="::child[c.key].value2"></span>
                                 </div>
                                 <div ng-if="::(c.position === 0)" class="pull-right row-icon">
-                                    <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)"><i class="fa fa-minus-circle"></i></a>
+                                    <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)" title="Remove this learner from the Report"><i class="fa fa-minus-circle"></i></a>
                                 </div>
                             </td>
                         </tr>
