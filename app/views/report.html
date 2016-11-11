@@ -110,7 +110,7 @@
                         <tr ng-repeat="child in row.children track by $index" ng-if="!row.isCollapsed && child.show">
                             <td ng-repeat="c in ::model.columns track by $index" ng-class="child[c.key].css + (!c.show ? ' hidden' : '')">
                                 <div class="pull-left row-text">
-                                    <span ng-class="::child[c.key].css.valueSpan" ng-bind="child[c.key].value + child[c.key].suffix"></span>
+                                    <span ng-class="::child[c.key].cssValueSpan" ng-bind="child[c.key].value + child[c.key].suffix"></span>
                                     <span ng-if="::child[c.key].value2" class="person-title" ng-bind="::child[c.key].value2"></span>
                                 </div>
                                 <div ng-if="::(c.position < 1)" class="pull-right row-icon">

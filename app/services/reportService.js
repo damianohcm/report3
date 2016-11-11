@@ -144,18 +144,16 @@
 						locked: true,
 						value: person.name,
 						value2: person.title,
-						css: {
-							valueSpan: 'person'
-						}
+						css: 'person',
+						cssValueSpan: 'person'
 					},
 					summary: {
 						key: 'summary',
 						locked: true,
 						value: 0,
 						suffix: '%',
-						css: {
-							valueSpan: ''
-						}
+						css: '',
+						cssValueSpan: ''
 					}
 				};
 
@@ -733,7 +731,7 @@
 					var colChildName = (section.title || section.name)
 						.replace('©', '&copy;').replace('®', '&reg;').replace('™', '&trade;');
 
-					console.log('colChildName', colChildName);
+					//console.log('colChildName', colChildName);
 
 					var colChild = {
 						isChild: true,
