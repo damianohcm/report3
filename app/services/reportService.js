@@ -633,6 +633,15 @@
 			
 		};
 
+		private.escapeSpecialChars = function(text) {
+			// whatever we escape here, we'll have to unescape in the csv export in utilsService.js
+			return (text || '')
+				.replace('\'', '&rsquo;')
+				.replace('©', '&copy;')
+				.replace('®', '&reg;')
+				.replace('™', '&trade;');
+		};
+
 		/**
 		 * @method getModel
 		 * @decsription
@@ -697,8 +706,7 @@
 			utilsService.fastLoop(data.segments, function(course, colGroupPosition) {
 
 				// group cell
-				var colName = (course.title || course.name)
-					.replace('©', '&copy;').replace('®', '&reg;').replace('™', '&trade;');
+				var colName = private.escapeSpecialChars(course.title || course.name);
 				
 				var colGroup = {
 					isGroup: true,
@@ -728,8 +736,7 @@
 				var courseLos = (course.learning_objects || course.los);
 				utilsService.fastLoop(courseLos, function(section) {
 					// child cell
-					var colChildName = (section.title || section.name)
-						.replace('©', '&copy;').replace('®', '&reg;').replace('™', '&trade;');
+					var colChildName = private.escapeSpecialChars(section.title || section.name);
 
 					//console.log('colChildName', colChildName);
 

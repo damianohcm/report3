@@ -45,6 +45,24 @@
 		};
 
 		/**
+		 * @method unescapeSpecialChars
+		 * @description
+		 * Helper to unescape spcial chars that were previousley html escaped in reportservice.hs 
+		 * before exporting to csv/excel
+		 */
+		obj.unescapeSpecialChars = function(text) {
+			// whatever we escape here, we'll have to unescape in the csv export in utilsService.js
+			return (text || '')
+				.replace('&rsquo;', '\'')
+				.replace('&copy;', '©')
+				.replace('&reg;', '®')
+				.replace('&trade;', '™')
+				.replace('&nbsp;', ' ')
+				.replace('&amp;', '&')
+				.replace(/[\,\"]+/gi, ''); /* strip comma a double quotes */
+		};
+
+		/**
 		 * @method getCsv
 		 * @description
 		 * 
@@ -76,7 +94,7 @@
 				});
 				var colNames = _.map(visibleCols, function(col) {
 					// strip out commas from column headers or they will break the csv format
-					return col.name && col.name.replace(/[\,\"]+/gi, '');
+					return obj.unescapeSpecialChars(col.name);
 				});
 
 				ret.push('"' + colNames.join('","') + '"');
@@ -93,7 +111,7 @@
 							text += ' ' + cell.suffix;
 						}
 
-						text = (text && text.replace(/[\,\"]+/gi, ''));
+						text = obj.unescapeSpecialChars(text);
 						csvLine.push('"' + text + '"');
 					});
 					
@@ -139,10 +157,11 @@
 		 */
 		obj.csvHtml5Download = function(csv, fileName) {
 			this.safeLog('utilsService.csvHtml5Download');
-			var mimeType = 'attachment/csv';
+			var mimeType = 'attachment/csv',
+				charset = 'charset=utf-8';
 
 			var a = document.createElement('a');
-			a.href = 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(csv);
+			a.href = 'data:' + mimeType + ';' + charset + ',' + encodeURIComponent(csv);
 			
 			if ('download' in a) { //html5 A[download]
 				a.setAttribute('download', fileName);

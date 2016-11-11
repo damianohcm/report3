@@ -107,7 +107,7 @@ let fakeSegments = JSON.parse(fs.readFileSync('fake-segments.json')).segments,
     fakeStores = JSON.parse(fs.readFileSync('fake-stores.json')).stores,
     fakePeople = JSON.parse(fs.readFileSync('fake-people.json')).people;
 
-let howManyStores = 25, howManyPeople = 25;
+let howManyStores = 75, howManyPeople = 25;
 completedChance = 0.4;
 progressChance = 0.3;
 
