@@ -36,13 +36,13 @@
                     title: 'Baskin-Robbins',
                     reportStrategies: {
                         'learning-path': {
-                            pathId: 15,
-                            title: 'Learning Path',
+                            pathId: 19,
+                            title: 'Learning Path (BR)',
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 18,
-                            title: 'New & Trending',
+                            pathId: 20,
+                            title: 'New & Trending (BR)',
                             oneLevel: true
                         },
                         custom: {
