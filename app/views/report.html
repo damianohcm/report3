@@ -25,7 +25,7 @@
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">
-                <span ng-show="::(topLevelColumn && !model.isDetailOnly)">Now Viewing: <strong ng-bind="::(topLevelColumn && topLevelColumn.name)"></strong> | </span>
+                <span ng-show="(topLevelColumn && !model.isDetailOnly)">Now Viewing: <strong ng-bind="(topLevelColumn && topLevelColumn.name)"></strong> | </span>
                 <span ng-bind="modifiedMessage()"></span>
             </div>
             <div class="pull-right m-t-sm">
@@ -70,10 +70,11 @@
                                         ng-click="hideCol(c)" title="{{::c.removeTitle}}"><i class="fa fa-minus-circle"></i></a></div>
                                 </div>
                                 <!-- end: column header popover -->
-                                <div ng-if="::(c.position > 0)" class="th-middle">
+                                <div ng-if="c.position > 0" class="th-middle">
                                     <div class="th-middle-inner">
-                                            <!-- column text -->
-                                        <div ng-class="thTextCss(c)" ng-bind-html="::c.name"></div>
+                                        <!-- column text: column at index 1 can change (summary), other columns can be bound once (::) -->
+                                        <div ng-if="c.position < 2" ng-class="thTextCss(c)" ng-bind-html="c.name"></div>
+                                        <div ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.name"></div>
                                     </div>
                                 </div>
                             </th>
