@@ -1147,7 +1147,7 @@ tags-input .tags {
   color: #999; }
 
 body.notie .table {
-  /*table-layout: fixed;*/ }
+  table-layout: fixed; }
 
 .wizard-container.saved-reports {
   width: 896px; }

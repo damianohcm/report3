@@ -15,10 +15,6 @@
   margin: 0 auto;
 }
 
-#page-container iframe {
-    min-height: 2000px;
-}
-
 .button {
     box-sizing: border-box;
     float: right;

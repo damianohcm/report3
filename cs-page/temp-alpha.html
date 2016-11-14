@@ -1,6 +1,6 @@
 <link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-learning-path-report-page.css">
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;min-height:900px;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
 <span id="intellasync"></span>
 <script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script>
@@ -21,7 +21,7 @@
     window.setBrand = function() {
         var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
         console.log('csPageStyle', csPageStyle);
-        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
+        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle + '?' + Math.random());
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
     };
 

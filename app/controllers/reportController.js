@@ -50,14 +50,17 @@
 
 		$scope.dom.tableHorizScrollContainer.on('scroll', function() {
 			$timeout(function() {
-				$scope.dom.tableFixed.attr('style', 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px'));
+				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
+				$scope.dom.tableFixed.attr('style', width);
+				$scope.dom.tableVertScrollContainer.attr('style', width);
 			}, 0);
 		});
 
 		$scope.syncTableScroll = function() {
-			var el1 = angular.element(document.getElementById('table-horiz-scroll'));
+			var el1 = $scope.dom.tableHorizScrollContainer;
 			$timeout(function() {
-				el1.scrollLeft(1), el1.triggerHandler('scroll');
+				el1.scrollLeft(-1), el1.triggerHandler('scroll');
+
 				$timeout(function() {
 					el1.scrollLeft(0), el1.triggerHandler('scroll');
 				}, 0);
@@ -120,6 +123,12 @@
 			value: 0,
 			intervalId: undefined
 		};
+
+		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
+			if (angular.isDefined($scope.progressBar.intervalId)) {
+				$interval.cancel($scope.progressBar.intervalId);
+			}
+		});
 
 		$scope.increaseProgressBar = function() {
 			var step = 10;
@@ -631,7 +640,8 @@
 			totColumns = totColumns < 3 ? 3 : totColumns;
 
 			var storeWidthPercent = 10, summaryWidthPercent = 5;
-			var useFixedWidth = totColumns > 10;
+			var useFixedWidth = true; //totColumns > 10;
+
 			var styleObj = {
 			};
 
@@ -640,7 +650,7 @@
 				styleObj['min-width'] = styleObj.width;
 			} else if (col.key === 'summary') {
 			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
-				 styleObj['min-width'] = styleObj.width;
+				styleObj['min-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
 					styleObj.width = '130px';
@@ -699,6 +709,8 @@
 						return col.isGroup;
 					});
 					$scope.expandChildColumns(firstColGroup);
+				} else {
+					$scope.syncTableScroll();
 				}
 			};
 
@@ -722,12 +734,6 @@
 				}, 25);
 			}, 25);
 		};
-
-		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
-		});
 
 		// helper to get the data
 		var getData = function(w) {

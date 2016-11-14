@@ -88,3 +88,47 @@ var segs = _.map(dataToFix.segments, function(item) {
 			console.log('los', los);
 
 			debugger;
+
+
+
+
+
+
+$scope.colHeaderStyle = function(col) {
+    // get total visible columns
+    var totColumns;
+    if ($scope.topLevelColumn && ['category', 'summary'].indexOf(col.key) === -1) {
+        totColumns = $scope.visibleColumns(col).length;
+    } else {
+        totColumns = $scope.visibleGroupColumns().length;
+    }
+
+    totColumns += 1;
+    totColumns = totColumns < 3 ? 3 : totColumns;
+
+    var storeWidthPercent = 10, summaryWidthPercent = 5;
+    var useFixedWidth = totColumns > 10;
+    var styleObj = {
+    };
+
+    if (col.key === 'category') {
+        styleObj.width = '200px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+        styleObj['min-width'] = styleObj.width;
+    } else if (col.key === 'summary') {
+        styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+        styleObj['min-width'] = styleObj.width;
+    } else {
+        if (useFixedWidth) {
+            styleObj.width = '130px';
+        } else {
+            var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
+            styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
+        }
+
+        if (useFixedWidth) {
+            styleObj['min-width'] = styleObj.width;
+        }
+    }
+    
+    return styleObj;
+};
