@@ -469,6 +469,7 @@
 			row.show = false;
 
 			// only if we are hiding a childRow we'll refresh the calculations
+			// (no need to recalculate when hiding a group row)
 			if (parentRow) {
 				parentRow.refreshing = true;
 
