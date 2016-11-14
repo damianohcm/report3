@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $location, $timeout, $interval, 
+    window.controllers.reportController = function($scope, $location, $timeout, $interval, $document, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
@@ -39,6 +39,31 @@
 		
 		$scope.title = $scope.reportTitle + ' Report';
 		$scope.refreshing = false;
+
+
+		$scope.dom = {
+			tableFixed: angular.element(document.getElementById('table-fixed')),
+			tableScroll: angular.element(document.getElementById('table-scroll')),
+			tableHorizScrollContainer: angular.element(document.getElementById('table-horiz-scroll')),
+			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll'))
+		};
+
+		$scope.dom.tableHorizScrollContainer.on('scroll', function() {
+			$timeout(function() {
+				$scope.dom.tableFixed.attr('style', 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px'));
+			}, 0);
+		});
+
+		$scope.syncTableScroll = function() {
+			var el1 = angular.element(document.getElementById('table-horiz-scroll'));
+			$timeout(function() {
+				el1.scrollLeft(1), el1.triggerHandler('scroll');
+				$timeout(function() {
+					el1.scrollLeft(0), el1.triggerHandler('scroll');
+				}, 0);
+			}, 0);
+		};
+
 
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
@@ -315,10 +340,12 @@
 			$scope.model.topLevelColumn = $scope.topLevelColumn;
 			reportService.recalculate($scope.model);
 			utilsService.safeLog('recalculate completed');
+			
+			$scope.syncTableScroll();
 
 			$timeout(function() {
 				$scope.refreshing = false;
-			}, 500);
+			}, 125);
 		};
 
 		// method that handles clicks on the header cell text
@@ -440,9 +467,10 @@
 				properties: undoProperties,
 				msg: undoMsg + ' column ' + col.name
 			});
-
+			
 			// update values
 			$scope.recalculate();
+			$scope.syncTableScroll();
 		};
 
 		/**
@@ -478,7 +506,9 @@
 
 				$timeout(function() {
 					parentRow.refreshing = false;
-				}, 125);
+				}, 0);
+			} else {
+				$scope.syncTableScroll();
 			}
 		};
 
@@ -634,6 +664,7 @@
 				return 'th-text';
 			}
 		};
+		
 
 		var onDataError = function(err) {
 			utilsService.safeLog('reportController.onDataError', err);
@@ -769,7 +800,7 @@
 				var fileName = 'data/' + params.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
-				setTimeout(function() {
+				$timeout(function() {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
 				}, 500);

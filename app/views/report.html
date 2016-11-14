@@ -52,25 +52,40 @@
     <div class="m-t-lg">
 
         <!-- begin: table container -->
-        <div class="table-outer">
-            <div class="table-inner">
-
-                <table class="table">
+        <div id="table-horiz-scroll">
+            <table id="table-fixed" class="table table-fixed m-b-0">
+                <thead>
+                    <tr class="tr-head">
+                        <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)" 
+                            ng-click="onHeaderCellClick(c)"
+                            title="{{::c.title}}">
+                            <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
+                            
+                            <!-- begin: column header popover -->
+                            <div ng-if="::(c.position > 0)" class="th-top">
+                                <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
+                                <i ng-if="::(!c.locked && !c.isChild)" class="fa fa-expand"></i>
+                                <a ng-if="::(!c.locked)" ng-show="displayRemoveCol(c)" 
+                                    ng-click="hideCol(c)" title="{{::c.removeTitle}}"><i class="fa fa-minus-circle"></i></a>
+                            </div>
+                            <!-- end: column header popover -->
+                            <div ng-if="c.position > 0" class="th-middle">
+                                <div class="th-middle-inner">
+                                    <!-- column text: column at index 1 can change (summary), other columns can be bound once (::) -->
+                                    <div ng-if="c.position < 2" ng-class="thTextCss(c)" ng-bind-html="c.name"></div>
+                                    <div ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.name"></div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            
+            <div id="table-vert-scroll">
+                <table id="table-scroll" class="table table-scroll">
                     <thead>
                         <tr class="tr-head">
-                            <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)" 
-                                ng-click="onHeaderCellClick(c)"
-                                title="{{::c.title}}">
-                                <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
-                                
-                                <!-- begin: column header popover -->
-                                <div ng-if="::(c.position > 0)" class="th-top">
-                                    <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
-                                    <i ng-if="::(!c.locked && !c.isChild)" class="fa fa-expand"></i>
-                                    <a ng-if="::(!c.locked)" ng-show="displayRemoveCol(c)" 
-                                        ng-click="hideCol(c)" title="{{::c.removeTitle}}"><i class="fa fa-minus-circle"></i></a>
-                                </div>
-                                <!-- end: column header popover -->
+                            <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)">
                                 <div ng-if="c.position > 0" class="th-middle">
                                     <div class="th-middle-inner">
                                         <!-- column text: column at index 1 can change (summary), other columns can be bound once (::) -->
@@ -126,6 +141,5 @@
             </div>
         </div>
         <!-- end: table container -->
-
     </div>
 </div>

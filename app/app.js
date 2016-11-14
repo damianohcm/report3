@@ -24,6 +24,7 @@
 				'ngRoute', 
 				'ngSanitize', 
 				/*'ngAnimate', */
+				'duScroll',
 				'ui.bootstrap',
 				'ngTagsInput'
 			]
@@ -264,7 +265,7 @@
 	
 	// report controller
 	app.controller('reportController', [
-		'$scope', '$location', '$timeout', '$interval', 
+		'$scope', '$location', '$timeout', '$interval', '$document', 
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
@@ -299,6 +300,5 @@
 		'dataService',
 		controllers.savedReportsController]);
 
-		
 
 }(window.angular));

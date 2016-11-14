@@ -57,6 +57,9 @@ body {
 .m-t-40 {
   margin-top: 40px; }
 
+.m-b-0 {
+  margin-bottom: 0; }
+
 .p-l-0 {
   padding-left: 0; }
 
@@ -722,18 +725,28 @@ div.height-40 {
 /* end: report home*/
 /* begin: css for horiz table scrolling */
 .table {
-  outline: solid 0px red;
-  width: inherit; }
-
-div.table-outer {
-  outline: solid 0px green;
-  width: 1320px;
-  max-width: 1320px;
-  overflow-y: scroll; }
-
-div.table-inner {
-  outline: solid 0px yellow;
   width: auto; }
+
+.table.table-scroll {
+  /*outline: dashed 1px gray;*/
+  margin-top: -116px !important; }
+
+.table.table-scroll thead {
+  /*visibility: hidden;*/ }
+
+#table-horiz-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 700px;
+  max-height: 700px;
+  /*outline: dashed 2px blue;*/ }
+
+#table-vert-scroll {
+  overflow-x: scroll;
+  overflow-y: scroll;
+  height: 700px;
+  max-height: 700px;
+  /*outline: dashed 2px green;*/ }
 
 /* end: css for horiz table scrolling */
 /* begin: css for fixed headers */

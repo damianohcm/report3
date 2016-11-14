@@ -853,7 +853,7 @@ $scope.modalSave = {
 				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
-				setTimeout(function() {
+				$timeout(function() {
 					dataService.getData(fileName)
 						.then(onDataComplete, onDataError);
 				}, 500);
