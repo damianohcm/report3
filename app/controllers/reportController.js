@@ -466,15 +466,15 @@
 				msg: 'Hide row ' + row.category.value
 			});
 
-			if (parentRow) {
-				parentRow.refreshing = true;
-			}
 			row.show = false;
 
-			// update values
-			$scope.recalculate();
-
+			// only if we are hiding a childRow we'll refresh the calculations
 			if (parentRow) {
+				parentRow.refreshing = true;
+
+				// update values
+				$scope.recalculate();
+
 				$timeout(function() {
 					parentRow.refreshing = false;
 				}, 125);
