@@ -51,19 +51,20 @@
 		$scope.dom.tableHorizScrollContainer.on('scroll', function() {
 			$timeout(function() {
 				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
-				$scope.dom.tableFixed.attr('style', width);
 				$scope.dom.tableVertScrollContainer.attr('style', width);
+				$scope.dom.tableFixed.attr('style', width); /* causes flashing */
 			}, 0);
 		});
 
 		$scope.syncTableScroll = function() {
-			var el1 = $scope.dom.tableHorizScrollContainer;
+			var el = $scope.dom.tableHorizScrollContainer;
 			$timeout(function() {
-				el1.scrollLeft(-1), el1.triggerHandler('scroll');
+				//el.scrollLeft(left), 
+				el.triggerHandler('scroll');
 
-				$timeout(function() {
-					el1.scrollLeft(0), el1.triggerHandler('scroll');
-				}, 0);
+			// 	$timeout(function() {
+			// 		el.scrollLeft(0), el.triggerHandler('scroll');
+			// 	}, 0);
 			}, 0);
 		};
 
