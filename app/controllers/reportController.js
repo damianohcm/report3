@@ -52,7 +52,7 @@
 			$timeout(function() {
 				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
 				$scope.dom.tableVertScrollContainer.attr('style', width);
-				$scope.dom.tableFixed.attr('style', width); /* causes flashing */
+				$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
 			}, 0);
 		});
 
