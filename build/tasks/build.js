@@ -8,19 +8,7 @@ const gulp = require('gulp'),
     //assign = Object.assign || require('object.assign'),
     sass = require('gulp-sass'),
     concat = require('gulp-concat'),
-    htmlmin = require('gulp-htmlmin'),
-
-    del = require('del'),
-    vinylPaths = require('vinyl-paths');
-
-// deletes all files in the output path
-gulp.task('clean-css', function() {
-    return gulp.src([
-            paths.appCssOutputPath,
-            paths.cspageCssOutputPath
-        ])
-        .pipe(vinylPaths(del));
-});
+    htmlmin = require('gulp-htmlmin');
 
 // // copies changed html files to the output directory
 // gulp.task('build-html', function() {
@@ -31,42 +19,11 @@ gulp.task('clean-css', function() {
 // });
 
 
-// run sass and outpus the css
-const appStyleTask = function (brand) {
-	const styleName = 'main-' + brand,
-        source = paths.appCssSourcePath + styleName + '.scss', 
-		dest = paths.appCssOutputPath + styleName + '.css';
-	
-	return gulp.src(source)
-		.pipe(gulpDebug({
-			title: 'GulpDebug-appStyleTask: source: ' + source + ' dest: ' + dest
-		}))
-	// The plumber step will ensure that if we write syntactically invalid 
-	// sass, even though the step won't run, the gulp task won't exit. This
-	// is helpful because it allows us to fix our syntax without having to 
-	// restart the gulp watch task.
-	.pipe(plumber())
-	.pipe(sass({
-		//outputStyle: 'compressed'
-	}).on('error', sass.logError))
-	//.pipe(concat(paths.style1 + '.css'))
-	.pipe(gulp.dest(dest));
-};
-
-gulp.task('build-app-css-dd', function () {
-    appStyleTask('dd');
-});
-gulp.task('build-app-css-br', function () {
-    appStyleTask('br');
-});
-
-
 gulp.task('build-css', function(callback) {
 	return runSequence(
-        'clean-css',
-		[
-            'build-app-css-dd'
-            //, 'build-css-style2'
+        [
+			'build-app-css',
+            'build-cspage-css'
         ],
 		callback
 	);

@@ -2,11 +2,13 @@
 
 const appRoot = 'app/',
 	cspageRoot = 'cs-page/',
-	sassRoot = 'sass/';
+	sassRoot = 'sass/',
+	vendorsCssRoot = 'vendors-css/';
 
 module.exports = {
 	appRoot: appRoot,
 	cspageRoot: cspageRoot,
+	vendorsCssRoot: vendorsCssRoot,
 
 	//source: appRoot + '**/*.js',
 	//html: appRoot + '**/*.html',
@@ -22,5 +24,5 @@ module.exports = {
 	cspageCssSourcePath: sassRoot + 'cspage/',
 
 	appCssOutputPath: appRoot + 'css/',
-	cspageCssOutputPath: cspageRoot + 'css/'
+	cspageCssOutputPath: cspageRoot
 };
