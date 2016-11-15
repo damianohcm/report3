@@ -45,6 +45,7 @@
 			tableFixed: angular.element(document.getElementById('table-fixed')),
 			tableScroll: angular.element(document.getElementById('table-scroll')),
 			tableHorizScrollContainer: angular.element(document.getElementById('table-horiz-scroll')),
+			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll')),
 			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll'))
 		};
 
@@ -53,6 +54,13 @@
 				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
 				$scope.dom.tableVertScrollContainer.attr('style', width);
 				$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
+
+				// var thFixed = angular.element(document.querySelector('.table-fixed > thead .th-category'));
+				// var thScroll = angular.element(document.querySelector('.table-scroll > thead .th-category'));
+				// var width = 'width: ' + (thScroll[0].offsetWidth + 'px');
+				// console.log('category width', width);
+				// thFixed.attr('style', width);
+				// thScroll.attr('style', width);
 			}, 0);
 		});
 
@@ -647,11 +655,13 @@
 			};
 
 			if (col.key === 'category') {
-				styleObj.width = '200px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj.width = '280px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
+				styleObj['max-width'] = styleObj.width;
 			} else if (col.key === 'summary') {
 			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
+				styleObj['max-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
 					styleObj.width = '130px';
@@ -662,6 +672,7 @@
 
 				if (useFixedWidth) {
 					styleObj['min-width'] = styleObj.width;
+					styleObj['max-width'] = styleObj.width;
 				}
 			}
 			
