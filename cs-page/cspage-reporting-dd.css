@@ -21,8 +21,8 @@
   font-style: normal; }
 
 #mainContainer {
-  padding: 15px 0 !important;
-  background: url("../img/coffee-bg.jpg") no-repeat center fixed;
+  padding: 2px 0 10px 0 !important;
+  background: url("../../img/coffee-bg.jpg") no-repeat center fixed;
   background-size: cover;
   font-size: 12px; }
 

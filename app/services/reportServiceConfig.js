@@ -12,7 +12,7 @@
                 useTestData: true, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
                 debug: false, /* true will output additional info in the cells to help identify the code in reportService that populates them */
 
-                summaryColumnCalculation: 1, /* 1 = Segments average; 2 = Learning Objects Weighted Average */
+                summaryColumnCalculation: 'segments', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
                 
                 notApplicableLabel: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
                 notApplicableIncludeInCalc: true, /* whether to include the N/A columns in the average aggregated calculation for summary */

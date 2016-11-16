@@ -1,4 +1,4 @@
-<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-learning-path-report-page.css">
+<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/cspage-reporting-dd.css">
 <div id="page-container">
 <iframe id="iframeTar" frameborder="0" style="width: 100%;min-height:900px;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
@@ -19,19 +19,19 @@
     }
 
     window.setBrand = function() {
-        var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
+        var csPageStyle = 'cspage-reporting-[brand].css'.replace('[brand]', window.currentBrand.toLowerCase());
         console.log('csPageStyle', csPageStyle);
-        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle + '?' + Math.random());
-        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
+        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/' + csPageStyle + '?' + Math.random());
+        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
     };
 
     window.onresize = function(event) {
-        console.log('sizeFrame');
+        //console.log('sizeFrame');
         sizeFrame();
     };
 
     function sizeFrame() {
-        var availableHeight = 200;
+        var availableHeight = 900;
     }
 
     $(function() {

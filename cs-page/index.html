@@ -7,7 +7,7 @@
 
 
 <link id="csPageStyle" rel="stylesheet" href="cspage-reporting-dd.css"/>
-<!--link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-cspage-reporting.css"/-->
+<!--link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/css/cspage-reporting-dd.css"/-->
 <div id="page-container">
 <iframe id="iframeTar" frameborder="0" style="width: 100%;min-height:900px;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
@@ -30,7 +30,7 @@
     window.setBrand = function() {
         var csPageStyle = 'cspage-reporting-[brand].css'.replace('[brand]', window.currentBrand.toLowerCase());
         console && console.log('csPageStyle', csPageStyle);
-        //document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle + '?' + Math.random());
+        //document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/css/' + csPageStyle + '?' + Math.random());
         document.getElementById('csPageStyle').setAttribute('href', '' + csPageStyle + '?' + Math.random());
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
     };

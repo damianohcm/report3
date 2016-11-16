@@ -355,12 +355,9 @@
 			// loop through all store people
 			utilsService.fastLoop(peopleRows, function(personRow) {
 
-				// include row in calculation only if personaRow.show is true
+				// include row in calculation only if personRow.show is true
 				if (personRow.show) {
 					// find matching person lo
-					// var currentLo = _.find(personRow, function(personLo) {
-					// 	return personLo.id === colChild.id;
-					// });
 					var currentLo;
 					Object.keys(personRow).every(function(k) {
 						if (personRow[k].hasOwnProperty('id') && personRow[k].id === colChild.id) {
@@ -413,8 +410,21 @@
 		};
 
 		/**
+		 * @object avgStrategies
+		 * @description
+		 */
+		var avgStrategies = {
+			segments: function(aggregated, count) {
+				return private.safePercent(aggregated, count);
+			},
+			los: function(aggregated, count) {
+				return private.safePercent(aggregated, count);
+			}
+		};
+
+		/**
 		 * @method recalculate
-		 * @decsription
+		 * @description
 		 */
 		var recalculate = function(model) {
 			utilsService.safeLog('recalculate - WORKING ON IMPLEMENTATION');
@@ -439,7 +449,9 @@
 
 					// begin: segment (colGroup) loop
 					// aggregate each person data by segment
-					var colGroupsCount = colGroups.length, naColGroupsCount = 0, rowGroupAggregated = 0;
+					var colGroupsCount = colGroups.length, naColGroupsCount = 0, 
+						totLosCount = 0,
+						rowGroupAggregated = 0;
 
 					utilsService.fastLoop(colGroups, function(colGroup) {
 
@@ -506,18 +518,25 @@
 
 					}); // end: segment (columnGroup) loop
 
-
 					// the row (horizontal) percentage for the rowGroup (store)
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
 					//utilsService.safeLog('colGroupsCount naColGroupsCount colGroups.length rowGroupAggregated', colGroupsCount, naColGroupsCount, colGroups.length, rowGroupAggregated);
 					if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
-						////rowGroupSummaryValue = colGroupsCount > 0 ? Math.round(rowGroupAggregated / colGroupsCount) : 0;
-						rowGroupSummaryValue = private.safePercent(rowGroupAggregated, colGroupsCount);
-						rowGroupSummarySuffix = '%';
+						// do average
+						var avgStrategy = avgStrategies[reportConfig.summaryColumnCalculation]; 
+						if (!avgStrategy) {
+							alert('Could not find average strategy for ' + reportConfig.summaryColumnCalculation);
+						} else {
+							// if normal average, divide rowGroupAggregated by colGroupsCount
+							//rowGroupSummaryValue = private.safePercent(rowGroupAggregated, colGroupsCount);
+							rowGroupSummaryValue = avgStrategy(rowGroupAggregated, colGroupsCount);
+						}
+
+						rowGroupSummarySuffix = '%'; //'% rgs';
 					} else {
 						// if all segments are N/A, then aggregated value is also N/A
 						rowGroupSummaryValue = notApplicableLabel;
-						rowGroupSummarySuffix = '';
+						rowGroupSummarySuffix = ''; //'rgs';
 					}
 
 					// store value in rowGroup summary cell 
@@ -607,11 +626,11 @@
 							if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
 								////personRowSummaryValue = colGroupsCount > 0 ? Math.round(rowChildAggregated / colGroupsCount) : 0;
 								personRowSummaryValue = private.safePercent(rowChildAggregated, colGroupsCount);
-								personRowSummarySuffix = '%';
+								personRowSummarySuffix = '%'; //'% prs';
 							} else {
 								// if all segments are N/A, then aggregated value is also N/A
 								personRowSummaryValue = notApplicableLabel;
-								personRowSummarySuffix = '';
+								personRowSummarySuffix = ''; //'prs';
 							}
 
 							// set person row summary
@@ -635,7 +654,7 @@
 
 		/**
 		 * @method escapeSpecialChars
-		 * @decsription
+		 * @description
 		 * Helper to escape some special chars like copyright, registered mark etc.
 		 */
 		private.escapeSpecialChars = function(text) {
@@ -649,7 +668,7 @@
 
 		/**
 		 * @method truncateText
-		 * @decsription
+		 * @description
 		 * Helper to limit text length to a max length, and add "..."
 		 */
 		private.truncateText = function(text, maxLen) {
@@ -662,7 +681,7 @@
 
 		/**
 		 * @method formatName
-		 * @decsription
+		 * @description
 		 * Helper format col name approriately
 		 */
 		private.formatName = function(text, maxLen) {
@@ -671,7 +690,7 @@
 
 		/**
 		 * @method getModel
-		 * @decsription
+		 * @description
 		 * Helper to get a model with the aggregated data that can be used in a generic way
 		 */
 		var getModel = function(data, totCompletionTitle) {  

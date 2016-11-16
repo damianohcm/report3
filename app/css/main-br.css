@@ -741,8 +741,6 @@ div.height-40 {
 #table-horiz-scroll {
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 700px;
-  max-height: 700px;
   /*outline: dashed 2px blue;*/ }
 
 #table-vert-scroll {
