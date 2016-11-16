@@ -61,6 +61,10 @@
 				// console.log('category width', width);
 				// thFixed.attr('style', width);
 				// thScroll.attr('style', width);
+$('.table-scroll tr:eq(1) td').each(function (i) {
+	var _this = $(this);
+	$('.table-fixed tr:eq(1) td:eq(' + i + ')').width(_this.width());
+});
 			}, 0);
 		});
 

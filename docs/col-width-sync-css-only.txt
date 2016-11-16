@@ -1,0 +1,37 @@
+Reference: http://stackoverflow.com/questions/23813913/how-do-you-keep-two-tables-column-widths-in-sync-while-resizing
+
+
+Definitely doable in just CSS. Just set widths on both tables, trs, and tds, apply word-wrapping, and setting table-layout to fixed. This last setting makes it use the defined column widths, rather than be determined by the cell content's width.
+
+#tb1 {     width: 80%;     }
+
+#tb2 {     width: 80%;     }
+
+#tb1 tr {     width: 100%;     }
+
+#tb2 tr {     width: 100%;     }
+
+.col1 {     width: 35%;     }
+.col2 {     width: 35%;     }
+.col3 {     width: 20%;     }
+.col4 {     width: 10%;     }
+
+#tb1, #tb2 {     table-layout: fixed;     }
+#tb1 td, #tb2 td {     word-wrap: break-word;     }
+<table id="tb1" border="1">
+  <tr>
+    <td class="col1">Title 1</td>
+    <td class="col2">Title 2</td>
+    <td class="col3">Title 3</td>
+    <td class="col4">Title 4</td>
+  </tr>
+</table>
+
+<table id="tb2" border="1">
+  <tr>
+    <td class="col1">Content 00001</td>
+    <td class="col2">Content 02</td>
+    <td class="col3">Content 0000000000003</td>
+    <td class="col4">Content 000000000000000000004</td>
+  </tr>
+</table>
