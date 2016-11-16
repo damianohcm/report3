@@ -11,7 +11,7 @@
             common: {
                 // any config that is not specific to a single brand should go here,
                 totCompletionTitlePrefix: 'Tot Completion % for ',
-                apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com',
+                apiBaseUrl: 'https://dunk-stg.tribridge-amplifyhr.com',
                 params: {
                     // these will contain query string params that we keep passing around
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
@@ -36,13 +36,13 @@
                     title: 'Baskin-Robbins',
                     reportStrategies: {
                         'learning-path': {
-                            pathId: 19,
-                            title: 'Learning Path (BR)',
+                            pathId: 6, //19,
+                            title: 'Learning Path',
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 20,
-                            title: 'New & Trending (BR)',
+                            pathId: 5, //20,
+                            title: 'New & Trending',
                             oneLevel: true
                         },
                         custom: {
@@ -56,12 +56,12 @@
                     title: 'Dunkin Donuts',
                     reportStrategies: {
                         'learning-path': {
-                            pathId: 15,
+                            pathId: 1, //15,
                             title: 'Learning Path',
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 18,
+                            pathId: 4, //18,
                             title: 'New & Trending',
                             oneLevel: true
                         },
