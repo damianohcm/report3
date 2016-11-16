@@ -220,14 +220,14 @@ i.fa {
 	min-width: 150px;
 	max-width: 150px;*/ }
 
-.th-course {
+.th-segment {
   color: white;
   background-color: #0039A6;
   /*width: 80px;
     min-width: 80px;
     max-width: 80px;*/ }
 
-.th-section {
+.th-lo {
   color: white;
   background-color: #BE854C;
   /*width: 150px;

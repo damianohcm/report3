@@ -139,7 +139,7 @@ $scope.modalSave = {
 				// "properties":[{"name":"show","oldValue":true,"newValue":false},
 				// "msg":"Exclude column Guest Service",
 				// "item":{"isGroup":true,"id":"guest-services","key":"guest-services","show":true,"position":14,"groupPosition":4,"locked":false,
-				// "css":"th-course valign-top","name":"Guest Service","$$hashKey":"object:35"}]
+				// "css":"th-segment valign-top","name":"Guest Service","$$hashKey":"object:35"}]
 				// }
 
 				// keep row collapsed when undoing rows

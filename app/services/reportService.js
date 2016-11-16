@@ -123,15 +123,15 @@
 		 * @description
 		 * Gets a row for a specific person and her learning objects
 		 */
-		private.getPersonRow = function(courses, person) {
-			if (!courses || typeof courses !== 'object' || courses.length < 1 
+		private.getPersonRow = function(segments, person) {
+			if (!segments || typeof segments !== 'object' || segments.length < 1 
 				|| !person || typeof person !== 'object' 
 				|| !person.hasOwnProperty('name') || !person.hasOwnProperty('title') || !person.hasOwnProperty('los')) {
 				throw Error('getPersonRow: Invalid arguments');
 			} else {
 
-				utilsService.safeLog('getPersonRow', courses.length + ' ' + person.name);
-				utilsService.safeLog('getPersonRow courses', JSON.stringify(courses));
+				utilsService.safeLog('getPersonRow', segments.length + ' ' + person.name);
+				utilsService.safeLog('getPersonRow segments', JSON.stringify(segments));
 				utilsService.safeLog('getPersonRow person', JSON.stringify(person));
 
 				var personName = (person.name);
@@ -160,31 +160,31 @@
 					}
 				};
 
-				// loop through each course
-				utilsService.fastLoop(courses, function(course) {
+				// loop through each segment
+				utilsService.fastLoop(segments, function(segment) {
 
 					// init cell
 					var cell = {
 						isGroup: true,
-						key: course.id,
-						id: course.id,
+						key: segment.id,
+						id: segment.id,
 						value: 0,
 						suffix: '%'
 					};
 
-					// store cell into row using course.id as the row property
+					// store cell into row using segment.id as the row property
 					row[cell.key] = cell;
 
 					var currentLos = _.filter(person.los, function(lo) {
 						if (!lo) {
 							utilsService.safeLog('WARNING: person.lo is null', person);
 						}
-						return lo && lo.segmentId === course.id;
+						return lo && lo.segmentId === segment.id;
 					});
 
 					if (currentLos && currentLos.length > 0) {
 						// add child cells (visibility is controlled by the child columns)
-						utilsService.fastLoop(course.los, function(lo) {
+						utilsService.fastLoop(segment.los, function(lo) {
 							var personLo = _.find(currentLos, function(plo) {
 								return plo.id === lo.id;
 							});
@@ -194,7 +194,7 @@
 
 							// child cell
 							var childCell = JSON.parse(JSON.stringify(private.personLoCells[loValue]));
-							childCell.parentId = course.id;
+							childCell.parentId = segment.id;
 							childCell.id = lo.id;
 							childCell.key = childCell.parentId + '_' + childCell.id;
 							row[childCell.key] = childCell;
@@ -204,10 +204,10 @@
 						cell.value = notApplicableLabel;
 						cell.suffix = '';
 
-						utilsService.fastLoop(course.los, function(lo) {
+						utilsService.fastLoop(segment.los, function(lo) {
 							// child cell
 							var childCell = JSON.parse(JSON.stringify(private.personLoCells[-1]));
-							childCell.parentId = course.id;
+							childCell.parentId = segment.id;
 							childCell.id = lo.id;
 							childCell.key = childCell.parentId + '_' + childCell.id;
 							// child cell
@@ -250,7 +250,7 @@
 		/**
 		 * @method aggregateSegmentByStore
 		 * @decription
-		 * A colGroup represents a course (segment)
+		 * A colGroup represents a segment (segment)
 		 * A rowGroup represents a store 
 		 */
 		private.aggregateSegmentByStore = function(colGroup, rowGroup, model) {
@@ -312,7 +312,7 @@
 							////aggregated += losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
 							aggregated += private.safePercent(aggregatedLos, losCount, 100);
 						} else {
-							// if person does not have any learning objects for this course increase naCount
+							// if person does not have any learning objects for this segment increase naCount
 							naCount++;
 							// decrease peopleRowsCount only if notApplicableIncludeInCalc is false
 							if (notApplicableIncludeInCalc === false) {
@@ -387,7 +387,7 @@
 						}
 
 					} else {
-						// if person does not have any learning objects for this course increase naCount
+						// if person does not have any learning objects for this segment increase naCount
 						naCount++;
 						if (notApplicableIncludeInCalc === false) {
 							// reduce people count only if notApplicableIncludeInCalc is false
@@ -437,16 +437,16 @@
 				// include row in calculation only if rowGroup.show is true
 				if (rowGroup.show) {
 
-					// begin: course (colGroup) loop
-					// aggregate each person data by course
-					var coursesCount = colGroups.length, naCoursesCount = 0, storeAggregated = 0;
+					// begin: segment (colGroup) loop
+					// aggregate each person data by segment
+					var colGroupsCount = colGroups.length, naColGroupsCount = 0, rowGroupAggregated = 0;
 
 					utilsService.fastLoop(colGroups, function(colGroup) {
 
 						// only include colGroup in calculation if group column is visible 
 						// and we are not in detail view (topLevelColumn will be undefined)
 						if (!topLevelColumn && colGroup.show || (topLevelColumn && topLevelColumn.id === colGroup.id)) {
-							// get group cell (course cell)
+							// get group cell (segment cell)
 							var groupCell = rowGroup[colGroup.key]
 								, cellSuffix = '';
 
@@ -458,18 +458,18 @@
 
 							if (groupCell.value === notApplicableLabel) {
 								cellSuffix = '';
-								naCoursesCount++;
+								naColGroupsCount++;
 								if (notApplicableIncludeInCalc === false) {
-									coursesCount = private.decreaseCount(coursesCount);
+									colGroupsCount = private.decreaseCount(colGroupsCount);
 								}
 							} else {
 								cellSuffix = '%';
-								storeAggregated += groupCell.value;
+								rowGroupAggregated += groupCell.value;
 							}
 
 							groupCell.suffix = cellSuffix + _getDebugMessage('aggSegByPC'); /* groupCell is segment - this is aggregated Segment by PC */
 
-							// get all child columns (course los)
+							// get all child columns (segment los)
 							var colChildren = _.filter(model.columns, function(col) {
 								return col.parentId === colGroup.id;
 							});
@@ -486,7 +486,7 @@
 									
 									if (childCell.value === notApplicableLabel) {
 										childCellSuffix = '';
-										//naCoursesCount++;
+										//naColGroupsCount++;
 									} else {
 										childCellSuffix = '%';
 									}
@@ -497,25 +497,25 @@
 									utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
 
-							}); // end: course los (child columns) loop
+							}); // end: segment los (child columns) loop
 
 						} else {
 							// col is hidden or we are in details view
-							coursesCount = private.decreaseCount(coursesCount);
+							colGroupsCount = private.decreaseCount(colGroupsCount);
 						}
 
-					}); // end: course (columnGroup) loop
+					}); // end: segment (columnGroup) loop
 
 
 					// the row (horizontal) percentage for the rowGroup (store)
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
-					//utilsService.safeLog('coursesCount naCoursesCount colGroups.length storeAggregated', coursesCount, naCoursesCount, colGroups.length, storeAggregated);
-					if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
-						////rowGroupSummaryValue = coursesCount > 0 ? Math.round(storeAggregated / coursesCount) : 0;
-						rowGroupSummaryValue = private.safePercent(storeAggregated, coursesCount);
+					//utilsService.safeLog('colGroupsCount naColGroupsCount colGroups.length rowGroupAggregated', colGroupsCount, naColGroupsCount, colGroups.length, rowGroupAggregated);
+					if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
+						////rowGroupSummaryValue = colGroupsCount > 0 ? Math.round(rowGroupAggregated / colGroupsCount) : 0;
+						rowGroupSummaryValue = private.safePercent(rowGroupAggregated, colGroupsCount);
 						rowGroupSummarySuffix = '%';
 					} else {
-						// if all courses are N/A, then aggregated value is also N/A
+						// if all segments are N/A, then aggregated value is also N/A
 						rowGroupSummaryValue = notApplicableLabel;
 						rowGroupSummarySuffix = '';
 					}
@@ -527,9 +527,6 @@
 
 
 					// get all child rows (people)
-					// // var rowChildren = _.filter(model.result.rows, function(row) {
-					// // 	return row.parentId === rowGroup.id;
-					// // });
 					var rowChildren = rowGroup.children;
 
 					utilsService.fastLoop(rowChildren, function(personRow) {
@@ -537,10 +534,10 @@
 						// include row in calculation only if personRow.show is true
 						if (personRow.show) {
 
-							// loop through each course
-							var aggregatedPerson = 0;
-							naCoursesCount = 0;
-							coursesCount = colGroups.length;
+							// loop through each segment
+							var rowChildAggregated = 0;
+							naColGroupsCount = 0;
+							colGroupsCount = colGroups.length;
 
 							utilsService.fastLoop(colGroups, function(colGroup) {
 							
@@ -583,15 +580,15 @@
 									});
 
 									if (naLosCount !== currentLos.length) {
-										// person course aggregated
+										// person segment aggregated
 										////personCourseCell.value = losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
 										personCourseCell.value = private.safePercent(aggregatedLos, losCount, 100);
-										aggregatedPerson += personCourseCell.value;
+										rowChildAggregated += personCourseCell.value;
 										utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' personCourseCell.value', personCourseCell.value);
 									} else {
-										naCoursesCount++;
+										naColGroupsCount++;
 										if (notApplicableIncludeInCalc === false) {
-											coursesCount--;
+											colGroupsCount--;
 										}
 										personCourseCell.isNA = true;
 										personCourseCell.value = notApplicableLabel;
@@ -601,18 +598,18 @@
 									personCourseCell.css = private.getPersonSegmentCellCss(personCourseCell);
 
 								} else {
-									coursesCount = private.decreaseCount(coursesCount);
+									colGroupsCount = private.decreaseCount(colGroupsCount);
 								}
 							});
 
-							// the row (horizontal) percentage for all the course sections for this person
+							// the row (horizontal) percentage for all the segment los for this person
 							var personRowSummaryValue = 0, personRowSummarySuffix = '';
-							if (coursesCount > 0 && naCoursesCount !== colGroups.length) {
-								////personRowSummaryValue = coursesCount > 0 ? Math.round(aggregatedPerson / coursesCount) : 0;
-								personRowSummaryValue = private.safePercent(aggregatedPerson, coursesCount);
+							if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
+								////personRowSummaryValue = colGroupsCount > 0 ? Math.round(rowChildAggregated / colGroupsCount) : 0;
+								personRowSummaryValue = private.safePercent(rowChildAggregated, colGroupsCount);
 								personRowSummarySuffix = '%';
 							} else {
-								// if all courses are N/A, then aggregated value is also N/A
+								// if all segments are N/A, then aggregated value is also N/A
 								personRowSummaryValue = notApplicableLabel;
 								personRowSummarySuffix = '';
 							}
@@ -738,24 +735,24 @@
 			});
 
 			// 1. Add to model.columns collection
-			// loop through each course and add a column for each course
-			utilsService.fastLoop(data.segments, function(course, colGroupPosition) {
+			// loop through each segment and add a column for each segment
+			utilsService.fastLoop(data.segments, function(segment, colGroupPosition) {
 
 				// group cell
-				var colName = (course.title || course.name);
+				var colName = (segment.title || segment.name);
 				
 				var colGroup = {
 					isGroup: true,
-					id: course.id,
-					key: course.id,
+					id: segment.id,
+					key: segment.id,
 					show: true,
 					position:  model.columns.length,
 					groupPosition: colGroupPosition,
 					locked: false,
-					css: 'th-course valign-top pointer',
+					css: 'th-segment valign-top pointer',
 					name: private.escapeSpecialChars(colName),
 					nameTrunc: private.truncateText(colName, reportConfig.colGroupHeaderMaxLength),
-					type: course.type,
+					type: segment.type,
 					/* front end things */
 					title: 'Click to expand Category',
 					removeTitle: 'Remove Category',
@@ -770,25 +767,25 @@
 				model.columns.push(colGroup);
 
 				// add child columns
-				var courseLos = (course.learning_objects || course.los);
-				utilsService.fastLoop(courseLos, function(section) {
+				var segmentLos = (segment.learning_objects || segment.los);
+				utilsService.fastLoop(segmentLos, function(lo) {
 					// child cell
-					var colChildName = (section.title || section.name);
+					var colChildName = (lo.title || lo.name);
 
 					//console.log('colChildName', colChildName);
 
 					var colChild = {
 						isChild: true,
-						parentId: course.id,
-						id: section.id,
-						key: course.id + '_' + section.id,
+						parentId: segment.id,
+						id: lo.id,
+						key: segment.id + '_' + lo.id,
 						position:  model.columns.length,
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
-						css: 'th-section valign-top',
+						css: 'th-lo valign-top',
 						name: private.escapeSpecialChars(colChildName),
 						nameTrunc: private.truncateText(colChildName, reportConfig.colChildheaderMaxLength),
-						type: section.type,
+						type: lo.type,
 						/* front end things */
 						title: '',
 						removeTitle: 'Remove Course',
@@ -870,28 +867,28 @@
 
 				utilsService.safeLog('peopleByStore', peopleByStore);
 
-				// loop through each course and aggregate
-				// and build a cell for each course
-				utilsService.fastLoop(data.segments, function(course) {
+				// loop through each segment and aggregate
+				// and build a cell for each segment
+				utilsService.fastLoop(data.segments, function(segment) {
 					// init group cell with value zero
 					var groupCell = {
 						isGroup: true,
-						id: course.id,
-						key: course.id,
+						id: segment.id,
+						key: segment.id,
 						value: 0,
 						suffix: ''
 					};
 
-					// store groupCell into row using course.id as the row property
+					// store groupCell into row using segment.id as the row property
 					rowGroup[groupCell.key] = groupCell;
 
-					// add child cell for each course lo
-					utilsService.fastLoop(course.los, function(courseLo) {
+					// add child cell for each segment lo
+					utilsService.fastLoop(segment.los, function(segmentLo) {
 						var childCell = {
 							isChild: true,
-							parentId: course.id,
-							id: courseLo.id,
-							key: course.id + '_' + courseLo.id,
+							parentId: segment.id,
+							id: segmentLo.id,
+							key: segment.id + '_' + segmentLo.id,
 							value: 0,
 							suffix: ''
 						};
