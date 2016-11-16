@@ -134,6 +134,8 @@
 				utilsService.safeLog('getPersonRow courses', JSON.stringify(courses));
 				utilsService.safeLog('getPersonRow person', JSON.stringify(person));
 
+				var personName = (person.name);
+
 				// init row and add first column for store name
 				var row = {
 					id: person.id,
@@ -142,7 +144,8 @@
 					category: {
 						key: 'category',
 						locked: true,
-						value: person.name,
+						value: private.escapeSpecialChars(personName),
+						valueTrunc: private.truncateText(personName, reportConfig.rowChildheaderMaxLength),
 						value2: person.title,
 						css: 'person',
 						cssValueSpan: 'person'
@@ -633,6 +636,11 @@
 			
 		};
 
+		/**
+		 * @method escapeSpecialChars
+		 * @decsription
+		 * Helper to escape some special chars like copyright, registered mark etc.
+		 */
 		private.escapeSpecialChars = function(text) {
 			// whatever we escape here, we'll have to unescape in the csv export in utilsService.js
 			return (text || '')
@@ -643,11 +651,33 @@
 		};
 
 		/**
+		 * @method truncateText
+		 * @decsription
+		 * Helper to limit text length to a max length, and add "..."
+		 */
+		private.truncateText = function(text, maxLen) {
+			if (text && text.length > maxLen) {
+				return text.substring(0, maxLen).trim() + ' ...';
+			} else {
+				return text;
+			}
+		};
+
+		/**
+		 * @method formatName
+		 * @decsription
+		 * Helper format col name approriately
+		 */
+		private.formatName = function(text, maxLen) {
+			return private.truncateText(private.escapeSpecialChars(text), maxLen);
+		};
+
+		/**
 		 * @method getModel
 		 * @decsription
 		 * Helper to get a model with the aggregated data that can be used in a generic way
 		 */
-		var getModel = function(data, totCompletionTitle) {            
+		var getModel = function(data, totCompletionTitle) {  
 
 			// building model
 			var model = {
@@ -677,7 +707,8 @@
 					show: true,
 					locked: true,
 					css: 'th-summary',
-					//name:  this.totCompletionTitle /* 'Tot Completion % for ...' */
+					name:  private.escapeSpecialChars(totCompletionTitle), /* 'Tot Completion % for ...' */
+					nameTrunc:  private.formatName(totCompletionTitle, reportConfig.colSummaryHeaderMaxLength), /* 'Tot Completion % for ...' */
 					type: '',
 					/* front end things */
 					title: 'Click to expand Category',
@@ -694,19 +725,19 @@
 				}
 			};
 
-			// computed property for summary columne name
-			Object.defineProperty(model.columns[1], 'name', {
-				get: function() {
-					return this.totCompletionTitle;
-				}.bind(model)
-			});
+			// // computed property for summary columne name
+			// Object.defineProperty(model.columns[1], 'name', {
+			// 	get: function() {
+			// 		return this.totCompletionTitle;
+			// 	}.bind(model)
+			// });
 
 			// 1. Add to model.columns collection
 			// loop through each course and add a column for each course
 			utilsService.fastLoop(data.segments, function(course, colGroupPosition) {
 
 				// group cell
-				var colName = private.escapeSpecialChars(course.title || course.name);
+				var colName = (course.title || course.name);
 				
 				var colGroup = {
 					isGroup: true,
@@ -717,7 +748,8 @@
 					groupPosition: colGroupPosition,
 					locked: false,
 					css: 'th-course valign-top pointer',
-					name: colName,
+					name: private.escapeSpecialChars(colName),
+					nameTrunc: private.truncateText(colName, reportConfig.colGroupHeaderMaxLength),
 					type: course.type,
 					/* front end things */
 					title: 'Click to expand Category',
@@ -736,7 +768,7 @@
 				var courseLos = (course.learning_objects || course.los);
 				utilsService.fastLoop(courseLos, function(section) {
 					// child cell
-					var colChildName = private.escapeSpecialChars(section.title || section.name);
+					var colChildName = (section.title || section.name);
 
 					//console.log('colChildName', colChildName);
 
@@ -749,7 +781,8 @@
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
 						css: 'th-section valign-top',
-						name: colChildName,
+						name: private.escapeSpecialChars(colChildName),
+						nameTrunc: private.truncateText(colChildName, reportConfig.colChildheaderMaxLength),
 						type: section.type,
 						/* front end things */
 						title: '',
@@ -802,6 +835,8 @@
 			var rowGroups = [];
 			utilsService.fastLoop(data.stores, function(store) {
 
+				var storeName = (store.name);
+
 				// init row and add first column for store name
 				var rowGroup = {
 					isGroup: true,
@@ -814,7 +849,8 @@
 						key: 'category',
 						css: 'category',
 						locked: true,
-						value: store.name
+						value: private.escapeSpecialChars(storeName),
+						valueTrunc: private.truncateText(storeName, reportConfig.rowGroupHeaderMaxLength)
 					}, 
 					summary: {
 						id: 'summary',

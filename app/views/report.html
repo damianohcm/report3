@@ -72,8 +72,8 @@
                             <div ng-if="c.position > 0" class="th-middle">
                                 <div class="th-middle-inner">
                                     <!-- column text: column at index 1 can change (summary), other columns can be bound once (::) -->
-                                    <div ng-if="c.position < 2" ng-class="thTextCss(c)" ng-bind-html="c.name"></div>
-                                    <div ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.name"></div>
+                                    <div ng-if="c.position === 1" ng-class="thTextCss(c)" ng-bind-html="c.nameTrunc" ng-attr-title="{{c.name}}"></div>
+                                    <div ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.nameTrunc" ng-attr-title="{{::c.name}}"></div>
                                 </div>
                             </div>
                         </th>
@@ -116,7 +116,8 @@
                                 <div ng-class="::c.addCss.rowThMiddle">
                                     <div ng-class="::c.addCss.rowThMiddleInner">
                                         <div ng-class="::addCss.rowThText">
-                                            {{row[c.key].value+row[c.key].suffix}}
+                                            <span ng-if="::(c.position === 0)" ng-bind="::row[c.key].valueTrunc" ng-attr-title="{{::row[c.key].value}}"></span>
+                                            <span ng-if="::(c.position > 0)" ng-bind="::(row[c.key].value+row[c.key].suffix)"></span>
                                             <div ng-if="::(c.position === 0 && row.children.length < 1)" style="font-weight:normal;font-size:0.9em">(No learners)</div>
                                         </div>
                                     </div>
@@ -127,7 +128,8 @@
                         <tr ng-repeat="child in row.children track by $index" ng-if="!row.isCollapsed && child.show">
                             <td ng-repeat="c in ::model.columns track by $index" ng-class="child[c.key].css + (!c.show ? ' hidden' : '')">
                                 <div class="pull-left row-text">
-                                    <span ng-class="::child[c.key].cssValueSpan" ng-bind="child[c.key].value + child[c.key].suffix"></span>
+                                    <span ng-if="::(c.position === 0)" ng-class="::child[c.key].cssValueSpan" ng-bind="::child[c.key].valueTrunc" ng-attr-title="{{::child[c.key].value}}"></span>
+                                    <span ng-if="::(c.position > 0)" ng-class="::child[c.key].cssValueSpan" ng-bind="::(child[c.key].value + child[c.key].suffix)"></span>
                                     <span ng-if="::child[c.key].value2" class="person-title" ng-bind="::child[c.key].value2"></span>
                                 </div>
                                 <div ng-if="::(c.position < 1)" class="pull-right row-icon">

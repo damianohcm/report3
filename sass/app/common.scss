@@ -147,7 +147,7 @@ i.fa {
 .row-th-middle-inner{
     display: table-cell;
     vertical-align: middle;
-    height: 55px;
+    height: 25px;
 }
 .row-th-text {
     clear: both !important;
@@ -477,9 +477,14 @@ div.height-40 {
 	color: #444444;
 }
 
+.container, 
+.banner {
+    width: 95%;
+	max-width: 95%;
+}
+
 .container {
 	border-radius: 8px;
-    width: 1350px;
 }
 
 .container.report {
@@ -503,8 +508,6 @@ div.height-40 {
 /* banner */
 .banner {
     box-sizing: border-box;
-	width: 1350px;
-    max-width: 1350px;
     box-sizing: border-box;
     margin: 20px auto;
     height: 60px;

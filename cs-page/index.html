@@ -32,7 +32,7 @@
         console && console.log('csPageStyle', csPageStyle);
         //document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle + '?' + Math.random());
         document.getElementById('csPageStyle').setAttribute('href', '' + csPageStyle + '?' + Math.random());
-        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
+        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
     };
 
     window.onresize = function(event) {

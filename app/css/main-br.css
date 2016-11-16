@@ -154,7 +154,7 @@ i.fa {
 .row-th-middle-inner {
   display: table-cell;
   vertical-align: middle;
-  height: 55px; }
+  height: 25px; }
 
 .row-th-text {
   clear: both !important;
@@ -188,7 +188,7 @@ i.fa {
   font-size: 16px; }
 
 .table > tbody > tr > td.first {
-  word-break: break-all;
+  word-break: break-word;
   /* break-word causes the two table not being in sync with td widths */
   vertical-align: middle;
   padding-left: 12px; }
@@ -458,9 +458,13 @@ div.height-40 {
   font: 300 14px/16px 'Gotham', Helvetica, Arial, sans-serif;
   color: #444444; }
 
+.container,
+.banner {
+  width: 95%;
+  max-width: 95%; }
+
 .container {
-  border-radius: 8px;
-  width: 1350px; }
+  border-radius: 8px; }
 
 .container.report {
   background-color: #FFFFFF;
@@ -481,8 +485,6 @@ div.height-40 {
 /* banner */
 .banner {
   box-sizing: border-box;
-  width: 1350px;
-  max-width: 1350px;
   box-sizing: border-box;
   margin: 20px auto;
   height: 60px;
