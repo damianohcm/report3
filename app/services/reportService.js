@@ -707,8 +707,8 @@
 					show: true,
 					locked: true,
 					css: 'th-summary',
-					name:  private.escapeSpecialChars(totCompletionTitle), /* 'Tot Completion % for ...' */
-					nameTrunc:  private.formatName(totCompletionTitle, reportConfig.colSummaryHeaderMaxLength), /* 'Tot Completion % for ...' */
+					////name:  /* computed property added below */
+					////nameTrunc:  /* computed property added below */
 					type: '',
 					/* front end things */
 					title: 'Click to expand Category',
@@ -725,12 +725,17 @@
 				}
 			};
 
-			// // computed property for summary columne name
-			// Object.defineProperty(model.columns[1], 'name', {
-			// 	get: function() {
-			// 		return this.totCompletionTitle;
-			// 	}.bind(model)
-			// });
+			/* computed property for summary columne name - 'Tot Completion % for ...' */
+			Object.defineProperty(model.columns[1], 'name', {
+				get: function() {
+					return private.escapeSpecialChars(this.totCompletionTitle);
+				}.bind(model)
+			});
+			Object.defineProperty(model.columns[1], 'nameTrunc', {
+				get: function() {
+					return private.formatName(this.totCompletionTitle, reportConfig.colSummaryHeaderMaxLength);
+				}.bind(model)
+			});
 
 			// 1. Add to model.columns collection
 			// loop through each course and add a column for each course

@@ -72,8 +72,8 @@
                             <div ng-if="c.position > 0" class="th-middle">
                                 <div class="th-middle-inner">
                                     <!-- column text: column at index 1 can change (summary), other columns can be bound once (::) -->
-                                    <div ng-if="c.position === 1" ng-class="thTextCss(c)" ng-bind-html="c.nameTrunc" ng-attr-title="{{c.name}}"></div>
-                                    <div ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.nameTrunc" ng-attr-title="{{::c.name}}"></div>
+                                    <span ng-if="c.position < 2" ng-class="thTextCss(c)" ng-bind-html="c.nameTrunc" ng-attr-title="{{c.name}}"></span>
+                                    <span ng-if="::(c.position > 1)" ng-class="thTextCss(c)" ng-bind-html="::c.nameTrunc" ng-attr-title="{{::c.name}}"></span>
                                 </div>
                             </div>
                         </th>
