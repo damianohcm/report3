@@ -410,15 +410,22 @@
 		};
 
 		/**
-		 * @object avgStrategies
+		 * @object averageStrategies
 		 * @description
 		 */
-		var avgStrategies = {
-			segments: function(aggregated, count) {
-				return private.safePercent(aggregated, count);
+		var averageStrategies = {
+			segments: function(isDetailView, aggregated, segmentsCount) {
+				// always do average using number of segments as denominator
+				return private.safePercent(aggregated, segmentsCount);
 			},
-			los: function(aggregated, count) {
-				return private.safePercent(aggregated, count);
+			los: function(isDetailView, aggregated, segmentsCount, totLosCount) {
+				if (isDetailView) {
+					// if we are in detail view, still use segments count for denominator
+					return private.safePercent(aggregated, segmentsCount);
+				} else {
+					// otherwise use totLosCount as denominator
+					return private.safePercent(aggregated, totLosCount);
+				}
 			}
 		};
 
@@ -440,6 +447,11 @@
 			var colGroups = _.filter(model.columns, function(column) {
 				return column.isGroup;
 			});
+
+			var averageStrategy = averageStrategies[reportConfig.averageCalculationMode]; 
+			if (!averageStrategy) {
+				alert('Could not find average strategy for ' + reportConfig.averageCalculationMode);
+			}
 
 			// begin: store (rowGroup) loop
 			utilsService.fastLoop(rowGroups, function(rowGroup) {
@@ -487,15 +499,23 @@
 							});
 							
 							//var losCount = colChildren.length, naLosCount = 0;
-
+							// loop through child columns
 							utilsService.fastLoop(colChildren, function(colChild) {
 								var childCell = rowGroup[colChild.key]
 									, childCellSuffix = '';
+
+								//utilsService.safeLog('colChild.calculate ' + colChild.calculate, colChild.name);
+								if (colChild.calculate) {
+									//utilsService.safeLog('childCell.value', childCell.value);
+									totLosCount += 1;
+								}
 
 								if (childCell) {
 									childCell.value = private.aggregateLoByStore(colChild, rowGroup, model);
 									childCell.css = private.getGroupCellCss(childCell);
 									
+									//utilsService.safeLog('childCell.value ' + colChild.calculate, childCell.value);
+
 									if (childCell.value === notApplicableLabel) {
 										childCellSuffix = '';
 										//naColGroupsCount++;
@@ -523,20 +543,14 @@
 					//utilsService.safeLog('colGroupsCount naColGroupsCount colGroups.length rowGroupAggregated', colGroupsCount, naColGroupsCount, colGroups.length, rowGroupAggregated);
 					if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
 						// do average
-						var avgStrategy = avgStrategies[reportConfig.summaryColumnCalculation]; 
-						if (!avgStrategy) {
-							alert('Could not find average strategy for ' + reportConfig.summaryColumnCalculation);
-						} else {
-							// if normal average, divide rowGroupAggregated by colGroupsCount
-							//rowGroupSummaryValue = private.safePercent(rowGroupAggregated, colGroupsCount);
-							rowGroupSummaryValue = avgStrategy(rowGroupAggregated, colGroupsCount);
-						}
-
-						rowGroupSummarySuffix = '%'; //'% rgs';
+						// if normal average, divide rowGroupAggregated by colGroupsCount
+						//utilsService.safeLog('rowGroupAggregated ' + rowGroupAggregated, colGroupsCount, totLosCount);
+						rowGroupSummaryValue = averageStrategy(!!topLevelColumn, rowGroupAggregated, colGroupsCount, totLosCount);
+						rowGroupSummarySuffix = '%';
 					} else {
 						// if all segments are N/A, then aggregated value is also N/A
 						rowGroupSummaryValue = notApplicableLabel;
-						rowGroupSummarySuffix = ''; //'rgs';
+						rowGroupSummarySuffix = '';
 					}
 
 					// store value in rowGroup summary cell 
@@ -557,6 +571,7 @@
 							var rowChildAggregated = 0;
 							naColGroupsCount = 0;
 							colGroupsCount = colGroups.length;
+							totLosCount = 0;
 
 							utilsService.fastLoop(colGroups, function(colGroup) {
 							
@@ -598,6 +613,8 @@
 										}
 									});
 
+									totLosCount += losCount;
+
 									if (naLosCount !== currentLos.length) {
 										// person segment aggregated
 										////personCourseCell.value = losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
@@ -624,13 +641,13 @@
 							// the row (horizontal) percentage for all the segment los for this person
 							var personRowSummaryValue = 0, personRowSummarySuffix = '';
 							if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
-								////personRowSummaryValue = colGroupsCount > 0 ? Math.round(rowChildAggregated / colGroupsCount) : 0;
-								personRowSummaryValue = private.safePercent(rowChildAggregated, colGroupsCount);
-								personRowSummarySuffix = '%'; //'% prs';
+								// do average
+								personRowSummaryValue = averageStrategy(!!topLevelColumn, rowChildAggregated, colGroupsCount, totLosCount);
+								personRowSummarySuffix = '%';
 							} else {
 								// if all segments are N/A, then aggregated value is also N/A
 								personRowSummaryValue = notApplicableLabel;
-								personRowSummarySuffix = ''; //'prs';
+								personRowSummarySuffix = '';
 							}
 
 							// set person row summary
@@ -722,13 +739,13 @@
 					position:  1,
 					show: true,
 					locked: true,
-					css: 'th-summary',
+					css: 'th-summary pointer',
 					////name:  /* computed property added below */
 					////nameTrunc:  /* computed property added below */
 					type: '',
 					/* front end things */
-					title: 'Click to expand Category',
-					removeTitle: 'Remove Category',
+					title: 'Click to toggle average calculation mode',
+					removeTitle: '',
 					addCss: {
 						rowThMiddle: 'row-text',
 						rowThMiddleInner: '',
@@ -791,7 +808,7 @@
 					// child cell
 					var colChildName = (lo.title || lo.name);
 
-					//console.log('colChildName', colChildName);
+					//utilsService.safeLog('colChildName', colChildName);
 
 					var colChild = {
 						isChild: true,
@@ -946,12 +963,27 @@
 
 			return model;
 		};
+
+		/**
+		 * @method toggleAverageCalculationMode
+		 * @description
+		 * Toggles reportConfig.averageCalculationMode from 'segments' to 'los' or viceversa.
+		 * After toggling, you have to update calculations on model by calling reportService.recalculate($scope.model) from the controller.
+		 */
+		var toggleAverageCalculationMode = function() {
+			// toggle average calculation from normal to weighted and viceversa
+			var current = reportConfig.averageCalculationMode;
+			//utilsService.safeLog('averageCalculationMode: current: ' + current);
+			reportConfig.averageCalculationMode = (current === 'los' ? 'segments' : 'los');
+			return reportConfig.averageCalculationMode;
+		};
 		
 		return {
 			getModel: getModel,
 			recalculate: recalculate,
 			private: private,
-			reportConfig: reportConfig
+			reportConfig: reportConfig,
+			toggleAverageCalculationMode: toggleAverageCalculationMode
 		};
 	};
   

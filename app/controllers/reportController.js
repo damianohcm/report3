@@ -58,7 +58,7 @@
 				// var thFixed = angular.element(document.querySelector('.table-fixed > thead .th-category'));
 				// var thScroll = angular.element(document.querySelector('.table-scroll > thead .th-category'));
 				// var width = 'width: ' + (thScroll[0].offsetWidth + 'px');
-				// console.log('category width', width);
+				// utilsService.safeLog('category width', width);
 				// thFixed.attr('style', width);
 				// thScroll.attr('style', width);
 $('.table-scroll tr:eq(1) td').each(function (i) {
@@ -372,9 +372,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 		// method that handles clicks on the header cell text
 		$scope.onHeaderCellClick = function(col) {
-			//utilsService.safeLog('onHeaderCellClick col', col);
+			//utilsService.safeLog('onHeaderCellClick col', col.key);
 			if (col.position > 1) {
 				$scope.expandChildColumns(col);
+			} else if (col.key === 'summary') {
+				// toggle average calculation from normal to weighted and viceversa
+				var newMode = reportService.toggleAverageCalculationMode();
+				alert('Switched average calculation denominator to be: ' + newMode);
+				$scope.recalculate();
 			}
 		};
 
@@ -812,6 +817,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				}
 			} else {
 				//var fileName = 'data/report.json?' + Math.random();
+				var fileName = 'data/report-avg.json?' + Math.random();
 				//var fileName = 'data/report-generated1.json?' + Math.random();
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
@@ -819,7 +825,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 				//var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
 
-				var fileName = 'data/' + params.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				$timeout(function() {

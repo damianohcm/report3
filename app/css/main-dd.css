@@ -739,13 +739,13 @@ div.height-40 {
   /*visibility: hidden;*/ }
 
 #table-horiz-scroll {
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   /*outline: dashed 2px blue;*/ }
 
 #table-vert-scroll {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 700px;
   max-height: 700px;
   /*outline: dashed 2px green;*/ }
