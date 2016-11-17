@@ -53,7 +53,7 @@
 			$timeout(function() {
 				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
 				$scope.dom.tableVertScrollContainer.attr('style', width);
-				$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
+				//$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
 
 				// var thFixed = angular.element(document.querySelector('.table-fixed > thead .th-category'));
 				// var thScroll = angular.element(document.querySelector('.table-scroll > thead .th-category'));

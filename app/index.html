@@ -54,13 +54,6 @@
 		<div ng-view></div>
 
 		<script>
-			window.getParentHeight = function() {
-				console.log('getParentHeight', (parent && parent.document.body.clientHeight));
-				return (parent && parent.document.body.clientHeight);
-			};
-
-			window.getParentHeight();
-
 			window.whatbrowser = (function(){
 				var ua = navigator.userAgent, tem,
 					M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
