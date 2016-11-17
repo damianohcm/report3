@@ -414,17 +414,17 @@
 		 * @description
 		 */
 		var averageStrategies = {
-			segments: function(isDetailView, aggregated, segmentsCount) {
+			segments: function(isDetailView, aggregated, weightedAggregated, segmentsCount, totLosCount) {
 				// always do average using number of segments as denominator
 				return private.safePercent(aggregated, segmentsCount);
 			},
-			los: function(isDetailView, aggregated, segmentsCount, totLosCount) {
+			los: function(isDetailView, aggregated, weightedAggregated, segmentsCount, totLosCount) {
 				if (isDetailView) {
 					// if we are in detail view, still use segments count for denominator
 					return private.safePercent(aggregated, segmentsCount);
 				} else {
 					// otherwise use totLosCount as denominator
-					return private.safePercent(aggregated, totLosCount);
+					return private.safePercent(weightedAggregated, totLosCount);
 				}
 			}
 		};
@@ -463,7 +463,8 @@
 					// aggregate each person data by segment
 					var colGroupsCount = colGroups.length, naColGroupsCount = 0, 
 						totLosCount = 0,
-						rowGroupAggregated = 0;
+						rowGroupAggregated = 0,
+						rowGroupAggregatedWeighted = 0;
 
 					utilsService.fastLoop(colGroups, function(colGroup) {
 
@@ -498,8 +499,9 @@
 								return col.parentId === colGroup.id;
 							});
 							
-							//var losCount = colChildren.length, naLosCount = 0;
 							// loop through child columns
+							var aggregatedLos = 0;
+
 							utilsService.fastLoop(colChildren, function(colChild) {
 								var childCell = rowGroup[colChild.key]
 									, childCellSuffix = '';
@@ -520,6 +522,7 @@
 										childCellSuffix = '';
 										//naColGroupsCount++;
 									} else {
+										aggregatedLos += childCell.value;
 										childCellSuffix = '%';
 									}
 
@@ -530,6 +533,9 @@
 								}
 
 							}); // end: segment los (child columns) loop
+
+
+							rowGroupAggregatedWeighted += (aggregatedLos);
 
 						} else {
 							// col is hidden or we are in details view
@@ -545,7 +551,7 @@
 						// do average
 						// if normal average, divide rowGroupAggregated by colGroupsCount
 						//utilsService.safeLog('rowGroupAggregated ' + rowGroupAggregated, colGroupsCount, totLosCount);
-						rowGroupSummaryValue = averageStrategy(!!topLevelColumn, rowGroupAggregated, colGroupsCount, totLosCount);
+						rowGroupSummaryValue = averageStrategy(!!topLevelColumn, rowGroupAggregated, rowGroupAggregatedWeighted, colGroupsCount, totLosCount);
 						rowGroupSummarySuffix = '%';
 					} else {
 						// if all segments are N/A, then aggregated value is also N/A
@@ -568,7 +574,8 @@
 						if (personRow.show) {
 
 							// loop through each segment
-							var rowChildAggregated = 0;
+							var rowChildAggregated = 0,
+							rowChildAggregatedWeighted = 0;
 							naColGroupsCount = 0;
 							colGroupsCount = colGroups.length;
 							totLosCount = 0;
@@ -620,6 +627,7 @@
 										////personCourseCell.value = losCount > 0 ? Math.round(aggregatedLos / losCount * 100) : 0;
 										personCourseCell.value = private.safePercent(aggregatedLos, losCount, 100);
 										rowChildAggregated += personCourseCell.value;
+										rowChildAggregatedWeighted += (personCourseCell.value * losCount);
 										utilsService.safeLog('recalculate: personRow.id ' + personRow.id + ' ' + colGroup.id + ' personCourseCell.value', personCourseCell.value);
 									} else {
 										naColGroupsCount++;
@@ -642,7 +650,7 @@
 							var personRowSummaryValue = 0, personRowSummarySuffix = '';
 							if (colGroupsCount > 0 && naColGroupsCount !== colGroups.length) {
 								// do average
-								personRowSummaryValue = averageStrategy(!!topLevelColumn, rowChildAggregated, colGroupsCount, totLosCount);
+								personRowSummaryValue = averageStrategy(!!topLevelColumn, rowChildAggregated, rowChildAggregatedWeighted, colGroupsCount, totLosCount);
 								personRowSummarySuffix = '%';
 							} else {
 								// if all segments are N/A, then aggregated value is also N/A
