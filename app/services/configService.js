@@ -12,6 +12,12 @@
                 // any config that is not specific to a single brand should go here,
                 totCompletionTitlePrefix: 'Tot Completion % for ',
                 apiBaseUrl: 'https://dunk-stg.tribridge-amplifyhr.com',
+                apiPaths: {
+                    reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]', //&companyKey=[companyKey]',
+                    reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
+                    customReportStoresLookup: '/api/curricula_report/v1/stores-list/?user=[user]',
+                    customReportLOsLookup: '/api/curricula_report/v1/lo-list/'
+                },
                 params: {
                     // these will contain query string params that we keep passing around
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
@@ -75,6 +81,9 @@
             ]
         };
 
+        var enableLog = function() {
+            config.common.logEnabled = true;
+        };
 
         var getCommonConfig = function() {
             return config.common;
@@ -116,6 +125,7 @@
         var sessionParamsSet = false;
 
         return {
+            enableLog: enableLog,
 			getCommonConfig: getCommonConfig,
             getBrands: getBrands,
             getBrandConfig: getBrandConfig,

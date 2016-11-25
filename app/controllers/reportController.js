@@ -778,20 +778,25 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 						key: 'segments',
 						propertyOnData: 'learning_path_items',
 						path: commonConfig.apiBaseUrl 
-							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
+							//+ '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]&companyKey=[companyKey]&format=json'
+							+ commonConfig.apiPaths.reportSegments
 								.replace('[path_id]', reportConfigStrategy.pathId)
 								.replace('[user]', sessionParams.token)
 								.replace('[companyKey]', sessionParams.compKey)
+							+ '&format=json'
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
 						//path: 'data/luca-stores.json?' + Math.random()
 						path: commonConfig.apiBaseUrl 
-							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
+							//+ '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]&companyKey=[companyKey]&format=json'
+							+ commonConfig.apiPaths.reportStores
 								.replace('[path_id]', reportConfigStrategy.pathId)
 								.replace('[user]', sessionParams.token)
 								.replace('[companyKey]', sessionParams.compKey)
+							+ '&format=json'
 					}];
+
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 					
