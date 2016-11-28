@@ -777,24 +777,24 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					var _endPoints = [{
 						key: 'segments',
 						propertyOnData: 'learning_path_items',
-						path: commonConfig.apiBaseUrl 
-							//+ '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]&companyKey=[companyKey]&format=json'
+						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token, sessionParams.compKey)
+						/*path: commonConfig.apiBaseUrl 
 							+ commonConfig.apiPaths.reportSegments
 								.replace('[path_id]', reportConfigStrategy.pathId)
 								.replace('[user]', sessionParams.token)
 								.replace('[companyKey]', sessionParams.compKey)
-							+ '&format=json'
+							+ '&format=json'*/
+
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
-						//path: 'data/luca-stores.json?' + Math.random()
-						path: commonConfig.apiBaseUrl 
-							//+ '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]&companyKey=[companyKey]&format=json'
+						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token, sessionParams.compKey)
+						/*path: commonConfig.apiBaseUrl 
 							+ commonConfig.apiPaths.reportStores
 								.replace('[path_id]', reportConfigStrategy.pathId)
 								.replace('[user]', sessionParams.token)
 								.replace('[companyKey]', sessionParams.compKey)
-							+ '&format=json'
+							+ '&format=json'*/
 					}];
 
 

@@ -1,8 +1,6 @@
 (function() {
 
-	window.services = window.services || {};
-  
-    window.services.dataService = function($http, utilsService) {
+    var dataService = function($http, utilsService) {
 		
 		var getData = function(url) {
 
@@ -169,5 +167,15 @@
 			fixReportAPIData: fixReportAPIData
 		};
 	};
+
+	if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = dataService;
+        }
+        exports = dataService;
+    } else {
+        window.services = window.services || {};
+        window.services.dataService = dataService;
+    }
 
 }());

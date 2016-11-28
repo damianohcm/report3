@@ -1,9 +1,6 @@
 (function() {
 
     var utilsService;
-    
-    // service to be exported to angular
-	window.services = window.services || {};
 
     /**
      * @class WizardStep
@@ -177,12 +174,23 @@
         return new WizardModel();
     };
   
-    window.services.wizardServiceFactory = function(utils) {
+    
+    var wizardServiceFactory = function(utils) {
         utilsService = utils;
         return {
             getService: getService
             //destroyService: destroyService
         };
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = wizardServiceFactory;
+        }
+        exports = wizardServiceFactory;
+    } else {
+        window.services = window.services || {};
+        window.services.wizardServiceFactory = wizardServiceFactory;
+    }
 
 }());

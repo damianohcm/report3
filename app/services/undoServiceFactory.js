@@ -254,13 +254,21 @@
     };
   
     // service to be exported to angular
-	window.services = window.services || {};
-  
-    window.services.undoServiceFactory = function(utils) {
+    var undoServiceFactory = function(utils) {
         utilsService = utils;
         return {
             getService: getService
         };
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = undoServiceFactory;
+        }
+        exports = undoServiceFactory;
+    } else {
+        window.services = window.services || {};
+        window.services.undoServiceFactory = undoServiceFactory;
+    }
 
 }());

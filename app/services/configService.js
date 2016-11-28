@@ -1,11 +1,9 @@
 (function() {
-    window.services = window.services || {};
-
     /**
      * @service configService
      * Use this to set config values 
      */
-	window.services.configService = function() {
+	var configService = function() {
 
         var config = {
             common: {
@@ -15,8 +13,8 @@
                 apiPaths: {
                     reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]', //&companyKey=[companyKey]',
                     reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
-                    customReportStoresLookup: '/api/curricula_report/v1/stores-list/?user=[user]',
-                    customReportLOsLookup: '/api/curricula_report/v1/lo-list/'
+                    customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
+                    customReportLOSList: '/api/curricula_report/v1/lo-list/'
                 },
                 params: {
                     // these will contain query string params that we keep passing around
@@ -124,6 +122,42 @@
 
         var sessionParamsSet = false;
 
+        /* api end points helpers */
+        var getSegmentsEndPoint = function(pathId, token, compKey) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.reportSegments
+                    .replace('[path_id]', pathId)
+                    .replace('[user]', token)
+                    .replace('[companyKey]', compKey)
+                + '&format=json';
+        };
+
+        var getStoresAndPeopleEndPoint = function(pathId, token, compKey) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.reportStores
+                    .replace('[path_id]', pathId)
+                    .replace('[user]', token)
+                    .replace('[companyKey]', compKey)
+                + '&format=json';
+        };
+
+        var getStoresListEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportStoresList
+                    .replace('[user]', token)
+                + '&format=json';
+        };
+
+        var getLOSListEndPoint = function() {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportLOSList
+                + '?format=json';
+        };
+
         return {
             enableLog: enableLog,
 			getCommonConfig: getCommonConfig,
@@ -131,8 +165,25 @@
             getBrandConfig: getBrandConfig,
             setParam: setParam,
             setSessionParam: setSessionParam,
-            sessionParamsSet: sessionParamsSet
+            sessionParamsSet: sessionParamsSet,
+
+            apiEndPoints: {
+                segments: getSegmentsEndPoint,
+                storesAndPeople: getStoresAndPeopleEndPoint,
+                storesList: getStoresListEndPoint,
+                losList: getLOSListEndPoint
+            }
 		};
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = configService;
+        }
+        exports = configService;
+    } else {
+        window.services = window.services || {};
+        window.services.configService = configService;
+    }
 
 }());

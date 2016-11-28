@@ -1,11 +1,6 @@
 (function() {
   
-    window.services = window.services || {};
-
-	// set to false for production
-	window.logEnabled = false;
-  
-    window.services.utilsService = function(configService) {
+    var utilsService = function(configService) {
 
 		var commonConfig = configService.getCommonConfig();
 
@@ -20,7 +15,7 @@
 		 */
 		// eslint-disable-next-line no-unused-vars
         obj.safeLog = function(msg, data, force) {
-			if (commonConfig.logEnabled && (window.logEnabled || force)) {
+			if (commonConfig.logEnabled && (window && window.logEnabled || force)) {
 				if (console && console.log) {
 					if (arguments.length > 1) {
 						console.log(msg, data);
@@ -200,7 +195,7 @@
 				// if safari, open new window/tab with plain text CSV content
 				// this way the user will be able to save it as she wishes and also able to give it a name
 				var data = 'data:text/plain,' + encodeURIComponent(csv);
-				var win = window.open(data);
+				var win = (window && window.open(data));
 				win.document.write(csv);
 				win.location = data + '?download';
 			} else if (browser.isChrome) {
@@ -226,5 +221,15 @@
 
         return obj;
     };
+
+	if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = utilsService;
+        }
+        exports = utilsService;
+    } else {
+        window.services = window.services || {};
+        window.services.utilsService = utilsService;
+    }
 
 }());

@@ -1,8 +1,6 @@
 (function() {
 
-	window.services = window.services || {};
-  
-	window.services.reportService = function(utilsService, reportConfigService) {
+	var reportService = function(utilsService, reportConfigService) {
 		var reportConfig = reportConfigService.getConfig();
 		// label to be used when learning objects are missing
 		// (missing los are considered N/A - not applicable)
@@ -1000,5 +998,15 @@
 	
 	// // register service with angular
 	// app.factory('reportService', [reportService]);
+
+	if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = reportService;
+        }
+        exports = reportService;
+    } else {
+        window.services = window.services || {};
+        window.services.reportService = reportService;
+    }
   
 }());

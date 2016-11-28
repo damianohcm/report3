@@ -37,7 +37,8 @@
                     'getBrandConfig', 
                     'setParam', 
                     'setSessionParam', 
-                    'sessionParamsSet'
+                    'sessionParamsSet',
+                    'apiEndPoints'
                 ]);
 
                 done();
@@ -132,14 +133,14 @@
                         expect(apiPaths).to.have.all.keys([
                             'reportSegments', 
                             'reportStores', 
-                            'customReportStoresLookup', 
-                            'customReportLOsLookup'
+                            'customReportStoresList', 
+                            'customReportLOSList'
                         ]);
 
                         expect(apiPaths.reportSegments).to.be.a('string');
                         expect(apiPaths.reportStores).to.be.a('string');
-                        expect(apiPaths.customReportStoresLookup).to.be.a('string');
-                        expect(apiPaths.customReportLOsLookup).to.be.a('string');
+                        expect(apiPaths.customReportStoresList).to.be.a('string');
+                        expect(apiPaths.customReportLOSList).to.be.a('string');
 
                         done();
                     });
@@ -266,6 +267,59 @@
 
             });
 
+        });
+
+        // apiEndPoints tests
+        describe('configService.apiEndPoints', function() {
+            var apiEndPoints = configService.apiEndPoints;
+
+            // apiEndPoints tests
+            it('apiEndPoints: shoudl repsond to', function(done) {
+                expect(apiEndPoints).to.respondTo('segments');
+                expect(apiEndPoints).to.respondTo('storesAndPeople');
+                expect(apiEndPoints).to.respondTo('storesList');
+                expect(apiEndPoints).to.respondTo('losList');
+
+                done();
+            });
+
+            // apiEndPoints tests
+            it('apiEndPoints.segments: should return correct value', function(done) {
+                var expected = 'https://dunk-stg.tribridge-amplifyhr.com/api/curricula_report/v1/segments-list/15/?user=uJas34Df&format=json';
+                var result = apiEndPoints.segments(15, 'uJas34Df', 'asdcef');
+                //console.log('result', result);
+                expect(result).to.be.a('string');
+                expect(result).to.equal(expected);
+                
+                done();
+            });
+            it('apiEndPoints.storesAndPeople: should return correct value', function(done) {
+                var expected = 'https://dunk-stg.tribridge-amplifyhr.com/api/curricula_report/v1/stores/?lpath_id=15&user=uJas34Df&format=json';
+                var result = apiEndPoints.storesAndPeople(15, 'uJas34Df', 'asdcef');
+                //console.log('result', result);
+                expect(result).to.be.a('string');
+                expect(result).to.equal(expected);
+                
+                done();
+            });
+            it('apiEndPoints.storesList: should return correct value', function(done) {
+                var expected = 'https://dunk-stg.tribridge-amplifyhr.com/api/curricula_report/v1/stores-list/?user=15&format=json';
+                var result = apiEndPoints.storesList(15, 'uJas34Df');
+                console.log('result', result);
+                expect(result).to.be.a('string');
+                expect(result).to.equal(expected);
+                
+                done();
+            });
+            it('apiEndPoints.losList: should return correct value', function(done) {
+                var expected = 'https://dunk-stg.tribridge-amplifyhr.com/api/curricula_report/v1/lo-list/?format=json';
+                var result = apiEndPoints.losList();
+                console.log('result', result);
+                expect(result).to.be.a('string');
+                expect(result).to.equal(expected);
+                
+                done();
+            });
         });
 
 

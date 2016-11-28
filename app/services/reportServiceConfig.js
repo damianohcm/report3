@@ -1,11 +1,9 @@
 (function() {
-    window.services = window.services || {};
-
     /**
      * @service reportServiceConfig
      * Use this to set config values for reportService
      */
-	window.services.reportServiceConfig = function() {
+	var reportServiceConfig = function() {
 
         var getConfig = function() {
             var config = {
@@ -32,5 +30,15 @@
 			getConfig: getConfig
 		};
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = reportServiceConfig;
+        }
+        exports = reportServiceConfig;
+    } else {
+        window.services = window.services || {};
+        window.services.reportServiceConfig = reportServiceConfig;
+    }
 
 }());
