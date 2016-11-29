@@ -167,6 +167,7 @@
 							//wizard.close();
 
 							configService.setParam('newCustomReportModel', JSON.stringify($scope.model));
+							//document.location = '#/report?a=1&reportId=custom&token=asd';
 							document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}

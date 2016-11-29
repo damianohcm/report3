@@ -274,9 +274,7 @@
 	
 	// custom report controller (same as report controller - but for now keeping separate to not affect current functionality)
 	app.controller('customReportController', [
-		'$scope', 
-		'$rootScope', /* TODO remove rootScope as in reportController */
-		'$location', '$timeout', '$interval', '$uibModal', 
+		'$scope', '$location', '$timeout', '$interval', '$document', '$uibModal', 
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
