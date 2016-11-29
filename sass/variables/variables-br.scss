@@ -1,6 +1,15 @@
 $brand: #e49;
 $brandOver: #1F429B;
 
+$black: #000;
+$orange: #e874c9; /* background color for summary header cell */
+$brown: #0039A6; /* background color for segments header cell (colGroup) */
+$lightbrown: #BE854C;
+$gray: #D8D8D8;
+
+$blue: #3bbfce;
+$margin: 16px;
+
 $category: #FCEDF8; /* background color for category cell (Store/PC) */
 
 $completedGroup: #AEE874;
@@ -22,14 +31,6 @@ $completed: #D5FFAB;
 $inprogress: #FFF7AB;
 $zero: #FFF;
 $na: #FFF;
-
-$black: #000;
-$orange: #e874c9; /* background color for summary header cell */
-$brown: #0039A6; /* background color for segments header cell (colGroup) */
-$lightbrown: #BE854C;
-
-$blue: #3bbfce;
-$margin: 16px;
 
 /* cs page */
 $csPageBackgroundImg: '../../img/spoonssmpink-bg.png';

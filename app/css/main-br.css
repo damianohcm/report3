@@ -1,6 +1,6 @@
-/* background color for category cell (Store/PC) */
 /* background color for summary header cell */
 /* background color for segments header cell (colGroup) */
+/* background color for category cell (Store/PC) */
 /* cs page */
 @font-face {
   font-family: 'Gotham';
@@ -727,6 +727,42 @@ div.height-40 {
 
 /* end: ribbon css */
 /* end: report home*/
+input.required {
+  border: 2px solid red !important; }
+
+.modal-dialog {
+  width: 437px; }
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  text-align: center;
+  font-family: Gotham; }
+
+.modal-body input {
+  width: 372px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid #F48205;
+  padding: 12px 17px; }
+
+.modal-body input:focus {
+  border: 2px solid #F48205 !important; }
+
+.modal-footer button {
+  width: 146px;
+  height: 50px;
+  font-size: 18px;
+  font-family: Gotham; }
+
+.modal-footer button.ok {
+  background-color: #e49;
+  color: white; }
+
+.modal-footer button.cancel {
+  background-color: #D8D8D8;
+  color: black; }
+
 /* begin: css for horiz table scrolling */
 .table {
   width: auto; }

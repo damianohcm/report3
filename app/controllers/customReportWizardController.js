@@ -195,7 +195,7 @@
 							configService.setParam('newCustomReportModel', jsonModel);
 							console.log('newCustomReportModel', jsonModel);
 							//document.location = '#/report?a=1&reportId=custom&token=asd';
-							//document.location = '#/customReport?a=1&reportId=custom&token=asd';
+							document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}
 				//});

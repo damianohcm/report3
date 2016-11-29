@@ -11,27 +11,42 @@
             dismiss: '&'
         },
         controller: function () {
-            var $ctrl = this;
+            var $modal = this;
 
-            $ctrl.$onInit = function () {
+            Object.defineProperty($modal, 'reportNameCss', {
+                get: function() {
+                    return ($modal.data.reportName || '').trim().length === 0 ? 'required' : '';
+                }
+            });
+
+            $modal.$onInit = function () {
                 console.log('modalSaveComponent onInit');
-                // $ctrl.items = $ctrl.resolve.items;
-                // $ctrl.selected = {
-                //     item: $ctrl.items[0]
+                // $modal.items = $modal.resolve.items;
+                // $modal.selected = {
+                //     item: $modal.items[0]
                 // };
 
-                $ctrl.modalData = $ctrl.resolve.data;
+                $modal.data = $modal.resolve.data;
             };
 
-            $ctrl.ok = function () {
-                console.log('modalSaveComponent ok');
-                //$ctrl.close({$value: $ctrl.selected.item});
-                $ctrl.close({$value: $ctrl.modalData});
+            $modal.ok = function () {
+                console.log('modalSaveComponent ok', $modal.data);
+
+                $modal.data.reportName = ($modal.data.reportName || '').trim();
+                if ($modal.data.reportName.length === 0) {
+                    alert('Report Name is required');
+                } else {
+                    $modal.close({
+                        $value: $modal.data
+                    });
+                }
             };
 
-            $ctrl.cancel = function () {
+            $modal.cancel = function () {
                 console.log('modalSaveComponent cancel');
-                $ctrl.dismiss({$value: 'cancel'});
+                $modal.dismiss({
+                    $value: 'cancel'
+                });
             };
         }
     };

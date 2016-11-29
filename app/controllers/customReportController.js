@@ -712,7 +712,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
-		
+			
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
 			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
@@ -839,14 +839,12 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 /* begin: custom report code */
 $scope.modalSaveData = {
-	title: 'Save Report',
+	title: 'Save New Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
 	reportName: ''
 };
 
 $scope.modalSave = {
-	open: function (size, parentSelector) {
-		var parentElem = undefined; //parentSelector ? 
-			//angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+	open: function () {
 		var modalInstance = $uibModal.open({
 			animation: false,
 			// ariaLabelledBy: 'modal-title',
@@ -854,19 +852,23 @@ $scope.modalSave = {
 			// templateUrl: 'modalSave.html',
 			// //controller: 'customReportController',
 			// //controllerAs: '$ctrl',
-			// size: size,
 			// appendTo: parentElem,
 			component: 'modalSaveComponent',
 			resolve: {
 				data: function () {
-					console.log('Modal resolve: pass modalSaveData');
+					console.log('Modal resolve: pass modalSaveData', $scope.modalSaveData);
 					return $scope.modalSaveData;
 				}
 			}
 		});
 
-		modalInstance.result.then(function (result) {
-			console.log('Modal result', result);
+		modalInstance.result.then(function (data) {
+			console.log('Modal result', data);
+			
+			// TODO: after successful save, update also $scope.title
+			$scope.reportTitle = data.reportName;
+			$scope.title = data.reportName;
+			$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + $scope.reportTitle;
 		}, function () {
 			console.log('Modal dismissed at');
 		});

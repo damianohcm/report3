@@ -760,6 +760,44 @@ div.height-40 {
 
 /* end: report home*/
 
+input.required {
+    border: 2px solid red!important;
+}
+.modal-dialog {
+    width: 437px;
+}
+.modal-header,
+.modal-body,
+.modal-footer {
+    text-align: center;
+    font-family: Gotham;
+}
+.modal-body input {
+    width: 372px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid #F48205;
+    padding: 12px 17px;
+}
+
+.modal-body input:focus {
+    border: 2px solid #F48205!important;
+}
+.modal-footer button {
+    width: 146px;
+    height: 50px;
+    font-size: 18px;
+    font-family: Gotham;
+}
+.modal-footer button.ok {
+    background-color: $brand;
+    color: white;
+}
+.modal-footer button.cancel {
+    background-color: $gray;
+    color: black;
+}
+
 
 /* begin: css for horiz table scrolling */
 .table {

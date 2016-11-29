@@ -1,6 +1,6 @@
 <div class="banner">
     <img src="../img/learning-path-icon.png"/>
-    <h2 ng-bind="::('[CUSTOM] ' + title)"></h2>
+    <h2 ng-bind="('[CUSTOM] ' + title)"></h2>
 
     <span class="banner-button" style="text-align:center;font-size:10pt;background-color:transparent">
         User org: [{{::organization}}]<br/>People orgs: {{::peopleOrgs}}
@@ -24,14 +24,14 @@
 <div class="container report m-t-lg" ng-show="!loading">
     <script type="text/ng-template" id="modalSave.html">
         <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">{{$ctrl.modalData.title}}</h3>
+            <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
         </div>
         <div class="modal-body" id="modal-body">
-            <input type="text" />
+            <input type="text" ng-class="$ctrl.reportNameCss" ng-model="$ctrl.data.reportName" />
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-warning cancel" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-primary ok" type="button" ng-click="$ctrl.ok()">Save</button>
         </div>
     </script>
     <div class="height-40">
