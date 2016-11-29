@@ -97,9 +97,10 @@
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
 				if (!$scope.model.entireLearningPath) {
-					return $scope.model.courses.filter(function(course) {
-						return course.selected;
-					});
+					// return $scope.model.courses.filter(function(course) {
+					// 	return course.selected;
+					// });
+					return $scope.model.courses;
 				} else {
 					return [];
 				}
@@ -166,14 +167,44 @@
 							wizard.isComplete = true;
 							//wizard.close();
 
-							configService.setParam('newCustomReportModel', JSON.stringify($scope.model));
+							// create params model to send to API end point for custom report data 
+							var jsonModel = angular.toJson($scope.model);
+							var model = JSON.parse(jsonModel);
+							model.stores = _.filter(model.stores, function(store){
+								return store.selected;
+							});
+
+							model.storesIds = model.stores.map(function(store) {
+								return store.id;
+							});
+							model.courseIds = model.courses.map(function(course) {
+								return course.id;
+							});
+							model.audienceId = model.audience.id;
+							model.hiredId = model.hired.id;
+
+							model.audienceOptions = $scope.audienceOptions;
+							model.hiredOptions = $scope.hiredOptions;
+
+							delete model.stores;
+							delete model.courses;
+							delete model.lookupCourses;
+							
+							jsonModel = JSON.stringify(model);
+
+							configService.setParam('newCustomReportModel', jsonModel);
+							console.log('newCustomReportModel', jsonModel);
 							//document.location = '#/report?a=1&reportId=custom&token=asd';
-							document.location = '#/customReport?a=1&reportId=custom&token=asd';
+							//document.location = '#/customReport?a=1&reportId=custom&token=asd';
 						}
 					}
 				//});
 			//	}
 			//});
+		};
+
+		$scope.onCourseAdded = function() {
+			console.log('onCourseAdded');
 		};
 
 		/**
@@ -270,9 +301,10 @@
 			isCurrent: false,
 			validateAction: function validateStep3() {
 				if ($scope.model.entireLearningPath === false) {
-					this.hasError =  $scope.model.courses.filter(function(course) {
-						return course.selected;
-					}).length < 1;
+					// this.hasError =  $scope.model.courses.filter(function(course) {
+					// 	return course.selected;
+					// }).length < 1;
+					this.hasError =  $scope.model.courses.length < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course before proceeding' : undefined;
 				} else {
 					this.hasError = false;
@@ -395,8 +427,7 @@ $scope.datePickerOptions = {
 			// var _temp = '123456789'.split('').map(function(i) {
 			// 	return {
 			// 		id: i,
-			// 		name: 'Course ' + i,
-			// 		selected: true
+			// 		name: 'Course ' + i
 			// 	};
 			// });
 			// return _temp.filter(function(course) {
@@ -424,13 +455,7 @@ $scope.datePickerOptions = {
 			utilsService.safeLog('wizardController.onDataComplete', data);
 			$scope.data = data;
 			$scope.model.stores = data.stores;
-			$scope.model.lookupCourses =  data.courses.map(function(item) {
-				return {
-					id: item.id,
-					name: item.name,
-					selected: true
-				};
-			});
+			$scope.model.lookupCourses =  data.courses;
 		};
 
 		// helper to get the data
