@@ -777,26 +777,12 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					var _endPoints = [{
 						key: 'segments',
 						propertyOnData: 'learning_path_items',
-						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token, sessionParams.compKey)
-						/*path: commonConfig.apiBaseUrl 
-							+ commonConfig.apiPaths.reportSegments
-								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', sessionParams.token)
-								.replace('[companyKey]', sessionParams.compKey)
-							+ '&format=json'*/
-
+						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
-						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token, sessionParams.compKey)
-						/*path: commonConfig.apiBaseUrl 
-							+ commonConfig.apiPaths.reportStores
-								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', sessionParams.token)
-								.replace('[companyKey]', sessionParams.compKey)
-							+ '&format=json'*/
+						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
 					}];
-
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 					
@@ -822,7 +808,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				}
 			} else {
 				//var fileName = 'data/report.json?' + Math.random();
-				var fileName = 'data/report-avg.json?' + Math.random();
+				//var fileName = 'data/report-avg.json?' + Math.random();
 				//var fileName = 'data/report-generated1.json?' + Math.random();
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
@@ -831,6 +817,8 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				//var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
 
 				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
+				var fileName = 'data/from-stag.json?' + Math.random();
+
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				$timeout(function() {

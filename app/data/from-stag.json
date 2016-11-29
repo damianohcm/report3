@@ -1,0 +1,2759 @@
+{
+    "stores": [{
+        "id": 330,
+        "name": "306424-AURORANETWORK",
+        "people": [{
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 7229,
+            "name": "Sandip Patel",
+            "title": "Above Restaurant Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 11879,
+            "name": "Ashfaq Hyder",
+            "title": "Above Restaurant Leader",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 20270,
+            "name": "teresa sander",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 20271,
+            "name": "adriana rodriguez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 20622,
+            "name": "diana moreno",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 24569,
+            "name": "kevin troesch",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 25655,
+            "name": "cynthia1 martinez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 27286,
+            "name": "Sergio Manzo",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 30307,
+            "name": "angel ramirez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 38311,
+            "name": "naveen desai",
+            "title": "Above Restaurant Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 43451,
+            "name": "josh booth",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 51202,
+            "name": "nora schofield",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 51205,
+            "name": "courtney krich",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4870,
+        "name": "300364-CHEHAR, CORP.",
+        "people": [{
+            "id": 83333,
+            "name": "Diamante Rangel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }]
+        }, {
+            "id": 88034,
+            "name": "Carmen Squalls",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 93084,
+            "name": "Maiya Rocha",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }]
+        }, {
+            "id": 96635,
+            "name": "Gina Rodriguez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 105324,
+            "name": "Jaqueline Nunez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 108713,
+            "name": "Stephanie Gonzalez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 113604,
+            "name": "Cierra Ramirez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 138512,
+            "name": "Deonna Squalls",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }]
+        }, {
+            "id": 141617,
+            "name": "Darius Stewart",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }]
+        }, {
+            "id": 5184,
+            "name": "Laura Castellanos",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 6268,
+            "name": "Dino .Hernandez",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 12772,
+            "name": "Blanca Fernandez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 31169,
+            "name": "Jose Villagran",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 57705,
+            "name": "Shalayah Roberson",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }, {
+            "id": 61244,
+            "name": "Tytianna Wilson",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }]
+        }, {
+            "id": 63758,
+            "name": "Samira Gudino",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }]
+        }]
+    }, {
+        "id": 4869,
+        "name": "300700-Jay Chehar Corporation",
+        "people": [{
+            "id": 75455,
+            "name": "Benjamin Hernandez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102979,
+            "name": "payton walters",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 103290,
+            "name": "Ali Qamar",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 111934,
+            "name": "Jonathan Nunez300700",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 126675,
+            "name": "David Keeler",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 128654,
+            "name": "Alexandria Jordan",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 130116,
+            "name": "Ismael Rocha",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 0
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 144726,
+            "name": "Brandon Blaylock",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }]
+        }, {
+            "id": 6700,
+            "name": "Chintal Trivedi",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 6701,
+            "name": "Jennifer Zepeda",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 18172,
+            "name": "Sara Aguilera",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 25284,
+            "name": "kathryn holderner",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 38973,
+            "name": "Hailey Clark",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 59768,
+            "name": "Mamta Parekh",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 59771,
+            "name": "Bradley Mcqueen",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 66163,
+            "name": "Alpa Patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4868,
+        "name": "304027-Jay Varai, Inc.",
+        "people": [{
+            "id": 82707,
+            "name": "Andrea Farano",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 85027,
+            "name": "Cristian Valadez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 89860,
+            "name": "Christopher Bernal",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }]
+        }, {
+            "id": 99452,
+            "name": "Leonardo DelToro",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 104605,
+            "name": "Andrea DeLaCerda",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 105176,
+            "name": "Antony Pizano",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 115889,
+            "name": "Natasiha Waddell",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 116565,
+            "name": "Seidy Chavez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 124599,
+            "name": "Rosalinda Martinez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 125408,
+            "name": "Yvonna Taylor",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 127886,
+            "name": "Collin Vankuren",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 129168,
+            "name": "Tylee McClintock",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 130031,
+            "name": "Lidia Montoya",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }]
+        }, {
+            "id": 130082,
+            "name": "Nicholas Mccurine",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 132906,
+            "name": "Jesus Zurita",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 136645,
+            "name": "Dana Lopez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 136656,
+            "name": "Madison Franz",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 138389,
+            "name": "Maliyah Brown",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 138391,
+            "name": "Selena Sosa",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 140312,
+            "name": "Amanda Hauser",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 140313,
+            "name": "Cheyenne Stallings",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }]
+        }, {
+            "id": 140316,
+            "name": "Jada Stallings",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 9723,
+            "name": "Jaime Lopez",
+            "title": "Above Restaurant Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 9724,
+            "name": "Stephanie Deltoro",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 35223,
+            "name": "todd lewandowski",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 40152,
+            "name": "Anarbol DelToro",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 47129,
+            "name": "Alejandra Escutia",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 47130,
+            "name": "Alejandro Cervantes",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 53634,
+            "name": "Juniper Mikowski",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 53640,
+            "name": "Tobias Wells",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }]
+        }, {
+            "id": 53641,
+            "name": "Rakaiya Ezell",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 70121,
+            "name": "Monica Herrera",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 71449,
+            "name": "Francisco Saenz",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 71455,
+            "name": "Tamaris childress",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4867,
+        "name": "306424-CHEHAR, CORP.",
+        "people": [{
+            "id": 77681,
+            "name": "Marisol Renteria",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 77682,
+            "name": "Julissa morales",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 77685,
+            "name": "Erika Reyes",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 77690,
+            "name": "Patricia Seymon",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 129730,
+            "name": "Capri Shoemaker",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 135164,
+            "name": "angela reid",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 135169,
+            "name": "Shirley green",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 135173,
+            "name": "shandaira jones",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 135175,
+            "name": "sofia rivera",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 135177,
+            "name": "carol aburto",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 135180,
+            "name": "alexa komadina",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 10120,
+            "name": "Sandra Rodriguez",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 10121,
+            "name": "Viri Salcedo",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 19330,
+            "name": "kayreen carlos",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 41536,
+            "name": "Anahi Primero",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 49990,
+            "name": "guadalupe gil",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 49994,
+            "name": "michelle jimenez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 63669,
+            "name": "rosemary alberelli",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 66747,
+            "name": "marisol renteria",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 66749,
+            "name": "Sonia nevarez",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 66752,
+            "name": "maggie ramirez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 72888,
+            "name": "Matthew Heisey",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }]
+    }, {
+        "id": 4871,
+        "name": "310202-Chehar #3 Corporation",
+        "people": [{
+            "id": 91038,
+            "name": "divina ochoa",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104307,
+            "name": "brandon estrada",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104308,
+            "name": "valerie ushman",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104309,
+            "name": "ramona wolfe",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104310,
+            "name": "cynthia wright",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 107730,
+            "name": "mairany cardenas",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 128177,
+            "name": "andy lopez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }]
+        }, {
+            "id": 128217,
+            "name": "ashley carrasco",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }]
+        }, {
+            "id": 6269,
+            "name": "Dinesh Patel",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 6270,
+            "name": "Daxa Reshamwala",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 26741,
+            "name": "daniel reynoso",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 49345,
+            "name": "ezegviel ontiveros",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 68557,
+            "name": "lesley rivera",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }]
+    }, {
+        "id": 4872,
+        "name": "310427-Chehar #4 Corporation",
+        "people": [{
+            "id": 73171,
+            "name": "julie welch",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 73179,
+            "name": "DOMINIC GUTIERREZ",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 73198,
+            "name": "julisa rubio",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 91370,
+            "name": "evelia torres",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 94247,
+            "name": "Jazmin Reynoso",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 94248,
+            "name": "Adrian Lopez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 101955,
+            "name": "jocelyne flores",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 102655,
+            "name": "julie welch",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 102657,
+            "name": "frances rubio",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 102690,
+            "name": "chirag jani",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 105473,
+            "name": "taylor hill",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 111217,
+            "name": "isabella yarbrough",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 125157,
+            "name": "Alma Uribe",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 125169,
+            "name": "emely aguirre",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 125189,
+            "name": "emely aguirre",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 134467,
+            "name": "Bianca aguilar",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 0
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 144725,
+            "name": "Erika smithey",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 23043,
+            "name": "angel guzman",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 24424,
+            "name": "maria lara",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 27744,
+            "name": "julian guzman",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 41256,
+            "name": "Catalina Briones",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 43371,
+            "name": "ulyses chavez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 43373,
+            "name": "jocelyn flores",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 43374,
+            "name": "indiraben patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 64595,
+            "name": "tishunda jordan",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 72234,
+            "name": "Rikki Petersan",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }]
+    }, {
+        "id": 4874,
+        "name": "335965-Shreeji Corporation Of Bolingbrook",
+        "people": [{
+            "id": 103461,
+            "name": "Lundy chacon",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 104267,
+            "name": "Rupa Shaheed",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 1
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }]
+        }, {
+            "id": 117348,
+            "name": "Kassandra Almaraz",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 117349,
+            "name": "fariba khamisisisobbi",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 119270,
+            "name": "sharlen polanco",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }]
+        }, {
+            "id": 119286,
+            "name": "khizer ahmed",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 119289,
+            "name": "christopher sanchez",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 4112,
+            "name": "Rocio Fiores",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 4113,
+            "name": "Alejandro Flores",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 4114,
+            "name": "Oscar Flores",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 4115,
+            "name": "Veronica Flores",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 5473,
+            "name": "Antonio Flores",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 8587,
+            "name": "Jenan Alias",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 19536,
+            "name": "ana silva1",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 27424,
+            "name": "arwa batliwala",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 32252,
+            "name": "Berenice Soto",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }]
+    }, {
+        "id": 4873,
+        "name": "336427-Jay Maruti #3 Corporation",
+        "people": [{
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 14852,
+            "name": "bhairavi patel",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 29575,
+            "name": "Trina Weitzel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 43449,
+            "name": "lashanda webb",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 65907,
+            "name": "chelsea derington",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 67092,
+            "name": "Rosanne Ferazzo",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 67095,
+            "name": "Colleen Mcclain",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4875,
+        "name": "337460-Jay Maruti Corporation",
+        "people": [{
+            "id": 87966,
+            "name": "priya patel",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102489,
+            "name": "Diana Vargas",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102491,
+            "name": "Arisbeth Rivera",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102495,
+            "name": "yesenia munoz",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102737,
+            "name": "ram ankola",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 103071,
+            "name": "khiloni patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 103206,
+            "name": "dipika patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 105041,
+            "name": "patel mitesh",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 105373,
+            "name": "mitesh patel",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 105374,
+            "name": "yogini patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 105375,
+            "name": "sejal shah",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 107389,
+            "name": "Irene horn",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 107405,
+            "name": "Irene horn",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 7264,
+            "name": "Ajay Randhawa",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }]
+        }, {
+            "id": 10095,
+            "name": "Rutvi Parikh",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 10097,
+            "name": "Krupa Patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 63219,
+            "name": "priti patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 63220,
+            "name": "Purva Patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4876,
+        "name": "339233-15060 SOUTH BELL DONUTS, INC.",
+        "people": [{
+            "id": 102770,
+            "name": "marilyn mattera",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }]
+        }, {
+            "id": 103202,
+            "name": "bharat patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 109768,
+            "name": "nicole glynn",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 110985,
+            "name": "madhu kothadia",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 116072,
+            "name": "alyssa vega",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }]
+        }, {
+            "id": 120439,
+            "name": "yashica patel",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 1
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 122099,
+            "name": "sarah walczak",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 7629,
+            "name": "Sagar Tilala",
+            "title": "Above Restaurant Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 23076,
+            "name": "Ebony Cade",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 23114,
+            "name": "Kendra Carter",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 23121,
+            "name": "Darius Moore",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 24172,
+            "name": "Jacob Weisenfluh",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 27940,
+            "name": "Michael Wyman",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 52854,
+            "name": "christine unknown",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 52958,
+            "name": "armina javorovac",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 52974,
+            "name": "armina javorovac",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 63870,
+            "name": "hemal patel",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 64264,
+            "name": "jason guzman",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 64265,
+            "name": "jose salinas",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 64266,
+            "name": "alyssa vega",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 64267,
+            "name": "angelica wright",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4877,
+        "name": "342310-Chehar #9 Corporation",
+        "people": [{
+            "id": 102866,
+            "name": "mark grundy",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102867,
+            "name": "vivasan cooper",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102868,
+            "name": "alpesh thakkar",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 102869,
+            "name": "shaik sayeed",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 106021,
+            "name": "sanya khan",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 142729,
+            "name": "alvaro ramirez",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 10119,
+            "name": "Rajesh Kadakia",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 10163,
+            "name": "Pallavi Patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 13823,
+            "name": "annette minnis",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 14856,
+            "name": "dhruv patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 45075,
+            "name": "Kamalpreet Lawrence",
+            "title": "Shift Leader",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 47603,
+            "name": "Christina Wade",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 49996,
+            "name": "christina wade1",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 56785,
+            "name": "hitesh patel",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 63662,
+            "name": "manisha patel1",
+            "title": "Crew Member",
+            "org_guid": "76",
+            "los": []
+        }, {
+            "id": 66750,
+            "name": "oscar beserra",
+            "title": "Restaurant Manager",
+            "org_guid": "76",
+            "los": []
+        }]
+    }, {
+        "id": 4878,
+        "name": "345382-Shreeji Corporation Of Bolingbrook",
+        "people": [{
+            "id": 80596,
+            "name": "Bhagyashree Chavda",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 81942,
+            "name": "nicole keller",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }]
+        }, {
+            "id": 102628,
+            "name": "Shakeb Khaled",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 5474,
+            "name": "Geeta Mahida",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 5475,
+            "name": "Asha Patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 9324,
+            "name": "Suresh Patel",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 2
+            }, {
+                "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 2
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 2
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 2
+            }]
+        }, {
+            "id": 59011,
+            "name": "nathan price",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 59013,
+            "name": "jesse pape",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }]
+    }, {
+        "id": 4879,
+        "name": "350035-HAMPSHIRE DONUTS INC.",
+        "people": [{
+            "id": 96196,
+            "name": "Marissa Broglin",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 96796,
+            "name": "Leah Essendrop",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 96797,
+            "name": "Andrew Miller",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 96799,
+            "name": "Lucas Fortune",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104935,
+            "name": "Alyssa Maslinski",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104970,
+            "name": "Karl Eltman",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 119239,
+            "name": "Nora Schofield",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 125084,
+            "name": "Sadie Collins",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 2
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 2
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 2
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 133858,
+            "name": "Alicia Stifrid",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 1
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 0
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 14909,
+            "name": "veronica bachta",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 26217,
+            "name": "janet kraus",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 44644,
+            "name": "Alexis Lane",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 50478,
+            "name": "sara stirber",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 58790,
+            "name": "William Christensen",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 62181,
+            "name": "brittney vicicondi",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }]
+    }, {
+        "id": 4880,
+        "name": "351421-COUNTY FARM DONUTS INC.",
+        "people": [{
+            "id": 79108,
+            "name": "Farheen Siddiqui",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 79111,
+            "name": "Imran Siddiqui",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 90638,
+            "name": "Hitarth Patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 90641,
+            "name": "Shivangi Patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104111,
+            "name": "Ravi Gondalia",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104130,
+            "name": "Daniyal Khan",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104137,
+            "name": "andrew harper",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104142,
+            "name": "damini patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 104144,
+            "name": "marisa lynch",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 108054,
+            "name": "Surpreet Kaur",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 133932,
+            "name": "Dhruvi patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+                "value": 1
+            }, {
+                "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+                "value": 1
+            }, {
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 2
+            }, {
+                "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+                "value": 0
+            }, {
+                "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+                "value": 0
+            }, {
+                "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+                "value": 1
+            }, {
+                "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }, {
+                "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+                "value": 1
+            }, {
+                "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+                "value": 1
+            }]
+        }, {
+            "id": 138197,
+            "name": "Ekta Patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 0
+            }, {
+                "id": "7f02db33-25db-472c-9374-173f99d7db85",
+                "value": 0
+            }]
+        }, {
+            "id": 7228,
+            "name": "Chirag Jani",
+            "title": "Above Restaurant Leader",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 9915,
+            "name": "Jay Patel",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 10096,
+            "name": "Dax Patel",
+            "title": "Shift Leader",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 29206,
+            "name": "evelyn andrade",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 30685,
+            "name": "Avani Patel",
+            "title": "Restaurant Manager",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 31370,
+            "name": "siddharth patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 32134,
+            "name": "Mixu patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }, {
+            "id": 67059,
+            "name": "Rupal Patel",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": [{
+                "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+                "value": 1
+            }]
+        }, {
+            "id": 71555,
+            "name": "Jaime Maldonado",
+            "title": "Crew Member",
+            "org_guid": "75",
+            "los": []
+        }]
+    }], 
+
+    "segments": [{
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+            "name": "Welcome to Dunkin' Donuts"
+        }],
+        "item_type": "Section",
+        "id": 1,
+        "title": "Welcome to Dunkin' Donuts"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+            "name": "Food Safety and HAZCOM--Crew"
+        }],
+        "item_type": "Section",
+        "id": 2,
+        "title": "Food Safety and Hazcom"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+            "name": "Guest Service"
+        }],
+        "item_type": "Section",
+        "id": 3,
+        "title": "Guest Service"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+            "name": "Cashier for Crew"
+        }],
+        "item_type": "Section",
+        "id": 4,
+        "title": "Cashier for Crew"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "7f02db33-25db-472c-9374-173f99d7db85",
+            "name": "All about Hot Coffees and Hot Chocolate"
+        }],
+        "item_type": "Section",
+        "id": 5,
+        "title": "All About Hot Coffees and Hot Chocolate"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+            "name": "All about Ice Coffees and Iced Teas"
+        }],
+        "item_type": "Section",
+        "id": 6,
+        "title": "All About Iced Coffees and Iced Teas"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "818755e5-f320-4ffc-88cd-89e33c7c8837",
+                "name": "Dunkin' Donuts Frozen Beverages (Taylor®): Assessment"
+            }, {
+                "loid": "4de3a44f-c158-48de-8034-045b73bdbd30",
+                "name": "Dunkin' Donuts Frozen Beverages (Taylor®): Product Builds"
+            }],
+            "item_type": "Curriculum",
+            "id": "2b555093-788d-416e-bcd2-ede1073e7892",
+            "name": "Frozen Beverages (Taylor Machine) Courses"
+        }, {
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+            "name": "Frozen Beverages (Island Oasis) Courses"
+        }],
+        "item_type": "Section",
+        "id": 24,
+        "title": "All About COOLATTA and Smoothies"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+            "name": "Espresso Ambiente Courses"
+        }, {
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+            "name": "Espresso Coffee Art Courses"
+        }, {
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+            "name": "Espresso WMF Courses"
+        }],
+        "item_type": "Section",
+        "id": 25,
+        "title": "All About Espresso Beverages"
+    }, {
+        "los": [{
+            "los": [],
+            "item_type": "Curriculum",
+            "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+            "name": "All about the Sandwich Station"
+        }],
+        "item_type": "Section",
+        "id": 9,
+        "title": "All About Sandwich Station"
+    }] 
+}

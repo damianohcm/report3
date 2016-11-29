@@ -52,13 +52,13 @@
 						// set session params (this should not change so set them only once)
 						if (routePath === '/' && !configService.sessionParamsSet) {
 							var token = getRouteParamValue($routeParams, 'token', ''),
-								compKey = getRouteParamValue($routeParams, 'compKey', ''),
+								//compKey = getRouteParamValue($routeParams, 'compKey', ''),
 								csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
 								lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
 								organization = getRouteParamValue($routeParams, 'organization', '').toLowerCase();
 							
 							configService.setSessionParam('token', token);
-							configService.setSessionParam('compKey', compKey);
+							//configService.setSessionParam('compKey', compKey);
 							configService.setSessionParam('csBaseUrl', csBaseUrl);
 							configService.setSessionParam('lang', lang);
 							configService.setSessionParam('organization', organization);
@@ -69,7 +69,7 @@
 							utilsService.safeLog('*** session params (set only once)', {
 								//'document.location.search': document.location.search,
 								token: token,
-								compKey: compKey,
+								//compKey: compKey,
 								lang: lang,
 								organization: organization,
 							}, true);

@@ -123,23 +123,21 @@
         var sessionParamsSet = false;
 
         /* api end points helpers */
-        var getSegmentsEndPoint = function(pathId, token, compKey) {
+        var getSegmentsEndPoint = function(pathId, token) {
             var commonConfig = config.common;
             return commonConfig.apiBaseUrl 
                 + commonConfig.apiPaths.reportSegments
                     .replace('[path_id]', pathId)
                     .replace('[user]', token)
-                    .replace('[companyKey]', compKey)
                 + '&format=json';
         };
 
-        var getStoresAndPeopleEndPoint = function(pathId, token, compKey) {
+        var getStoresAndPeopleEndPoint = function(pathId, token) {
             var commonConfig = config.common;
             return commonConfig.apiBaseUrl 
                 + commonConfig.apiPaths.reportStores
                     .replace('[path_id]', pathId)
                     .replace('[user]', token)
-                    .replace('[companyKey]', compKey)
                 + '&format=json';
         };
 

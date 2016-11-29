@@ -380,25 +380,36 @@ $scope.datePickerOptions = {
 		$scope.getCourses = function(str) {
 			str = str.toLowerCase().trim();
 			utilsService.safeLog('getCourses', str);
-			// return $http.get('//api/path/to/courses', {
-			// 	params: {
-			// 		searchString: str
-			// 	}
-			// 	}).then(function(response){
-			// 		return response.data.results.map(function(item){
-			// 			return item.formatted_address;
-			// 		});
-			// 	});
-			var _temp = '123456789'.split('').map(function(i) {
-				return {
-					id: i,
-					name: 'Course ' + i,
-					selected: true
-				};
-			});
-			return _temp.filter(function(course) {
+
+			// // return $http.get('//api/path/to/courses', {
+			// // 	params: {
+			// // 		searchString: str
+			// // 	}
+			// // 	}).then(function(response){
+			// // 		return response.data.results.map(function(item){
+			// // 			return item.formatted_address;
+			// // 		});
+			// // 	});
+
+			// var _temp = '123456789'.split('').map(function(i) {
+			// 	return {
+			// 		id: i,
+			// 		name: 'Course ' + i,
+			// 		selected: true
+			// 	};
+			// });
+			// return _temp.filter(function(course) {
+			// 	return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
+			// });
+
+
+			var filtered =  $scope.model.lookupCourses.filter(function(course) {
 				return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
 			});
+
+			//utilsService.safeLog('filtered', filtered);
+
+			return filtered;
 		};
 
 
@@ -412,6 +423,13 @@ $scope.datePickerOptions = {
 			utilsService.safeLog('wizardController.onDataComplete', data);
 			$scope.data = data;
 			$scope.model.stores = data.stores;
+			$scope.model.lookupCourses =  data.courses.map(function(item) {
+				return {
+					id: item.id,
+					name: item.name,
+					selected: true
+				};
+			});
 		};
 
 		// helper to get the data
@@ -419,20 +437,31 @@ $scope.datePickerOptions = {
 			utilsService.safeLog('getData: reportId', params.reportId);
 
 			if (w === 'live') {
-				var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
+				// var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
+				// var _endPoints = [{
+				// 	key: 'segments',
+				// 	propertyOnData: 'learning_path_items',
+				// 	path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]'
+				// 		.replace('[user]', params.token)
+				// }, {
+				// 	key: 'stores',
+				// 	propertyOnData: 'results',
+				// 	path: 'data/luca-stores.json?' + Math.random()
+				// }];
+
 				var _endPoints = [{
-					key: 'segments',
-					propertyOnData: 'learning_path_items',
-					path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]&companyKey=[companyKey]'
-						.replace('[user]', params.token)
-						.replace('[companyKey]', params.compKey)
+					key: 'courses',
+					propertyOnData: 'results',
+					path: configService.apiEndPoints.losList(sessionParams.token)
+
 				}, {
 					key: 'stores',
 					propertyOnData: 'results',
-					path: 'data/luca-stores.json?' + Math.random()
+					path: configService.apiEndPoints.storesList()
 				}];
 
-				utilsService.safeLog('_endPoints', _endPoints);
+
+				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
@@ -450,11 +479,9 @@ $scope.datePickerOptions = {
 						}, onDataError);
 				});
 			} else {
-				//var fileName = 'data/report.json?' + Math.random();
-				//var fileName = 'data/report-generated2.json?' + Math.random();
-				//var fileName = 'data/new-and-trending.json?' + Math.random();
-				//var fileName = 'data/report.json?' + Math.random();
-				var fileName = 'data/learning-path.json?' + Math.random();
+				
+				var fileName = 'data/custom-report-wizard-lookups.json?' + Math.random();
+
 				utilsService.safeLog('fileName', fileName);
 				dataService.getData(fileName)
 					.then(onDataComplete, onDataError);
