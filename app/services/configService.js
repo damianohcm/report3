@@ -16,7 +16,8 @@
                     customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
                     customReportLOSList: '/api/curricula_report/v1/lo-list/',
                     customReport: '/api/curricula_report/v1/custom-report/?user=[user]',
-                    customReportList: '/api/curricula_report/v1/custom-report-list/?user=[user]'
+                    customReportList: '/api/curricula_report/v1/custom-report-list/?user=[user]',
+                    customReportData: '/api/curricula_report/v1/custom-report-data/?user=[user]',
                 },
                 params: {
                     // these will contain query string params that we keep passing around
@@ -175,6 +176,14 @@
                 + '?format=json';
         };
 
+        var getCustomReportDataEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportData
+                    .replace('[user]', token)
+                + '?format=json';
+        };
+
         return {
             enableLog: enableLog,
 			getCommonConfig: getCommonConfig,
@@ -190,7 +199,8 @@
                 storesList: getStoresListEndPoint,
                 losList: getLOSListEndPoint,
                 customReport: getCustomReportEndPoint,
-                customReportList: getCustomReportListEndPoint
+                customReportList: getCustomReportListEndPoint,
+                customReportData: getCustomReportDataEndPoint
             }
 		};
     };

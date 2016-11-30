@@ -136,7 +136,8 @@
                             'customReportStoresList', 
                             'customReportLOSList',
                             'customReport',
-                            'customReportList'
+                            'customReportList',
+                            'customReportData'
                         ]);
 
                         expect(apiPaths.reportSegments).to.be.a('string');
@@ -145,6 +146,7 @@
                         expect(apiPaths.customReportLOSList).to.be.a('string');
                         expect(apiPaths.customReport).to.be.a('string');
                         expect(apiPaths.customReportList).to.be.a('string');
+                        expect(apiPaths.customReportData).to.be.a('string');
 
                         done();
                     });
