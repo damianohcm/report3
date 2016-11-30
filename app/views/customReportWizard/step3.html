@@ -36,7 +36,7 @@
                     class="form-control"-->
                 
                 <tags-input style="float:left" ng-model="model.courses" 
-                    display-property="name" key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded()">
+                    display-property="name" key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)">
                     <auto-complete source="getCourses($query)" 
                         min-length="0" 
                         maxResultsToShow="15" 
@@ -53,8 +53,8 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div style="clear:both;display:none">
-                    <label>Courses:</label>
+                <div style="clear:both;display:block">
+                    <label>(DEBUG) Courses:</label>
                     <span>
                         <span ng-repeat="course in model.courses">{{course.name}} | </span>
                     </span>

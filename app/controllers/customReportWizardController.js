@@ -185,7 +185,10 @@
 		};
 
 		$scope.onCourseAdded = function() {
-			console.log('onCourseAdded');
+			$scope.model.courses = _.filter($scope.model.courses, function(c) {
+				return c.id !== undefined;
+			});
+			//console.log('onCourseAdded', JSON.stringify($scope.model.courses));
 		};
 
 		/**
