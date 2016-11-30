@@ -858,9 +858,9 @@ $scope.modalSave = {
 						.then(onDataComplete, onDataError);
 				}, 500);
 
-				var newCustomReportModel = params.newCustomReportModel;
-				console.log('customReportontroller: newCustomReportModel', newCustomReportModel);
-				alert('TODO: need to load segments and stores and filtered them based on newCustomReportModel');
+				var reportModel = params.reportModel;
+				console.log('customReportontroller: reportModel', reportModel);
+				alert('TODO: need to load segments and stores and filtered them based on reportModel');
 			}
 		};
 

@@ -78,7 +78,7 @@
 						// set params passed via query string (these are params that can change)
 						var brand = getRouteParamValue($routeParams, 'brand', '').toLowerCase(),
 							reportType = getRouteParamValue($routeParams, 'reportType', '').toLowerCase(),
-							customReportId = getRouteParamValue($routeParams, 'customReportId', '-1').toLowerCase();
+							reportId = getRouteParamValue($routeParams, 'reportId', '-1').toLowerCase();
 
 						if (['/', '/report', '/customReport'].indexOf(routePath) > -1) {
 							////$rootScope.reportType = reportType;
@@ -88,7 +88,7 @@
 								configService.setParam('reportType', reportType);
 							}
 
-							configService.setParam('customReportId', customReportId);
+							configService.setParam('reportId', reportId);
 						}
 
 						utilsService.safeLog('app.js: brand/reportType', {
@@ -105,10 +105,10 @@
 						if (reportType && reportType.length > 0 && reportType !== 'custom') {
 							utilsService.safeLog('app.js: reportType exists: redirect ro /report');
 							// use document.location here; do not use $location 
-							document.location = '#/report?a=1&brand=[brand]&reportType=[reportType]&customReportId=[customReportId]'
+							document.location = '#/report?a=1&brand=[brand]&reportType=[reportType]&reportId=[reportId]'
 								.replace('[brand]', brand)
 								.replace('[reportType]', reportType)
-								.replace('[customReportId]', customReportId);
+								.replace('[reportId]', reportId);
 						}
 					});
 				}

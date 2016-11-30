@@ -26,13 +26,14 @@
 		var elMainCss = document.getElementById('mainCss');
 		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
 		
-		utilsService.safeLog('reportController: token/lang/brand/reportType', {
+		utilsService.safeLog('reportController: token/lang/brand/reportType/reportId', {
 			token: sessionParams.token,
 			lang: sessionParams.lang,
 			csBaseUrl: sessionParams.csBaseUrl,
 			organization: sessionParams.organization,
 			brand: params.brand,
-			reportType: params.reportType
+			reportType: params.reportType,
+			reportId: params.reportId
 		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
@@ -109,11 +110,12 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportType=[reportType]'
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportType=[reportType]&reportId=[reportId]'
 					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
 					.replace('[organization]', sessionParams.organization)
 					.replace('[brand]', $scope.otherBrandObj.key)
-					.replace('[reportType]', params.reportType);
+					.replace('[reportType]', params.reportType)
+					.replace('[reportId]', params.reportId);
 				//utilsService.safeLog('viewReportForHref', result, true);
 				return result;
 			}
@@ -838,24 +840,58 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 
 /* begin: custom report code */
+var getReportParamsModel = function() {
+	// create params model to send to API end point for custom report data 
+	var clone = params.reportModel;
+	clone.stores = _.filter(clone.stores, function(store){
+		return store.selected;
+	});
+
+	clone.storesIds = clone.stores.map(function(store) {
+		return store.id;
+	});
+	clone.courseIds = clone.courses.map(function(course) {
+		return course.id;
+	});
+	clone.audienceId = clone.audience.id;
+	clone.hiredId = clone.hired.id;
+
+	clone.audienceOptions = $scope.audienceOptions;
+	clone.hiredOptions = $scope.hiredOptions;
+
+	delete clone.stores;
+	delete clone.courses;
+	delete clone.lookupCourses;
+	
+	return JSON.stringify(clone);
+};
+
+$scope.editCustomReport = function() {
+	console.log('editCustomReport');
+	configService.setParam('reportModel', params.reportModel);
+
+	document.location = '#/customReportWizard?a=1&reportType=custom&token=asd';
+};
+
 $scope.saveCustomReport = function() {
-	var onError = function(err) {
-		utilsService.safeLog('saveCustomReport.onError', err);
-		$scope.error = 'Could not save report';
-	};
+	// var onError = function(err) {
+	// 	utilsService.safeLog('saveCustomReport.onError', err);
+	// 	$scope.error = 'Could not save report';
+	// };
 
 
-	var onComplete = function(result) {
-		utilsService.safeLog('saveCustomReport.onComplete', result);
-	};
+	// var onComplete = function(result) {
+	// 	utilsService.safeLog('saveCustomReport.onComplete', result);
+	// };
 
 
 	var apiEndPoint = configService.apiEndPoints.customReport(sessionParams.token);
 	alert('apiEndPoint ' + apiEndPoint);
 
 	var data = {
-		id: $scope.customReportId,
+		id: $scope.reportId,
 		name: $scope.reportTitle,
+		model: getReportParamsModel()
 	};
 	console.log('data', data);
 	//dataService.postData(apiEndPoint)

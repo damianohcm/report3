@@ -24,8 +24,8 @@
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
                     brand: '',
                     reportType: '',
-                    customReportId: '',
-                    newCustomReportModel: ''
+                    reportId: '',
+                    reportModel: ''
                 },
                 sessionParams: {
                     // these will contain session params set only once from query string the first time the / path is called

@@ -65,7 +65,7 @@
 
                 // reportType and brand might change while user is interacting with reporting
                 window.reportType = window.getQueryStringValue('reportType', '');
-                window.customReportId = window.getQueryStringValue('customReportId', '-1');
+                window.reportId = window.getQueryStringValue('reportId', '-1');
                 window.currentBrand = window.getQueryStringValue('brand', defaultBrand);
 
                 // for local development
@@ -85,7 +85,7 @@
                     + '&baseUrl=' + _sync_url
                     + '&csBaseUrl=' + csBaseUrl
                     + '&reportType=' + window.reportType
-                    + '&customReportId=' + window.customReportId;
+                    + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
                 
                 console && console.log('frameUrl', frameUrl);

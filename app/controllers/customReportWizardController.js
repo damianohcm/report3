@@ -168,32 +168,13 @@
 							//wizard.close();
 
 							// create params model to send to API end point for custom report data 
+							// clone angular model to avoid carrying over angular properties
 							var jsonModel = angular.toJson($scope.model);
 							var model = JSON.parse(jsonModel);
-							model.stores = _.filter(model.stores, function(store){
-								return store.selected;
-							});
 
-							model.storesIds = model.stores.map(function(store) {
-								return store.id;
-							});
-							model.courseIds = model.courses.map(function(course) {
-								return course.id;
-							});
-							model.audienceId = model.audience.id;
-							model.hiredId = model.hired.id;
+							configService.setParam('reportModel', model);
+							console.log('reportModel', model);
 
-							model.audienceOptions = $scope.audienceOptions;
-							model.hiredOptions = $scope.hiredOptions;
-
-							delete model.stores;
-							delete model.courses;
-							delete model.lookupCourses;
-							
-							jsonModel = JSON.stringify(model);
-
-							configService.setParam('newCustomReportModel', jsonModel);
-							console.log('newCustomReportModel', jsonModel);
 							//document.location = '#/report?a=1&reportType=custom&token=asd';
 							document.location = '#/customReport?a=1&reportType=custom&token=asd';
 						}
@@ -357,11 +338,17 @@
 
 		utilsService.safeLog('navigationItems', $scope.wizard.navigationItems);
 
-		$scope.showHiredAfterDateinput = false;
-		$scope.hiredChanged = function(option) {
-			utilsService.safeLog('hiredChanged', option);
-			$scope.showHiredAfterDateinput = (option.otherField);
-		};
+		Object.defineProperty($scope, 'showHiredAfterDateinput', {
+			get: function() {
+				return $scope.model.hired.otherField === 'hiredAfter';
+			}
+		});
+
+		//$scope.showHiredAfterDateinput = false;
+		//$scope.hiredChanged = function(option) {
+			//utilsService.safeLog('hiredChanged', option);
+			//$scope.showHiredAfterDateinput = (option.otherField);
+		//};
 
 		// Step 1: Select PCs
 		var areAllStoreSelected = function() {
@@ -456,6 +443,48 @@ $scope.datePickerOptions = {
 			$scope.data = data;
 			$scope.model.stores = data.stores;
 			$scope.model.lookupCourses =  data.courses;
+
+			// if modifying a report, sync $scope.model with passed in params.reportModel
+			if (params.reportModel) {
+				
+				_.each(params.reportModel.stores, function(source) {
+					if (source.selected) {
+						var store = _.find($scope.model.stores, function(dest) {
+							return dest.id === source.id;
+						});
+						if (store) {
+							store.selected = true;
+						}
+					}
+				});
+				
+				_.each(params.reportModel.courses, function(source) {
+					var course = _.find($scope.model.lookupCourses, function(dest) {
+						return dest.id === source.id;
+					});
+					if (course) {
+						$scope.model.courses.push(course);
+					}
+				});
+
+				//params.reportModel.audienceId
+				$scope.model.audience = _.find($scope.audienceOptions, function(option) {
+					return option.id === params.reportModel.audience.id;
+				});
+
+				$scope.model.hired = _.find($scope.hiredOptions, function(option) {
+					return option.id === params.reportModel.hired.id;
+				});
+
+
+				if (params.reportModel.hiredAfter) {
+					$scope.model.hiredAfter = new Date(params.reportModel.hiredAfter);
+				}
+
+				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
+			}
+
+			console.log('$scope.model', $scope.model);
 		};
 
 		// helper to get the data

@@ -163,14 +163,14 @@ describe('configService', () => {
                 expect(params).to.have.all.keys([
                     'brand', 
                     'reportType', 
-                    'customReportId',
-                    'newCustomReportModel'
+                    'reportId',
+                    'reportModel'
                 ]);
 
                 expect(params.brand).to.be.a('string');
                 expect(params.reportType).to.be.a('string');
-                expect(params.customReportId).to.be.a('string');
-                expect(params.newCustomReportModel).to.be.a('string');
+                expect(params.reportId).to.be.a('string');
+                expect(params.reportModel).to.be.a('string');
 
                 done();
             });
