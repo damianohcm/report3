@@ -14,13 +14,16 @@
                     reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]', //&companyKey=[companyKey]',
                     reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
                     customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
-                    customReportLOSList: '/api/curricula_report/v1/lo-list/'
+                    customReportLOSList: '/api/curricula_report/v1/lo-list/',
+                    customReport: '/api/curricula_report/v1/custom-report/?user=[user]',
+                    customReportList: '/api/curricula_report/v1/custom-report-list/?user=[user]'
                 },
                 params: {
                     // these will contain query string params that we keep passing around
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
                     brand: '',
-                    reportId: '',
+                    reportType: '',
+                    customReportId: '',
                     newCustomReportModel: ''
                 },
                 sessionParams: {
@@ -156,6 +159,22 @@
                 + '?format=json';
         };
 
+        var getCustomReportEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReport
+                    .replace('[user]', token)
+                + '?format=json';
+        };
+
+        var getCustomReportListEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportList
+                    .replace('[user]', token)
+                + '?format=json';
+        };
+
         return {
             enableLog: enableLog,
 			getCommonConfig: getCommonConfig,
@@ -169,7 +188,9 @@
                 segments: getSegmentsEndPoint,
                 storesAndPeople: getStoresAndPeopleEndPoint,
                 storesList: getStoresListEndPoint,
-                losList: getLOSListEndPoint
+                losList: getLOSListEndPoint,
+                customReport: getCustomReportEndPoint,
+                customReportList: getCustomReportListEndPoint
             }
 		};
     };

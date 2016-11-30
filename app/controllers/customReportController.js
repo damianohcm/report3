@@ -11,7 +11,7 @@
 		 params = commonConfig.params,
 		 brandConfig = configService.getBrandConfig(params.brand),
 		 reportStrategies = brandConfig.reportStrategies,
-		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportId] || {
+		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
 				title: 'Unknown report id'
 			};
@@ -26,13 +26,13 @@
 		var elMainCss = document.getElementById('mainCss');
 		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
 		
-		utilsService.safeLog('reportController: token/lang/brand/reportId', {
+		utilsService.safeLog('reportController: token/lang/brand/reportType', {
 			token: sessionParams.token,
 			lang: sessionParams.lang,
 			csBaseUrl: sessionParams.csBaseUrl,
 			organization: sessionParams.organization,
 			brand: params.brand,
-			reportId: params.reportId
+			reportType: params.reportType
 		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
@@ -109,11 +109,11 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportId=[reportId]'
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportType=[reportType]'
 					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
 					.replace('[organization]', sessionParams.organization)
 					.replace('[brand]', $scope.otherBrandObj.key)
-					.replace('[reportId]', params.reportId);
+					.replace('[reportType]', params.reportType);
 				//utilsService.safeLog('viewReportForHref', result, true);
 				return result;
 			}
@@ -762,7 +762,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			// show loader
 			$scope.loading = true;
 
-			utilsService.safeLog('getData: reportId', params.reportId);
+			utilsService.safeLog('getData: reportType', params.reportType);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
@@ -814,9 +814,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
+				//var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
 
-				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 				var fileName = 'data/from-stag.json?' + Math.random();
 
 				utilsService.safeLog('fileName', fileName);
@@ -838,6 +838,30 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 
 /* begin: custom report code */
+$scope.saveCustomReport = function() {
+	var onError = function(err) {
+		utilsService.safeLog('saveCustomReport.onError', err);
+		$scope.error = 'Could not save report';
+	};
+
+
+	var onComplete = function(result) {
+		utilsService.safeLog('saveCustomReport.onComplete', result);
+	};
+
+
+	var apiEndPoint = configService.apiEndPoints.customReport(sessionParams.token);
+	alert('apiEndPoint ' + apiEndPoint);
+
+	var data = {
+		id: $scope.customReportId,
+		name: $scope.reportTitle,
+	};
+	console.log('data', data);
+	//dataService.postData(apiEndPoint)
+	//		.then(onComplete, onError);
+};
+
 /* begin: modal save code */
 $scope.modalSaveData = {
 	title: 'Save New Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
@@ -870,14 +894,15 @@ $scope.modalSave = {
 			$scope.reportTitle = data.reportName;
 			$scope.title = data.reportName;
 			$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + $scope.reportTitle;
+			$scope.saveCustomReport();
 		}, function () {
 			console.log('Modal dismissed at');
 		});
 	}
 };
 
-$scope.saveCustomReport = function() {
-	console.log('saveCustomReport');
+$scope.modalSaveOpen = function() {
+	console.log('modalSaveOpen');
 	$scope.modalSave.open();
 };
 /* end: modal save code */

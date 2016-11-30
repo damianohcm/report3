@@ -77,21 +77,24 @@
 
 						// set params passed via query string (these are params that can change)
 						var brand = getRouteParamValue($routeParams, 'brand', '').toLowerCase(),
-							reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
+							reportType = getRouteParamValue($routeParams, 'reportType', '').toLowerCase(),
+							customReportId = getRouteParamValue($routeParams, 'customReportId', '-1').toLowerCase();
 
 						if (['/', '/report', '/customReport'].indexOf(routePath) > -1) {
-							////$rootScope.reportId = reportId;
+							////$rootScope.reportType = reportType;
 							configService.setParam('brand', brand);
 
-							if (reportId.length > 0) {
-								configService.setParam('reportId', reportId);
+							if (reportType.length > 0) {
+								configService.setParam('reportType', reportType);
 							}
+
+							configService.setParam('customReportId', customReportId);
 						}
 
-						utilsService.safeLog('app.js: brand/reportID', {
+						utilsService.safeLog('app.js: brand/reportType', {
 							//'document.location.search': document.location.search,
 							brand: brand,
-							reportId: reportId
+							reportType: reportType
 						}, true);
 
 						if ((brand && brand.toLowerCase()) === 'br') {
@@ -99,12 +102,13 @@
 							elMainCss.setAttribute('href', 'css/main-br.css');
 						}
 
-						if (reportId && reportId.length > 0 && reportId !== 'custom') {
-							utilsService.safeLog('app.js: reportId exists: redirect ro /report');
+						if (reportType && reportType.length > 0 && reportType !== 'custom') {
+							utilsService.safeLog('app.js: reportType exists: redirect ro /report');
 							// use document.location here; do not use $location 
-							document.location = '#/report?a=1&brand=[brand]&reportId=[reportId]'
+							document.location = '#/report?a=1&brand=[brand]&reportType=[reportType]&customReportId=[customReportId]'
 								.replace('[brand]', brand)
-								.replace('[reportId]', reportId);
+								.replace('[reportType]', reportType)
+								.replace('[customReportId]', customReportId);
 						}
 					});
 				}

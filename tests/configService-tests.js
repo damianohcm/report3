@@ -134,13 +134,17 @@ describe('configService', () => {
                     'reportSegments', 
                     'reportStores', 
                     'customReportStoresList', 
-                    'customReportLOSList'
+                    'customReportLOSList',
+                    'customReport',
+                    'customReportList'
                 ]);
 
                 expect(apiPaths.reportSegments).to.be.a('string');
                 expect(apiPaths.reportStores).to.be.a('string');
                 expect(apiPaths.customReportStoresList).to.be.a('string');
                 expect(apiPaths.customReportLOSList).to.be.a('string');
+                expect(apiPaths.customReport).to.be.a('string');
+                expect(apiPaths.customReportList).to.be.a('string');
 
                 done();
             });
@@ -156,12 +160,14 @@ describe('configService', () => {
 
                 expect(params).to.have.all.keys([
                     'brand', 
-                    'reportId', 
+                    'reportType', 
+                    'customReportId',
                     'newCustomReportModel'
                 ]);
 
                 expect(params.brand).to.be.a('string');
-                expect(params.reportId).to.be.a('string');
+                expect(params.reportType).to.be.a('string');
+                expect(params.customReportId).to.be.a('string');
                 expect(params.newCustomReportModel).to.be.a('string');
 
                 done();

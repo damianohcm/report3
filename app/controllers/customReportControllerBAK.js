@@ -12,10 +12,10 @@
 
 		$scope.undoService = undoServiceFactory.getService('customReportController');
 		
-		utilsService.safeLog('customReportController: $rootScope.brand/lang/reportId', {
+		utilsService.safeLog('customReportController: $rootScope.brand/lang/reportType', {
 			brand: $rootScope.brand,
 			lang: $rootScope.lang,
-			reportId: $rootScope.reportId
+			reportType: $rootScope.reportType
 		});
 
 		var reportTitleStrategy = {
@@ -24,8 +24,8 @@
 			custom: 'Custom'
 		};
 
-		$scope.reportTitle = reportTitleStrategy[$rootScope.reportId]
-			? reportTitleStrategy[$rootScope.reportId]
+		$scope.reportTitle = reportTitleStrategy[$rootScope.reportType]
+			? reportTitleStrategy[$rootScope.reportType]
 			: 'Unknown report id';
 		
 		$scope.title = $scope.reportTitle + ' Report';
@@ -834,7 +834,7 @@ $scope.modalSave = {
 			// show loader
 			$scope.loading = true;
 
-			utilsService.safeLog('getData: reportId', $rootScope.reportId);
+			utilsService.safeLog('getData: reportType', $rootScope.reportType);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
@@ -850,7 +850,7 @@ $scope.modalSave = {
 				//var fileName = 'data/single-pc.json?' + Math.random();
 				//var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/' + $rootScope.reportId + '.json?' + Math.random();
+				//var fileName = 'data/' + $rootScope.reportType + '.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
 				$timeout(function() {

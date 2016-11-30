@@ -194,8 +194,8 @@
 
 							configService.setParam('newCustomReportModel', jsonModel);
 							console.log('newCustomReportModel', jsonModel);
-							//document.location = '#/report?a=1&reportId=custom&token=asd';
-							document.location = '#/customReport?a=1&reportId=custom&token=asd';
+							//document.location = '#/report?a=1&reportType=custom&token=asd';
+							document.location = '#/customReport?a=1&reportType=custom&token=asd';
 						}
 					}
 				//});
@@ -460,7 +460,7 @@ $scope.datePickerOptions = {
 
 		// helper to get the data
 		var getData = function(w) {
-			utilsService.safeLog('getData: reportId', params.reportId);
+			utilsService.safeLog('getData');
 
 			if (w === 'live') {
 				// var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
