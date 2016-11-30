@@ -37,7 +37,7 @@
 				'configService', 
 
 				function($rootScope, $location, $routeParams, utilsService, configService) {
-					console.log('********** run **********');
+					//utilsService.safeLog('********** run **********');
 
 					// handler for route change success event
 					$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
@@ -126,7 +126,7 @@
             		property = attrs.property;
 
 				var areAllSelected = function(arr) {
-					console.log('areAllSelected function: arr.length:', arr.length);
+					//console.log('areAllSelected function: arr.length:', arr.length);
 					return arr && arr.length > 0 && arr.every(function(item) {
 						return item.selected === true;
 					});

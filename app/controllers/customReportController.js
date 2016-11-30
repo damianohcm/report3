@@ -867,7 +867,7 @@ var getReportParamsModel = function() {
 };
 
 $scope.editCustomReport = function() {
-	console.log('editCustomReport');
+	utilsService.safeLog('editCustomReport');
 	configService.setParam('reportModel', params.reportModel);
 
 	document.location = '#/customReportWizard?a=1&reportType=custom&token=asd';
@@ -893,7 +893,7 @@ $scope.saveCustomReport = function() {
 		name: $scope.reportTitle,
 		model: getReportParamsModel()
 	};
-	console.log('data', data);
+	utilsService.safeLog('data', data);
 	//dataService.postData(apiEndPoint)
 	//		.then(onComplete, onError);
 };
@@ -917,14 +917,14 @@ $scope.modalSave = {
 			component: 'modalSaveComponent',
 			resolve: {
 				data: function () {
-					console.log('Modal resolve: pass modalSaveData', $scope.modalSaveData);
+					utilsService.safeLog('Modal resolve: pass modalSaveData', $scope.modalSaveData);
 					return $scope.modalSaveData;
 				}
 			}
 		});
 
 		modalInstance.result.then(function (data) {
-			console.log('Modal result', data);
+			utilsService.safeLog('Modal result', data);
 			
 			// TODO: after successful save, update also $scope.title
 			$scope.reportTitle = data.reportName;
@@ -932,13 +932,13 @@ $scope.modalSave = {
 			$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + $scope.reportTitle;
 			$scope.saveCustomReport();
 		}, function () {
-			console.log('Modal dismissed at');
+			utilsService.safeLog('Modal dismissed at');
 		});
 	}
 };
 
 $scope.modalSaveOpen = function() {
-	console.log('modalSaveOpen');
+	utilsService.safeLog('modalSaveOpen');
 	$scope.modalSave.open();
 };
 /* end: modal save code */
@@ -951,20 +951,20 @@ $scope.modalConfirm = {
 			component: 'modalConfirmComponent',
 			resolve: {
 				data: function () {
-					console.log('Modal resolve: pass modalConfirmStrategy', modalConfirmStrategy);
+					utilsService.safeLog('Modal resolve: pass modalConfirmStrategy', modalConfirmStrategy);
 					return modalConfirmStrategy;
 				}
 			}
 		});
 
 		modalInstance.result.then(function (data) {
-			console.log('Modal result', data);
+			utilsService.safeLog('Modal result', data);
 			
 			// TODO: 
 			//modalConfirmStrategy.action();
 
 		}, function () {
-			console.log('Modal dismissed');
+			utilsService.safeLog('Modal dismissed');
 		});
 	}
 };
@@ -991,7 +991,7 @@ var modalConfirmStrategies = {
 };
 
 $scope.modalConfirmOpen = function(w) {
-	console.log('modalConfirmOpen', w);
+	utilsService.safeLog('modalConfirmOpen', w);
 	var strategy = modalConfirmStrategies[w];
 	if (!strategy) {
 		alert('Could not find strategy for modal confirm ' + w);

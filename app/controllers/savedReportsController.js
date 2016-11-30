@@ -16,19 +16,19 @@
 		};
 
 		$scope.viewReport = function(report) {
-			console.log('editviewReportReport', report.id);
+			utilsService.safeLog('editviewReportReport', report.id);
 			alert('View/Run report: Not implemented yet');
 		};
 
 		$scope.editReport = function(report, $event) {
 			$event.stopPropagation();
-			console.log('editReport', report.id);
+			utilsService.safeLog('editReport', report.id);
 			alert('Edit: Not implemented yet');
 		};
 
 		$scope.deleteReport = function(report, $event) {
 			$event.stopPropagation();
-			console.log('deleteReport', report.id);
+			utilsService.safeLog('deleteReport', report.id);
 			var result = window.confirm('Are you sure you want to delete this report? This action cannot be undone.');
 			if (result) {
 				alert('Delete: Not implemented yet');

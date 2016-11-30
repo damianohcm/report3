@@ -14,12 +14,12 @@
             var $modal = this;
 
             $modal.$onInit = function () {
-                console.log('modalConfirmComponent onInit');
+                //console.log('modalConfirmComponent onInit');
                 $modal.data = $modal.resolve.data;
             };
 
             $modal.ok = function () {
-                console.log('modalConfirmComponent ok');
+                //console.log('modalConfirmComponent ok');
 
                 $modal.close({
                     $value: 'ok'
@@ -27,7 +27,7 @@
             };
 
             $modal.cancel = function () {
-                console.log('modalConfirmComponent cancel');
+                //console.log('modalConfirmComponent cancel');
                 $modal.dismiss({
                     $value: 'cancel'
                 });

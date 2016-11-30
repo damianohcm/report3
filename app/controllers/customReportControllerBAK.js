@@ -89,7 +89,7 @@
 		};
 
 		$scope.saveCustomReport = function() {
-			console.log('saveCustomReport');
+			utilsService.safeLog('saveCustomReport');
 			$scope.modalSave.open();
 		};
 
@@ -114,16 +114,16 @@ $scope.modalSave = {
 			component: 'modalSaveComponent',
 			resolve: {
 				data: function () {
-					console.log('Modal resolve: pass modalSaveData');
+					utilsService.safeLog('Modal resolve: pass modalSaveData');
 					return $scope.modalSaveData;
 				}
 			}
 		});
 
 		modalInstance.result.then(function (result) {
-			console.log('Modal result', result);
+			utilsService.safeLog('Modal result', result);
 		}, function () {
-			console.log('Modal dismissed at');
+			utilsService.safeLog('Modal dismissed at');
 		});
 	}
 };
@@ -859,7 +859,7 @@ $scope.modalSave = {
 				}, 500);
 
 				var reportModel = params.reportModel;
-				console.log('customReportontroller: reportModel', reportModel);
+				utilsService.safeLog('customReportontroller: reportModel', reportModel);
 				alert('TODO: need to load segments and stores and filtered them based on reportModel');
 			}
 		};
