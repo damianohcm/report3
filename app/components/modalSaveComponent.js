@@ -20,17 +20,12 @@
             });
 
             $modal.$onInit = function () {
-                console.log('modalSaveComponent onInit');
-                // $modal.items = $modal.resolve.items;
-                // $modal.selected = {
-                //     item: $modal.items[0]
-                // };
-
+                //console.log('modalSaveComponent onInit');
                 $modal.data = $modal.resolve.data;
             };
 
             $modal.ok = function () {
-                console.log('modalSaveComponent ok', $modal.data);
+                //console.log('modalSaveComponent ok', $modal.data);
 
                 $modal.data.reportName = ($modal.data.reportName || '').trim();
                 if ($modal.data.reportName.length === 0) {
@@ -43,7 +38,7 @@
             };
 
             $modal.cancel = function () {
-                console.log('modalSaveComponent cancel');
+                //console.log('modalSaveComponent cancel');
                 $modal.dismiss({
                     $value: 'cancel'
                 });

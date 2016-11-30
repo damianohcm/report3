@@ -46,6 +46,19 @@ body {
 	margin-bottom: 0;
 }
 
+.p-0 {
+    padding: 0!important;
+}
+.p-tb-0 {
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+}
+.p-t-0 {
+    padding-top: 0!important;
+}
+.p-b-0 {
+    padding-bottom: 0!important;
+}
 .p-l-0 {
     padding-left: 0;
 }
@@ -771,6 +784,12 @@ input.required {
 .modal-footer {
     text-align: center;
     font-family: Gotham;
+    border: 0!important;
+}
+.modal-header h1, 
+.modal-header h2, 
+.modal-header h3 {
+    font-weight: bold;
 }
 .modal-body input {
     width: 372px;

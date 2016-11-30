@@ -34,6 +34,18 @@
             <button class="btn btn-primary ok" type="button" ng-click="$ctrl.ok()">Save</button>
         </div>
     </script>
+    <script type="text/ng-template" id="modalConfirm.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
+        </div>
+        <div class="modal-body p-tb-0" id="modal-body">
+            {{$ctrl.data.message}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning cancel" type="button" ng-click="$ctrl.cancel()">{{$ctrl.data.cancelCaption}}</button>
+            <button class="btn btn-primary ok" type="button" ng-click="$ctrl.ok()">{{$ctrl.data.okCaption}}</button>
+        </div>
+    </script>
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">
@@ -73,6 +85,10 @@
                             title="{{::c.title}}">
                             <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
                             <button class="save" ng-if="c.position === 0" ng-click="saveCustomReport()" title="Save Custom Report">Save</button>
+
+                            <button class="save" ng-if="c.position === 0" ng-click="modalConfirmOpen('openOtherReport')">Open Other Report</button>
+                            <button class="save" ng-if="c.position === 0" ng-click="modalConfirmOpen('closeReport')">Close Report</button>
+                            <button class="save" ng-if="c.position === 0" ng-click="modalConfirmOpen('reportNameConflict')">Name Conflict</button>
                             
                             <!-- begin: column header popover -->
                             <div ng-if="::(c.position > 0)" class="th-top">

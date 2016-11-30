@@ -255,7 +255,8 @@
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
 	app.component('modalSaveComponent', components.modalSaveComponent);
-
+	app.component('modalConfirmComponent', components.modalConfirmComponent);
+	
 	// register controllers
 	// home controllers
 	app.controller('homeController', [

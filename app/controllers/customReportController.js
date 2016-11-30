@@ -838,6 +838,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 
 /* begin: custom report code */
+/* begin: modal save code */
 $scope.modalSaveData = {
 	title: 'Save New Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
 	reportName: ''
@@ -879,6 +880,66 @@ $scope.saveCustomReport = function() {
 	console.log('saveCustomReport');
 	$scope.modalSave.open();
 };
+/* end: modal save code */
+
+/* begin: modal confirm code */
+$scope.modalConfirm = {
+	open: function (modalConfirmStrategy) {
+		var modalInstance = $uibModal.open({
+			animation: false,
+			component: 'modalConfirmComponent',
+			resolve: {
+				data: function () {
+					console.log('Modal resolve: pass modalConfirmStrategy', modalConfirmStrategy);
+					return modalConfirmStrategy;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (data) {
+			console.log('Modal result', data);
+			
+			// TODO: 
+			//modalConfirmStrategy.action();
+
+		}, function () {
+			console.log('Modal dismissed');
+		});
+	}
+};
+
+var modalConfirmStrategies = {
+	openOtherReport: {
+		title: 'Are you sure?', 
+		message: 'Opening a saved report will clear your current settings and filters.',
+		cancelCaption: 'Cancel',
+		okCaption: 'Continue'
+	},
+	closeReport: {
+		title: 'Are you sure?', 
+		message: 'Your current settings and filters haven’t been saved. Are you sure you want to exit the report?',
+		cancelCaption: 'Cancel',
+		okCaption: 'Close Report'
+	},
+	reportNameConflict: {
+		title: 'Report Name Conflict',
+		message: 'A saved report with that name already exists. Do you want to overwrite?',
+		cancelCaption: 'Cancel',
+		okCaption: 'Overwrite'
+	}
+};
+
+$scope.modalConfirmOpen = function(w) {
+	console.log('modalConfirmOpen', w);
+	var strategy = modalConfirmStrategies[w];
+	if (!strategy) {
+		alert('Could not find strategy for modal confirm ' + w);
+	} else {
+		$scope.modalConfirm.open(strategy);
+	}
+};
+/* end: modal confirm code */
+
 /* end: custom report code */
 
 	};
