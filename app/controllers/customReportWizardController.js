@@ -7,7 +7,8 @@
 		utilsService, configService, dataService, wizardServiceFactory) {
 
 		var commonConfig = configService.getCommonConfig(),
-			params = commonConfig.params;
+			sessionParams = commonConfig.sessionParams,
+		 	params = commonConfig.params;
 
 		/**
 		 * @method cancel
@@ -196,7 +197,11 @@
 							///utilsService.safeLog('reportModel', model);
 
 							//document.location = '#/report?a=1&reportType=custom&token=asd';
-							document.location = '#/customReport?a=1&reportType=custom&token=asd';
+							var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
+								.replace('[brand]', params.brand)
+								.replace('[reportId]', params.reportId);
+							utilsService.safeLog('reportPath', reportPath, true);
+							document.location = reportPath;
 						}
 					}
 				//});
@@ -594,16 +599,16 @@ $scope.modalConfirmOpen = function(w) {
 				var _endPoints = [{
 					key: 'courses',  /* lo-list lookup */
 					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
-					path: configService.apiEndPoints.losList(sessionParams.token)
+					path: configService.apiEndPoints.losList()
 
 				}, {
 					key: 'stores', /* stores-list lookup */
 					propertyOnData: 'results',
-					path: configService.apiEndPoints.storesList()
+					path: configService.apiEndPoints.storesList(sessionParams.token)
 				}];
 
 
-				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+				console.log('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {

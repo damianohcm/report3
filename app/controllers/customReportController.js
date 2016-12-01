@@ -718,7 +718,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
-			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
+			//TODO: temporarily disabled this on custom report: $scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
 
 			// helper that will be called after all rows have been added
 			var onRowsCompleted = function() {
@@ -871,7 +871,11 @@ $scope.editCustomReport = function() {
 	configService.setParam('reportModel', params.reportModel);
 	console.log('editCustomReport params.reportModel', params.reportModel);
 
-	document.location = '#/customReportWizard?a=1&reportType=custom&token=asd';
+	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
+		.replace('[brand]', params.brand)
+		.replace('[reportId]', params.reportId);
+	utilsService.safeLog('wizardPath', wizardPath, true);
+	document.location = wizardPath;
 };
 
 $scope.saveCustomReport = function() {
