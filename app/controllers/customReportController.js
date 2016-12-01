@@ -18,6 +18,7 @@
 
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
+		console.log('customReportController params.reportModel', params.reportModel);
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -842,7 +843,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 /* begin: custom report code */
 var getReportParamsModel = function() {
 	// create params model to send to API end point for custom report data 
-	var clone = params.reportModel;
+	var clone = JSON.parse(angular.toJson(params.reportModel));
 	clone.stores = _.filter(clone.stores, function(store){
 		return store.selected;
 	});
@@ -861,7 +862,6 @@ var getReportParamsModel = function() {
 
 	delete clone.stores;
 	delete clone.courses;
-	delete clone.lookupCourses;
 	
 	return JSON.stringify(clone);
 };
@@ -869,6 +869,7 @@ var getReportParamsModel = function() {
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
 	configService.setParam('reportModel', params.reportModel);
+	console.log('editCustomReport params.reportModel', params.reportModel);
 
 	document.location = '#/customReportWizard?a=1&reportType=custom&token=asd';
 };
@@ -896,6 +897,9 @@ $scope.saveCustomReport = function() {
 	utilsService.safeLog('data', data);
 	//dataService.postData(apiEndPoint)
 	//		.then(onComplete, onError);
+
+	// test name Conflict
+	$scope.modalConfirmOpen('reportNameConflict');
 };
 
 /* begin: modal save code */

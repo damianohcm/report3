@@ -4,7 +4,18 @@
 
 		var commonConfig = configService.getCommonConfig();
 
-		var obj = {
+		var sortCompareById = function(a, b) {
+			if (a.id < b.id) {
+				return -1;
+			}
+			if (a.id > b.id) {
+				return 1;
+			}
+			// a must be equal to b
+			return 0;
+		};
+
+		var instance = {
 		};
 
 		 /**
@@ -14,7 +25,7 @@
 		 * When passing force as true, it will always log, no matter what commonConfig.logEnable value is.
 		 */
 		// eslint-disable-next-line no-unused-vars
-        obj.safeLog = function(msg, data, force) {
+        instance.safeLog = function(msg, data, force) {
 			if (commonConfig.logEnabled && (window && window.logEnabled || force)) {
 				if (console && console.log) {
 					if (arguments.length > 1) {
@@ -31,7 +42,7 @@
 		 * @description
 		 * 
 		 */
-		obj.fastLoop = function fastLoop(items, cb) {
+		instance.fastLoop = function fastLoop(items, cb) {
 			if (items) {
 				for (var i = items.length; --i >= 0;) {
 					cb(items[items.length - i - 1], items.length - i);
@@ -45,7 +56,7 @@
 		 * Helper to unescape spcial chars that were previousley html escaped in reportservice.hs 
 		 * before exporting to csv/excel
 		 */
-		obj.unescapeSpecialChars = function(text) {
+		instance.unescapeSpecialChars = function(text) {
 			// whatever we escape here, we'll have to unescape in the csv export in utilsService.js
 			return (text || '')
 				.replace('&rsquo;', '\'')
@@ -62,14 +73,14 @@
 		 * @description
 		 * 
 		 */
-		obj.getCsv = function getCsv(model) {
+		instance.getCsv = function getCsv(model) {
 			var cols = model.columns, rows = model.result.rows, 
 				visibleRows = _.filter(rows, function(row) {
 					return row.show;
 				});
 
 			var ret = [];
-			// ret.push('"' + Object.keys(arr[0]).join('","') + '"');
+			// ret.push('"' + instanceect.keys(arr[0]).join('","') + '"');
 			// for (var i = 0, len = arr.length; i < len; i++) {
 			// 	var line = [];
 			// 	for (var key in arr[i]) {
@@ -89,7 +100,7 @@
 				});
 				var colNames = _.map(visibleCols, function(col) {
 					// strip out commas from column headers or they will break the csv format
-					return obj.unescapeSpecialChars(col.name);
+					return instance.unescapeSpecialChars(col.name);
 				});
 
 				ret.push('"' + colNames.join('","') + '"');
@@ -106,7 +117,7 @@
 							text += ' ' + cell.suffix;
 						}
 
-						text = obj.unescapeSpecialChars(text);
+						text = instance.unescapeSpecialChars(text);
 						csvLine.push('"' + text + '"');
 					});
 					
@@ -143,14 +154,14 @@
 			//}
 
 			return ret.join('\n');
-		}.bind(obj);
+		}.bind(instance);
 
 		/**
 		 * @method csvHtml5Download
 		 * @description
 		 * 
 		 */
-		obj.csvHtml5Download = function(csv, fileName) {
+		instance.csvHtml5Download = function(csv, fileName) {
 			this.safeLog('utilsService.csvHtml5Download');
 			var mimeType = 'attachment/csv',
 				charset = 'charset=utf-8';
@@ -173,14 +184,14 @@
 			} else {
 				a.click();
 			}
-		}.bind(obj);
+		}.bind(instance);
 
 		/**
 		 * @method getCsv
 		 * @description
 		 * 
 		 */
-		obj.exportModelToCsv = function(model, fileName) {
+		instance.exportModelToCsv = function(model, fileName) {
 			var mimeType = '',
 				csv = this.getCsv(model),
 				lowerUserAgent = navigator.userAgent.toLowerCase(),
@@ -215,11 +226,55 @@
 			}
 
 			return true;
-		}.bind(obj);
+		}.bind(instance);
 
-		
+		instance.sortObject = function(obj) {
+			if (Array.isArray(obj)) {
+				return obj.sort(sortCompareById);
+			} else {
+				var result = {};
+				var sortedKeys = Object.keys(obj).sort();
+				for (var i = sortedKeys.length; --i > -1;) {
+					var key = sortedKeys[i], propVal = obj[key];
+					if (typeof propVal === 'object' || Array.isArray(propVal)) {
+						//console.log(key + ': is object or array');
+						result[key] = instance.sortObject(propVal);
+					} else {
+						result[key] = obj[key];
+					}
+				}
 
-        return obj;
+				return result;
+			}
+		}.bind(instance);
+
+		instance.areEqual = function(origObj, otherObj) {
+			var result = true;
+
+			var origKeys = Object.keys(origObj);
+			var otherKeys = Object.keys(otherObj);
+
+			if (origKeys.length !== otherKeys.length) {
+				console.log('keys length do not match');
+				result = false;
+			} else {
+				// sort properties and create two object that can be hashed for quicker comparison
+				origObj = instance.sortObject(origObj);
+				otherObj = instance.sortObject(otherObj);
+				
+				//console.log('json1', JSON.stringify(origObj).toLowerCase());
+				//console.log('json2', JSON.stringify(otherObj).toLowerCase());
+				
+				if (JSON.stringify(origObj).toLowerCase() !== JSON.stringify(otherObj).toLowerCase()) {
+					console.log('hashed objects do not match');
+					result = false;
+				}
+			}
+			
+			return result;
+		}.bind(instance);
+
+        return instance;
     };
 
 	if (typeof exports !== 'undefined') {

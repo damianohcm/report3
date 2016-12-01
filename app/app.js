@@ -289,7 +289,7 @@
 	// custom report wizard controller
 	app.controller('customReportWizardController', [
 		'$scope',
-		'$route', '$routeParams', '$location', '$filter', 
+		'$route', '$routeParams', '$location', '$filter', '$uibModal', 
 		'utilsService', 'configService',
 		'dataService',
 		'wizardServiceFactory',

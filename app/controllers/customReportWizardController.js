@@ -3,7 +3,7 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $filter, 
+	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $filter, $uibModal, 
 		utilsService, configService, dataService, wizardServiceFactory) {
 
 		var commonConfig = configService.getCommonConfig(),
@@ -16,7 +16,12 @@
 		 */
 		$scope.cancel = function cancel() {
 			//this.hide();
-			$location.path('#/');
+			// TODO: need to prompt user for confirmation in case there are pending changes
+			if ($scope.modelIsDirty) {
+				$scope.modalConfirmOpen('closeWizard');
+			} else {
+				$location.path('#/');
+			}
 		};
 
 		this.params = $routeParams;
@@ -55,6 +60,21 @@
 			entireLearningPath: true,
 			courses: []
 		};
+
+		// original model to kee track of changes
+		$scope.originalModel = {};
+
+		// property that calculates wheter the model has been changed by the user
+		// and we need to present the user with confirm dialogs when she is navigating
+		// away without saving etc.
+		Object.defineProperty($scope, 'modelIsDirty', {
+			get: function() {
+				var origModel = JSON.parse(angular.toJson($scope.originalModel));
+				var model = JSON.parse(angular.toJson($scope.model));
+				
+				return utilsService.areEqual(origModel, model) === false;
+			}
+		});
 
 		// summary model for final step
 		$scope.summary = {
@@ -425,7 +445,7 @@ $scope.datePickerOptions = {
 			// });
 
 
-			var filtered =  $scope.model.lookupCourses.filter(function(course) {
+			var filtered =  $scope.lookupCourses.filter(function(course) {
 				return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
 			});
 
@@ -433,6 +453,67 @@ $scope.datePickerOptions = {
 
 			return filtered;
 		};
+
+/* begin: modal confirm code */
+$scope.modalConfirm = {
+	open: function (modalConfirmStrategy) {
+		var modalInstance = $uibModal.open({
+			animation: false,
+			component: 'modalConfirmComponent',
+			resolve: {
+				data: function () {
+					utilsService.safeLog('Modal resolve: pass modalConfirmStrategy', modalConfirmStrategy);
+					return modalConfirmStrategy;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (data) {
+			utilsService.safeLog('Modal result', data);
+			
+			// TODO: 
+			modalConfirmStrategy.okAction && modalConfirmStrategy.okAction();
+
+		}, function () {
+			utilsService.safeLog('Modal dismissed');
+		});
+	}
+};
+
+var modalConfirmStrategies = {
+	openOtherReport: {
+		title: 'Are you sure?', 
+		message: 'Opening a saved report will clear your current settings and filters.',
+		cancelCaption: 'Cancel',
+		okCaption: 'Continue'
+	},
+	closeWizard: {
+		title: 'Are you sure?', 
+		message: 'Your current wizard selections haven’t been saved. Are you sure you want to exit the wizard?',
+		cancelCaption: 'Cancel',
+		okCaption: 'Close Wizard',
+		okAction: function() {
+			$location.path('#/');
+		}
+	},
+	reportNameConflict: {
+		title: 'Report Name Conflict',
+		message: 'A saved report with that name already exists. Do you want to overwrite?',
+		cancelCaption: 'Cancel',
+		okCaption: 'Overwrite'
+	}
+};
+
+$scope.modalConfirmOpen = function(w) {
+	utilsService.safeLog('modalConfirmOpen', w);
+	var strategy = modalConfirmStrategies[w];
+	if (!strategy) {
+		alert('Could not find strategy for modal confirm ' + w);
+	} else {
+		$scope.modalConfirm.open(strategy);
+	}
+};
+/* end: modal confirm code */
 
 
 		// get data
@@ -445,7 +526,8 @@ $scope.datePickerOptions = {
 			utilsService.safeLog('wizardController.onDataComplete', data);
 			$scope.data = data;
 			$scope.model.stores = data.stores;
-			$scope.model.lookupCourses =  data.courses;
+			$scope.lookupStores =  data.stores;
+			$scope.lookupCourses =  data.courses;
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportModel) {
@@ -462,7 +544,7 @@ $scope.datePickerOptions = {
 				});
 				
 				_.each(params.reportModel.courses, function(source) {
-					var course = _.find($scope.model.lookupCourses, function(dest) {
+					var course = _.find($scope.lookupCourses, function(dest) {
 						return dest.id === source.id;
 					});
 					if (course) {
@@ -486,6 +568,8 @@ $scope.datePickerOptions = {
 
 				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
 			}
+
+			$scope.originalModel = JSON.parse(angular.toJson($scope.model));
 
 			//utilsService.safeLog('$scope.model', $scope.model);
 		};
