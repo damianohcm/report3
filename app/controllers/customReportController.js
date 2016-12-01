@@ -820,7 +820,8 @@ var getReportParamsModel = function() {
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-					
+					console.log('data posted to report-data end point', _endPoints[1].postData);
+
 					var _endPointsData = {}, _endPointCount = 0;
 					var onEndPointComplete = function(endPoint, data) {
 						if (endPoint.propertyOnData) {
@@ -828,6 +829,7 @@ var getReportParamsModel = function() {
 						} else {
 							if (endPoint.key === 'segments') {
 								// create one single "fake" segment witht he custom report courses
+								debugger;
 								_endPointsData[endPoint.key] = [{
 									title: $scope.reportName,
 									item_type: 'Section',
@@ -889,7 +891,7 @@ var getReportParamsModel = function() {
 		//	getData(what);
 		//}
 
-		getData('test');
+		getData('live');
 
 /* begin: custom report code */
 $scope.isCustomReport = true;

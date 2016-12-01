@@ -58,7 +58,7 @@
 			hired: $scope.hiredOptions[0],
 			hiredAfter: undefined,
 			// step 3
-			entireLearningPath: true,
+			entireLearningPath: false,
 			courses: []
 		};
 
@@ -117,14 +117,15 @@
 		});
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
-				if (!$scope.model.entireLearningPath) {
-					// return $scope.model.courses.filter(function(course) {
-					// 	return course.selected;
-					// });
-					return $scope.model.courses;
-				} else {
-					return [];
-				}
+				return $scope.model.courses;
+				// if (!$scope.model.entireLearningPath) {
+				// 	// return $scope.model.courses.filter(function(course) {
+				// 	// 	return course.selected;
+				// 	// });
+				// 	return $scope.model.courses;
+				// } else {
+				// 	return [];
+				// }
 			}
 		});
 
@@ -459,6 +460,15 @@ $scope.datePickerOptions = {
 			return filtered;
 		};
 
+		$scope.onEntireLearningPathClick = function() {
+			console.log('onEntireLearningPathClick', $scope.model.entireLearningPath);
+			if ($scope.model.entireLearningPath) {
+				$scope.model.courses = $scope.lookupCourses;
+			} else {
+				$scope.model.courses = [];
+			}
+		};
+
 /* begin: modal confirm code */
 $scope.modalConfirm = {
 	open: function (modalConfirmStrategy) {
@@ -639,7 +649,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());
