@@ -600,13 +600,11 @@ $scope.modalConfirmOpen = function(w) {
 					key: 'courses',  /* lo-list lookup */
 					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
 					path: configService.apiEndPoints.losList()
-
 				}, {
 					key: 'stores', /* stores-list lookup */
 					propertyOnData: 'results',
 					path: configService.apiEndPoints.storesList(sessionParams.token)
 				}];
-
 
 				console.log('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
 				

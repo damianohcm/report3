@@ -778,20 +778,40 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 				} else {
 					var _endPoints = [{
-						key: 'segments',
-						propertyOnData: 'learning_path_items',
-						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
+						key: 'segments', /* lo-list lookup */
+						propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+						path: configService.apiEndPoints.losList(),
+						method: 'get'
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
-						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
+						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token),
+						method: 'post',
+						postData: $scope.getReportParamsModel()
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 					
 					var _endPointsData = {}, _endPointCount = 0;
 					var onEndPointComplete = function(endPoint, data) {
-						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+						if (endPoint.propertyOnData) {
+							_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+						} else {
+							if (endPoint.key === 'segments') {
+								// create one single "fake" segment witht he custom report courses
+								_endPointsData[endPoint.key] = [{
+									title: $scope.reportName,
+									item_type: 'Section',
+									id: params.reportId,
+									// set the los but filter the ones that have not be selected in the params model for this custom report
+									los: _.filter(data, function(item) {
+										return params.reportModel.courses.indexOf(item.id) > -1;
+									})
+								}];
+							} else {
+								_endPointsData[endPoint.key] = data;
+							}
+						}
 
 						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
@@ -803,7 +823,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					};
 
 					utilsService.fastLoop(_endPoints, function(endPoint) {
-						dataService.getData(endPoint.path)
+						dataService.getData(endPoint.path, endPoint.method, endPoint.postData)
 							.then(function(data) {
 								onEndPointComplete(endPoint, data);
 							}, onDataError);
@@ -860,6 +880,8 @@ var getReportParamsModel = function() {
 	clone.audienceOptions = $scope.audienceOptions;
 	clone.hiredOptions = $scope.hiredOptions;
 
+	clone.user = sessionParams.token;
+
 	delete clone.stores;
 	delete clone.courses;
 	
@@ -893,10 +915,14 @@ $scope.saveCustomReport = function() {
 	var apiEndPoint = configService.apiEndPoints.customReport(sessionParams.token);
 	alert('apiEndPoint ' + apiEndPoint);
 
+	var model = getReportParamsModel();
+	clonedModel = JSON.parse(JSON.stringify(model));
+	delete clonedModel.user;
+
 	var data = {
 		id: $scope.reportId,
 		name: $scope.reportTitle,
-		model: getReportParamsModel()
+		model: clonedModel
 	};
 	utilsService.safeLog('data', data);
 	//dataService.postData(apiEndPoint)
