@@ -829,14 +829,18 @@ var getReportParamsModel = function() {
 						} else {
 							if (endPoint.key === 'segments') {
 								// create one single "fake" segment witht he custom report courses
-								debugger;
+								
+								var selectedCoursesIds = params.reportModel.courses.map(function(course) {
+									return course.id;
+								});
+
 								_endPointsData[endPoint.key] = [{
 									title: $scope.reportName,
 									item_type: 'Section',
 									id: params.reportId,
 									// set the los but filter the ones that have not be selected in the params model for this custom report
 									los: _.filter(data, function(item) {
-										return params.reportModel.courses.indexOf(item.id) > -1;
+										return selectedCoursesIds.indexOf(item.id) > -1;
 									})
 								}];
 							} else {
