@@ -698,6 +698,35 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				return 'th-text';
 			}
 		};
+
+/* begin: custom report code */
+var getReportParamsModel = function() {
+	// create params model to send to API end point for custom report data 
+	var clone = JSON.parse(angular.toJson(params.reportModel));
+	clone.stores = _.filter(clone.stores, function(store){
+		return store.selected;
+	});
+
+	clone.storesIds = clone.stores.map(function(store) {
+		return store.id;
+	});
+	clone.courseIds = clone.courses.map(function(course) {
+		return course.id;
+	});
+	clone.audienceId = clone.audience.id;
+	clone.hiredId = clone.hired.id;
+
+	clone.audienceOptions = $scope.audienceOptions;
+	clone.hiredOptions = $scope.hiredOptions;
+
+	clone.user = sessionParams.token;
+
+	delete clone.stores;
+	delete clone.courses;
+	
+	return JSON.stringify(clone);
+};
+/* end: custom report code */
 		
 
 		var onDataError = function(err) {
@@ -773,10 +802,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			}, 2000);
 
 			if (w === 'live') {
-				if (reportConfigStrategy.pathId < 1) {
-					debugger;
-					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
-				} else {
+				//if (reportConfigStrategy.pathId < 1) {
+				//	debugger;
+				//	alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
+				//} else {
 					var _endPoints = [{
 						key: 'segments', /* lo-list lookup */
 						propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
@@ -785,9 +814,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}, {
 						key: 'stores',
 						propertyOnData: 'results',
-						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token),
+						path: configService.apiEndPoints.customReportStores(sessionParams.token),
 						method: 'post',
-						postData: $scope.getReportParamsModel()
+						postData: getReportParamsModel()
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
@@ -828,7 +857,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 								onEndPointComplete(endPoint, data);
 							}, onDataError);
 					});
-				}
+				//}
 			} else {
 				//var fileName = 'data/report.json?' + Math.random();
 				//var fileName = 'data/report-avg.json?' + Math.random();
@@ -851,43 +880,17 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			}
 		};
 
-		// invoke getData
-		if ($scope.tokenError.length > 0) {
-			alert($scope.tokenError);
-		} else {
-			var what = reportService.reportConfig.useTestData ? 'test' : 'live';
-			getData(what);
-		}
+		// // invoke getData
+		// if ($scope.tokenError.length > 0) {
+		// 	alert($scope.tokenError);
+		// } else {
+		// 	var what = reportService.reportConfig.useTestData ? 'test' : 'live';
+		//	getData(what);
+		//}
 
+		getData('live');
 
 /* begin: custom report code */
-var getReportParamsModel = function() {
-	// create params model to send to API end point for custom report data 
-	var clone = JSON.parse(angular.toJson(params.reportModel));
-	clone.stores = _.filter(clone.stores, function(store){
-		return store.selected;
-	});
-
-	clone.storesIds = clone.stores.map(function(store) {
-		return store.id;
-	});
-	clone.courseIds = clone.courses.map(function(course) {
-		return course.id;
-	});
-	clone.audienceId = clone.audience.id;
-	clone.hiredId = clone.hired.id;
-
-	clone.audienceOptions = $scope.audienceOptions;
-	clone.hiredOptions = $scope.hiredOptions;
-
-	clone.user = sessionParams.token;
-
-	delete clone.stores;
-	delete clone.courses;
-	
-	return JSON.stringify(clone);
-};
-
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
 	configService.setParam('reportModel', params.reportModel);

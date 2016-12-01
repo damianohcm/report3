@@ -17,7 +17,7 @@
                     customReportLOSList: '/api/curricula_report/v1/lo-list/',
                     customReport: '/api/curricula_report/v1/custom-report/?user=[user]',
                     customReportList: '/api/curricula_report/v1/custom-report-list/?user=[user]',
-                    customReportData: '/api/curricula_report/v1/custom-report-data/?user=[user]',
+                    customReportStores: '/api/curricula_report/v1/report-data/',
                 },
                 params: {
                     // these will contain query string params that we keep passing around
@@ -160,6 +160,7 @@
                 + '?format=json';
         };
 
+        // end point to retrieve/create/modify a single custom report
         var getCustomReportEndPoint = function(token) {
             var commonConfig = config.common;
             return commonConfig.apiBaseUrl 
@@ -168,6 +169,7 @@
                 + '?format=json';
         };
 
+        // end point to retrieve a list of custom reports for a specific user
         var getCustomReportListEndPoint = function(token) {
             var commonConfig = config.common;
             return commonConfig.apiBaseUrl 
@@ -176,10 +178,11 @@
                 + '?format=json';
         };
 
-        var getCustomReportDataEndPoint = function(token) {
+        // end point to retrieve the custom report data 
+        var getCustomReportStoresEndPoint = function(token) {
             var commonConfig = config.common;
             return commonConfig.apiBaseUrl 
-                + commonConfig.apiPaths.customReportData
+                + commonConfig.apiPaths.customReportStores
                     .replace('[user]', token)
                 + '?format=json';
         };
@@ -200,7 +203,7 @@
                 losList: getLOSListEndPoint,
                 customReport: getCustomReportEndPoint,
                 customReportList: getCustomReportListEndPoint,
-                customReportData: getCustomReportDataEndPoint
+                customReportStores: getCustomReportStoresEndPoint
             }
 		};
     };

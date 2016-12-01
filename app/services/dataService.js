@@ -2,13 +2,24 @@
 
     var dataService = function($http, utilsService) {
 		
-		var getData = function(url) {
+		var getData = function(url, method, payload) {
 
-			return $http
-				.get(url)
-				.then(function(response) {
-					return response.data;
-				});
+			if (method && method === 'post') {
+
+				return $http
+					.post(url, payload)
+					.then(function(response) {
+						return response.data;
+					});
+
+			} else {
+
+				return $http
+					.get(url)
+					.then(function(response) {
+						return response.data;
+					});
+			}
 		
 		};
 

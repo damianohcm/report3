@@ -137,7 +137,7 @@ describe('configService', () => {
                     'customReportLOSList',
                     'customReport',
                     'customReportList',
-                    'customReportData'
+                    'customReportStores'
                 ]);
 
                 expect(apiPaths.reportSegments).to.be.a('string');
@@ -146,7 +146,7 @@ describe('configService', () => {
                 expect(apiPaths.customReportLOSList).to.be.a('string');
                 expect(apiPaths.customReport).to.be.a('string');
                 expect(apiPaths.customReportList).to.be.a('string');
-                expect(apiPaths.customReportData).to.be.a('string');
+                expect(apiPaths.customReportStores).to.be.a('string');
 
                 done();
             });
