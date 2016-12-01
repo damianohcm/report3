@@ -592,12 +592,12 @@ $scope.modalConfirmOpen = function(w) {
 				// }];
 
 				var _endPoints = [{
-					key: 'courses',
-					propertyOnData: 'results',
+					key: 'courses',  /* lo-list lookup */
+					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
 					path: configService.apiEndPoints.losList(sessionParams.token)
 
 				}, {
-					key: 'stores',
+					key: 'stores', /* stores-list lookup */
 					propertyOnData: 'results',
 					path: configService.apiEndPoints.storesList()
 				}];
@@ -607,7 +607,12 @@ $scope.modalConfirmOpen = function(w) {
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
-					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+					if (endPoint.propertyOnData) {
+						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+					} else {
+						_endPointsData[endPoint.key] = data;
+					}
+					
 					if (++_endPointCount === _endPoints.length) {
 						utilsService.safeLog('_endPointsData', _endPointsData);
 						onDataComplete(_endPointsData);

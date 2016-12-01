@@ -87,8 +87,8 @@
                             <button class="save" ng-if="c.position === 0" ng-click="editCustomReport()" title="Edit Custom Report">Edit</button>
                             <button class="save" ng-if="c.position === 0" ng-click="modalSaveOpen()" title="Save Custom Report">Save</button>
 
-                            <button class="save" ng-if="c.position === 0" ng-click="modalConfirmOpen('openOtherReport')">Open Other Report</button>
-                            <button class="save" ng-if="c.position === 0" ng-click="modalConfirmOpen('closeReport')">Close Report</button>
+                            <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalConfirmOpen('openOtherReport')">Open Other Report</button>
+                            <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalConfirmOpen('closeReport')">Close Report</button>
                             
                             <!-- begin: column header popover -->
                             <div ng-if="::(c.position > 0)" class="th-top">
