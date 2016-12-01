@@ -864,12 +864,13 @@ var getReportParamsModel = function() {
 				//var fileName = 'data/report-generated1.json?' + Math.random();
 				// //var fileName = 'data/report-generated2.json?' + Math.random();
 				// //var fileName = 'data/single-pc.json?' + Math.random();
-				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+				////var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
 				//var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
 
 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
-				var fileName = 'data/from-stag.json?' + Math.random();
+				//var fileName = 'data/from-stag.json?' + Math.random();
+				var fileName = 'data/custom-report.json?' + Math.random();
 
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay
@@ -891,6 +892,8 @@ var getReportParamsModel = function() {
 		getData('test');
 
 /* begin: custom report code */
+$scope.isCustomReport = true;
+
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
 	configService.setParam('reportModel', params.reportModel);
