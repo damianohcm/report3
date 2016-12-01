@@ -298,7 +298,7 @@
 	// saved reports controller
 	app.controller('savedReportsController', [
 		'$scope',
-		'$route', '$routeParams', '$location', '$filter', 
+		'$route', '$routeParams', '$location', '$filter', '$uibModal', 
 		'utilsService', 'configService',
 		'dataService',
 		controllers.savedReportsController]);

@@ -888,7 +888,7 @@ var getReportParamsModel = function() {
 		//	getData(what);
 		//}
 
-		getData('live');
+		getData('test');
 
 /* begin: custom report code */
 $scope.editCustomReport = function() {
