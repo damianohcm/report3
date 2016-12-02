@@ -15,8 +15,8 @@
                     reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
                     customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
                     customReportLOSList: '/api/curricula_report/v1/lo-list/',
-                    customReport: '/api/curricula_report/v1/custom-report/?user=[user]',
-                    customReportList: '/api/curricula_report/v1/custom-report-list/?user=[user]',
+                    customReport:     '/api/curricula_report/v1/report/',
+                    customReportList: '/api/curricula_report/v1/report/?user=[user]',
                     customReportStores: '/api/curricula_report/v1/report-data/',
                 },
                 params: {
@@ -36,7 +36,7 @@
                     lang: '',
                     organization: ''
                 },
-                logEnabled: false /* if true, utilsService.safeLog will output message to the console.log (also dependends on window.logEnabled) */
+                logEnabled: false /* if true, utilsService.safeLog will output message to the console.log */
             },
             brands: [
                 {
@@ -161,12 +161,12 @@
         };
 
         // end point to retrieve/create/modify a single custom report
-        var getCustomReportEndPoint = function(token) {
+        var getCustomReportEndPoint = function() {
             var commonConfig = config.common;
-            return commonConfig.apiBaseUrl 
-                + commonConfig.apiPaths.customReport
-                    .replace('[user]', token)
-                + '?format=json';
+            var result = commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReport;
+
+            return result;
         };
 
         // end point to retrieve a list of custom reports for a specific user
@@ -175,7 +175,7 @@
             return commonConfig.apiBaseUrl 
                 + commonConfig.apiPaths.customReportList
                     .replace('[user]', token)
-                + '?format=json';
+                + '&format=json';
         };
 
         // end point to retrieve the custom report data 

@@ -21,7 +21,9 @@
 			if ($scope.modelIsDirty) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
-				$location.path('#/');
+				var path = '#/?brand=[brand]'
+					.replace('[brand]', params.brand);
+				$location.path(path);
 			}
 		};
 
@@ -197,7 +199,7 @@
 							configService.setParam('reportModel', model);
 							///utilsService.safeLog('reportModel', model);
 
-							//document.location = '#/report?a=1&reportType=custom&token=asd';
+							// changes to the following code here will have to be replicated also in savedReportController
 							var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 								.replace('[brand]', params.brand)
 								.replace('[reportId]', params.reportId);
@@ -508,7 +510,9 @@ var modalConfirmStrategies = {
 		cancelCaption: 'Cancel',
 		okCaption: 'Close Wizard',
 		okAction: function() {
-			$location.path('#/');
+			var path = '#/?brand=[brand]'
+					.replace('[brand]', params.brand);
+			$location.path(path);
 		}
 	},
 	reportNameConflict: {
@@ -649,7 +653,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());

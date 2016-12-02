@@ -721,9 +721,6 @@ var getReportParamsModel = function() {
 	clone.hiredOptions = $scope.hiredOptions;
 
 	clone.user = sessionParams.token;
-
-	delete clone.stores;
-	delete clone.courses;
 	
 	return JSON.stringify(clone);
 };
@@ -804,7 +801,6 @@ var getReportParamsModel = function() {
 
 			if (w === 'live') {
 				//if (reportConfigStrategy.pathId < 1) {
-				//	debugger;
 				//	alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 				//} else {
 					var _endPoints = [{
@@ -825,6 +821,10 @@ var getReportParamsModel = function() {
 
 					var _endPointsData = {}, _endPointCount = 0;
 					var onEndPointComplete = function(endPoint, data) {
+						if (endPoint.key === 'stores') {
+							$scope.csodProfileId = data.csod_profile_id;
+						}
+
 						if (endPoint.propertyOnData) {
 							_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 						} else {
@@ -896,7 +896,7 @@ var getReportParamsModel = function() {
 		//	getData(what);
 		//}
 
-		getData('test');
+		getData('live');
 
 /* begin: custom report code */
 $scope.isCustomReport = true;
@@ -924,25 +924,50 @@ $scope.saveCustomReport = function() {
 	// 	utilsService.safeLog('saveCustomReport.onComplete', result);
 	// };
 
-
-	var apiEndPoint = configService.apiEndPoints.customReport(sessionParams.token);
-	alert('apiEndPoint ' + apiEndPoint);
-
 	var model = getReportParamsModel();
 	clonedModel = JSON.parse(JSON.stringify(model));
 	delete clonedModel.user;
 
-	var data = {
-		id: $scope.reportId,
+	var payload = {
+		//id: $scope.reportId,
 		name: $scope.reportTitle,
-		model: clonedModel
+		model: clonedModel,
+		csod_profile: $scope.csodProfileId,
 	};
-	utilsService.safeLog('data', data);
-	//dataService.postData(apiEndPoint)
-	//		.then(onComplete, onError);
 
 	// test name Conflict
-	$scope.modalConfirmOpen('reportNameConflict');
+	//$scope.modalConfirmOpen('reportNameConflict');
+
+	if (isNaN($scope.csodProfileId)) {
+		alert('Invalid csodProfileId parameter - please contact support');
+	} else {
+		var onSaveError = function(err) {
+			console.log('reportController.onSaveError', err, true);
+			$scope.error = 'Could not save report';
+		};
+		
+		var onSaveComplete = function(result) {
+			console.log('reportController.onSaveComplete', result, true);
+			// sample response:
+			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"entireLearningPath\":false,\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
+			$scope.reportId = result.id;
+		};
+		
+		var apiEndPoint = configService.apiEndPoints.customReport();
+		
+		if ($scope.reportId > -1) {
+			// existing report, update using PUT
+			apiEndPoint += '/' + $scope.reportId;
+			utilsService.safeLog('saveCustomReport: update with PUT: apiEndPoint', apiEndPoint, true);
+			dataService.putData(apiEndPoint, payload)
+				.then(onSaveComplete, onSaveError);
+		} else {
+			// new report, create using POST
+			utilsService.safeLog('saveCustomReport: create with POST: apiEndPoint', apiEndPoint, true);
+			dataService.postData(apiEndPoint, payload)
+				.then(onSaveComplete, onSaveError);
+		}
+	}
 };
 
 /* begin: modal save code */

@@ -26,7 +26,7 @@
 		 */
 		// eslint-disable-next-line no-unused-vars
         instance.safeLog = function(msg, data, force) {
-			if (commonConfig.logEnabled && (window && window.logEnabled || force)) {
+			if (commonConfig.logEnabled || window.logEnabled || force) {
 				if (console && console.log) {
 					if (arguments.length > 1) {
 						console.log(msg, data);
@@ -237,7 +237,7 @@
 				for (var i = sortedKeys.length; --i > -1;) {
 					var key = sortedKeys[i], propVal = obj[key];
 					if (typeof propVal === 'object' || Array.isArray(propVal)) {
-						//console.log(key + ': is object or array');
+						//instance.safeLog(key + ': is object or array');
 						result[key] = instance.sortObject(propVal);
 					} else {
 						result[key] = obj[key];
@@ -255,18 +255,18 @@
 			var otherKeys = Object.keys(otherObj);
 
 			if (origKeys.length !== otherKeys.length) {
-				console.log('keys length do not match');
+				//closeWizard('keys length do not match');
 				result = false;
 			} else {
 				// sort properties and create two object that can be hashed for quicker comparison
 				origObj = instance.sortObject(origObj);
 				otherObj = instance.sortObject(otherObj);
 				
-				//console.log('json1', JSON.stringify(origObj).toLowerCase());
-				//console.log('json2', JSON.stringify(otherObj).toLowerCase());
+				//closeWizard('json1', JSON.stringify(origObj).toLowerCase());
+				//closeWizard('json2', JSON.stringify(otherObj).toLowerCase());
 				
 				if (JSON.stringify(origObj).toLowerCase() !== JSON.stringify(otherObj).toLowerCase()) {
-					//console.log('hashed objects do not match');
+					//closeWizard('hashed objects do not match');
 					result = false;
 				}
 			}

@@ -27,7 +27,7 @@
                     <a role="tab" ng-repeat="step in wizard.steps" 
                         ng-class="step.liClass" 
                         aria-disabled="{{step.disabled}}" aria-selected="{{step.id === activeStep.id}}" 
-                        ng-click="clickOnStep(step)"> <!--clickOnStep is only for faster develeopemt - should be removed before releasing to production -->
+                        > <!-- ng-click="clickOnStep(step)" is only for faster develeopemt - should be removed before releasing to production -->
                         <span class="current-info audible">current step: </span>
                         <span class="number">{{step.id}}.</span> <span>{{step.title}}</span>
                         <span class="indicator" ng-show="step.isDone || step.hasError" title="{{step.errorMsg || 'Done'}}"><i ng-class="step.hasError ? 'fa fa-exclamation' : 'fa fa-check'"></i></span>

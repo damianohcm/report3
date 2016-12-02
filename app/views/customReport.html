@@ -85,7 +85,7 @@
                             title="{{::c.title}}">
                             <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
                             <button class="save" ng-if="c.position === 0" ng-click="editCustomReport()" title="Edit Custom Report">Edit</button>
-                            <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalSaveOpen()" title="Save Custom Report">Save</button>
+                            <button class="save" ng-if="c.position === 0" ng-click="modalSaveOpen()" title="Save Custom Report">Save</button>
 
                             <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalConfirmOpen('openOtherReport')">Open Other Report</button>
                             <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalConfirmOpen('closeReport')">Close Report</button>

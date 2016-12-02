@@ -23,14 +23,29 @@
 		
 		};
 
-		// var postData = function(url) {
+		var postData = function(url, payload) {
+			return $http
+				.post(url, payload)
+				.then(function(response) {
+					return response.data;
+				});
+		};
 
-		// 	return $http
-		// 		.get(url)
-		// 		.then(function(response) {
-		// 			return response.data;
-		// 		});
-		// };
+		var putData = function(url, payload) {
+			return $http
+				.put(url, payload)
+				.then(function(response) {
+					return response.data;
+				});
+		};
+
+		var deleteData = function(url) {
+			return $http
+				.delete(url)
+				.then(function(response) {
+					return response.data;
+				});
+		};
 
 		/**
 		 * @method fixReportAPIData
@@ -175,6 +190,9 @@
 
 		return {
 			getData: getData,
+			postData: postData,
+			putData: putData,
+			deleteData: deleteData,
 			fixReportAPIData: fixReportAPIData
 		};
 	};

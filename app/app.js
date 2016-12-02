@@ -66,7 +66,7 @@
 							// mark flag so that we do not set them next time routeChangeSuccess is invoked
 							configService.sessionParamsSet = true;
 
-							utilsService.safeLog('*** session params (set only once)', {
+							console.log('*** session params (set only once)', {
 								//'document.location.search': document.location.search,
 								token: token,
 								//compKey: compKey,
