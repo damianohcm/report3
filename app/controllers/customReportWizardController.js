@@ -21,9 +21,11 @@
 			if ($scope.modelIsDirty) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
-				var path = '#/?brand=[brand]'
+				var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
 					.replace('[brand]', params.brand);
-				$location.path(path);
+				window.parent.location = path;
 			}
 		};
 
@@ -549,7 +551,7 @@ $scope.modalConfirmOpen = function(w) {
 			$scope.lookupCourses =  data.courses;
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
-			if (params.reportModel) {
+			if (params.reportId > -1 && params.reportModel) {
 
 				$scope.model.reportName = params.reportModel.reportName;
 				$scope.wizardTitle = 'Edit: ' + params.reportModel.reportName;

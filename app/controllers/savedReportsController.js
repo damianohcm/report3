@@ -25,13 +25,7 @@
 		});
 
 		$scope.viewReport = function(report) {
-			utilsService.safeLog('editviewReportReport', report.id);
-			alert('View/Run report: Not implemented yet');
-		};
-
-		$scope.editReport = function(report, $event) {
-			$event.stopPropagation();
-			utilsService.safeLog('editReport', report.id);
+			utilsService.safeLog('viewReport', report.id);
 
 			configService.setParam('reportId', report.id);
 			var reportModel = typeof report.model === 'string' ? JSON.parse(report.model) : report.model;
@@ -44,6 +38,11 @@
 				.replace('[reportId]', report.id);
 			console.log('reportPath', reportPath, true);
 			document.location = reportPath;
+		};
+
+		$scope.editReport = function(report, $event) {
+			$event.stopPropagation();
+			$scope.viewReport(report);
 		};
 
 		$scope.deleteReport = function(report, $event) {

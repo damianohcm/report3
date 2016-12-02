@@ -42,7 +42,8 @@
 			},
 			customReportWizard: {
 				action: function() {
-					configService.clearParam('reportModel');
+					// starting a brand new report, reset param reportId before navigating to customReportWizard
+					configService.setParam('reportId', -1);
 					//document.location = '#/customReportWizard';
 					$location.path('/customReportWizard');
 				}
