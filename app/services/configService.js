@@ -115,6 +115,12 @@
             }
         };
 
+        var clearParam = function(key) {
+            if (Object.keys(config.common.params).indexOf(key) > -1) {
+                delete config.common.params[key];
+            }
+        };
+
         var setSessionParam = function(key, value) {
             if (Object.keys(config.common.sessionParams).indexOf(key) > -1) {
                 config.common.sessionParams[key] = value;
@@ -193,6 +199,7 @@
             getBrands: getBrands,
             getBrandConfig: getBrandConfig,
             setParam: setParam,
+            clearParam: clearParam,
             setSessionParam: setSessionParam,
             sessionParamsSet: sessionParamsSet,
 

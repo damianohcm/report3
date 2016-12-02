@@ -42,6 +42,7 @@
 			},
 			customReportWizard: {
 				action: function() {
+					configService.clearParam('reportModel');
 					//document.location = '#/customReportWizard';
 					$location.path('/customReportWizard');
 				}

@@ -905,6 +905,8 @@ $scope.isCustomReport = true;
 
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
+
+	params.reportModel.reportName = $scope.reportTitle;
 	configService.setParam('reportModel', params.reportModel);
 	console.log('editCustomReport params.reportModel', params.reportModel);
 

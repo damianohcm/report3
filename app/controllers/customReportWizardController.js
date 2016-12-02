@@ -550,6 +550,9 @@ $scope.modalConfirmOpen = function(w) {
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportModel) {
+
+				$scope.model.reportName = params.reportModel.reportName;
+				$scope.wizardTitle = 'Edit: ' + params.reportModel.reportName;
 				
 				_.each(params.reportModel.stores, function(source) {
 					if (source.selected) {
@@ -586,6 +589,8 @@ $scope.modalConfirmOpen = function(w) {
 				}
 
 				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
+			} else {
+				$scope.wizardTitle = 'Create a PC Report';
 			}
 
 			$scope.originalModel = JSON.parse(angular.toJson($scope.model));
