@@ -109,7 +109,8 @@ describe('configService', () => {
                 'apiPaths', 
                 'params', 
                 'sessionParams', 
-                'logEnabled'
+                'logEnabled', 
+                'customReport'
             ]);
 
             expect(commonConfig.totCompletionTitlePrefix).to.be.a('string');
@@ -118,6 +119,7 @@ describe('configService', () => {
             expect(commonConfig.params).to.be.an('object');
             expect(commonConfig.sessionParams).to.be.an('object');
             expect(commonConfig.logEnabled).to.be.a('boolean');
+            expect(commonConfig.customReport).to.be.an('object');
             
             done();
         });
@@ -197,6 +199,28 @@ describe('configService', () => {
                 expect(sessionParams.csBaseUrl).to.be.a('string');
                 expect(sessionParams.lang).to.be.a('string');
                 expect(sessionParams.organization).to.be.a('string');
+
+                done();
+            });
+        });
+
+        // customReport tests
+        describe('configService: commonConfig.customReport', () => {
+            const customReport = commonConfig.customReport;
+
+            it('commonConfig.customReport: should have valid properties', function(done) {
+                
+                console.log('commonConfig.customReport keys', Object.keys(customReport));
+
+                expect(customReport).to.have.all.keys([
+                    'maxStores', 
+                    'maxCourses'
+                ]);
+
+                expect(customReport.maxStores).to.be.a('number');
+                expect(customReport.maxCourses).to.be.a('number');
+                expect(customReport.maxStores).to.be.at.least(1);
+                expect(customReport.maxCourses).to.be.at.least(1);
 
                 done();
             });

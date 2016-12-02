@@ -36,7 +36,7 @@
                     class="form-control"-->
                 
                 <tags-input style="float:left" ng-model="model.courses" 
-                    display-property="name" key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)">
+                    display-property="name" key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)" on-tag-removed="onCourseRemoved($tag)">
                     <auto-complete source="getCourses($query)" 
                         min-length="0" 
                         maxResultsToShow="15" 

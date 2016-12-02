@@ -3,12 +3,13 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $filter, $uibModal, 
+	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $timeout, $filter, $uibModal, 
 		utilsService, configService, dataService, wizardServiceFactory) {
 
 		var commonConfig = configService.getCommonConfig(),
 			sessionParams = commonConfig.sessionParams,
-		 	params = commonConfig.params;
+		 	params = commonConfig.params,
+			customReportConfig = commonConfig.customReport;
 
 		/**
 		 * @method cancel
@@ -221,7 +222,11 @@
 			$scope.model.courses = _.filter($scope.model.courses, function(c) {
 				return c.id !== undefined;
 			});
+			$scope.wizard.activeStep.validateAction();
 			//utilsService.safeLog('onCourseAdded', JSON.stringify($scope.model.courses));
+		};
+		$scope.onCourseRemoved = function() {
+			$scope.wizard.activeStep.validateAction();
 		};
 
 		/**
@@ -282,10 +287,20 @@
 			isLast: false, 
 			isCurrent: true,
 			validateAction: function validateStep1() {
-				this.hasError =  $scope.model.stores.filter(function(store) {
+				var numberOfStores =  $scope.model.stores.filter(function(store) {
 					return store.selected;
-				}).length < 1;
-				this.errorMsg = this.hasError ? 'Please select at least on PC before proceeding' : undefined;
+				}).length;
+
+				this.hasError =  false;
+				if (numberOfStores < 1) {
+					this.hasError =  true;
+					this.errorMsg = 'Please select at least ono PC before proceeding';
+				}
+				if (numberOfStores > customReportConfig.maxStores) {
+					this.hasError =  true;
+					this.errorMsg = 'Please select [max] PCs or less'.replace('[max]', customReportConfig.maxStores);
+				}
+
 				this.isDone = !this.hasError;
 				utilsService.safeLog('validateStep1 this.hasError ' + this.hasError);
 				return this.hasError === false;
@@ -317,15 +332,22 @@
 			isLast: false, 
 			isCurrent: false,
 			validateAction: function validateStep3() {
+				var numberOfCourses = $scope.model.courses.length;
+
+				this.hasError = false;
 				if ($scope.model.entireLearningPath === false) {
 					// this.hasError =  $scope.model.courses.filter(function(course) {
 					// 	return course.selected;
 					// }).length < 1;
-					this.hasError =  $scope.model.courses.length < 1;
+					this.hasError =  numberOfCourses < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course before proceeding' : undefined;
-				} else {
-					this.hasError = false;
 				}
+
+				if (numberOfCourses > customReportConfig.maxCourses) {
+					this.hasError =  true;
+					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', customReportConfig.maxCourses);
+				}
+
 				this.isDone = !this.hasError;
 				utilsService.safeLog('validateStep3 this.hasError ' + this.hasError);
 				return this.hasError === false;
@@ -403,6 +425,7 @@
 
 		Object.defineProperty($scope, 'allStoresCheckedState', {
 			get: function() {
+				$scope.wizard.activeStep.validateAction();
 				return areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
 			}
 		});
@@ -474,6 +497,10 @@ $scope.datePickerOptions = {
 			} else {
 				$scope.model.courses = [];
 			}
+
+			$timeout(function() {
+				$scope.wizard.activeStep.validateAction();
+			}, 250);
 		};
 
 /* begin: modal confirm code */
@@ -666,7 +693,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('live'); // or 'live'
+		getData('test'); // or 'live'
 	};
 
 }());

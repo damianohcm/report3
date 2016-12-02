@@ -443,10 +443,23 @@ tags-input {
 }
 tags-input .tags {
     box-shadow: none;
-    width: 372px;
+    width: 455px;
     border: 2px solid #9B9B9B;
     border-radius: 5px;
     margin-left: 12px;
+}
+
+tags-input .tags .tag-item {
+    clear:both;
+    float: none;
+    color: inherit;
+    background: white;
+    border: 1px solid $brand;
+
+}
+tags-input .tags .tag-item:hover {
+    color: white;
+    background:$brand;
 }
 
 /* wizard summary */

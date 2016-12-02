@@ -7,7 +7,7 @@
 
         var getConfig = function() {
             var config = {
-                useTestData: true, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+                useTestData: false, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
                 debug: false, /* true will output additional info in the cells to help identify the code in reportService that populates them */
 
                 averageCalculationMode: 'los', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
