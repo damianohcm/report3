@@ -13,16 +13,17 @@
 		utilsService.safeLog('savedReportsController params', params, true);
 		utilsService.safeLog('savedReportsController sessionParams', sessionParams, true);
 
-		Object.defineProperty($scope, 'backToHref', {
-			get: function() {
-				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]'
-					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
-					.replace('[organization]', sessionParams.organization)
-					.replace('[brand]', params.brand);
-				//utilsService.safeLog('backToHref', result, true);
-				return result;
-			}
-		});
+		/**
+		 * @method exit
+		 * @description
+		 */
+		$scope.exit = function exit() {
+			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+				.replace('[organization]', sessionParams.organization)
+				.replace('[brand]', params.brand);
+			window.parent.location = path;
+		};
 
 		$scope.viewReport = function(report) {
 			utilsService.safeLog('viewReport', report.id);

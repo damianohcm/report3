@@ -13,7 +13,7 @@
                         data-property="selected" />
                      
                     <i class="fa fa-fw {{allStoresCheckedState ? 'checked fa-check' : allStoresCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
-                    Select/Deselect All [{{allStoresCheckedState}}] 
+                    Select/Deselect All 
                 </label>
             </div>
 
@@ -21,7 +21,7 @@
                 <label class="checkbox">
                     <input type="checkbox" ng-model="store.selected"/> 
                     <i class="fa fa-check fa-fw"></i>
-                    <span>{{store.name}} [{{store.selected}}]</span>
+                    <span>{{::store.name}}</span>
                 </label>
             </div>
         </div>

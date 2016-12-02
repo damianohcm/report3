@@ -21,6 +21,9 @@
 			if ($scope.modelIsDirty) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
+				// reset reportId param so that it starts clear next time
+				configService.setParam('reportId', -1);
+
 				var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
 					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
 					.replace('[organization]', sessionParams.organization)
@@ -512,6 +515,9 @@ var modalConfirmStrategies = {
 		cancelCaption: 'Cancel',
 		okCaption: 'Close Wizard',
 		okAction: function() {
+			// reset reportId param so that it starts clear next time
+			configService.setParam('reportId', -1);
+			
 			var path = '#/?brand=[brand]'
 					.replace('[brand]', params.brand);
 			$location.path(path);
