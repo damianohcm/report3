@@ -7,14 +7,14 @@
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
-		 sessionParams = commonConfig.sessionParams,
-		 params = commonConfig.params,
-		 brandConfig = configService.getBrandConfig(params.brand),
-		 reportStrategies = brandConfig.reportStrategies,
-		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
-				pathId: -1,
-				title: 'Unknown report id'
-			};
+			sessionParams = commonConfig.sessionParams,
+			params = commonConfig.params,
+			brandConfig = configService.getBrandConfig(params.brand),
+			reportStrategies = brandConfig.reportStrategies,
+			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
+					pathId: -1,
+					title: 'Unknown report id'
+				};
 
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
@@ -37,9 +37,9 @@
 			reportId: params.reportId
 		}, true);
 
-		$scope.reportTitle = reportConfigStrategy.title;
+		$scope.reportTitle = params.reportModel.reportName || reportConfigStrategy.title;
 		
-		$scope.title = $scope.reportTitle + ' Report';
+		$scope.title = $scope.reportTitle; //$scope.reportTitle + ' Report';
 		$scope.refreshing = false;
 
 
@@ -721,6 +721,8 @@ var getReportParamsModel = function() {
 	clone.hiredOptions = $scope.hiredOptions;
 
 	clone.user = sessionParams.token;
+
+	clone.reportName = $scope.reportTitle;
 	
 	return JSON.stringify(clone);
 };
@@ -914,22 +916,12 @@ $scope.editCustomReport = function() {
 };
 
 $scope.saveCustomReport = function() {
-	// var onError = function(err) {
-	// 	utilsService.safeLog('saveCustomReport.onError', err);
-	// 	$scope.error = 'Could not save report';
-	// };
-
-
-	// var onComplete = function(result) {
-	// 	utilsService.safeLog('saveCustomReport.onComplete', result);
-	// };
-
 	var model = getReportParamsModel();
 	clonedModel = JSON.parse(JSON.stringify(model));
 	delete clonedModel.user;
 
 	var payload = {
-		//id: $scope.reportId,
+		//id: params.reportId,
 		name: $scope.reportTitle,
 		model: clonedModel,
 		csod_profile: $scope.csodProfileId,
@@ -950,14 +942,17 @@ $scope.saveCustomReport = function() {
 			console.log('reportController.onSaveComplete', result, true);
 			// sample response:
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"entireLearningPath\":false,\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
-			$scope.reportId = result.id;
+			params.reportId = result.id;
+			params.reportModel.reportName = $scope.reportTitle;
+			configService.setParam('reportModel', params.reportModel);
+			configService.setParam('reportId', params.reportId);
 		};
 		
 		var apiEndPoint = configService.apiEndPoints.customReport();
 		
-		if ($scope.reportId > -1) {
+		if (params.reportId > -1) {
 			// existing report, update using PUT
-			apiEndPoint += '/' + $scope.reportId;
+			apiEndPoint += params.reportId + '/?format=json';
 			utilsService.safeLog('saveCustomReport: update with PUT: apiEndPoint', apiEndPoint, true);
 			dataService.putData(apiEndPoint, payload)
 				.then(onSaveComplete, onSaveError);
@@ -973,7 +968,7 @@ $scope.saveCustomReport = function() {
 /* begin: modal save code */
 $scope.modalSaveData = {
 	title: 'Save New Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
-	reportName: ''
+	reportName: $scope.reportTitle
 };
 
 $scope.modalSave = {

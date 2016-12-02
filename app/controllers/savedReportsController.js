@@ -7,23 +7,22 @@
 		utilsService, configService, dataService) {
 
 		var commonConfig = configService.getCommonConfig(),
-		 sessionParams = commonConfig.sessionParams,
-		 params = commonConfig.params;
+			sessionParams = commonConfig.sessionParams,
+			params = commonConfig.params;
 
 		utilsService.safeLog('savedReportsController params', params, true);
 		utilsService.safeLog('savedReportsController sessionParams', sessionParams, true);
 
-		/**
-		 * @method cancel
-		 * @description
-		 * Users click on a step directly
-		 */
-		$scope.cancel = function cancel() {
-			//this.hide();
-			var path = '#/?brand=[brand]'
+		Object.defineProperty($scope, 'backToHref', {
+			get: function() {
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+					.replace('[organization]', sessionParams.organization)
 					.replace('[brand]', params.brand);
-			$location.path(path);
-		};
+				//utilsService.safeLog('backToHref', result, true);
+				return result;
+			}
+		});
 
 		$scope.viewReport = function(report) {
 			utilsService.safeLog('editviewReportReport', report.id);
@@ -36,6 +35,7 @@
 
 			configService.setParam('reportId', report.id);
 			var reportModel = typeof report.model === 'string' ? JSON.parse(report.model) : report.model;
+			reportModel.reportName = report.name;
 			configService.setParam('reportModel', reportModel);
 
 			// changes to the following code here will have to be replicated also in customReportWizard Controller towards the end within nextStep routine
