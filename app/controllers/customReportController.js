@@ -573,7 +573,8 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 					// save current summary colunn title 
 					$scope.model._prevTotCompletionTitle = $scope.model.totCompletionTitle;
-					$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+					//$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + (groupCol.name || groupCol.title);
+					$scope.model.totCompletionTitle = (commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 
 					groupCol.refreshing = false;
 
@@ -895,7 +896,7 @@ var getReportParamsModel = function() {
 		//	getData(what);
 		//}
 
-		getData('live');
+		getData('test');
 
 /* begin: custom report code */
 $scope.isCustomReport = true;

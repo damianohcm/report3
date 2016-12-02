@@ -649,7 +649,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('live'); // or 'live'
+		getData('test'); // or 'live'
 	};
 
 }());

@@ -718,6 +718,8 @@
 		 */
 		var getModel = function(data, totCompletionTitle) {  
 
+			console.log('reportSerivce: totCompletionTitle', totCompletionTitle);
+
 			// building model
 			var model = {
 				isDetailOnly: (data && data.segments || []).length === 1, /* if there is only one segment, then we only display in detail view (i.e. New and Trending or Custom Report with one segment only) */

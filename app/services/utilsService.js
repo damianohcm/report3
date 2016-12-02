@@ -266,7 +266,7 @@
 				//console.log('json2', JSON.stringify(otherObj).toLowerCase());
 				
 				if (JSON.stringify(origObj).toLowerCase() !== JSON.stringify(otherObj).toLowerCase()) {
-					console.log('hashed objects do not match');
+					//console.log('hashed objects do not match');
 					result = false;
 				}
 			}
