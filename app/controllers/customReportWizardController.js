@@ -19,7 +19,7 @@
 		$scope.cancel = function cancel() {
 			//this.hide();
 			// TODO: need to prompt user for confirmation in case there are pending changes
-			if ($scope.modelIsDirty) {
+			if ($scope.modelIsDirty || $scope.model.needsSave) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
 				// reset reportId param so that it starts clear next time
@@ -64,7 +64,8 @@
 			hiredAfter: undefined,
 			// step 3
 			entireLearningPath: false,
-			courses: []
+			courses: [],
+			needsSave: false
 		};
 
 		// original model to kee track of changes
@@ -77,7 +78,6 @@
 			get: function() {
 				var origModel = JSON.parse(angular.toJson($scope.originalModel));
 				var model = JSON.parse(angular.toJson($scope.model));
-				
 				return utilsService.areEqual(origModel, model) === false;
 			}
 		});
@@ -152,7 +152,7 @@
 					var prev = wizard.steps[wizard.activeStep.id - 2];
 					if (prev.id < wizard.activeStep.id) {
 						wizard.activeStep.isDone = false;
-					}
+					}	
 					wizard.setActiveStep(prev);
 				//});
 			}
@@ -193,6 +193,10 @@
 							currentStep.isDone = true;
 							wizard.isComplete = true;
 							//wizard.close();
+
+							if ($scope.modelIsDirty) {
+								$scope.model.needsSave = true;
+							}
 
 							// create params model to send to API end point for custom report data 
 							// clone angular model to avoid carrying over angular properties
@@ -418,14 +422,14 @@
 			});
 		};
 
-		$scope.allStoresChecked = false;
-
 		Object.defineProperty($scope, 'allStoresCheckedState', {
 			get: function() {
 				$scope.wizard.activeStep.validateAction();
 				return areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
 			}
 		});
+
+		$scope.allStoresChecked = areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
 
 		// Step 2 of wizard: Select Learners
 $scope.hiredAfterDatepickerPopup = {
@@ -582,7 +586,6 @@ $scope.modalConfirmOpen = function(w) {
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportId > -1 && params.reportModel) {
-
 				$scope.model.reportName = params.reportModel.reportName;
 				$scope.wizardTitle = 'Edit: ' + params.reportModel.reportName;
 				

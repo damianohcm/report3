@@ -121,7 +121,7 @@
 			// Restrict the directive so it can only be used as an attribute
 			restrict: 'A',
 			link: function link(scope, elem, attrs) {
-				//utilsService.safeLog('attrs', attrs);
+				//utilsService.safeLog('customcheck attrs', attrs);
 				var childList = scope.$eval(attrs.childList),
             		property = attrs.property;
 
@@ -137,7 +137,7 @@
 						return item.selected === true;
 					});
 				};
-
+				
 				var setAllSelected = function(val) {
 					childList = scope.$eval(attrs.childList);
 					angular.forEach(childList, function(child) {
@@ -150,10 +150,10 @@
 					childList = scope.$eval(attrs.childList);
 					if (childList) {
 						return childList.map(function(obj) {
-								return {
-									selected: obj.selected
-								};
-							});
+							return {
+								selected: obj.selected
+							};
+						});
 					} else {
 						return [];
 					}
@@ -162,8 +162,11 @@
 					//utilsService.safeLog('childListWatcher areAllSelected', areAllSelected(items));
 					//utilsService.safeLog('childListWatcher areSomeSelected', areSomeSelected(items));
 					var someSelected = areSomeSelected(items);
+					//console.log('customcheck someSelected', someSelected);
+
 					if (!someSelected) {
 						var allSelected = areAllSelected(items);
+						//console.log('customcheck allSelected', allSelected);
 						//setAllSelected(allSelected);
 						//utilsService.safeLog('attrs.ngChecked', attrs.ngChecked);
 						//utilsService.safeLog('allSelected', allSelected);
@@ -178,7 +181,14 @@
 				var checkedWatcher = scope.$watch(attrs.checked, function(value) {
 					//utilsService.safeLog('checkedWatcher', value);
 					//utilsService.safeLog('checkedWatcher loop set set property on children');
-					setAllSelected(value);
+					//console.log('checkedWatcher checked', value);
+					var checkedState = scope.$eval(attrs.checkedState);
+					console.log('checkedWatcher checkedState', checkedState);
+					//console.log('checkedWatcher typeof checkedState', typeof checkedState);
+					//console.log('customcheck checkedWatcher call setAllSelected');
+					if (typeof checkedState === 'boolean') {
+						setAllSelected(checkedState);
+					}
 				});
 
 				/*// Whenever the bound value of the attribute changes we update

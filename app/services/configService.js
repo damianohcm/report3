@@ -38,7 +38,7 @@
                 },
                 logEnabled: false, /* if true, utilsService.safeLog will output message to the console.log */
                 customReport: {
-                    maxStores: 10, /* max selection of PCs allowed in the custom report wizard */
+                    maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
                     maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
                 }
             },

@@ -16,9 +16,11 @@
 					title: 'Unknown report id'
 				};
 
-		utilsService.safeLog('reportController params', params);
-		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
-		utilsService.safeLog('customReportController params.reportModel', params.reportModel);
+		// utilsService.safeLog('reportController params', params);
+		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
+		// utilsService.safeLog('customReportController params.reportModel', params.reportModel);
+		
+		$scope.needsSave = params.reportModel.needsSave;
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -278,6 +280,8 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				}
 
 				return msg;
+			} else if (params.reportModel.needsSave) {
+				return 'Report has unsaved changes';
 			} else {
 				return 'Report is not modified';
 			}
@@ -880,8 +884,11 @@ var getReportParamsModel = function() {
 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 				//var fileName = 'data/from-stag.json?' + Math.random();
 				var fileName = 'data/custom-report.json?' + Math.random();
-
 				utilsService.safeLog('fileName', fileName);
+
+				// bogus csodProfileId for testing
+				$scope.csodProfileId = 999999999;
+
 				// simulate delay
 				$timeout(function() {
 					dataService.getData(fileName)
@@ -891,14 +898,11 @@ var getReportParamsModel = function() {
 		};
 
 		// // invoke getData
-		// if ($scope.tokenError.length > 0) {
-		// 	alert($scope.tokenError);
-		// } else {
-		// 	var what = reportService.reportConfig.useTestData ? 'test' : 'live';
-		//	getData(what);
-		//}
-
-		getData('live');
+		if ($scope.tokenError.length > 0) {
+		 	alert($scope.tokenError);
+		} else {
+			getData('live');
+		}
 
 /* begin: custom report code */
 $scope.isCustomReport = true;
@@ -946,6 +950,8 @@ $scope.saveCustomReport = function() {
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"entireLearningPath\":false,\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
 			params.reportId = result.id;
 			params.reportModel.reportName = $scope.reportTitle;
+			params.reportModel.needsSave = false;
+			$scope.needsSave = params.reportModel.needsSave;
 			configService.setParam('reportModel', params.reportModel);
 			configService.setParam('reportId', params.reportId);
 		};
