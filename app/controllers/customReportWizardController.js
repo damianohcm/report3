@@ -38,13 +38,10 @@
 		// model lookups 
 		$scope.audienceOptions = [{
 			id: 1,
-			text: 'All Active Store Personnel'
+			text: 'All Store Personnel'
 		}, {
 			id: 2,
-			text: 'Active Managers Only'
-		}, {
-			id: 3,
-			text: 'Active Shift Leaders only'
+			text: 'Only Management Personnel (Shift Leader, Restaurant Manager and ARL)'
 		}];
 
 		$scope.hiredOptions = [{
@@ -693,7 +690,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());

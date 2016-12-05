@@ -424,6 +424,14 @@ label.radio {
 label.radio > input:checked + i {
     color: black;
 }
+label.radio .radio-text {
+  min-width: 370px;
+  margin-left: -18px;
+  padding-left: 18px;
+}
+label.radio .radio-text:first-line {
+  text-indent: -18px;
+}
 
 .uib-datepicker-popup button {
     box-shadow: none;

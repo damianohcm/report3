@@ -7,22 +7,22 @@
 
             <div class="row">
                 <div class="col-md-2"><label>Audience:</label></div>
-                <div class="col-md-9 p-l-30">
-                    <label class="radio" ng-repeat="option in audienceOptions">
-                        <input type="radio" name="audience" ng-model="model.audience" ng-value="option" /> 
-                        <i class="fa fa-circle fa-fw"></i>
-                        <span>{{option.text}}</span>
+                <div class="col-md-9">
+                    <label class="row radio" ng-repeat="option in audienceOptions">
+                        <input type="radio" class="col-md-1" name="audience" ng-model="model.audience" ng-value="option" /> 
+                        <i class="col-md-1 fa fa-circle fa-fw"></i>
+                        <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
                 </div>
             </div>
 
             <div class="row m-t-lg">
                 <div class="col-md-2"><label>Hired:</label></div>
-                <div class="col-md-9 p-l-30">
-                    <label class="radio" ng-repeat="option in hiredOptions">
-                        <input type="radio" name="hired" ng-model="model.hired" ng-value="option" /> 
-                        <i class="fa fa-circle fa-fw"></i>
-                        <span>{{option.text}}</span>
+                <div class="col-md-9">
+                    <label class="row radio" ng-repeat="option in hiredOptions">
+                        <input type="radio" class="col-md-1" name="hired" ng-model="model.hired" ng-value="option" /> 
+                        <i class="col-md-1 fa fa-circle fa-fw"></i>
+                        <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
 
                     <!--div uib-datepicker ng-model="model.hiredAfter" class="well well-sm" datepicker-options="datePickerOptions"></div-->
