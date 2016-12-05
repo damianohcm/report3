@@ -521,7 +521,7 @@ $scope.modalConfirm = {
 		modalInstance.result.then(function (data) {
 			utilsService.safeLog('Modal result', data);
 			
-			// TODO: 
+			// invoke strategy action 
 			modalConfirmStrategy.okAction && modalConfirmStrategy.okAction();
 
 		}, function () {

@@ -21,6 +21,22 @@
 		// utilsService.safeLog('customReportController params.reportModel', params.reportModel);
 		
 		$scope.needsSave = params.reportModel.needsSave;
+
+		var goBack = function goBack() {
+			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+				.replace('[organization]', sessionParams.organization)
+				.replace('[brand]', $scope.currentBrandObj.key);
+			window.parent.location = path;
+		};
+
+		$scope.backToReportingHome = function backToReportingHome() {
+			if ($scope.needsSave) {
+				$scope.modalConfirmOpen('closeReport');
+			} else {
+				goBack();
+			}
+		};
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -123,18 +139,6 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				return result;
 			}
 		});
-
-		Object.defineProperty($scope, 'backToHref', {
-			get: function() {
-				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]'
-					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
-					.replace('[organization]', sessionParams.organization)
-					.replace('[brand]', $scope.currentBrandObj.key);
-				//utilsService.safeLog('backToHref', result, true);
-				return result;
-			}
-		});
-
 
 		$scope.progressBar = {
 			type: 'warning',
@@ -1035,8 +1039,8 @@ $scope.modalConfirm = {
 		modalInstance.result.then(function (data) {
 			utilsService.safeLog('Modal result', data);
 			
-			// TODO: 
-			//modalConfirmStrategy.action();
+			// invoke strategy action 
+			modalConfirmStrategy.okAction && modalConfirmStrategy.okAction();
 
 		}, function () {
 			utilsService.safeLog('Modal dismissed');
@@ -1055,7 +1059,8 @@ var modalConfirmStrategies = {
 		title: 'Are you sure?', 
 		message: 'Your current settings and filters haven’t been saved. Are you sure you want to exit the report?',
 		cancelCaption: 'Cancel',
-		okCaption: 'Close Report'
+		okCaption: 'Close Report',
+		okAction: goBack
 	},
 	reportNameConflict: {
 		title: 'Report Name Conflict',
