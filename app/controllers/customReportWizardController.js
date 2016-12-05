@@ -38,13 +38,10 @@
 		// model lookups 
 		$scope.audienceOptions = [{
 			id: 1,
-			text: 'All Active Store Personnel'
+			text: 'All Store Personnel'
 		}, {
 			id: 2,
-			text: 'Active Managers Only'
-		}, {
-			id: 3,
-			text: 'Active Shift Leaders only'
+			text: 'Only Management Personnel (Shift Leader, Restaurant Manager and ARL)'
 		}];
 
 		$scope.hiredOptions = [{
@@ -491,7 +488,7 @@ $scope.datePickerOptions = {
 		};
 
 		$scope.onEntireLearningPathClick = function() {
-			console.log('onEntireLearningPathClick', $scope.model.entireLearningPath);
+			utilsService.safeLog('onEntireLearningPathClick', $scope.model.entireLearningPath);
 			if ($scope.model.entireLearningPath) {
 				$scope.model.courses = $scope.lookupCourses;
 			} else {
@@ -660,7 +657,7 @@ $scope.modalConfirmOpen = function(w) {
 					path: configService.apiEndPoints.storesList(sessionParams.token)
 				}];
 
-				console.log('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
+				utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
 				
 				var _endPointsData = {}, _endPointCount = 0;
 				var onEndPointComplete = function(endPoint, data) {
@@ -693,7 +690,7 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('test'); // or 'live'
+		getData('live'); // or 'live'
 	};
 
 }());

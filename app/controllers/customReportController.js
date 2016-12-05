@@ -18,7 +18,7 @@
 
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
-		console.log('customReportController params.reportModel', params.reportModel);
+		utilsService.safeLog('customReportController params.reportModel', params.reportModel);
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -819,7 +819,7 @@ var getReportParamsModel = function() {
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-					console.log('data posted to report-data end point', _endPoints[1].postData);
+					utilsService.safeLog('data posted to report-data end point', _endPoints[1].postData);
 
 					var _endPointsData = {}, _endPointCount = 0;
 					var onEndPointComplete = function(endPoint, data) {
@@ -908,7 +908,7 @@ $scope.editCustomReport = function() {
 
 	params.reportModel.reportName = $scope.reportTitle;
 	configService.setParam('reportModel', params.reportModel);
-	console.log('editCustomReport params.reportModel', params.reportModel);
+	utilsService.safeLog('editCustomReport params.reportModel', params.reportModel);
 
 	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 		.replace('[brand]', params.brand)
@@ -936,12 +936,12 @@ $scope.saveCustomReport = function() {
 		alert('Invalid csodProfileId parameter - please contact support');
 	} else {
 		var onSaveError = function(err) {
-			console.log('reportController.onSaveError', err, true);
+			utilsService.safeLog('reportController.onSaveError', err, true);
 			$scope.error = 'Could not save report';
 		};
 		
 		var onSaveComplete = function(result) {
-			console.log('reportController.onSaveComplete', result, true);
+			utilsService.safeLog('reportController.onSaveComplete', result, true);
 			// sample response:
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"entireLearningPath\":false,\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
 			params.reportId = result.id;

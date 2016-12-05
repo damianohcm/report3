@@ -718,7 +718,7 @@
 		 */
 		var getModel = function(data, totCompletionTitle) {  
 
-			console.log('reportSerivce: totCompletionTitle', totCompletionTitle);
+			utilsService.safeLog('reportSerivce: totCompletionTitle', totCompletionTitle);
 
 			// building model
 			var model = {

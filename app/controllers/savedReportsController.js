@@ -37,7 +37,7 @@
 			var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 				.replace('[brand]', params.brand)
 				.replace('[reportId]', report.id);
-			console.log('reportPath', reportPath, true);
+			utilsService.safeLog('reportPath', reportPath, true);
 			document.location = reportPath;
 		};
 
@@ -107,7 +107,7 @@
 				}
 			} else {
 				var endPointUrl = configService.apiEndPoints.customReportList(sessionParams.token);
-				console.log('endPointUrl', endPointUrl);
+				utilsService.safeLog('endPointUrl', endPointUrl);
 				dataService.getData(endPointUrl)
 					.then(onDataComplete, onDataError);
 			}
@@ -149,9 +149,9 @@ var modalConfirmStrategies = {
 		cancelCaption: 'Cancel',
 		okCaption: 'Delete',
 		okAction: function(actionParams) {
-			console.log('okAction: params: ', actionParams);
+			utilsService.safeLog('okAction: params: ', actionParams);
 			//TODO: need to send DELETE to REST API
-			console.log('TODO: need to send DELETE to REST API');
+			utilsService.safeLog('TODO: need to send DELETE to REST API');
 
 			// fake, just for testing the UI flow
 			$scope.model.reports = _.filter($scope.model.reports, function(item) {
@@ -159,12 +159,12 @@ var modalConfirmStrategies = {
 			});
 
 			var onDeleteError = function(err) {
-				console.log('savedReportController.onDeleteError', err, true);
+				utilsService.safeLog('savedReportController.onDeleteError', err, true);
 				$scope.error = 'Could not delete report';
 			};
 			
 			var onDeleteComplete = function(result) {
-				console.log('savedReportController.onDeleteComplete', result, true);
+				utilsService.safeLog('savedReportController.onDeleteComplete', result, true);
 			};
 			
 			var apiEndPoint = configService.apiEndPoints.customReport();
