@@ -22,7 +22,7 @@
 		
 		$scope.needsSave = params.reportModel.needsSave;
 
-		var goBack = function goBack() {
+		var backToReportingHome = function backToReportingHome() {
 			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
 				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
 				.replace('[organization]', sessionParams.organization)
@@ -30,11 +30,27 @@
 			window.parent.location = path;
 		};
 
-		$scope.backToReportingHome = function backToReportingHome() {
+		$scope.goHome = function goHome() {
+			$scope.currentBackAction = backToReportingHome;
 			if ($scope.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
-				goBack();
+				backToReportingHome();
+			}
+		};
+
+		var backToSavedReports = function backToSavedReports() {
+			var path = '#/savedReports'
+				.replace('[brand]', $scope.currentBrandObj.key);
+			window.location = path;
+		};
+
+		$scope.goToSavedReports = function goToSavedReports() {
+			$scope.currentBackAction = backToSavedReports;
+			if ($scope.needsSave) {
+				$scope.modalConfirmOpen('closeReport');
+			} else {
+				backToSavedReports();
 			}
 		};
 		
@@ -1060,7 +1076,9 @@ var modalConfirmStrategies = {
 		message: 'Your current settings and filters haven’t been saved. Are you sure you want to exit the report?',
 		cancelCaption: 'Cancel',
 		okCaption: 'Close Report',
-		okAction: goBack
+		okAction: function() {
+			$scope.currentBackAction();
+		}
 	},
 	reportNameConflict: {
 		title: 'Report Name Conflict',

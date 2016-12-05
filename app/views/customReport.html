@@ -5,9 +5,13 @@
     <span class="banner-button" style="display:none;text-align:center;font-size:10pt;background-color:transparent">
         User org: [{{::organization}}]<br/>People orgs: {{::peopleOrgs}}
     </span>
-    <button class="banner-button return" ng-click="backToReportingHome()">
+    <button class="banner-button return" ng-click="goHome()">
         <img class="return" src="../img/back-arrow.png"/>
         <div class="text">Back to <br/><strong>Reporting Center</strong></div>
+    </button>
+    <button class="banner-button return" ng-click="goToSavedReports()">
+        <img class="return" src="../img/back-arrow.png"/>
+        <div class="text">Back to <br/><strong>Saved Reports</strong></div>
     </button>
     <a class="banner-button viewFor" ng-show="displayViewReportFor" target="_parent" ng-href="{{::viewReportForHref}}">
         <img ng-class="::otherBrandObj.key" ng-src="../img/{{::otherBrandObj.key}}_logo_btn_sm.png"/>

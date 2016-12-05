@@ -31,6 +31,7 @@
 			configService.setParam('reportId', report.id);
 			var reportModel = typeof report.model === 'string' ? JSON.parse(report.model) : report.model;
 			reportModel.reportName = report.name;
+			reportModel.needsSave = false;
 			configService.setParam('reportModel', reportModel);
 
 			// changes to the following code here will have to be replicated also in customReportWizard Controller towards the end within nextStep routine
