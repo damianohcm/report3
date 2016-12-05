@@ -66,7 +66,7 @@
 							// mark flag so that we do not set them next time routeChangeSuccess is invoked
 							configService.sessionParamsSet = true;
 
-							console.log('*** session params (set only once)', {
+							utilsService.safeLog('*** session params (set only once)', {
 								//'document.location.search': document.location.search,
 								token: token,
 								//compKey: compKey,
@@ -121,12 +121,12 @@
 			// Restrict the directive so it can only be used as an attribute
 			restrict: 'A',
 			link: function link(scope, elem, attrs) {
-				//console.log('attrs', attrs);
+				//utilsService.safeLog('attrs', attrs);
 				var childList = scope.$eval(attrs.childList),
             		property = attrs.property;
 
 				var areAllSelected = function(arr) {
-					//console.log('areAllSelected function: arr.length:', arr.length);
+					//utilsService.safeLog('areAllSelected function: arr.length:', arr.length);
 					return arr && arr.length > 0 && arr.every(function(item) {
 						return item.selected === true;
 					});
@@ -158,15 +158,15 @@
 						return [];
 					}
 				}, function (items) {
-					//console.log('childListWatcher items', items);
-					//console.log('childListWatcher areAllSelected', areAllSelected(items));
-					//console.log('childListWatcher areSomeSelected', areSomeSelected(items));
+					//utilsService.safeLog('childListWatcher items', items);
+					//utilsService.safeLog('childListWatcher areAllSelected', areAllSelected(items));
+					//utilsService.safeLog('childListWatcher areSomeSelected', areSomeSelected(items));
 					var someSelected = areSomeSelected(items);
 					if (!someSelected) {
 						var allSelected = areAllSelected(items);
 						//setAllSelected(allSelected);
-						//console.log('attrs.ngChecked', attrs.ngChecked);
-						//console.log('allSelected', allSelected);
+						//utilsService.safeLog('attrs.ngChecked', attrs.ngChecked);
+						//utilsService.safeLog('allSelected', allSelected);
 						//attrs.ngChecked = allSelected;
 						scope.$eval(attrs.ngChecked + ' = ' + allSelected);
 					} else {
@@ -176,18 +176,18 @@
 				}, true);
 
 				var checkedWatcher = scope.$watch(attrs.checked, function(value) {
-					//console.log('checkedWatcher', value);
-					//console.log('checkedWatcher loop set set property on children');
+					//utilsService.safeLog('checkedWatcher', value);
+					//utilsService.safeLog('checkedWatcher loop set set property on children');
 					setAllSelected(value);
 				});
 
 				/*// Whenever the bound value of the attribute changes we update
 				// the internal 'indeterminate' flag on the attached dom element
 				var checkedStateWatcher = scope.$watch(attrs.checkedState, function(value) {
-					console.log('checkedStateWatcher', value);
+					utilsService.safeLog('checkedStateWatcher', value);
 					//elem[0].indeterminate = value;
 					if (value !== undefined) {
-						console.log('checkedStateWatcher loop set set property on children');
+						utilsService.safeLog('checkedStateWatcher loop set set property on children');
 						angular.forEach(childList, function(child) {
 							child[property] = value;
 						});
@@ -204,7 +204,7 @@
 				elem.bind('change', function() {
 					scope.$apply(function () {
 						var isChecked = elem.prop('checked');
-						//console.log('isChecked', isChecked);
+						//utilsService.safeLog('isChecked', isChecked);
 						
 						// Set each child's selected property to the checkbox's checked property
 						angular.forEach(childList, function(child) {
