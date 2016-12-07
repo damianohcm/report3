@@ -591,7 +591,8 @@ $scope.modalConfirmOpen = function(w) {
 			$scope.lookupCourses =  data.courses;
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
-			if (params.reportId > -1 && params.reportModel) {
+			if (params.reportModel) {
+				$scope.model.needsSave = params.reportModel.needsSave;
 				$scope.model.reportName = params.reportModel.reportName;
 				$scope.wizardTitle = 'Edit: ' + params.reportModel.reportName;
 				

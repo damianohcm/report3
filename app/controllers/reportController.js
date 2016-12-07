@@ -64,7 +64,6 @@
 			tableFixed: angular.element(document.getElementById('table-fixed')),
 			tableScroll: angular.element(document.getElementById('table-scroll')),
 			tableHorizScrollContainer: angular.element(document.getElementById('table-horiz-scroll')),
-			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll')),
 			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll'))
 		};
 
@@ -205,9 +204,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			});
 
 			var rows = $scope.model.result.rows;
-				if (rows && rows.length === 1) {
-					$scope.toggleChildRows(rows[0]);
-				}
+
+			if (rows && rows.length === 1) {
+				$scope.toggleChildRows(rows[0]);
+			}
 
 			if ($scope.model.isDetailOnly) {
 				// if it is a detail-only report, just recalculate
