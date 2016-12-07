@@ -46,23 +46,23 @@
                     76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
                 }
             },
-            brands: [
+            brands: [ /* lookup strategies based on brand by brand key (i.e. br or dd) */
                 {
                     key: 'br',
-                    title: 'Baskin-Robbins',
+                    title: 'Baskin-Robbins', /* brand displayed text */
                     reportStrategies: {
-                        'learning-path': {
-                            pathId: 6, //19,
-                            title: 'Learning Path',
+                        'learning-path': { /* learning path report information */
+                            pathId: 6, //19, /* learning path id to use for this brand */
+                            title: 'Learning Path', /* report name displayed on the report page */
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 5, //20,
-                            title: 'New & Trending',
+                            pathId: 5, //20, /* learning path id to use for this brand */
+                            title: 'New & Trending', /* report name displayed on the report page */
                             oneLevel: true
                         },
                         custom: {
-                            pathId: -1,
+                            pathId: -1, /* for custom report, we just ignore this */
                             title: 'Custom',
                             oneLevel: false
                         }
