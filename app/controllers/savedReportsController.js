@@ -7,11 +7,18 @@
 		utilsService, configService, dataService) {
 
 		var commonConfig = configService.getCommonConfig(),
+			savedReportsConfig = configService.getSavedReportsConfig(),
 			sessionParams = commonConfig.sessionParams,
 			params = commonConfig.params;
 
 		utilsService.safeLog('savedReportsController params', params, true);
 		utilsService.safeLog('savedReportsController sessionParams', sessionParams, true);
+
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
 
 		/**
 		 * @method exit
@@ -103,7 +110,10 @@
 							.replace('mm', getRandomInt(1, 12))
 							.replace('dd', getRandomInt(1, 28))
 							.replace('yyyy', getRandomInt(2016, 2018)),
-						isLocked: false
+						isLocked: false,
+						model: {
+							// fake, just for testing
+						}
 					});
 				}
 			} else {
@@ -114,7 +124,13 @@
 			}
 		};
 
-		getData('live');
+		// // invoke getData
+		if ($scope.tokenError.length > 0) {
+		 	alert($scope.tokenError);
+		} else {
+			var what = savedReportsConfig.useTestData ? 'test' : 'live';
+			getData(what);
+		}
 
 /* begin: modal confirm code */
 $scope.modalConfirm = {

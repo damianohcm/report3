@@ -5,20 +5,17 @@
 	requirejs([
 			'../services/configService.js',
 			'../services/utilsService.js', 
-			'../services/reportServiceConfig.js', 
 			'../services/reportService.js'
 		], function() {
 		mocha.setup('bdd');
 
 		var configService = window.services.configService()
 			, utilsService = window.services.utilsService(configService)
-			, reportConfig = window.services.reportServiceConfig(utilsService)
+			, reportConfig = configService.getReportConfig()
 			, service = window.services.reportService(utilsService, reportConfig);
-		
-		var reportServiceConfig = reportConfig.getConfig();
 
 		utilsService.safeLog('loaded', service, true);
-		utilsService.safeLog('reportServiceConfig', reportServiceConfig, true);
+		utilsService.safeLog('reportConfig', reportConfig, true);
 
 		var expect = chai.expect,
 			_refErr = new Error('Unit test reference error'),
@@ -70,7 +67,7 @@
 							isGroup: true,
 							id: 'crew-only',
 							key: 'crew-only',
-							value: reportServiceConfig.notApplicableLabel,
+							value: reportConfig.notApplicableLabel,
 							suffix: ''
 						}
 					}
@@ -159,7 +156,7 @@
 							suffix: '%'
 						},
 						'crew-only-3': {
-							value: reportServiceConfig.notApplicableLabel,
+							value: reportConfig.notApplicableLabel,
 							suffix: ''
 						},
 					}
@@ -255,7 +252,7 @@
 					var fn = function () { 
 						try {
 							var cell = {
-								value: reportServiceConfig.notApplicableLabel
+								value: reportConfig.notApplicableLabel
 							};
 
 							getPersonSegmentCellCss(cell);
@@ -285,7 +282,7 @@
 				});
 				it('service.private.getPersonSegmentCellCss: should return correct css when value is N/A or not a number', function(done) {
 					var cell = {
-						value: reportServiceConfig.notApplicableLabel
+						value: reportConfig.notApplicableLabel
 					}, item = getPersonSegmentCellCss(cell);
 					expect(item).to.be.a('string')
 						.to.equal('col-group person na');
@@ -486,7 +483,7 @@
 						expect(courseCell.id).to.equal(expectedCell.id);
 						expect(courseCell.suffix).to.equal(expectedCell.suffix);
 
-						if (courseCell.value === reportServiceConfig.notApplicableLabel) {
+						if (courseCell.value === reportConfig.notApplicableLabel) {
 							expect(courseCell.isNA).to.equal(true);
 						}
 					});
@@ -512,7 +509,7 @@
 						expect(courseCell.id).to.equal(expectedCell.id);
 						expect(courseCell.suffix).to.equal(expectedCell.suffix);
 
-						if (courseCell.value === reportServiceConfig.notApplicableLabel) {
+						if (courseCell.value === reportConfig.notApplicableLabel) {
 							expect(courseCell.isNA).to.equal(true);
 						}
 					});
@@ -587,7 +584,7 @@
 						fn = function () { 
 							try {
 								// var cell = {
-								// 	value: reportServiceConfig.notApplicableLabel
+								// 	value: reportConfig.notApplicableLabel
 								// };
 
 								// var courseLo = _courses[0].los[0];

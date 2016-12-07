@@ -1,18 +1,18 @@
 (function() {
 
-	var reportService = function(utilsService, reportConfigService) {
-		var reportConfig = reportConfigService.getConfig();
+	var reportService = function(utilsService, configService) {
+		var reportConfig = configService.getReportConfig();
+		
 		// label to be used when learning objects are missing
 		// (missing los are considered N/A - not applicable)
 		var notApplicableLabel = reportConfig.notApplicableLabel,
-			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc,
-			_debug = reportConfig.debug;
+			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc;
 
 		var private = {
 		};
 
 		var _getDebugMessage = function(val) {
-			if (_debug) {
+			if (reportConfig.debug) {
 				return ' (val)'.replace('val', val);
 			} else {
 				return '';

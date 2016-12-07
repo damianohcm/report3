@@ -7,18 +7,38 @@
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
+			customReportConfig = configService.getCustomReportConfig(),
 			sessionParams = commonConfig.sessionParams,
 			params = commonConfig.params,
 			brandConfig = configService.getBrandConfig(params.brand),
 			reportStrategies = brandConfig.reportStrategies,
 			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
-					pathId: -1,
-					title: 'Unknown report id'
-				};
+				pathId: -1,
+				title: 'Unknown report id'
+			};
 
 		// utilsService.safeLog('reportController params', params);
 		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
 		// utilsService.safeLog('customReportController params.reportModel', params.reportModel);
+
+
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
+
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
+			}
+		});
+
+		Object.defineProperty($scope, 'csBaseUrl', {
+			get: function() {
+				return sessionParams.csBaseUrl;
+			}
+		});
 		
 		$scope.needsSave = params.reportModel.needsSave;
 
@@ -115,25 +135,6 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			// 	}, 0);
 			}, 0);
 		};
-
-
-		Object.defineProperty($scope, 'tokenError', {
-			get: function() {
-				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
-			}
-		});
-
-		Object.defineProperty($scope, 'organization', {
-			get: function() {
-				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
-			}
-		});
-
-		Object.defineProperty($scope, 'csBaseUrl', {
-			get: function() {
-				return sessionParams.csBaseUrl;
-			}
-		});
 
 		$scope.displayViewReportFor = false;
 
@@ -765,7 +766,7 @@ var getReportParamsModel = function() {
 			}
 			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
-			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
+			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 			
@@ -921,7 +922,8 @@ var getReportParamsModel = function() {
 		if ($scope.tokenError.length > 0) {
 		 	alert($scope.tokenError);
 		} else {
-			getData('live');
+			var what = customReportConfig.useTestData ? 'test' : 'live';
+			getData(what);
 		}
 
 /* begin: custom report code */

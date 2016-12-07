@@ -5,14 +5,13 @@
 	requirejs([
 		'../services/configService.js',
 		'../services/utilsService.js', 
-		'../services/reportServiceConfig.js', 
 		'../services/reportService.js'
 	], function() {
 		mocha.setup('bdd');
 
 		var configService = window.services.configService()
 			, utilsService = window.services.utilsService(configService)
-			, reportConfig = window.services.reportServiceConfig(utilsService)
+			, reportConfig = configService.getReportConfig()
 			, reportService = window.services.reportService(utilsService, reportConfig);
 		
 		utilsService.safeLog('loaded', Object.keys(utilsService), true);

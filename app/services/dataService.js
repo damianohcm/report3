@@ -51,8 +51,8 @@
 		 * @method fixReportAPIData
 		 * Helper to bring deep-dested data from segment api down one level
 		 */
-		const fixReportAPIData = function(dataToFix, reportConfigStrategy) {
-
+		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
+			
 			// // if we ever have to wrap one-level only dat ainto a fake segment, use this:
 			// // if (reportConfigStrategy.oneLevel) {
 			// // 	debugger;
@@ -140,15 +140,6 @@
 				&& dataToFix.stores.length 
 				? dataToFix.stores
 				: [];
-
-			// map store people lo id to lookup
-			// this is because the backend does not return which parent Segment id the person LOs belong to
-			// also determine if all people org_quid are the same
-			var peopleOrgStrategy = {
-				74: 'br', //Baskin-Robbins
-				75: 'dd', // Dunkin' Donuts
-				76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
-			};
 
 			var peopleOrgs = [];
 			utilsService.fastLoop(stores, function(store) {

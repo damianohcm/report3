@@ -33,6 +33,10 @@ describe('configService', () => {
         expect(configService).to.have.all.keys([
             'enableLog', 
             'getCommonConfig', 
+            'getCustomReportConfig', 
+            'getCustomReportWizardConfig',
+            'getReportConfig',
+            'getSavedReportsConfig',
             'getBrands', 
             'getBrandConfig', 
             'setParam', 
@@ -110,7 +114,7 @@ describe('configService', () => {
                 'params', 
                 'sessionParams', 
                 'logEnabled', 
-                'customReport'
+                'peopleOrgStrategy'
             ]);
 
             expect(commonConfig.totCompletionTitlePrefix).to.be.a('string');
@@ -119,7 +123,7 @@ describe('configService', () => {
             expect(commonConfig.params).to.be.an('object');
             expect(commonConfig.sessionParams).to.be.an('object');
             expect(commonConfig.logEnabled).to.be.a('boolean');
-            expect(commonConfig.customReport).to.be.an('object');
+            expect(commonConfig.peopleOrgStrategy).to.be.an('object');
             
             done();
         });
@@ -204,26 +208,125 @@ describe('configService', () => {
             });
         });
 
-        // customReport tests
-        describe('configService: commonConfig.customReport', () => {
-            const customReport = commonConfig.customReport;
+        // peopleOrgStrategy tests
+        describe('configService: commonConfig.peopleOrgStrategy', () => {
+            const peopleOrgStrategy = commonConfig.peopleOrgStrategy;
 
-            it('commonConfig.customReport: should have valid properties', function(done) {
+            it('commonConfig.peopleOrgStrategy: should have valid properties', function(done) {
                 
-                console.log('commonConfig.customReport keys', Object.keys(customReport));
+                console.log('commonConfig.peopleOrgStrategy keys', Object.keys(peopleOrgStrategy));
 
-                expect(customReport).to.have.all.keys([
-                    'maxStores', 
-                    'maxCourses'
-                ]);
-
-                expect(customReport.maxStores).to.be.a('number');
-                expect(customReport.maxCourses).to.be.a('number');
-                expect(customReport.maxStores).to.be.at.least(1);
-                expect(customReport.maxCourses).to.be.at.least(1);
+                expect(Object.keys(peopleOrgStrategy).length).to.equal(3);
 
                 done();
             });
+        });
+    });
+
+    // reportConfig tests
+    describe('configService: reportConfig: tests', function() {
+        var reportConfig = configService.getReportConfig();
+
+        // reportConfig tests
+        it('configService: reportConfig: should have valid properties', function(done) {
+            //console.log('reportConfig keys', Object.keys(reportConfig));
+
+            expect(reportConfig).to.have.all.keys([
+                'useTestData', 
+                'debug', 
+                'averageCalculationMode', 
+                'notApplicableLabel', 
+                'notApplicableIncludeInCalc', 
+                'colorPersonSegmentCell', 
+
+                'colSummaryHeaderMaxLength',
+                'colGroupHeaderMaxLength',
+                'colChildheaderMaxLength',
+                'rowGroupHeaderMaxLength',
+                'rowChildheaderMaxLength'
+            ]);
+
+            expect(reportConfig.useTestData).to.be.a('boolean');
+            expect(reportConfig.debug).to.be.a('boolean');
+            expect(reportConfig.averageCalculationMode).to.be.a('string');
+
+            expect(reportConfig.notApplicableLabel).to.be.a('string');
+            expect(reportConfig.notApplicableIncludeInCalc).to.be.a('boolean');
+            expect(reportConfig.colorPersonSegmentCell).to.be.a('boolean');
+
+            expect(reportConfig.colSummaryHeaderMaxLength).to.be.a('number');
+            expect(reportConfig.colGroupHeaderMaxLength).to.be.a('number');
+            expect(reportConfig.colChildheaderMaxLength).to.be.a('number');
+            expect(reportConfig.rowGroupHeaderMaxLength).to.be.a('number');
+            expect(reportConfig.rowChildheaderMaxLength).to.be.a('number');
+
+            expect(reportConfig.colSummaryHeaderMaxLength).to.be.at.least(1);
+            expect(reportConfig.colGroupHeaderMaxLength).to.be.at.least(1);
+            expect(reportConfig.colChildheaderMaxLength).to.be.at.least(1);
+            expect(reportConfig.rowGroupHeaderMaxLength).to.be.at.least(1);
+            expect(reportConfig.rowChildheaderMaxLength).to.be.at.least(1);
+            
+            done();
+        });
+    });
+
+    // customReportWizardConfig tests
+    describe('configService: customReportWizardConfig: tests', function() {
+        var customReportWizardConfig = configService.getCustomReportWizardConfig();
+
+        // customReportWizardConfig tests
+        it('configService: customReportWizardConfig: should have valid properties', function(done) {
+            //console.log('customReportWizardConfig keys', Object.keys(customReportWizardConfig));
+
+            expect(customReportWizardConfig).to.have.all.keys([
+                'useTestData',
+                'maxStores',
+                'maxCourses'
+            ]);
+
+            expect(customReportWizardConfig.useTestData).to.be.a('boolean'); 
+            expect(customReportWizardConfig.maxStores).to.be.a('number');
+            expect(customReportWizardConfig.maxCourses).to.be.a('number');
+            expect(customReportWizardConfig.maxStores).to.be.at.least(1);
+            expect(customReportWizardConfig.maxCourses).to.be.at.least(1);
+            
+            done();
+        });
+    });
+
+    // customReportConfig tests
+    describe('configService: customReportConfig: tests', function() {
+        var customReportConfig = configService.getCustomReportConfig();
+
+        // customReportConfig tests
+        it('configService: customReportConfig: should have valid properties', function(done) {
+            //console.log('customReportConfig keys', Object.keys(customReportConfig));
+
+            expect(customReportConfig).to.have.all.keys([
+                'useTestData'
+            ]);
+
+            expect(customReportConfig.useTestData).to.be.a('boolean');
+    
+            done();
+        });
+    });
+
+    // savedReportsConfig tests
+    describe('configService: savedReportsConfig: tests', function() {
+        var savedReportsConfig = configService.getSavedReportsConfig();
+
+        // savedReportsConfig tests
+        it('configService: savedReportsConfig: should have valid properties', function(done) {
+            //console.log('savedReportsConfig keys', Object.keys(savedReportsConfig));
+
+            expect(savedReportsConfig).to.have.all.keys([
+                'useTestData'
+            ]);
+
+            expect(savedReportsConfig.useTestData).to.be.a('boolean');
+    
+            done();
         });
     });
 

@@ -9,7 +9,13 @@
 		var commonConfig = configService.getCommonConfig(),
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params,
-			customReportConfig = commonConfig.customReport;
+			customReportWizardConfig = configService.getCustomReportWizardConfig();
+		
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
 
 		/**
 		 * @method cancel
@@ -297,9 +303,9 @@
 					this.hasError =  true;
 					this.errorMsg = 'Please select at least ono PC before proceeding';
 				}
-				if (numberOfStores > customReportConfig.maxStores) {
+				if (numberOfStores > customReportWizardConfig.maxStores) {
 					this.hasError =  true;
-					this.errorMsg = 'Please select [max] PCs or less'.replace('[max]', customReportConfig.maxStores);
+					this.errorMsg = 'Please select [max] PCs or less'.replace('[max]', customReportWizardConfig.maxStores);
 				}
 
 				this.isDone = !this.hasError;
@@ -344,9 +350,9 @@
 					this.errorMsg = this.hasError ? 'Please select at least one Course before proceeding' : undefined;
 				}
 
-				if (numberOfCourses > customReportConfig.maxCourses) {
+				if (numberOfCourses > customReportWizardConfig.maxCourses) {
 					this.hasError =  true;
-					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', customReportConfig.maxCourses);
+					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', customReportWizardConfig.maxCourses);
 				}
 
 				this.isDone = !this.hasError;
@@ -693,7 +699,12 @@ $scope.modalConfirmOpen = function(w) {
 		};
 
 		// invoke getData
-		getData('live'); // or 'live'
+		if ($scope.tokenError.length > 0) {
+		 	alert($scope.tokenError);
+		} else {
+			var what = customReportWizardConfig.useTestData ? 'test' : 'live';
+			getData(what);
+		}
 	};
 
 }());

@@ -7,17 +7,36 @@
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
-		 sessionParams = commonConfig.sessionParams,
-		 params = commonConfig.params,
-		 brandConfig = configService.getBrandConfig(params.brand),
-		 reportStrategies = brandConfig.reportStrategies,
-		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
+		 	sessionParams = commonConfig.sessionParams,
+			params = commonConfig.params,
+			brandConfig = configService.getBrandConfig(params.brand),
+			reportStrategies = brandConfig.reportStrategies,
+			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
 				title: 'Unknown report id'
 			};
 
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
+
+
+		Object.defineProperty($scope, 'tokenError', {
+			get: function() {
+				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
+			}
+		});
+
+		Object.defineProperty($scope, 'organization', {
+			get: function() {
+				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
+			}
+		});
+
+		Object.defineProperty($scope, 'csBaseUrl', {
+			get: function() {
+				return sessionParams.csBaseUrl;
+			}
+		});
 		
 		// get undo service instance
 		$scope.undoService = undoServiceFactory.getService('reportController');
@@ -79,25 +98,6 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			// 	}, 0);
 			}, 0);
 		};
-
-
-		Object.defineProperty($scope, 'tokenError', {
-			get: function() {
-				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
-			}
-		});
-
-		Object.defineProperty($scope, 'organization', {
-			get: function() {
-				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
-			}
-		});
-
-		Object.defineProperty($scope, 'csBaseUrl', {
-			get: function() {
-				return sessionParams.csBaseUrl;
-			}
-		});
 
 		$scope.displayViewReportFor = false;
 
@@ -709,7 +709,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			}
 			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
-			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
+			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 		
@@ -814,10 +814,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
+				var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
 
 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
-				var fileName = 'data/from-stag.json?' + Math.random();
 
 				utilsService.safeLog('fileName', fileName);
 				// simulate delay

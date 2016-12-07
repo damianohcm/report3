@@ -37,9 +37,13 @@
                     organization: ''
                 },
                 logEnabled: false, /* if true, utilsService.safeLog will output message to the console.log */
-                customReport: {
-                    maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
-                    maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
+                // map store people lo id to lookup
+                // this is because the backend does not return which parent Segment id the person LOs belong to
+                // also determine if all people org_quid are the same
+                peopleOrgStrategy: {
+                    74: 'br', //Baskin-Robbins
+                    75: 'dd', // Dunkin' Donuts
+                    76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
                 }
             },
             brands: [
@@ -87,12 +91,61 @@
             ]
         };
 
+        /* report config */
+        var reportConfig = {
+            useTestData: false, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            debug: false, /* true will output additional info in the cells to help identify the code in reportService that populates them */
+
+            averageCalculationMode: 'los', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
+            
+            notApplicableLabel: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+            notApplicableIncludeInCalc: true, /* whether to include the N/A columns in the average aggregated calculation for summary */
+            colorPersonSegmentCell: false, /* use to drive the addition of css class "with-color" - Dunking does not want them colored but other customers might want it */
+            
+            colSummaryHeaderMaxLength: 75, /* max length of Summary column header (Tot Completion For ...) */
+            colGroupHeaderMaxLength: 75, /* max length of group columns headers (Segments) */
+            colChildheaderMaxLength: 55, /* max length of child columns headers (Learning objects) */
+            rowGroupHeaderMaxLength: 25, /* max length of PC/store name */
+            rowChildheaderMaxLength: 22 /* max length of Person name */
+        };
+
+        /* custom report wizard config */
+        var customReportWizardConfig = {
+            useTestData: false, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
+            maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
+        };
+
+        /* custom report config */
+        var customReportConfig = {
+            useTestData: false /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+        };
+
+        /* savedReportsConfig */
+        var savedReportsConfig = {
+            useTestData: false /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+        };
+
         var enableLog = function() {
             config.common.logEnabled = true;
         };
 
         var getCommonConfig = function() {
             return config.common;
+        };
+
+        var getReportConfig = function() {
+		    return reportConfig;
+	    };
+        var getCustomReportWizardConfig = function() {
+		    return customReportWizardConfig;
+	    };
+        var getCustomReportConfig = function () {
+            return customReportConfig;
+        };
+
+        var getSavedReportsConfig = function () {
+            return savedReportsConfig;
         };
 
         var getBrands = function() {
@@ -196,6 +249,10 @@
 			getCommonConfig: getCommonConfig,
             getBrands: getBrands,
             getBrandConfig: getBrandConfig,
+            getReportConfig: getReportConfig,
+            getCustomReportWizardConfig: getCustomReportWizardConfig,
+            getCustomReportConfig: getCustomReportConfig,
+            getSavedReportsConfig: getSavedReportsConfig,
             setParam: setParam,
             setSessionParam: setSessionParam,
             sessionParamsSet: sessionParamsSet,

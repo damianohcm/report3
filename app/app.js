@@ -264,8 +264,7 @@
 	app.factory('utilsService', ['configService', services.utilsService]);
 	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
-	app.factory('reportServiceConfig', ['utilsService', services.reportServiceConfig]);
-	app.factory('reportService', ['utilsService', 'reportServiceConfig', services.reportService]);
+	app.factory('reportService', ['utilsService', 'configService', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
 	app.component('modalSaveComponent', components.modalSaveComponent);
