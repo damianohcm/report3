@@ -91,9 +91,11 @@
             ]
         };
 
+        var _useTestData = true;
+
         /* report config */
         var reportConfig = {
-            useTestData: false, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
             debug: false, /* true will output additional info in the cells to help identify the code in reportService that populates them */
 
             averageCalculationMode: 'los', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
@@ -111,19 +113,19 @@
 
         /* custom report wizard config */
         var customReportWizardConfig = {
-            useTestData: false, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
             maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
             maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
         };
 
         /* custom report config */
         var customReportConfig = {
-            useTestData: false /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            useTestData: _useTestData /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
         };
 
         /* savedReportsConfig */
         var savedReportsConfig = {
-            useTestData: false /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            useTestData: _useTestData /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
         };
 
         var enableLog = function() {

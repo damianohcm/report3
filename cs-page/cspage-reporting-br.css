@@ -24,10 +24,18 @@
   padding: 2px 0 10px 0 !important;
   background: url("../../img/spoonssmpink-bg.png") no-repeat center fixed;
   background-size: cover;
-  font-size: 12px; }
+  font-size: 12px;
+  margin-top: -20px; }
 
 #page-header {
   text-align: center; }
 
 #page-container {
   margin: 0 auto; }
+
+div[id*="pnlCustomFooter"] {
+  padding: 0 !important;
+  position: fixed;
+  bottom: 7px;
+  left: 7px;
+  width: 99%; }

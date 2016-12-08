@@ -17,6 +17,30 @@
 			}
 		});
 
+		var backToReportingHome = function backToReportingHome() {
+			// reset reportId param so that it starts clear next time
+			configService.setParam('reportId', -1);
+			
+			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+				.replace('[organization]', sessionParams.organization)
+				.replace('[brand]', params.brand);
+			window.parent.location = path;
+		};
+
+		var backToSavedReports = function backToSavedReports() {
+			// reset reportId param so that it starts clear next time
+			configService.setParam('reportId', -1);
+
+			var path = '#/savedReports?brand=[brand]'
+				.replace('[brand]', params.brand);
+			window.location = path;
+
+
+			// reset reportId param so that it starts clear next time
+			configService.setParam('reportId', -1);
+		};
+
 		/**
 		 * @method cancel
 		 * @description
@@ -25,17 +49,20 @@
 		$scope.cancel = function cancel() {
 			//this.hide();
 			// TODO: need to prompt user for confirmation in case there are pending changes
+			$scope.currentBackAction = backToReportingHome;
 			if ($scope.modelIsDirty || $scope.model.needsSave) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
-				// reset reportId param so that it starts clear next time
-				configService.setParam('reportId', -1);
+				backToReportingHome();
+			}
+		};
 
-				var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
-					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
-					.replace('[organization]', sessionParams.organization)
-					.replace('[brand]', params.brand);
-				window.parent.location = path;
+		$scope.goToSavedReports = function goToSavedReports() {
+			$scope.currentBackAction = backToSavedReports;
+			if ($scope.modelIsDirty || $scope.model.needsSave) {
+				$scope.modalConfirmOpen('closeWizard');
+			} else {
+				backToSavedReports();
 			}
 		};
 
@@ -549,12 +576,7 @@ var modalConfirmStrategies = {
 		cancelCaption: 'Cancel',
 		okCaption: 'Close Wizard',
 		okAction: function() {
-			// reset reportId param so that it starts clear next time
-			configService.setParam('reportId', -1);
-			
-			var path = '#/?brand=[brand]'
-					.replace('[brand]', params.brand);
-			$location.path(path);
+			$scope.currentBackAction();
 		}
 	},
 	reportNameConflict: {

@@ -602,7 +602,7 @@ div.height-40 {
 .report-menu-container {
     width: 1000px;
     background-color: rgba(240,224,198,0.8);
-    margin: 50px auto;
+    margin: 30px auto 0px auto;
 	text-align: center;
     padding-bottom: 5px;
 }
@@ -613,7 +613,7 @@ div.height-40 {
     font-weight: 900;
     color: #FFFFFF;
     text-shadow: 0px 2px 4px black;
-    padding-top: 50px;
+    padding-top: 30px;
 }
 
 .report-menu-container .subtitle {
@@ -626,7 +626,7 @@ div.height-40 {
 
 .report-menu {
     display: table;
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 5px;
 }
 .report-menu-row {
@@ -844,8 +844,8 @@ input.required {
 #table-vert-scroll {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 700px;
-  max-height: 700px;
+  height: 600px;
+  max-height: 600px;
   /*outline: dashed 2px green;*/
 }
 /* end: css for horiz table scrolling */

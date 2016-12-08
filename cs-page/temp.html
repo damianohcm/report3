@@ -1,6 +1,6 @@
 <link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/css/cspage-reporting-dd.css">
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;min-height:900px;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
 <span id="intellasync"></span>
 <script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script>
@@ -23,16 +23,26 @@
         console.log('csPageStyle', csPageStyle);
         document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/css/' + csPageStyle + '?' + Math.random());
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
+        window.sizeFrame();
+    };
+
+    window.prevHeight = 0;
+    window.sizeFrame = function() {
+        console.log('sizeFrame');
+        //var availableHeight = 200;
+        var h = document.body.clientHeight;
+        if (h !== window.prevHeight) {
+            window.prevHeight = h;// > 500 ? h : 500;
+            var reduced = window.prevHeight > 200 ? window.prevHeight - 100 : window.prevHeight;
+            var hpx = reduced + 'px';
+			console.log('cspage height change - setting iframe height to', hpx);
+            $('#iframeTar').attr('style', 'width: 100%;height:' + hpx + ';max-height:' + hpx);
+        }
     };
 
     window.onresize = function(event) {
-        //console.log('sizeFrame');
-        sizeFrame();
+        window.sizeFrame();
     };
-
-    function sizeFrame() {
-        var availableHeight = 200;
-    }
 
     $(function() {
         var credsCheck = setInterval(function(){
