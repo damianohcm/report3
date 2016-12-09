@@ -4,3 +4,14 @@
   font-weight: normal;
   font-style: normal;
 }
+.loading-msg {
+  background-color:rgba(246, 234, 218, 0.87);
+    padding: 0 15px 15px;
+    text-align: center;
+}
+h1 {
+  margin: 0;
+  padding: 0.67em 0;
+  font: 42px 'Thirsty Script', Helvetica, Arial, sans-serif;
+  color: #402500;
+}

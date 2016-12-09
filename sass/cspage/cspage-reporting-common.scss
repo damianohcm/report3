@@ -1,7 +1,7 @@
 #mainContainer {
   padding: 2px 0 10px 0 !important;
-  background: url($csPageBackgroundImg) no-repeat center fixed;
-  background-size: cover;
+  background: url($csPageBackgroundImg) repeat;
+  background-size: initial;
   font-size: 12px;
   margin-top: -20px;
 }

@@ -22,8 +22,8 @@
 
 #mainContainer {
   padding: 2px 0 10px 0 !important;
-  background: url("../../img/coffee-bg.jpg") no-repeat center fixed;
-  background-size: cover;
+  background: url("../../img/coffee-bg.jpg") repeat;
+  background-size: initial;
   font-size: 12px;
   margin-top: -20px; }
 

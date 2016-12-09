@@ -9,7 +9,7 @@
 <link id="csPageStyle" rel="stylesheet" href="cspage-reporting-dd.css"/>
 <!--link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/css/cspage-reporting-dd.css"/-->
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/loading.html"></iframe>
 </div>
 <span id="intellasync"></span>
 <!--script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script-->
@@ -33,34 +33,38 @@
         //document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/css/' + csPageStyle + '?' + Math.random());
         document.getElementById('csPageStyle').setAttribute('href', '' + csPageStyle + '?' + Math.random());
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
-        window.sizeFrame();
+        setTimeout(function() {
+            window.sizeFrame();
+        }, 250);
     };
 
     window.prevHeight = 0;
     window.sizeFrame = function() {
-        console.log('sizeFrame');
-        //var availableHeight = 200;
-        var h = document.body.clientHeight;
+        var h = Number($(window).height());
         if (h !== window.prevHeight) {
             window.prevHeight = h;// > 500 ? h : 500;
-            var reduced = window.prevHeight > 200 ? window.prevHeight - 100 : window.prevHeight;
+            var reduced = window.prevHeight > 250 ? window.prevHeight - 250 : window.prevHeight;
             var hpx = reduced + 'px';
-			console.log('cspage height change - setting iframe height to', hpx);
+			//console.log('cspage height change - window height is [window] - setting iframe height to '.replace('[window]', window.prevHeight) + hpx);
             $('#iframeTar').attr('style', 'width: 100%;height:' + hpx + ';max-height:' + hpx);
         }
     };
-
-    window.onresize = function(event) {
-        window.sizeFrame();
-    };
     
     $(function() {
-        var _company_key = 'Rgy9IrAKS1rp49rk6oZhPUiCf';
-        var _sync_url = 'https://sync2-dev.tribridge-amplifyhr.com/';
-        var userData = {
-            csodToken: 'testtoken',
-            organization: 'dd' // can be 'dd', 'br' or 'ddbr' (if ddbr we wont show the "View Report For ..." button)
-        };
+
+        $(window).resize(function(event) {
+            window.sizeFrame();
+        });
+
+        window.sizeFrame();
+
+/* only for running this localling the following code is needed */
+var _company_key = 'Rgy9IrAKS1rp49rk6oZhPUiCf';
+var _sync_url = 'https://sync2-dev.tribridge-amplifyhr.com/';
+var userData = {
+    csodToken: 'testtoken',
+    organization: 'dd' // can be 'dd', 'br' or 'ddbr' (if ddbr we wont show the "View Report For ..." button)
+};
 
         var credsCheck = setInterval(function(){
             
