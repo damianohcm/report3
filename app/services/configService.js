@@ -91,7 +91,7 @@
             ]
         };
 
-        var _useTestData = true;
+        var _useTestData = false;
 
         /* report config */
         var reportConfig = {
@@ -107,7 +107,7 @@
             colSummaryHeaderMaxLength: 75, /* max length of Summary column header (Tot Completion For ...) */
             colGroupHeaderMaxLength: 75, /* max length of group columns headers (Segments) */
             colChildheaderMaxLength: 55, /* max length of child columns headers (Learning objects) */
-            rowGroupHeaderMaxLength: 25, /* max length of PC/store name */
+            rowGroupHeaderMaxLength: 27, /* max length of PC/store name */
             rowChildheaderMaxLength: 22 /* max length of Person name */
         };
 
