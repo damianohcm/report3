@@ -42,8 +42,9 @@
     window.sizeFrame = function() {
         var h = Number($(window).height());
         if (h !== window.prevHeight) {
-            window.prevHeight = h;// > 500 ? h : 500;
-            var reduced = window.prevHeight > 250 ? window.prevHeight - 250 : window.prevHeight;
+            window.prevHeight = h;
+            var factor = 0; // 250 for production
+            var reduced = window.prevHeight > factor ? window.prevHeight - factor : window.prevHeight;
             var hpx = reduced + 'px';
 			//console.log('cspage height change - window height is [window] - setting iframe height to '.replace('[window]', window.prevHeight) + hpx);
             $('#iframeTar').attr('style', 'width: 100%;height:' + hpx + ';max-height:' + hpx);
