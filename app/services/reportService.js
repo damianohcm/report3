@@ -703,22 +703,22 @@
 
 			// check how many uppercase there are. The more uppercase chars, the more we want to truncate as uppercase chars take more space
 			var origStr = (text || '').trim(), origLen = origStr.length;
-			console.log('origLen', origLen);
+			//console.log('origLen', origLen);
 			var str = (origStr.length > maxLen ? origStr.substring(0, maxLen) : origStr).trim();
 			var caps = str.replace(/[^A-Z]/g, '').length;
 			
 			if (caps > 1 && caps < 16)  {
 				var addAllowed = Math.round((16 - caps) * 0.7);
-				console.log('addAllowed', addAllowed);
+				//console.log('addAllowed', addAllowed);
 				var newMax = str.length + addAllowed;
 				newMax = newMax > 35 ? 35 : newMax;
-				console.log('newMax', newMax);
+				//console.log('newMax', newMax);
 				str = origStr.substring(0, newMax);
 				
 			}
 
 			var diffFromOrig = origLen - str.length;
-			console.log('diffFromOrig', diffFromOrig);
+			//console.log('diffFromOrig', diffFromOrig);
 			if (diffFromOrig > 0) {
 				str = str.substring(0, str.length - 4) + ' ...';
 			}

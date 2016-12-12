@@ -81,7 +81,6 @@
 							reportId = getRouteParamValue($routeParams, 'reportId', '-1').toLowerCase();
 
 						if (['/', '/report', '/customReport', '/customReportWizard'].indexOf(routePath) > -1) {
-							////$rootScope.reportType = reportType;
 							configService.setParam('brand', brand);
 
 							if (reportType.length > 0) {

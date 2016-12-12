@@ -101,7 +101,6 @@
 			tableFixed: angular.element(document.getElementById('table-fixed')),
 			tableScroll: angular.element(document.getElementById('table-scroll')),
 			tableHorizScrollContainer: angular.element(document.getElementById('table-horiz-scroll')),
-			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll')),
 			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll'))
 		};
 
