@@ -32,6 +32,21 @@
 			window.parent.location = path;
 		};
 
+		var backToReportingHome = function backToReportingHome() {
+			// reset reportId param so that it starts clear next time
+			configService.setParam('reportId', -1);
+			
+			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
+				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
+				.replace('[organization]', sessionParams.organization)
+				.replace('[brand]', params.brand);
+			window.parent.location = path;
+		};
+
+		$scope.goHome = function goHome() {
+			backToReportingHome();
+		};
+
 		$scope.viewReport = function(report) {
 			utilsService.safeLog('viewReport', report.id);
 

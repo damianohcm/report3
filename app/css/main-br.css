@@ -476,6 +476,9 @@ div.height-40 {
   width: 95%;
   max-width: 95%; }
 
+.banner-narrow {
+  width: 1100px !important; }
+
 .container {
   border-radius: 8px; }
 
@@ -574,7 +577,7 @@ div.height-40 {
 
 /* report home */
 .report-menu-container {
-  width: 1000px;
+  width: 1100px;
   background-color: rgba(240, 224, 198, 0.8);
   margin: 30px auto 0px auto;
   text-align: center;
@@ -810,7 +813,7 @@ input.required {
 /* end: css for fixed headers */
 .wizard-container {
   background-color: #F3F3F3;
-  width: 1000px;
+  width: 1100px;
   margin: 20px auto;
   padding-bottom: 5px;
   text-align: center;
@@ -819,7 +822,8 @@ input.required {
   border-radius: 8px; }
 
 .wizard-header {
-  box-shadow: inset 0px -1px 0px 0px #DFDFDF; }
+  box-shadow: inset 0px -1px 0px 0px #DFDFDF;
+  min-height: 40px; }
 
 .wizard-header .title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -1005,8 +1009,8 @@ input.required {
 .wizard.vertical .content {
   float: right;
   width: 66%;
-  height: 485px;
-  min-height: 485px; }
+  height: 525px;
+  min-height: 525px; }
 
 .wizard .content label {
   display: inline-block;
@@ -1100,7 +1104,7 @@ input.required {
 .scroll-container {
   overflow-x: hidden;
   overflow-y: visible;
-  height: 360px;
+  height: 460px;
   padding-top: 10px;
   box-shadow: inset 0px 1px 0px 0px #DFDFDF; }
 
@@ -1226,7 +1230,7 @@ body.notie .table {
   table-layout: fixed; }
 
 .wizard-container.saved-reports {
-  width: 896px; }
+  width: 1100px; }
 
 .saved-reports-menu .row.menu-item {
   height: 40px;

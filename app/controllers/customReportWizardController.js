@@ -37,12 +37,7 @@
 			window.location = path;
 		};
 
-		/**
-		 * @method cancel
-		 * @description
-		 * Users click on a step directly
-		 */
-		$scope.cancel = function cancel() {
+		$scope.goHome = function goHome() {
 			//this.hide();
 			// TODO: need to prompt user for confirmation in case there are pending changes
 			$scope.currentBackAction = backToReportingHome;

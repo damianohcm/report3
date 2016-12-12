@@ -1,3 +1,23 @@
+<div class="banner banner-narrow">
+    <img src="../img/learning-path-icon.png"/>
+    <h2>{{::wizardTitle}}</h2>
+
+    <button class="banner-button return" ng-click="goHome()">
+        <img class="return" src="../img/back-arrow.png"/>
+        <div class="text">Back to <br/><strong>Reporting Center</strong></div>
+    </button>
+    <button class="banner-button return" ng-click="goToSavedReports()">
+        <img class="return" src="../img/back-arrow.png"/>
+        <div class="text">Back to <br/><strong>Saved Reports</strong></div>
+    </button>
+</div>
+
+<div class="container loading-msg" ng-show="loading">
+    <h1>Loading, please wait...</h1>
+    <img src="../img/dd-loader.gif">
+    <!--uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar-->
+</div>
+
 <script type="text/ng-template" id="modalConfirm.html">
     <div class="modal-header">
         <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
@@ -14,11 +34,9 @@
     <div class="wizard vertical">
 
         <div class="wizard-header">
-            <button type="button" class="close" ng-click="cancel()">
+            <button type="button" class="close" ng-show="false" ng-click="cancel()">
                 <i class="fa fa-arrow-left"></i> Exit
             </button>
-
-            <div class="title">{{::wizardTitle}}</div>
         </div>
 
         <div class="wizard-body">

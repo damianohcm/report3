@@ -1,6 +1,6 @@
 .wizard-container {
   background-color: #F3F3F3;
-  width: 1000px;
+  width: 1100px;
   margin: 20px auto;
   padding-bottom: 5px;
   text-align: center;
@@ -10,6 +10,7 @@
 
 .wizard-header {
     box-shadow: inset 0px -1px 0px 0px #DFDFDF;
+    min-height:40px;
 }
 
 .wizard-header .title {
@@ -235,8 +236,8 @@
 {
     float: right;
     width: 66%;
-    height: 485px;
-    min-height: 485px;
+    height: 525px;
+    min-height: 525px;
 }
 
 .wizard .content label
@@ -346,7 +347,7 @@
 .scroll-container {
     overflow-x: hidden;
     overflow-y: visible;
-    height: 360px;
+    height: 460px;
     padding-top: 10px;
     box-shadow: inset 0px 1px 0px 0px #DFDFDF;
 }
