@@ -35,10 +35,6 @@
 			var path = '#/savedReports?brand=[brand]'
 				.replace('[brand]', params.brand);
 			window.location = path;
-
-
-			// reset reportId param so that it starts clear next time
-			configService.setParam('reportId', -1);
 		};
 
 		/**
@@ -168,7 +164,7 @@
 		});
 
 		// wizard setup
-		$scope.wizard = wizardServiceFactory.getService('customReportWizardController');
+		$scope.wizard = wizardServiceFactory.getService();
 
 		/**
 		 * @method previousStep
@@ -252,17 +248,6 @@
 			//});
 		};
 
-		$scope.onCourseAdded = function() {
-			$scope.model.courses = _.filter($scope.model.courses, function(c) {
-				return c.id !== undefined;
-			});
-			$scope.wizard.activeStep.validateAction();
-			//utilsService.safeLog('onCourseAdded', JSON.stringify($scope.model.courses));
-		};
-		$scope.onCourseRemoved = function() {
-			$scope.wizard.activeStep.validateAction();
-		};
-
 		/**
 		 * @method finishStep
 		 * @description
@@ -284,6 +269,16 @@
 		};
 
 		/**
+		 * @method clickOnStep
+		 * @description
+		 * Users click on a step directly
+		 */
+		$scope.navigationAction = function navigationAction(item) {
+			utilsService.safeLog('navigationAction');
+			item.action();
+		};
+
+		/**
 		 * @method backToStepById
 		 * @description
 		 * Users click on a step directly
@@ -302,14 +297,15 @@
 			}
 		};
 
-		/**
-		 * @method clickOnStep
-		 * @description
-		 * Users click on a step directly
-		 */
-		$scope.navigationAction = function navigationAction(item) {
-			utilsService.safeLog('navigationAction');
-			item.action();
+		$scope.onCourseAdded = function() {
+			$scope.model.courses = _.filter($scope.model.courses, function(c) {
+				return c.id !== undefined;
+			});
+			$scope.wizard.activeStep.validateAction();
+			//utilsService.safeLog('onCourseAdded', JSON.stringify($scope.model.courses));
+		};
+		$scope.onCourseRemoved = function() {
+			$scope.wizard.activeStep.validateAction();
 		};
 
 		// add steps items

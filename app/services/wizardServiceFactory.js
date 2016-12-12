@@ -154,23 +154,9 @@
     /**
      * @method getService
      * @description 
-     * Returns a service instance associated with a controller (using a controll key)
+     * Returns a new service instance
      */
-    var getService = function(controllerKey) {
-        // // singleton, do not recreate instance ifit already exists
-        // if (!_instances[controllerKey]) {
-
-        //     // create service instance
-        //     var instance = new WizardModel();
-            
-        //     // save instance
-        //     _instances[controllerKey] = instance;
-
-        //     return instance;
-        // } else {
-        //     return _instances[controllerKey];
-        // }
-
+    var getService = function() {
         return new WizardModel();
     };
   
