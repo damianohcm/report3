@@ -16,6 +16,9 @@
 				pathId: -1,
 				title: 'Unknown report id'
 			};
+		
+		// important: set reportConfig to use by reportService
+		reportService.setReportConfig(customReportConfig);
 
 		// utilsService.safeLog('reportController params', params);
 		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);

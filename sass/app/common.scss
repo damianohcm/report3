@@ -357,8 +357,14 @@ td.hidden {
 }*/
 
 .row-text {
-	width: 135px;
-	height:100%;
+	width: 210px;
+	max-width: 210px;
+	height: 100%;
+}
+
+.row-text.wider {
+	width: 230px;
+	max-width: 230px;
 }
 
 .col-group > .row-text {
@@ -403,16 +409,24 @@ td.col-group.person > .row-text {
 td.person > .row-text {
 	margin-left: 24px;
 }
-td.person > .row-text > span.value {
+td.person > .row-text > .value {
 	color: $black;
 }
-td.person > .row-text > span.person {
+td.person > .row-text > .person {
+    display: block;
 	font-size: 16px;
 	color: $black;
 }
-td.person > .row-text > span.person-title {
-	display: block;
+td.person > .row-text > .person-title {
+	display: inline-block;
 	/*color: #4A4A4A; */
+	color: lighten($black, 40%);
+}
+td.person > .row-text > .person-hire-date {
+	float: right;
+    line-height: 2;
+	/*color: #4A4A4A; */
+    font-size: 0.8em;
 	color: lighten($black, 40%);
 }
 

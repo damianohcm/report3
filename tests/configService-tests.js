@@ -243,7 +243,9 @@ describe('configService', () => {
                 'colGroupHeaderMaxLength',
                 'colChildheaderMaxLength',
                 'rowGroupHeaderMaxLength',
-                'rowChildheaderMaxLength'
+                'rowChildheaderMaxLength',
+
+                'displayPersonHireDate'
             ]);
 
             expect(reportConfig.useTestData).to.be.a('boolean');
@@ -265,6 +267,8 @@ describe('configService', () => {
             expect(reportConfig.colChildheaderMaxLength).to.be.at.least(1);
             expect(reportConfig.rowGroupHeaderMaxLength).to.be.at.least(1);
             expect(reportConfig.rowChildheaderMaxLength).to.be.at.least(1);
+            
+            expect(reportConfig.displayPersonHireDate).to.be.a('boolean');
             
             done();
         });
@@ -303,10 +307,43 @@ describe('configService', () => {
             //console.log('customReportConfig keys', Object.keys(customReportConfig));
 
             expect(customReportConfig).to.have.all.keys([
-                'useTestData'
+                'useTestData', 
+                'debug', 
+                'averageCalculationMode', 
+                'notApplicableLabel', 
+                'notApplicableIncludeInCalc', 
+                'colorPersonSegmentCell', 
+
+                'colSummaryHeaderMaxLength',
+                'colGroupHeaderMaxLength',
+                'colChildheaderMaxLength',
+                'rowGroupHeaderMaxLength',
+                'rowChildheaderMaxLength',
+
+                'displayPersonHireDate'
             ]);
 
             expect(customReportConfig.useTestData).to.be.a('boolean');
+            expect(customReportConfig.debug).to.be.a('boolean');
+            expect(customReportConfig.averageCalculationMode).to.be.a('string');
+
+            expect(customReportConfig.notApplicableLabel).to.be.a('string');
+            expect(customReportConfig.notApplicableIncludeInCalc).to.be.a('boolean');
+            expect(customReportConfig.colorPersonSegmentCell).to.be.a('boolean');
+
+            expect(customReportConfig.colSummaryHeaderMaxLength).to.be.a('number');
+            expect(customReportConfig.colGroupHeaderMaxLength).to.be.a('number');
+            expect(customReportConfig.colChildheaderMaxLength).to.be.a('number');
+            expect(customReportConfig.rowGroupHeaderMaxLength).to.be.a('number');
+            expect(customReportConfig.rowChildheaderMaxLength).to.be.a('number');
+
+            expect(customReportConfig.colSummaryHeaderMaxLength).to.be.at.least(1);
+            expect(customReportConfig.colGroupHeaderMaxLength).to.be.at.least(1);
+            expect(customReportConfig.colChildheaderMaxLength).to.be.at.least(1);
+            expect(customReportConfig.rowGroupHeaderMaxLength).to.be.at.least(1);
+            expect(customReportConfig.rowChildheaderMaxLength).to.be.at.least(1);
+            
+            expect(customReportConfig.displayPersonHireDate).to.be.a('boolean'); 
     
             done();
         });

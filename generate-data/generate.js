@@ -117,6 +117,7 @@ let people = fakePeople.slice(0, howManyPeople).map((p, index) => {
         id: p.id,
         name: p.name,
         title: 'Crew',
+        hire_date: '2016-03-25',
         org_guid: 75, 
         los: []
     };

@@ -7,6 +7,7 @@
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
+			reportConfig = configService.getReportConfig(),
 		 	sessionParams = commonConfig.sessionParams,
 			params = commonConfig.params,
 			brandConfig = configService.getBrandConfig(params.brand),
@@ -15,6 +16,9 @@
 				pathId: -1,
 				title: 'Unknown report id'
 			};
+
+		// important: set reportConfig to use by reportService
+		reportService.setReportConfig(reportConfig);
 
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
@@ -831,7 +835,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		if ($scope.tokenError.length > 0) {
 			alert($scope.tokenError);
 		} else {
-			var what = reportService.reportConfig.useTestData ? 'test' : 'live';
+			var what = reportConfig.useTestData ? 'test' : 'live';
 			getData(what);
 		}
 	};

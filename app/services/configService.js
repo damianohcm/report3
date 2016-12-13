@@ -108,7 +108,9 @@
             colGroupHeaderMaxLength: 75, /* max length of group columns headers (Segments) */
             colChildheaderMaxLength: 55, /* max length of child columns headers (Learning objects) */
             rowGroupHeaderMaxLength: 27, /* max length of PC/store name */
-            rowChildheaderMaxLength: 22 /* max length of Person name */
+            rowChildheaderMaxLength: 22, /* max length of Person name */
+
+            displayPersonHireDate: false, /* currently for custom report only so setting false here and override in customReportConfig */
         };
 
         /* custom report wizard config */
@@ -119,9 +121,9 @@
         };
 
         /* custom report config */
-        var customReportConfig = {
-            useTestData: _useTestData /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
-        };
+        var customReportConfig = JSON.parse(JSON.stringify(reportConfig));
+        customReportConfig.useTestData = _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+        customReportConfig.displayPersonHireDate = true; /* set to true to display the hire_date value next to the person title in the report */
 
         /* savedReportsConfig */
         var savedReportsConfig = {

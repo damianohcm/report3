@@ -1,12 +1,13 @@
 (function() {
 
-	var reportService = function(utilsService, configService) {
-		var reportConfig = configService.getReportConfig();
+	var reportService = function(utilsService) {
+		var reportConfig,
 		
-		// label to be used when learning objects are missing
-		// (missing los are considered N/A - not applicable)
-		var notApplicableLabel = reportConfig.notApplicableLabel,
-			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc;
+			// label to be used when learning objects are missing
+			// (missing los are considered N/A - not applicable)
+			notApplicableLabel,
+			notApplicableIncludeInCalc,
+			_personSegmentCellCssWithColor;
 
 		var private = {
 		};
@@ -17,6 +18,32 @@
 			} else {
 				return '';
 			}
+		};
+
+		/**
+		 * @method toggleAverageCalculationMode
+		 * @description
+		 * Toggles reportConfig.averageCalculationMode from 'segments' to 'los' or viceversa.
+		 * After toggling, you have to update calculations on model by calling reportService.recalculate($scope.model) from the controller.
+		 */
+		var toggleAverageCalculationMode = function() {
+			// toggle average calculation from normal to weighted and viceversa
+			var current = reportConfig.averageCalculationMode;
+			//utilsService.safeLog('averageCalculationMode: current: ' + current);
+			reportConfig.averageCalculationMode = (current === 'los' ? 'segments' : 'los');
+			return reportConfig.averageCalculationMode;
+		};
+
+		/**
+		 * @method setReportConfig
+		 * @description
+		 * Call to set the reportConfig to use.
+		 */
+		var setReportConfig = function(value) {
+			reportConfig = value;
+			notApplicableLabel = reportConfig.notApplicableLabel,
+			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc;
+			_personSegmentCellCssWithColor = reportConfig.colorPersonSegmentCell ? ' with-color' : '';
 		};
 
 		// helper to get % cell css
@@ -71,7 +98,6 @@
 		};
 
 		// helper to get person segment cell css
-		var _personSegmentCellCssWithColor = reportConfig.colorPersonSegmentCell ? ' with-color' : '';
 		private.getPersonSegmentCellCss = function(cell) {
 			if (!cell || typeof cell !== 'object' || !cell.hasOwnProperty('value')) {
 				throw Error('getPersonSegmentCellCss: Invalid argument');
@@ -145,6 +171,7 @@
 						value: private.escapeSpecialChars(personName),
 						valueTrunc: private.truncateText(personName, reportConfig.rowChildheaderMaxLength),
 						value2: person.title,
+						value3: reportConfig.displayPersonHireDate ? (person.hire_date || person.hireDate || 'Unknown') : undefined,
 						css: 'person',
 						cssValueSpan: 'person'
 					},
@@ -995,22 +1022,9 @@
 
 			return model;
 		};
-
-		/**
-		 * @method toggleAverageCalculationMode
-		 * @description
-		 * Toggles reportConfig.averageCalculationMode from 'segments' to 'los' or viceversa.
-		 * After toggling, you have to update calculations on model by calling reportService.recalculate($scope.model) from the controller.
-		 */
-		var toggleAverageCalculationMode = function() {
-			// toggle average calculation from normal to weighted and viceversa
-			var current = reportConfig.averageCalculationMode;
-			//utilsService.safeLog('averageCalculationMode: current: ' + current);
-			reportConfig.averageCalculationMode = (current === 'los' ? 'segments' : 'los');
-			return reportConfig.averageCalculationMode;
-		};
 		
 		return {
+			setReportConfig: setReportConfig,
 			getModel: getModel,
 			recalculate: recalculate,
 			private: private,
