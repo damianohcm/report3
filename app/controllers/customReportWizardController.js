@@ -9,7 +9,11 @@
 		var commonConfig = configService.getCommonConfig(),
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params,
-			customReportWizardConfig = configService.getCustomReportWizardConfig();
+			customReportWizardConfig = configService.getCustomReportWizardConfig(),
+			brandConfig = configService.getBrandConfig(params.brand),
+			reportStrategies = brandConfig.reportStrategies,
+			/* get learning-path strategy. We need lpath_id in case user select "Entire Learning Path" in step 3 */
+			reportConfigStrategy = reportStrategies['learning-path']; 
 		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
@@ -88,6 +92,7 @@
 			hiredAfter: undefined,
 			// step 3
 			entireLearningPath: false,
+			pathId: undefined,
 			courses: [],
 			needsSave: false
 		};
@@ -517,10 +522,13 @@ $scope.datePickerOptions = {
 
 		$scope.onEntireLearningPathClick = function() {
 			utilsService.safeLog('onEntireLearningPathClick', $scope.model.entireLearningPath);
+
+			// TODO: if entire learning path is selected, we need to set the pathId parameter on the model and ignore courses
 			if ($scope.model.entireLearningPath) {
-				$scope.model.courses = $scope.lookupCourses;
-			} else {
 				$scope.model.courses = [];
+				$scope.model.pathId = reportConfigStrategy.pathId;
+			} else {
+				$scope.model.pathId = undefined;
 			}
 
 			$timeout(function() {
@@ -601,7 +609,16 @@ $scope.modalConfirmOpen = function(w) {
 			$scope.data = data;
 			$scope.model.stores = data.stores;
 			$scope.lookupStores =  data.stores;
-			$scope.lookupCourses =  data.courses;
+			
+			var courseNameMaxLen = 80;
+			$scope.lookupCourses =  _.map(data.courses, function(course) {
+				var courseName = (course.name || '').trim();
+				return {
+					id: course.id,
+					name: courseName,
+					truncName: (courseName.length > courseNameMaxLen ? courseName.substring(0, courseNameMaxLen).trim() + ' ...' : courseName)
+				};
+			});
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportModel) {

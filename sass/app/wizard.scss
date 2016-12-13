@@ -452,10 +452,9 @@ tags-input {
 }
 tags-input .tags {
     box-shadow: none;
-    width: 455px;
+    width: 660px;
     border: 2px solid #9B9B9B;
     border-radius: 5px;
-    margin-left: 12px;
 }
 
 tags-input .tags .tag-item {
@@ -472,8 +471,12 @@ tags-input .tags .tag-item:hover {
 }
 
 /* wizard summary */
+.scroll-container > .scroll-pane.wizard-summary > div {
+    margin-bottom: 7px;;
+}
 .scroll-container > .scroll-pane.wizard-summary label {
     font-weight: bold;
+    display: block;
 }
 .scroll-container > .scroll-pane.wizard-summary .btn.pc {
     border: solid 1px #ccc;

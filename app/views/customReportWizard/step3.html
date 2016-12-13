@@ -23,7 +23,7 @@
             </div>
 
             <div ng-if="!model.entireLearningPath">
-                <label style="float:left; margin-top: 8px;">Search courses</label>
+                <label style="display:block; margin-top: 8px;">Search courses:</label>
                 <!--input type="text" class="text-search" value="Search..." /-->
 
                 <!--input type="text" ng-model="model.courses" 
@@ -36,7 +36,9 @@
                     class="form-control"-->
                 
                 <tags-input style="float:left" ng-model="model.courses" 
-                    display-property="name" key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)" on-tag-removed="onCourseRemoved($tag)">
+                    display-property="truncName" 
+                    text="name" 
+                    key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)" on-tag-removed="onCourseRemoved($tag)">
                     <auto-complete source="getCourses($query)" 
                         min-length="0" 
                         maxResultsToShow="15" 

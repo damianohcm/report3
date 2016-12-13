@@ -22,7 +22,7 @@
 
 		// utilsService.safeLog('reportController params', params);
 		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
-		// utilsService.safeLog('customReportController params.reportModel', params.reportModel);
+		utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
 
 
 		Object.defineProperty($scope, 'tokenError', {
@@ -751,6 +751,7 @@ var getReportParamsModel = function() {
 
 	clone.reportName = $scope.reportTitle;
 	
+	utilsService.safeLog('getReportParamsModel clone', clone, true);
 	return JSON.stringify(clone);
 };
 /* end: custom report code */
@@ -895,17 +896,10 @@ var getReportParamsModel = function() {
 					});
 				//}
 			} else {
-				//var fileName = 'data/report.json?' + Math.random();
-				//var fileName = 'data/report-avg.json?' + Math.random();
-				//var fileName = 'data/report-generated1.json?' + Math.random();
-				// //var fileName = 'data/report-generated2.json?' + Math.random();
-				// //var fileName = 'data/single-pc.json?' + Math.random();
-				////var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				//var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
+				// just for testing, not using params for test data
+				getReportParamsModel();
 
-				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
-				//var fileName = 'data/from-stag.json?' + Math.random();
 				var fileName = 'data/custom-report.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
 
