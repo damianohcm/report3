@@ -819,7 +819,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
 				var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
-
+				
 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 
 				utilsService.safeLog('fileName', fileName);

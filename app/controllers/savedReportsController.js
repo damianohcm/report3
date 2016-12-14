@@ -48,8 +48,8 @@
 		};
 
 		$scope.viewReport = function(report) {
-			utilsService.safeLog('viewReport', report.id);
-
+			utilsService.safeLog('viewReport', report.id, true);
+			
 			configService.setParam('reportId', report.id);
 			var reportModel = typeof report.model === 'string' ? JSON.parse(report.model) : report.model;
 			reportModel.reportName = report.name;
@@ -119,7 +119,7 @@
 				for (var i = howMany; --i > 0;) {
 					var id = howMany - i;
 					$scope.model.reports.push({
-						id: 'custom-report-' + id,
+						id: id,
 						name: 'My custom report name ' + id,
 						statusMsg: 'Modified mm/dd/yyyy'
 							.replace('mm', getRandomInt(1, 12))
@@ -128,6 +128,21 @@
 						isLocked: false,
 						model: {
 							// fake, just for testing
+							stores: [],
+							audience: {
+								id: 1,
+								text: 'All Store Personnel'
+							},
+							hired: {
+								id: 1,
+								text: 'Since the beginning of time',
+								otherField: undefined
+							},
+							hiredAfter: undefined,
+							entireLearningPath: false,
+							pathId: undefined,
+							courses: [],
+							needsSave: false
 						}
 					});
 				}

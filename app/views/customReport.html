@@ -35,7 +35,8 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-warning cancel" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-            <button class="btn btn-primary ok" type="button" ng-click="$ctrl.ok()">Save</button>
+            <button class="btn btn-primary ok" type="button" ng-click="$ctrl.data.saveAsNew = false; $ctrl.ok()">{{$ctrl.data.okCaption}}</button>
+            <button class="btn btn-primary ok" type="button" ng-click="$ctrl.data.saveAsNew = true; $ctrl.ok()" ng-show="$ctrl.data.reportId > -1">Save as New</button>
         </div>
     </script>
     <script type="text/ng-template" id="modalConfirm.html">

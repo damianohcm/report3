@@ -42,6 +42,12 @@
 				return sessionParams.csBaseUrl;
 			}
 		});
+
+		Object.defineProperty($scope, 'reportId', {
+			get: function() {
+				return params.reportId;
+			}
+		});
 		
 		$scope.needsSave = params.reportModel.needsSave;
 
@@ -939,7 +945,7 @@ $scope.editCustomReport = function() {
 	document.location = wizardPath;
 };
 
-$scope.saveCustomReport = function() {
+$scope.saveCustomReport = function(saveAsNew) {
 	var model = getReportParamsModel();
 	clonedModel = JSON.parse(JSON.stringify(model));
 	delete clonedModel.user;
@@ -975,6 +981,15 @@ $scope.saveCustomReport = function() {
 		};
 		
 		var apiEndPoint = configService.apiEndPoints.customReport();
+
+		if (saveAsNew) {
+			//utilsService.safeLog('saving as new', true);
+			params.reportId = -1;
+			params.reportModel.needsSave = true;
+			$scope.needsSave = params.reportModel.needsSave;
+			configService.setParam('reportModel', params.reportModel);
+			configService.setParam('reportId', params.reportId);
+		}
 		
 		if (params.reportId > -1) {
 			// existing report, update using PUT
@@ -993,8 +1008,10 @@ $scope.saveCustomReport = function() {
 
 /* begin: modal save code */
 $scope.modalSaveData = {
-	title: 'Save New Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
-	reportName: $scope.reportTitle
+	reportId: params.reportId,
+	title: (params.reportId > -1 ? 'Update' : 'Save New') + ' Report', // TODO: might have to change title value depending if it's brand new report or existing report being modified
+	reportName: $scope.reportTitle,
+	okCaption: params.reportId > -1 ? 'Update' : 'Save'
 };
 
 $scope.modalSave = {
@@ -1023,7 +1040,7 @@ $scope.modalSave = {
 			$scope.reportTitle = data.reportName;
 			$scope.title = data.reportName;
 			$scope.model.totCompletionTitle = commonConfig.totCompletionTitlePrefix + $scope.reportTitle;
-			$scope.saveCustomReport();
+			$scope.saveCustomReport(data.saveAsNew);
 		}, function () {
 			utilsService.safeLog('Modal dismissed at');
 		});
