@@ -44,8 +44,9 @@
 		 */
 		instance.fastLoop = function fastLoop(items, cb) {
 			if (items) {
-				for (var i = items.length; --i >= 0;) {
-					cb(items[items.length - i - 1], items.length - i);
+				var len = items.length;
+				for (var i = len; --i >= 0;) {
+					cb(items[len - i - 1], len - i);
 				}
 			}
 		};

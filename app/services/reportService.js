@@ -151,18 +151,20 @@
 			if (!segments || typeof segments !== 'object' || segments.length < 1 
 				|| !person || typeof person !== 'object' 
 				|| !person.hasOwnProperty('name') || !person.hasOwnProperty('title') || !person.hasOwnProperty('los')) {
+				debugger;
 				throw Error('getPersonRow: Invalid arguments');
 			} else {
 
 				utilsService.safeLog('getPersonRow', segments.length + ' ' + person.name);
-				utilsService.safeLog('getPersonRow segments', JSON.stringify(segments));
-				utilsService.safeLog('getPersonRow person', JSON.stringify(person));
+				utilsService.safeLog('getPersonRow segments', segments);
+				utilsService.safeLog('getPersonRow person', person);
 
-				var personName = (person.name);
+				var personName = (person.name),
+					personId = person.id;
 
 				// init row and add first column for store name
 				var row = {
-					id: person.id,
+					id: personId,
 					isChild: true,
 					show: true, /* by default this is true, but the row will be hidden because the parent store row will have isCollapsed true */
 					category: {
@@ -187,12 +189,17 @@
 
 				// loop through each segment
 				utilsService.fastLoop(segments, function(segment) {
+					var segmentId = Number(segment.id);
+
+// if (person.name === 'Jay Patel' && segment.id === 1) {
+// 	debugger;
+// }
 
 					// init cell
 					var cell = {
 						isGroup: true,
-						key: segment.id,
-						id: segment.id,
+						key: segmentId,
+						id: segmentId,
 						value: 0,
 						suffix: '%'
 					};
@@ -202,35 +209,59 @@
 
 					var currentLos = _.filter(person.los, function(lo) {
 						if (!lo) {
-							utilsService.safeLog('WARNING: person.lo is null', person);
+							var errMsg = 'reportService: WARNING: person.lo is null';
+							utilsService.safeLog(errMsg, person);
+							alert(errMsg);
 						}
-						return lo && lo.segmentId === segment.id;
+						return lo.segmentId === segment.id;
 					});
 
-					if (currentLos && currentLos.length > 0) {
+					if (currentLos.length > 0) {
 						// add child cells (visibility is controlled by the child columns)
 						utilsService.fastLoop(segment.los, function(lo) {
+// if (person.name === 'Jay Patel' && segment.id === 1) {
+// 	debugger;
+// }
 							var personLo = _.find(currentLos, function(plo) {
 								return plo.id === lo.id;
 							});
+
+// if (!personLo && person.name === 'Jay Patel' && segment.id === 1) {
+// 	console.log('reportService: debugging: segment is', segment.id, segment.name, currentLos.length);
+// 	console.log('reportService: debugging: segments.lo match not found in person los', person.name, lo.id);
+// }
 							
 							// if person lo is missing, we assume N/A (which is -1) for the lo
 							var loValue = personLo ? personLo.value : -1;
 
 							// child cell
-							var childCell = JSON.parse(JSON.stringify(private.personLoCells[loValue]));
+							var childCell;
+							try {
+								loValue = Number(loValue);
+								childCell = JSON.parse(JSON.stringify(private.personLoCells[loValue]));
+							} catch (e) {
+								console.log('reportService.js: Exception parsing json', e);
+								debugger;
+								alert(e);
+							}
 							childCell.parentId = segment.id;
 							childCell.id = lo.id;
 							childCell.key = childCell.parentId + '_' + childCell.id;
 							row[childCell.key] = childCell;
 						});
 					} else {
+// if (person.name === 'Jay Patel' && segment.id === 1) {
+// 	console.log('reportService: debugging: segment is', segment.id, segment.name);
+// 	console.log('reportService: debugging: person has no los', person.name, person.los);
+// }
+
 						cell.isNA = true;
 						cell.value = notApplicableLabel;
 						cell.suffix = '';
 
 						utilsService.fastLoop(segment.los, function(lo) {
 							// child cell
+							var childCell;
 							var childCell = JSON.parse(JSON.stringify(private.personLoCells[-1]));
 							childCell.parentId = segment.id;
 							childCell.id = lo.id;
@@ -385,27 +416,42 @@
 					// find matching person lo
 					var currentLo;
 					Object.keys(personRow).every(function(k) {
-						if (personRow[k].hasOwnProperty('id') && personRow[k].id === colChild.id) {
-							currentLo = personRow[k];
+						var cell = personRow[k];
+						if (cell.hasOwnProperty('isChild') && cell.hasOwnProperty('id') 
+							&& cell.id === colChild.id) {
+							currentLo = cell;
 							return false;
 						}
 						return true;
 					});
-					//utilsService.safeLog('aggregateLoByStore: personRow ' + personRow.id + ' lo ' + colChild.id + ' ', currentLo);
+					//utilsService.safeLog('aggregateLoByStore: personRow ' + personRow.id + ' lo ' + colChild.id + ' ', currentLo, true);
+
+// if (colChild.id === '3f8c8bd7-5aae-4184-a824-68edf528a011' && !currentLo) {
+// 	debugger;
+// }
 
 					if (currentLo && currentLo.realValue > -1) {
-						// get column lookup
-						var lookupLo = _.find(model.columns, function(colLo) {
-							return colLo.id === currentLo.id;
-						});
+						// // get column lookup
+						// var lookupLo = _.find(model.columns, function(colLo) {
+						// 	return colLo.id === currentLo.id;
+						// });
+
+						// // check if col.calculate is true
+						// if (lookupLo.calculate) {
+						// 	if (currentLo.realValue > -1) {
+						// 		aggregated += private.convertLoRealValue(currentLo.realValue);
+						// 	}
+						// } else {
+						// 	utilsService.safeLog('aggregateSegmentByStore [' + lookupLo.id + ' is hidden]', lookupLo);
+						// }
 
 						// check if col.calculate is true
-						if (lookupLo.calculate) {
+						if (colChild.calculate) {
 							if (currentLo.realValue > -1) {
 								aggregated += private.convertLoRealValue(currentLo.realValue);
 							}
 						} else {
-							utilsService.safeLog('aggregateSegmentByStore [' + lookupLo.id + ' is hidden]', lookupLo);
+							utilsService.safeLog('aggregateSegmentByStore [' + colChild.id + ' is hidden]', colChild);
 						}
 
 					} else {
@@ -834,12 +880,13 @@
 			utilsService.fastLoop(data.segments, function(segment, colGroupPosition) {
 
 				// group cell
-				var colName = (segment.title || segment.name);
+				var colName = (segment.title || segment.name),
+					segmentId = Number(segment.id);
 				
 				var colGroup = {
 					isGroup: true,
-					id: segment.id,
-					key: segment.id,
+					id: segmentId,
+					key: segmentId,
 					show: true,
 					position:  model.columns.length,
 					groupPosition: colGroupPosition,
@@ -862,18 +909,20 @@
 				model.columns.push(colGroup);
 
 				// add child columns
-				var segmentLos = (segment.learning_objects || segment.los);
+				var segmentLos = (segment.los || segment.learning_objects);
 				utilsService.fastLoop(segmentLos, function(lo) {
 					// child cell
-					var colChildName = (lo.title || lo.name);
+					var learningObjectId = lo.id,
+						colChildKey = segmentId + '_' + learningObjectId,
+						colChildName = (lo.title || lo.name);
 
 					//utilsService.safeLog('colChildName', colChildName);
 
 					var colChild = {
 						isChild: true,
-						parentId: segment.id,
-						id: lo.id,
-						key: segment.id + '_' + lo.id,
+						parentId: segmentId,
+						id: learningObjectId,
+						key: colChildKey,
 						position:  model.columns.length,
 						locked: false,
 						calculate: true, /* by default child columns are calculated when hidden, unless specifically hidden by user action, in which case calculate is also set to false */
@@ -902,10 +951,10 @@
 						get: function() {
 							// never show a column that has show false or that has been excluded from calculation
 							return this._show && this.calculate;
-						},
+						}.bind(colChild),
 						set: function(v) {
 							this._show = v;
-						}
+						}.bind(colChild)
 					});
 
 					// push row
@@ -932,12 +981,13 @@
 			var rowGroups = [];
 			utilsService.fastLoop(data.stores, function(store) {
 
-				var storeName = (store.name);
+				var storeName = (store.name),
+					storeId = store.id;
 
 				// init row and add first column for store name
 				var rowGroup = {
 					isGroup: true,
-					id: store.id,
+					id: storeId,
 					show: true,
 					isCollapsed: true, /* start with children collapsed by default */
 					children: [],
@@ -965,25 +1015,30 @@
 				// loop through each segment and aggregate
 				// and build a cell for each segment
 				utilsService.fastLoop(data.segments, function(segment) {
+					var segmentId = Number(segment.id);
+
 					// init group cell with value zero
 					var groupCell = {
 						isGroup: true,
-						id: segment.id,
-						key: segment.id,
+						id: segmentId,
+						key: segmentId,
 						value: 0,
 						suffix: ''
 					};
 
-					// store groupCell into row using segment.id as the row property
+					// store groupCell into row using ssegmentId as the row property
 					rowGroup[groupCell.key] = groupCell;
 
 					// add child cell for each segment lo
 					utilsService.fastLoop(segment.los, function(segmentLo) {
+						var childCellId = segmentLo.id,
+							childCellKey = segmentId + '_' + childCellId;
+
 						var childCell = {
 							isChild: true,
-							parentId: segment.id,
-							id: segmentLo.id,
-							key: segment.id + '_' + segmentLo.id,
+							parentId: segmentId,
+							id: childCellId,
+							key: childCellKey,
 							value: 0,
 							suffix: ''
 						};

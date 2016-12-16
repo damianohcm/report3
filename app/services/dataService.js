@@ -47,6 +47,34 @@
 				});
 		};
 
+		// const validateStoresLOsAgainstSegmentsLOs = function(data) {
+
+		// 	// loop through each store
+		// 	utilsService.fastLoop(data.stores, function(store) {
+
+		// 		// loop through store's people
+		// 		utilsService.fastLoop(store.people, function(person) {
+					
+		// 			// loop through person los
+		// 			utilsService.fastLoop(person.los, function(personLo) {
+						
+		// 				var segementsLen = data.segments.mength;
+
+		// 				for (var i = segementsLen; i > 0;){
+		// 					return item.id === personLo.segmentId;
+		// 				};
+
+		// 				if (!segment) {
+		// 					alert('Could not find segment for perons LO with id ' + personLo.id);
+		// 				}
+						
+		// 			});
+
+		// 		});
+
+		// 	});
+		// };
+
 		/**
 		 * @method fixReportAPIData
 		 * Helper to bring deep-dested data from segment api down one level
@@ -65,7 +93,7 @@
 			// // 	}];
 			// // }
 
-			var segments = dataToFix.segments;
+			var segments = [];
 
 /* // example segments data as from API endpoint
 {
@@ -92,10 +120,16 @@
 */
 
 			// helper to map lo fields and ensure consistency for Learning Objects
-			const mapLoFields = function(lo) {
+			const mapLoFields = function(lo, segmentId) {
+				if (!segmentId) {
+					var errMsg = 'dataService: segmentId cannot be undefined';
+					throw Error(errMsg);
+					alert(errMsg);
+				}
 				lo.id = (lo.loid || lo.object_id || lo.id);
 				lo.type = (lo.item_type || lo.type || 'Not Set');
 				lo.name = (lo.name || lo.title);
+				lo.segmentId = segmentId;
 				return lo;
 			};
 
@@ -106,16 +140,17 @@
 				}
 			};
 
-			utilsService.fastLoop(segments, function(seg) {
+			utilsService.fastLoop(dataToFix.segments, function(seg) {
 				// since we are already looping on Segments, make their properties consistent
-				seg.id = (seg.id || seg.item_id);
+				var segmentId = Number(seg.id || seg.item_id);
+				seg.id = segmentId;
 				seg.name = (seg.title || seg.name);
 				seg.type = (seg.item_type || seg.type || 'Not Set');
 
 				var mappedLos = [];
 
 				utilsService.fastLoop(seg.los, function(lo) {
-					lo = mapLoFields(lo);
+					lo = mapLoFields(lo, segmentId);
 
 					// update mappedLos 
 					updateMappedLos(mappedLos, lo);
@@ -123,7 +158,7 @@
 					// if there are children los, add them all
 					if (lo.los && lo.los.length > 0) {
 						utilsService.fastLoop(lo.los, function(childLo) {
-							childLo = mapLoFields(childLo);
+							childLo = mapLoFields(childLo, segmentId);
 							// update mappedLos 
 							updateMappedLos(mappedLos, childLo);
 						});
@@ -131,11 +166,15 @@
 				});
 
 				seg.los = mappedLos;
+				segments.push(seg);
 			});
 
+			//// utilsService.safeLog('dataService: segments', segments, true);
+			// console.log(JSON.stringify(segments));
+			// debugger;
 			dataToFix.segments = segments;
-			utilsService.safeLog('dataService: dataToFix.segments', dataToFix.segments, true);
-
+			var segmentsLen = segments.length;
+			
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
 				? dataToFix.stores
@@ -155,16 +194,37 @@
 					}
 
 					utilsService.fastLoop(person.los, function(personLo) {
-						if (personLo) {
-							utilsService.fastLoop(segments, function(segm) {
-								var itemLo = _.find(segm.los, function(lookupLo) {
-									return lookupLo.id === personLo.id;
-								});
+						// utilsService.fastLoop(segments, function(segm) {
+						// 	var itemLo = _.find(segm.los, function(lookupLo) {
+						// 		return lookupLo.id === personLo.id;
+						// 	});
 
-								if (itemLo) {
-									personLo.segmentId = segm.id;
-								}
+						// 	if (itemLo) {
+						// 		personLo.segmentId = itemLo.segmentId;
+						// 	} //else {
+						// 		//var errMsg = 'dataService.fixReportData: Error mapping segmentId for personLo ' + personLo.id;
+						// 		//console.log(errMsg);
+						// 	//}
+						// });
+
+						for (var i = segmentsLen; --i > 0;) {
+							//cb(segments[segmentsLen - i - 1], segmentsLen - i);
+							var segm = segments[i - 1];
+
+							var itemLo = _.find(segm.los, function(lookupLo) {
+								return lookupLo.id === personLo.id;
 							});
+
+							if (itemLo) {
+								personLo.segmentId = itemLo.segmentId;
+								i = 0;
+								break;
+							}
+						}
+
+						if (!personLo.segmentId) {
+							var errMsg = 'dataService.fixReportData: Error mapping segmentId for personLo ' + personLo.id;
+							console.log(errMsg);
 						}
 					});
 				});

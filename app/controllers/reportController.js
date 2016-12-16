@@ -702,7 +702,8 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		
 
 		var onDataError = function(err) {
-			utilsService.safeLog('reportController.onDataError', err);
+			console.log('reportController.onDataError', err);
+			alert('Error retrieving data');
 			$scope.error = 'Could not fetch data';
 		};
 	
@@ -711,7 +712,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
-			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
+			utilsService.safeLog('reportController.onDataComplete', data);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
@@ -788,6 +789,11 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
 					}];
 
+// for testing with local files containing raw ddata from end points
+// // _endPoints[0].path = 'data/stag-segments.json?' + Math.random();
+// // _endPoints[1].path = 'data/stag-stores.json?' + Math.random();
+
+
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 					
 					var _endPointsData = {}, _endPointCount = 0;
@@ -818,7 +824,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				// //var fileName = 'data/single-pc.json?' + Math.random();
 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/janic-' + params.reportType + '.json?' + Math.random();
+				var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 				
 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 
