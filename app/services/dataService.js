@@ -173,7 +173,6 @@
 			// console.log(JSON.stringify(segments));
 			// debugger;
 			dataToFix.segments = segments;
-			var segmentsLen = segments.length;
 			
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
@@ -194,33 +193,15 @@
 					}
 
 					utilsService.fastLoop(person.los, function(personLo) {
-						// utilsService.fastLoop(segments, function(segm) {
-						// 	var itemLo = _.find(segm.los, function(lookupLo) {
-						// 		return lookupLo.id === personLo.id;
-						// 	});
-
-						// 	if (itemLo) {
-						// 		personLo.segmentId = itemLo.segmentId;
-						// 	} //else {
-						// 		//var errMsg = 'dataService.fixReportData: Error mapping segmentId for personLo ' + personLo.id;
-						// 		//console.log(errMsg);
-						// 	//}
-						// });
-
-						for (var i = segmentsLen; --i > 0;) {
-							//cb(segments[segmentsLen - i - 1], segmentsLen - i);
-							var segm = segments[i - 1];
-
+						utilsService.fastLoop(segments, function(segm) {
 							var itemLo = _.find(segm.los, function(lookupLo) {
 								return lookupLo.id === personLo.id;
 							});
 
 							if (itemLo) {
 								personLo.segmentId = itemLo.segmentId;
-								i = 0;
-								break;
 							}
-						}
+						});
 
 						if (!personLo.segmentId) {
 							var errMsg = 'dataService.fixReportData: Error mapping segmentId for personLo ' + personLo.id;

@@ -789,9 +789,11 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
 					}];
 
-// for testing with local files containing raw ddata from end points
+// // for testing with local files containing raw ddata from end points
 // // _endPoints[0].path = 'data/stag-segments.json?' + Math.random();
 // // _endPoints[1].path = 'data/stag-stores.json?' + Math.random();
+// // _endPoints[0].path = 'data/stag-segments-nt.json?' + Math.random(); // new and trending
+// // _endPoints[1].path = 'data/stag-stores-nt.json?' + Math.random(); // new and trending
 
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
