@@ -123,8 +123,8 @@
 			const mapLoFields = function(lo, segmentId) {
 				if (!segmentId) {
 					var errMsg = 'dataService: segmentId cannot be undefined';
-					throw Error(errMsg);
 					alert(errMsg);
+					throw Error(errMsg);
 				}
 				lo.id = (lo.loid || lo.object_id || lo.id);
 				lo.type = (lo.item_type || lo.type || 'Not Set');

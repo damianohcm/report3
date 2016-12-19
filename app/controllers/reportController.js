@@ -774,68 +774,111 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				$scope.increaseProgressBar();
 			}, 2000);
 
-			if (w === 'live') {
-				if (reportConfigStrategy.pathId < 1) {
-					debugger;
-					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
-				} else {
-					var _endPoints = [{
-						key: 'segments',
-						propertyOnData: 'learning_path_items',
-						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
-					}, {
-						key: 'stores',
-						propertyOnData: 'results',
-						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
-					}];
+// 			if (w === 'live') {
+// 				if (reportConfigStrategy.pathId < 1) {
+// 					debugger;
+// 					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
+// 				} else {
+// 					var _endPoints = [{
+// 						key: 'segments',
+// 						propertyOnData: 'learning_path_items',
+// 						path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
+// 					}, {
+// 						key: 'stores',
+// 						propertyOnData: 'results',
+// 						path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
+// 					}];
 
-// // for testing with local files containing raw ddata from end points
-// // _endPoints[0].path = 'data/stag-segments.json?' + Math.random();
-// // _endPoints[1].path = 'data/stag-stores.json?' + Math.random();
-// // _endPoints[0].path = 'data/stag-segments-nt.json?' + Math.random(); // new and trending
-// // _endPoints[1].path = 'data/stag-stores-nt.json?' + Math.random(); // new and trending
+// // // for testing with local files containing raw ddata from end points
+// // // _endPoints[0].path = 'data/stag-segments.json?' + Math.random();
+// // // _endPoints[1].path = 'data/stag-stores.json?' + Math.random();
+// // // _endPoints[0].path = 'data/stag-segments-nt.json?' + Math.random(); // new and trending
+// // // _endPoints[1].path = 'data/stag-stores-nt.json?' + Math.random(); // new and trending
 
 
-					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+// 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 					
-					var _endPointsData = {}, _endPointCount = 0;
-					var onEndPointComplete = function(endPoint, data) {
-						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+// 					var _endPointsData = {}, _endPointCount = 0;
+// 					var onEndPointComplete = function(endPoint, data) {
+// 						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 
-						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+// 						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
-						if (++_endPointCount === _endPoints.length) {
-							utilsService.safeLog('_endPointsData', _endPointsData);
+// 						if (++_endPointCount === _endPoints.length) {
+// 							utilsService.safeLog('_endPointsData', _endPointsData);
 
-							onDataComplete(_endPointsData);
-						}
-					};
+// 							onDataComplete(_endPointsData);
+// 						}
+// 					};
 
-					utilsService.fastLoop(_endPoints, function(endPoint) {
-						dataService.getData(endPoint.path)
-							.then(function(data) {
-								onEndPointComplete(endPoint, data);
-							}, onDataError);
-					});
-				}
-			} else {
-				//var fileName = 'data/report.json?' + Math.random();
-				//var fileName = 'data/report-avg.json?' + Math.random();
-				//var fileName = 'data/report-generated1.json?' + Math.random();
-				// //var fileName = 'data/report-generated2.json?' + Math.random();
-				// //var fileName = 'data/single-pc.json?' + Math.random();
-				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+// 					utilsService.fastLoop(_endPoints, function(endPoint) {
+// 						dataService.getData(endPoint.path)
+// 							.then(function(data) {
+// 								onEndPointComplete(endPoint, data);
+// 							}, onDataError);
+// 					});
+// 				}
+// 			} else {
+// 				//var fileName = 'data/report.json?' + Math.random();
+// 				//var fileName = 'data/report-avg.json?' + Math.random();
+// 				//var fileName = 'data/report-generated1.json?' + Math.random();
+// 				// //var fileName = 'data/report-generated2.json?' + Math.random();
+// 				// //var fileName = 'data/single-pc.json?' + Math.random();
+// 				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
 
-				var fileName = 'data/' + params.reportType + '.json?' + Math.random();
+// 				var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 				
-				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
+// 				//var fileName = 'data/' + params.reportType + '.json?' + Math.random();
 
-				utilsService.safeLog('fileName', fileName);
-				// simulate delay
-				$timeout(function() {
-					dataService.getData(fileName)
-						.then(onDataComplete, onDataError);
-				}, 500);
+// 				utilsService.safeLog('fileName', fileName);
+// 				// simulate delay
+// 				$timeout(function() {
+// 					dataService.getData(fileName)
+// 						.then(onDataComplete, onDataError);
+// 				}, 500);
+// 			}
+
+			if (reportConfigStrategy.pathId < 1) {
+				debugger;
+				alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
+			} else {
+				var _endPoints = [{
+					key: 'segments',
+					propertyOnData: 'learning_path_items',
+					path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
+				}, {
+					key: 'stores',
+					propertyOnData: 'results',
+					path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
+				}];
+
+				if (w === 'test') {
+					//for testing with local files containing raw ddata from end points
+					_endPoints[0].path = 'data/[reportType]-segments.json?'.replace('[reportType]', params.reportType) + Math.random();
+					_endPoints[1].path = 'data/[reportType]-stores.json?'.replace('[reportType]', params.reportType) + Math.random();
+				}
+
+				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+					
+				var _endPointsData = {}, _endPointCount = 0;
+				var onEndPointComplete = function(endPoint, data) {
+					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+
+					utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+
+					if (++_endPointCount === _endPoints.length) {
+						utilsService.safeLog('_endPointsData', _endPointsData);
+
+						onDataComplete(_endPointsData);
+					}
+				};
+
+				utilsService.fastLoop(_endPoints, function(endPoint) {
+					dataService.getData(endPoint.path)
+						.then(function(data) {
+							onEndPointComplete(endPoint, data);
+						}, onDataError);
+				});
 			}
 		};
 
