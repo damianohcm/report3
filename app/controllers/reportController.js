@@ -663,7 +663,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 			var storeWidthPercent = 10, summaryWidthPercent = 5;
 			var useFixedWidth = reportConfig.useFixedWidthForCols; //totColumns > 10;
-
+			
 			var styleObj = {
 			};
 

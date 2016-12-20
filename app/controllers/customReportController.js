@@ -7,7 +7,7 @@
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
-			customReportConfig = configService.getCustomReportConfig(),
+			reportConfig = configService.getCustomReportConfig(),
 			sessionParams = commonConfig.sessionParams,
 			params = commonConfig.params,
 			brandConfig = configService.getBrandConfig(params.brand),
@@ -18,7 +18,7 @@
 			};
 		
 		// important: set reportConfig to use by reportService
-		reportService.setReportConfig(customReportConfig);
+		reportService.setReportConfig(reportConfig);
 
 		// utilsService.safeLog('reportController params', params);
 		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
@@ -695,22 +695,22 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			totColumns = totColumns < 3 ? 3 : totColumns;
 
 			var storeWidthPercent = 10, summaryWidthPercent = 5;
-			var useFixedWidth = true; //totColumns > 10;
-
+			var useFixedWidth = reportConfig.useFixedWidthForCols; //totColumns > 10;
+			
 			var styleObj = {
 			};
 
 			if (col.key === 'category') {
-				styleObj.width = '280px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj.width = reportConfig.colCategoryWidth; //useFixedWidth ? '200px' : storeWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
 				styleObj['max-width'] = styleObj.width;
 			} else if (col.key === 'summary') {
-			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+			 	styleObj.width = reportConfig.colSummaryWidth; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
 				styleObj['max-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
-					styleObj.width = '130px';
+					styleObj.width = reportConfig.colSegmentWidth;
 				} else {
 					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
 					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
@@ -924,7 +924,7 @@ var getReportParamsModel = function() {
 		if ($scope.tokenError.length > 0) {
 		 	alert($scope.tokenError);
 		} else {
-			var what = customReportConfig.useTestData ? 'test' : 'live';
+			var what = reportConfig.useTestData ? 'test' : 'live';
 			getData(what);
 		}
 
