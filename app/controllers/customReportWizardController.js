@@ -662,7 +662,7 @@ $scope.modalConfirmOpen = function(w) {
 
 				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
 			} else {
-				$scope.wizardTitle = 'Create a PC Report';
+				$scope.wizardTitle = customReportWizardConfig.wizardTitle;
 			}
 
 			$scope.originalModel = JSON.parse(angular.toJson($scope.model));

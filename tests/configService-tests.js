@@ -284,11 +284,13 @@ describe('configService', () => {
 
             expect(customReportWizardConfig).to.have.all.keys([
                 'useTestData',
+                'wizardTitle',
                 'maxStores',
                 'maxCourses'
             ]);
 
             expect(customReportWizardConfig.useTestData).to.be.a('boolean'); 
+            expect(customReportWizardConfig.wizardTitle).to.be.a('string').to.have.length.above(5); 
             expect(customReportWizardConfig.maxStores).to.be.a('number');
             expect(customReportWizardConfig.maxCourses).to.be.a('number');
             expect(customReportWizardConfig.maxStores).to.be.at.least(1);
