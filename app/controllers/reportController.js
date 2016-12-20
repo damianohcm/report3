@@ -662,22 +662,22 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			totColumns = totColumns < 3 ? 3 : totColumns;
 
 			var storeWidthPercent = 10, summaryWidthPercent = 5;
-			var useFixedWidth = true; //totColumns > 10;
+			var useFixedWidth = reportConfig.useFixedWidthForCols; //totColumns > 10;
 
 			var styleObj = {
 			};
 
 			if (col.key === 'category') {
-				styleObj.width = '280px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj.width = reportConfig.colCategoryWidth; //useFixedWidth ? '200px' : storeWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
 				styleObj['max-width'] = styleObj.width;
 			} else if (col.key === 'summary') {
-			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+			 	styleObj.width = reportConfig.colSummaryWidth; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
 				styleObj['max-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
-					styleObj.width = '130px';
+					styleObj.width = reportConfig.colSegmentWidth;
 				} else {
 					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
 					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';

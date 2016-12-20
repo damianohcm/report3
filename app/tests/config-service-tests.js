@@ -246,7 +246,12 @@
                         'rowGroupHeaderMaxLength',
                         'rowChildheaderMaxLength',
 
-                        'displayPersonHireDate'
+                        'displayPersonHireDate',
+
+                        'useFixedWidthForCols',
+                        'colCategoryWidth',
+                        'colSummaryWidth',
+                        'colSegmentWidth'
                     ]);
 
                     expect(reportConfig.useTestData).to.be.a('boolean');
@@ -269,7 +274,12 @@
                     expect(reportConfig.rowGroupHeaderMaxLength).to.be.at.least(1);
                     expect(reportConfig.rowChildheaderMaxLength).to.be.at.least(1);
                     
-                    expect(reportConfig.displayPersonHireDate).to.be.a('boolean'); 
+                    expect(reportConfig.displayPersonHireDate).to.be.a('boolean');
+
+                    expect(reportConfig.useFixedWidthForCols).to.be.a('boolean');
+                    expect(reportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
+                    expect(reportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
+                    expect(reportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
                     
                     done();
                 });
@@ -323,7 +333,12 @@
                         'rowGroupHeaderMaxLength',
                         'rowChildheaderMaxLength',
 
-                        'displayPersonHireDate'
+                        'displayPersonHireDate',
+
+                        'useFixedWidthForCols',
+                        'colCategoryWidth',
+                        'colSummaryWidth',
+                        'colSegmentWidth'
                     ]);
 
                     expect(customReportConfig.useTestData).to.be.a('boolean');
@@ -346,7 +361,12 @@
                     expect(customReportConfig.rowGroupHeaderMaxLength).to.be.at.least(1);
                     expect(customReportConfig.rowChildheaderMaxLength).to.be.at.least(1);
                     
-                    expect(customReportConfig.displayPersonHireDate).to.be.a('boolean'); 
+                    expect(customReportConfig.displayPersonHireDate).to.be.a('boolean');
+
+                    expect(customReportConfig.useFixedWidthForCols).to.be.a('boolean');
+                    expect(customReportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
+                    expect(customReportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
+                    expect(customReportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
             
                     done();
                 });

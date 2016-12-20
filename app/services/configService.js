@@ -91,7 +91,7 @@
             ]
         };
 
-        var _useTestData = true;
+        var _useTestData = false;
 
         /* report config */
         var reportConfig = {
@@ -104,13 +104,18 @@
             notApplicableIncludeInCalc: true, /* whether to include the N/A columns in the average aggregated calculation for summary */
             colorPersonSegmentCell: false, /* use to drive the addition of css class "with-color" - Dunking does not want them colored but other customers might want it */
             
-            colSummaryHeaderMaxLength: 75, /* max length of Summary column header (Tot Completion For ...) */
-            colGroupHeaderMaxLength: 75, /* max length of group columns headers (Segments) */
-            colChildheaderMaxLength: 55, /* max length of child columns headers (Learning objects) */
+            colSummaryHeaderMaxLength: 85, /* max length of Summary column header (Tot Completion For ...) */
+            colGroupHeaderMaxLength: 85, /* max length of group columns headers (Segments) */
+            colChildheaderMaxLength: 75, /* max length of child columns headers (Learning objects) */
             rowGroupHeaderMaxLength: 27, /* max length of PC/store name */
             rowChildheaderMaxLength: 22, /* max length of Person name */
 
             displayPersonHireDate: false, /* currently for custom report only so setting false here and override in customReportConfig */
+
+            useFixedWidthForCols: true,
+            colCategoryWidth: '280px',
+            colSummaryWidth: '120px',
+            colSegmentWidth: '120px'
         };
 
         /* custom report wizard config */

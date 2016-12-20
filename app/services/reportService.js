@@ -784,7 +784,9 @@
 				var addAllowed = Math.round((16 - caps) * 0.7);
 				//console.log('addAllowed', addAllowed);
 				var newMax = str.length + addAllowed;
-				newMax = newMax > 35 ? 35 : newMax;
+				var newMaxLen = Math.round(maxLen * 1.00);
+				newMaxLen = newMaxLen > 30 ? newMaxLen : 30;
+				newMax = newMax > newMaxLen ? newMaxLen : newMax;
 				//console.log('newMax', newMax);
 				str = origStr.substring(0, newMax);
 				
