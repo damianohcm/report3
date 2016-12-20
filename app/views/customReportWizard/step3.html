@@ -35,7 +35,7 @@
                     typeahead-no-results="noCoursesFound" 
                     class="form-control"-->
                 
-                <tags-input style="float:left" ng-model="model.courses" 
+                <tags-input ng-model="model.courses" 
                     display-property="truncName" 
                     text="name" 
                     key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)" on-tag-removed="onCourseRemoved($tag)">
