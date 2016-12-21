@@ -35,7 +35,7 @@
                     typeahead-no-results="noCoursesFound" 
                     class="form-control"-->
                 
-                <tags-input ng-model="model.courses" 
+                <tags-input ng-model="model.lookupCourses" 
                     display-property="truncName" 
                     text="name" 
                     key-property="id" placeholder="Search..." minTags="1" on-tag-added="onCourseAdded($tag)" on-tag-removed="onCourseRemoved($tag)">
@@ -55,12 +55,14 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div style="clear:both;display:none">
-                    <label>(DEBUG) Courses:</label>
-                    <span>
-                        <span ng-repeat="course in model.courses">{{course.name}} | </span>
-                    </span>
+                <div ng-repeat="course in model.courses" class="checkboxContainer">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="course.selected"/> 
+                        <i class="fa fa-check fa-fw"></i>
+                        <span>{{::course.name}}</span>
+                    </label>
                 </div>
+
             </div>
 
 

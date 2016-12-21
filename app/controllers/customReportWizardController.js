@@ -298,9 +298,9 @@
 		};
 
 		$scope.onCourseAdded = function() {
-			$scope.model.courses = _.filter($scope.model.courses, function(c) {
-				return c.id !== undefined;
-			});
+			// $scope.model.courses = _.filter($scope.model.courses, function(c) {
+			// 	return c.id !== undefined;
+			// });
 			$scope.wizard.activeStep.validateAction();
 			//utilsService.safeLog('onCourseAdded', JSON.stringify($scope.model.courses));
 		};
@@ -362,13 +362,13 @@
 			isLast: false, 
 			isCurrent: false,
 			validateAction: function validateStep3() {
-				var numberOfCourses = $scope.model.courses.length;
+				//var numberOfCourses = $scope.model.courses.length;
+				var numberOfCourses =  $scope.model.courses.filter(function(course) {
+					return course.selected;
+				}).length;
 
 				this.hasError = false;
 				if ($scope.model.entireLearningPath === false) {
-					// this.hasError =  $scope.model.courses.filter(function(course) {
-					// 	return course.selected;
-					// }).length < 1;
 					this.hasError =  numberOfCourses < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course before proceeding' : undefined;
 				}
@@ -525,7 +525,7 @@ $scope.datePickerOptions = {
 
 			// TODO: if entire learning path is selected, we need to set the pathId parameter on the model and ignore courses
 			if ($scope.model.entireLearningPath) {
-				$scope.model.courses = [];
+				//$scope.model.courses = [];
 				$scope.model.pathId = reportConfigStrategy.pathId;
 			} else {
 				$scope.model.pathId = undefined;
@@ -619,6 +619,7 @@ $scope.modalConfirmOpen = function(w) {
 					truncName: (courseName.length > courseNameMaxLen ? courseName.substring(0, courseNameMaxLen).trim() + ' ...' : courseName)
 				};
 			});
+			$scope.model.courses = $scope.lookupCourses;
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportModel) {
@@ -638,11 +639,20 @@ $scope.modalConfirmOpen = function(w) {
 				});
 				
 				_.each(params.reportModel.courses, function(source) {
-					var course = _.find($scope.lookupCourses, function(dest) {
-						return dest.id === source.id;
-					});
-					if (course) {
-						$scope.model.courses.push(course);
+					// var course = _.find($scope.lookupCourses, function(dest) {
+					// 	return dest.id === source.id;
+					// });
+					// if (course) {
+					// 	$scope.model.courses.push(course);
+					// }
+
+					if (source.selected) {
+						var course = _.find($scope.model.courses, function(dest) {
+							return dest.id === source.id;
+						});
+						if (course) {
+							course.selected = true;
+						}
 					}
 				});
 
