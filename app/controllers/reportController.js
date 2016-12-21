@@ -73,7 +73,8 @@
 
 		$scope.dom.tableHorizScrollContainer.on('scroll', function() {
 			$timeout(function() {
-				var width = 'width: ' + ($scope.dom.tableScroll[0].offsetWidth + 'px');
+				var numWidth = Number($scope.dom.tableScroll[0].offsetWidth) + 20;
+				var width = 'width: ' + (numWidth + 'px');
 				$scope.dom.tableVertScrollContainer.attr('style', width);
 				//$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
 
