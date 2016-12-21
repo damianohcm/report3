@@ -737,8 +737,11 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 var getReportParamsModel = function() {
 	// create params model to send to API end point for custom report data 
 	var clone = JSON.parse(angular.toJson(params.reportModel));
-	clone.stores = _.filter(clone.stores, function(store){
-		return store.selected;
+	clone.stores = _.filter(clone.stores, function(item){
+		return item.selected;
+	});
+	clone.courses = _.filter(clone.courses, function(item){
+		return item.selected;
 	});
 
 	clone.storesIds = clone.stores.map(function(store) {
@@ -758,7 +761,7 @@ var getReportParamsModel = function() {
 	clone.reportName = $scope.reportTitle;
 	
 	utilsService.safeLog('getReportParamsModel clone', clone, true);
-	return JSON.stringify(clone);
+	return clone;
 };
 /* end: custom report code */
 		
@@ -835,10 +838,16 @@ var getReportParamsModel = function() {
 				$scope.increaseProgressBar();
 			}, 2000);
 
+			var reportParamsModel = getReportParamsModel();
+			delete reportParamsModel.stores;
+			delete reportParamsModel.courses;
+			utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+
 			if (w === 'live') {
 				//if (reportConfigStrategy.pathId < 1) {
 				//	alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 				//} else {
+
 					var _endPoints = [{
 						key: 'segments', /* lo-list lookup */
 						propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
@@ -849,7 +858,7 @@ var getReportParamsModel = function() {
 						propertyOnData: 'results',
 						path: configService.apiEndPoints.customReportStores(sessionParams.token),
 						method: 'post',
-						postData: getReportParamsModel()
+						postData: JSON.stringify(reportParamsModel)
 					}];
 
 					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
@@ -867,17 +876,13 @@ var getReportParamsModel = function() {
 							if (endPoint.key === 'segments') {
 								// create one single "fake" segment witht he custom report courses
 								
-								var selectedCoursesIds = params.reportModel.courses.map(function(course) {
-									return course.id;
-								});
-
 								_endPointsData[endPoint.key] = [{
 									title: $scope.reportName,
 									item_type: 'Section',
 									id: params.reportId,
 									// set the los but filter the ones that have not be selected in the params model for this custom report
 									los: _.filter(data, function(item) {
-										return selectedCoursesIds.indexOf(item.id) > -1;
+										return reportParamsModel.courseIds.indexOf(item.id) > -1;
 									})
 								}];
 							} else {
@@ -902,9 +907,6 @@ var getReportParamsModel = function() {
 					});
 				//}
 			} else {
-
-				// just for testing, not using params for test data
-				getReportParamsModel();
 
 				var fileName = 'data/custom-report.json?' + Math.random();
 				utilsService.safeLog('fileName', fileName);
@@ -953,7 +955,7 @@ $scope.saveCustomReport = function(saveAsNew) {
 	var payload = {
 		//id: params.reportId,
 		name: $scope.reportTitle,
-		model: clonedModel,
+		model: JSON.stringify(clonedModel),
 		csod_profile: $scope.csodProfileId,
 	};
 

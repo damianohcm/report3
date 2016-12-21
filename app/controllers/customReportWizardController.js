@@ -229,6 +229,13 @@
 							var jsonModel = angular.toJson($scope.model);
 							var model = JSON.parse(jsonModel);
 
+							model.stores = _.filter(model.stores, function(item) {
+								return item.selected;
+							});
+							model.courses = _.filter(model.courses, function(item) {
+								return item.selected;
+							});
+
 							configService.setParam('reportModel', model);
 							///utilsService.safeLog('reportModel', model);
 
@@ -613,6 +620,7 @@ $scope.modalConfirmOpen = function(w) {
 				return {
 					id: course.id,
 					name: courseName,
+					selected: false,
 					truncName: (courseName.length > courseNameMaxLen ? courseName.substring(0, courseNameMaxLen).trim() + ' ...' : courseName)
 				};
 			});
