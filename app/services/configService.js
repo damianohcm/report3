@@ -91,7 +91,7 @@
             ]
         };
 
-        var _useTestData = true;
+        var _useTestData = false;
 
         /* report config */
         var reportConfig = {
