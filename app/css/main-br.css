@@ -61,6 +61,15 @@ body {
 .m-b-0 {
   margin-bottom: 0; }
 
+.m-b-sm {
+  margin-bottom: 5px; }
+
+.m-b-md {
+  margin-bottom: 12px; }
+
+.m-b-lg {
+  margin-bottom: 20px; }
+
 .p-0 {
   padding: 0 !important; }
 
@@ -825,6 +834,14 @@ input.required {
 /* end: css for horiz table scrolling */
 /* begin: css for fixed headers */
 /* end: css for fixed headers */
+.search-input {
+  padding: 5px;
+  height: 35px;
+  font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  width: 620px;
+  border: 2px solid #9B9B9B;
+  border-radius: 5px; }
+
 .wizard-container {
   background-color: #F3F3F3;
   width: 1100px;
@@ -1027,8 +1044,7 @@ input.required {
   min-height: 415px; }
 
 .wizard .content label {
-  display: inline-block;
-  margin-bottom: 0.5em; }
+  display: inline-block; }
 
 .wizard .actions {
   position: relative;
@@ -1113,7 +1129,7 @@ input.required {
   font-size: 14px;
   font-weight: 300;
   color: #000000;
-  margin-bottom: 20px; }
+  margin-bottom: 10px; }
 
 .scroll-container {
   overflow-x: hidden;
@@ -1123,12 +1139,22 @@ input.required {
   margin-bottom: 20px;
   box-shadow: inset 0px 1px 0px 0px #DFDFDF; }
 
-.scroll-container > .scroll-pane div > label {
-  cursor: pointer;
+label {
   font-family: Gotham;
   font-size: 16px;
   font-weight: normal;
   margin: 0; }
+
+.checkbox {
+  cursor: pointer;
+  display: block !important; }
+
+.filter-label {
+  font-family: Gotham;
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+  display: block; }
 
 .scroll-container > .scroll-pane div.select-all {
   margin-bottom: 20px; }

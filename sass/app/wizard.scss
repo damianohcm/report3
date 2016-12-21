@@ -243,7 +243,6 @@
 .wizard .content label
 {
     display: inline-block;
-    margin-bottom: 0.5em;
 }
 
 .wizard .actions
@@ -342,7 +341,7 @@
     font-size: 14px;
     font-weight: 300;
     color: #000000;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .scroll-container {
     overflow-x: hidden;
@@ -352,12 +351,22 @@
     margin-bottom: 20px;
     box-shadow: inset 0px 1px 0px 0px #DFDFDF;
 }
-.scroll-container > .scroll-pane div > label {
-    cursor: pointer;
+label {
     font-family: Gotham;
     font-size: 16px;
     font-weight: normal;
     margin: 0;
+}
+.checkbox {
+    cursor: pointer;
+    display: block!important; 
+}
+.filter-label {
+    font-family: Gotham;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0;
+    display:block;
 }
 .scroll-container > .scroll-pane div.select-all {
     margin-bottom:20px;

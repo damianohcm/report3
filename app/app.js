@@ -114,6 +114,15 @@
 			]
 		);
 
+	app.filter('myFilter', [function(query) {
+		function filter(input) {
+			console.log('input - query', input, query);
+			return input.indexOf(query) > -1;
+		}
+		filter.$stateful = true;
+		return filter;
+	}])
+
 	// indeterminate-checkbox directive for tri-state checkbox
 	app.directive('customcheck', function() {
 		return {

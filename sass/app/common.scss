@@ -46,6 +46,16 @@ body {
 	margin-bottom: 0;
 }
 
+.m-b-sm {
+	margin-bottom: 5px;
+}
+.m-b-md {
+	margin-bottom: 12px;
+}
+.m-b-lg {
+	margin-bottom: 20px;
+}
+
 .p-0 {
     padding: 0!important;
 }
@@ -872,3 +882,11 @@ input.required {
 
 /* end: css for fixed headers */
 
+.search-input {
+    padding: 5px;
+    height: 35px;
+    font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+    width: 620px;
+    border: 2px solid #9B9B9B;
+    border-radius: 5px;
+}

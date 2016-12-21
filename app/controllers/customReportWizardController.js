@@ -100,6 +100,9 @@
 		// original model to kee track of changes
 		$scope.originalModel = {};
 
+		$scope.storeQuery = '';
+		$scope.courseQuery = '';
+		
 		// property that calculates wheter the model has been changed by the user
 		// and we need to present the user with confirm dialogs when she is navigating
 		// away without saving etc.
@@ -151,15 +154,9 @@
 		});
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
-				return $scope.model.courses;
-				// if (!$scope.model.entireLearningPath) {
-				// 	// return $scope.model.courses.filter(function(course) {
-				// 	// 	return course.selected;
-				// 	// });
-				// 	return $scope.model.courses;
-				// } else {
-				// 	return [];
-				// }
+				return $scope.model.courses.filter(function(course) {
+					return course.selected;
+				});
 			}
 		});
 
