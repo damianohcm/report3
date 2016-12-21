@@ -75,12 +75,7 @@
 		// 	});
 		// };
 
-		/**
-		 * @method fixReportAPIData
-		 * Helper to bring deep-dested data from segment api down one level
-		 */
-		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
-			
+		const fixSegmentsListAPIData = function (segmentsList) {
 			// // if we ever have to wrap one-level only dat ainto a fake segment, use this:
 			// // if (reportConfigStrategy.oneLevel) {
 			// // 	debugger;
@@ -140,7 +135,7 @@
 				}
 			};
 
-			utilsService.fastLoop(dataToFix.segments, function(seg) {
+			utilsService.fastLoop(segmentsList, function(seg) {
 				// since we are already looping on Segments, make their properties consistent
 				var segmentId = Number(seg.id || seg.item_id);
 				seg.id = segmentId;
@@ -172,7 +167,16 @@
 			//// utilsService.safeLog('dataService: segments', segments, true);
 			// console.log(JSON.stringify(segments));
 			// debugger;
-			dataToFix.segments = segments;
+			return segments;
+		};
+
+		/**
+		 * @method fixReportAPIData
+		 * Helper to bring deep-dested data from segment api down one level
+		 */
+		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
+			
+			dataToFix.segments = fixSegmentsListAPIData(dataToFix.segments);
 			
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
@@ -193,7 +197,7 @@
 					}
 
 					utilsService.fastLoop(person.los, function(personLo) {
-						utilsService.fastLoop(segments, function(segm) {
+						utilsService.fastLoop(dataToFix.segments, function(segm) {
 							var itemLo = _.find(segm.los, function(lookupLo) {
 								return lookupLo.id === personLo.id;
 							});
@@ -225,6 +229,7 @@
 			postData: postData,
 			putData: putData,
 			deleteData: deleteData,
+			fixSegmentsListAPIData: fixSegmentsListAPIData,
 			fixReportAPIData: fixReportAPIData
 		};
 	};

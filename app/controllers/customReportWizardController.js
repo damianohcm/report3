@@ -93,7 +93,9 @@
 			// step 3
 			entireLearningPath: false,
 			pathId: undefined,
+			courseSelectionTypeId: 1,
 			courses: [],
+			segments: [],
 			needsSave: false
 		};
 
@@ -326,9 +328,10 @@
 				}).length;
 
 				this.hasError =  false;
+				this.errorMsg = '';
 				if (numberOfStores < 1) {
 					this.hasError =  true;
-					this.errorMsg = 'Please select at least ono PC before proceeding';
+					this.errorMsg = 'Please select at least one PC';
 				}
 				if (numberOfStores > customReportWizardConfig.maxStores) {
 					this.hasError =  true;
@@ -347,10 +350,11 @@
 			isLast: false, 
 			isCurrent: false,
 			validateAction: function validateStep2() {
+				this.errorMsg = '';
 				if ($scope.model.hired.otherField) {
 					var otherFieldValue = $scope.model[$scope.model.hired.otherField];
 					this.hasError = otherFieldValue === undefined;
-					this.errorMsg = this.hasError ? 'Please select a date for Hired After Selected Date' : undefined;
+					this.errorMsg = this.hasError ? 'Please select a date' : undefined;
 				} else {
 					this.hasError = false;
 				}
@@ -372,14 +376,19 @@
 				}).length;
 
 				this.hasError = false;
+				this.errorMsg = '';
 				if ($scope.model.entireLearningPath === false) {
 					this.hasError =  numberOfCourses < 1;
-					this.errorMsg = this.hasError ? 'Please select at least one Course before proceeding' : undefined;
+					this.errorMsg = this.hasError ? 'Please select at least one Course' : undefined;
 				}
 
-				if (numberOfCourses > customReportWizardConfig.maxCourses) {
+				var maxCourses = $scope.model.courseSelectionTypeId === 1 
+					? customReportWizardConfig.maxCourses
+					: 1000;
+
+				if (numberOfCourses > maxCourses) {
 					this.hasError =  true;
-					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', customReportWizardConfig.maxCourses);
+					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
 				}
 
 				this.isDone = !this.hasError;
@@ -524,20 +533,65 @@ $scope.datePickerOptions = {
 			return filtered;
 		};
 
-		$scope.onEntireLearningPathClick = function() {
-			utilsService.safeLog('onEntireLearningPathClick', $scope.model.entireLearningPath);
+		// $scope.onEntireLearningPathClick = function() {
+		// 	utilsService.safeLog('onEntireLearningPathClick', $scope.model.entireLearningPath);
 
-			// TODO: if entire learning path is selected, we need to set the pathId parameter on the model and ignore courses
-			if ($scope.model.entireLearningPath) {
-				//$scope.model.courses = [];
-				$scope.model.pathId = reportConfigStrategy.pathId;
+		// 	// TODO: if entire learning path is selected, we need to set the pathId parameter on the model and ignore courses
+		// 	if ($scope.model.entireLearningPath) {
+		// 		//$scope.model.courses = [];
+		// 		$scope.model.pathId = reportConfigStrategy.pathId;
+		// 	} else {
+		// 		$scope.model.pathId = undefined;
+		// 	}
+
+		// 	$timeout(function() {
+		// 		$scope.wizard.activeStep.validateAction();
+		// 	}, 250);
+		// };
+
+		$scope.onCourseSelectionTypeChanged = function() {
+			console.log('onCourseSelectionTypeChanged');
+			
+			if ($scope.model.courseSelectionTypeId === 2) {
+				_.each($scope.model.segments, function (item) {
+					item.selected = false;
+				});
 			} else {
-				$scope.model.pathId = undefined;
+				_.each($scope.model.courses, function (item) {
+					item.selected = false;
+				});
 			}
+		};
 
+		$scope.onCourseSelectedChange = function() {
 			$timeout(function() {
 				$scope.wizard.activeStep.validateAction();
 			}, 250);
+		};
+
+		$scope.onSegmentSelectedChange = function() {
+			if ($scope.model.courseSelectionTypeId === 2) {
+				console.log('onSegmentSelectedChange');
+
+				var selectedSegs = _.filter($scope.model.segments, function (seg) {
+					return seg.selected;
+				});
+
+				var allLos = _(selectedSegs).chain()
+					.pluck('los')
+					.flatten()
+					.value();
+
+				_.each($scope.model.courses, function (course) {
+					course.selected = _.any(allLos, function(lo) {
+						return lo.id === course.id;
+					});
+				});
+
+				$timeout(function() {
+					$scope.wizard.activeStep.validateAction();
+				}, 250);
+			}
 		};
 
 /* begin: modal confirm code */
@@ -610,21 +664,37 @@ $scope.modalConfirmOpen = function(w) {
 
 		var onDataComplete  = function(data) {
 			utilsService.safeLog('wizardController.onDataComplete', data);
+
+			// fix segments data as the backend endpoint return inconsistent data
+			data.segments = dataService.fixSegmentsListAPIData(data.segments);
+
 			$scope.data = data;
 			$scope.model.stores = data.stores;
 			$scope.lookupStores =  data.stores;
 			
-			var courseNameMaxLen = 80;
-			$scope.lookupCourses =  _.map(data.courses, function(course) {
-				var courseName = (course.name || '').trim();
+			var nameMaxLen = 80;
+			$scope.lookupCourses =  _.map(data.courses, function(item) {
+				var name = (item.name || '').trim();
 				return {
-					id: course.id,
-					name: courseName,
+					id: item.id,
+					name: name,
 					selected: false,
-					truncName: (courseName.length > courseNameMaxLen ? courseName.substring(0, courseNameMaxLen).trim() + ' ...' : courseName)
+					truncName: (name.length > nameMaxLen ? name.substring(0, nameMaxLen).trim() + ' ...' : name)
 				};
 			});
 			$scope.model.courses = $scope.lookupCourses;
+
+			$scope.lookupSegments =  _.map(data.segments, function(item) {
+				var name = (item.name || '').trim();
+				return {
+					id: item.id,
+					name: name,
+					selected: false,
+					truncName: (name.length > nameMaxLen ? name.substring(0, nameMaxLen).trim() + ' ...' : name),
+					los: item.los
+				};
+			});
+			$scope.model.segments = $scope.lookupSegments;
 
 			// if modifying a report, sync $scope.model with passed in params.reportModel
 			if (params.reportModel) {
@@ -689,59 +759,49 @@ $scope.modalConfirmOpen = function(w) {
 		var getData = function(w) {
 			utilsService.safeLog('getData');
 
-			if (w === 'live') {
-				// var _apiBaseUrl = 'https://dunk-dev.tribridge-amplifyhr.com';
-				// var _endPoints = [{
-				// 	key: 'segments',
-				// 	propertyOnData: 'learning_path_items',
-				// 	path: _apiBaseUrl + '/curricula_player/api/v1/path/15/?format=json&user=[user]'
-				// 		.replace('[user]', params.token)
-				// }, {
-				// 	key: 'stores',
-				// 	propertyOnData: 'results',
-				// 	path: 'data/luca-stores.json?' + Math.random()
-				// }];
+			var _endPoints = [{
+				key: 'courses',  /* lo-list lookup */
+				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+				path: configService.apiEndPoints.losList()
+			}, {
+				key: 'segments',
+				propertyOnData: 'learning_path_items',
+				path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
+			}, {
+				key: 'stores', /* stores-list lookup */
+				propertyOnData: 'results',
+				path: configService.apiEndPoints.storesList(sessionParams.token)
+			}];
 
-				var _endPoints = [{
-					key: 'courses',  /* lo-list lookup */
-					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
-					path: configService.apiEndPoints.losList()
-				}, {
-					key: 'stores', /* stores-list lookup */
-					propertyOnData: 'results',
-					path: configService.apiEndPoints.storesList(sessionParams.token)
-				}];
-
-				utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
-				
-				var _endPointsData = {}, _endPointCount = 0;
-				var onEndPointComplete = function(endPoint, data) {
-					if (endPoint.propertyOnData) {
-						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
-					} else {
-						_endPointsData[endPoint.key] = data;
-					}
-					
-					if (++_endPointCount === _endPoints.length) {
-						utilsService.safeLog('_endPointsData', _endPointsData);
-						onDataComplete(_endPointsData);
-					}
-				};
-
-				utilsService.fastLoop(_endPoints, function(endPoint) {
-					dataService.getData(endPoint.path)
-						.then(function(data) {
-							onEndPointComplete(endPoint, data);
-						}, onDataError);
-				});
-			} else {
-				
-				var fileName = 'data/custom-report-wizard-lookups.json?' + Math.random();
-
-				utilsService.safeLog('fileName', fileName);
-				dataService.getData(fileName)
-					.then(onDataComplete, onDataError);
+			// if testing, use local json files
+			if (w === 'test') {
+				_endPoints[0].path = 'data/custom-report-courses.json?' + Math.random();
+				_endPoints[1].path = 'data/learning-path-segments.json?' + Math.random();
+				_endPoints[2].path = 'data/custom-report-stores.json?' + Math.random();
 			}
+
+			utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
+
+			var _endPointsData = {}, _endPointCount = 0;
+			var onEndPointComplete = function(endPoint, data) {
+				if (endPoint.propertyOnData) {
+					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+				} else {
+					_endPointsData[endPoint.key] = data;
+				}
+				
+				if (++_endPointCount === _endPoints.length) {
+					utilsService.safeLog('_endPointsData', _endPointsData);
+					onDataComplete(_endPointsData);
+				}
+			};
+
+			utilsService.fastLoop(_endPoints, function(endPoint) {
+				dataService.getData(endPoint.path)
+					.then(function(data) {
+						onEndPointComplete(endPoint, data);
+					}, onDataError);
+			});
 		};
 
 		// invoke getData

@@ -6,7 +6,7 @@
 </script>
 
 <div class="step-content">
-    <h1>Select Courses</h1>
+    <h1>Select Courses <small>{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">
         Select a course from the list below to report on. You can select multiple courses within a Learning Path.
     </div>
@@ -14,15 +14,29 @@
     <div class="scroll-container">
         <div class="scroll-pane">
 
-            <div class="select-all" style="display:none">
-                <label class="checkbox">
+            <div class="select-all">
+                <!--label class="checkbox" style="display:none">
                     <input type="checkbox" ng-model="model.entireLearningPath" ng-click="onEntireLearningPathClick()"/> 
                     <i class="fa fa-check fa-fw"></i>
                     <span>Select the entire learning path</span>
+                </label-->
+
+                <label class="radio m-r-md">
+                    <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="model.courseSelectionTypeId" ng-value="1" 
+                        ng-click="onCourseSelectionTypeChanged()"/> 
+                    <i class="fa fa-circle fa-fw"></i>
+                    <span class="radio-text">Courses</span>
+                </label>
+
+                <label class="radio">
+                    <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="model.courseSelectionTypeId" ng-value="2" 
+                        ng-click="onCourseSelectionTypeChanged()"/> 
+                    <i class="fa fa-circle fa-fw"></i>
+                    <span class="radio-text">Segments</span>
                 </label>
             </div>
 
-            <div ng-if="!model.entireLearningPath">
+            <div ng-if="model.courseSelectionTypeId === 1">
                 <label class="filter-label">Filter courses:</label>
                 <input type="text"class="search-input m-b-md" ng-model="courseQuery"/>
 
@@ -34,12 +48,27 @@
 
                 <div ng-repeat="course in model.courses | filter: courseQuery" class="checkboxContainer">
                     <label class="checkbox">
-                        <input type="checkbox" ng-model="course.selected"/> 
+                        <input type="checkbox" ng-model="course.selected" ng-change="onCourseSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
-                        <span ng-bind-html="course.name | uibTypeaheadHighlight: courseQuery"></span>
+                        <span ng-bind-html="course.truncName | uibTypeaheadHighlight: courseQuery"></span>
                     </label>
                 </div>
+            </div>
 
+            <div ng-if="model.courseSelectionTypeId === 2">
+                <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
+
+                <div ng-show="noCoursesFound">
+                    <i class="glyphicon glyphicon-remove"></i> No Segments Found
+                </div>
+
+                <div ng-repeat="segm in model.segments" class="checkboxContainer">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="segm.selected" ng-change="onSegmentSelectedChange()"/> 
+                        <i class="fa fa-check fa-fw"></i>
+                        <span ng-bind-html="segm.truncName +  ' (' + segm.los.length + ' courses)'"></span>
+                    </label>
+                </div>
             </div>
 
 

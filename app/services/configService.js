@@ -122,8 +122,8 @@
         var customReportWizardConfig = {
             useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
             wizardTitle: 'Create a Report',
-            maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
-            maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
+            maxStores: 3, /* max selection of PCs allowed in the custom report wizard */
+            maxCourses: 3 /* max selection of Courses allowed in the custom report wizard */
         };
 
         /* custom report config */
