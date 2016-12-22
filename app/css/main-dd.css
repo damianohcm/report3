@@ -1173,7 +1173,7 @@ label {
 .scroll-container > .scroll-pane div.select-all {
   margin-bottom: 20px; }
 
-label.select-all {
+.select-all > label {
   font-weight: 700; }
 
 .select-all > label.radio {

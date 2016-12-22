@@ -19,6 +19,11 @@
 
         this.validateAction = args.validateAction;
         this.errorMsg = undefined;
+
+        this.resetError = function() {
+            this.errorMsg = undefined;
+            this.hasError = false;
+        };
     };
 
     WizardStep.prototype = {

@@ -523,6 +523,8 @@ $scope.datePickerOptions = {
 		$scope.onCourseSelectionTypeChanged = function() {
 			//utilsService.safeLog('onCourseSelectionTypeChanged');
 
+			$scope.wizard.activeStep.validateAction && $scope.wizard.activeStep.validateAction();
+
 			var predicate =  predicates.setSelectedFalse;
 			var collection = $scope.model.courseSelectionType.id === 2 
 				? $scope.model.segments 
