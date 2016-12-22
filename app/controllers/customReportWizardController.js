@@ -156,8 +156,15 @@
 		});
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
-				return $scope.model.courses.filter(function(course) {
-					return course.selected;
+				return $scope.model.courses.filter(function(item) {
+					return item.selected;
+				});
+			}
+		});
+		Object.defineProperty($scope.summary, 'segments', {
+			get: function() {
+				return $scope.model.segments.filter(function(item) {
+					return item.selected;
 				});
 			}
 		});
@@ -235,6 +242,9 @@
 								return item.selected;
 							});
 							model.courses = _.filter(model.courses, function(item) {
+								return item.selected;
+							});
+							model.segments = _.filter(model.segments, function(item) {
 								return item.selected;
 							});
 
