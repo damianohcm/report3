@@ -490,6 +490,14 @@ button.back-to-top {
 button.back-to-top:hover {
   background-color: #BE854C; }
 
+button.edit {
+  color: #fff;
+  background-color: #e49; }
+
+button.save {
+  color: #fff;
+  background-color: #FF8000; }
+
 div.height-40 {
   height: 40px;
   min-height: 40px; }

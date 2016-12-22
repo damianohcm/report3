@@ -511,6 +511,15 @@ button.back-to-top:hover {
 	background-color: $lightbrown;
 }
 
+button.edit {
+    color: #fff;
+	background-color: $brand;
+}
+button.save {
+    color: #fff;
+	background-color: $alwaysOrange;
+}
+
 div.height-40 {
 	height:40px;
 	min-height:40px;
