@@ -275,6 +275,25 @@
 			return result;
 		}.bind(instance);
 
+		// predicates used by mapping/filter functions
+		instance.predicates = {
+			selected: function(item) {
+				return item.selected === true;
+			},
+			id: function(item) {
+				return item.id;
+			},
+			show: function (item) {
+				return item.show;
+			},
+			setSelectedTrue: function(item) {
+				item.selected = true;
+			},
+			setSelectedFalse: function(item) {
+				item.selected = false;
+			}
+		}
+
         return instance;
     };
 

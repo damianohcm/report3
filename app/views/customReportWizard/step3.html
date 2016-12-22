@@ -15,12 +15,6 @@
         <div class="scroll-pane">
 
             <div class="select-all">
-                <!--label class="checkbox" style="display:none">
-                    <input type="checkbox" ng-model="model.entireLearningPath" ng-click="onEntireLearningPathClick()"/> 
-                    <i class="fa fa-check fa-fw"></i>
-                    <span>Select the entire learning path</span>
-                </label-->
-
                 <label class="radio m-r-md" ng-repeat="option in courseSelectionTypeOptions">
                     <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="model.courseSelectionType" ng-value="option" 
                         ng-click="onCourseSelectionTypeChanged()"/> 
@@ -53,6 +47,19 @@
 
                 <div ng-show="noCoursesFound">
                     <i class="glyphicon glyphicon-remove"></i> No Segments Found
+                </div>
+
+                <div class="select-all" ng-show="storeQuery.length === 0">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-checked="allSegmentsChecked"  
+                            customcheck 
+                            data-checked-state="allSegmentsCheckedState" 
+                            data-child-list="model.segments" 
+                            data-property="selected" />
+                        
+                        <i class="fa fa-fw {{allSegmentsCheckedState ? 'checked fa-check' : allSegmentsCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
+                        Select the entire learning path
+                    </label>
                 </div>
 
                 <div ng-repeat="segm in model.segments" class="checkboxContainer">

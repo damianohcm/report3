@@ -6,7 +6,8 @@
 	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $timeout, $filter, $uibModal, 
 		utilsService, configService, dataService, wizardServiceFactory) {
 
-		var commonConfig = configService.getCommonConfig(),
+		var predicates = utilsService.predicates,
+			commonConfig = configService.getCommonConfig(),
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params,
 			customReportWizardConfig = configService.getCustomReportWizardConfig(),
@@ -87,7 +88,7 @@
 			text: 'Courses'
 		}, {
 			id: 2,
-			text: 'Segments'
+			text: 'Categories'
 		}];
 		
 		// model for wizard selections
@@ -99,7 +100,6 @@
 			hired: $scope.hiredOptions[0],
 			hiredAfter: undefined,
 			// step 3
-			entireLearningPath: false,
 			courseSelectionType: $scope.courseSelectionTypeOptions[0],
 			courses: [],
 			segments: [],
@@ -128,9 +128,7 @@
 		};
 		Object.defineProperty($scope.summary, 'stores', {
 			get: function() {
-				return $scope.model.stores.filter(function(store) {
-					return store.selected;
-				});
+				return $scope.model.stores.filter(predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'learners', {
@@ -140,7 +138,9 @@
 		});
 		Object.defineProperty($scope.summary, 'hired', {
 			get: function() {
-				return $scope.model.hired.otherField ? undefined : $scope.model.hired.text;
+				return $scope.model.hired.otherField 
+					? undefined 
+					: $scope.model.hired.text;
 			}
 		});
 		Object.defineProperty($scope.summary, 'hiredAfter', {
@@ -149,15 +149,6 @@
 					return $filter('date')($scope.model.hiredAfter, 'shortDate');
 				} else {
 					return 'Not Selected';
-				}
-			}
-		});
-		Object.defineProperty($scope.summary, 'entireLearningPath', {
-			get: function() {
-				if ($scope.model.entireLearningPath) {
-					return 'Entire Learning Path';
-				} else {
-					return undefined;
 				}
 			}
 		});
@@ -170,9 +161,16 @@
 		});
 		Object.defineProperty($scope.summary, 'segments', {
 			get: function() {
-				return $scope.model.segments.filter(function(item) {
-					return item.selected;
-				});
+				return $scope.model.segments.filter(predicates.selected);
+			}
+		});
+		Object.defineProperty($scope.summary, 'entireLearningPath', {
+			get: function() {
+				if ($scope.model.segments.every(predicates.selected)) {
+					return 'Entire Learning Path';
+				} else {
+					return undefined;
+				}
 			}
 		});
 
@@ -245,15 +243,9 @@
 							var jsonModel = angular.toJson($scope.model);
 							var model = JSON.parse(jsonModel);
 
-							model.stores = _.filter(model.stores, function(item) {
-								return item.selected;
-							});
-							model.courses = _.filter(model.courses, function(item) {
-								return item.selected;
-							});
-							model.segments = _.filter(model.segments, function(item) {
-								return item.selected;
-							});
+							model.stores = _.filter(model.stores, predicates.selected);
+							model.courses = _.filter(model.courses, predicates.selected);
+							model.segments = _.filter(model.segments, predicates.selected);
 
 							configService.setParam('reportModel', model);
 							///utilsService.safeLog('reportModel', model);
@@ -313,19 +305,12 @@
 			});
 
 			if (step) {
-				// TODO:  Do we save data?
-				//this.dataService.save(function() {
-					$scope.wizard.setActiveStep(step);
-				//});
+				$scope.wizard.setActiveStep(step);
 			}
 		};
 
 		$scope.onCourseAdded = function() {
-			// $scope.model.courses = _.filter($scope.model.courses, function(c) {
-			// 	return c.id !== undefined;
-			// });
 			$scope.wizard.activeStep.validateAction();
-			//utilsService.safeLog('onCourseAdded', JSON.stringify($scope.model.courses));
 		};
 		$scope.onCourseRemoved = function() {
 			$scope.wizard.activeStep.validateAction();
@@ -340,9 +325,7 @@
 			isLast: false, 
 			isCurrent: true,
 			validateAction: function validateStep1() {
-				var numberOfStores =  $scope.model.stores.filter(function(store) {
-					return store.selected;
-				}).length;
+				var numberOfStores =  $scope.model.stores.filter(predicates.selected).length;
 
 				this.hasError =  false;
 				this.errorMsg = '';
@@ -387,25 +370,28 @@
 			isLast: false, 
 			isCurrent: false,
 			validateAction: function validateStep3() {
-				//var numberOfCourses = $scope.model.courses.length;
-				var numberOfCourses =  $scope.model.courses.filter(function(course) {
-					return course.selected;
-				}).length;
 
 				this.hasError = false;
 				this.errorMsg = '';
-				if ($scope.model.entireLearningPath === false) {
+
+				if ($scope.model.courseSelectionType.id === 1) {
+					var numberOfCourses =  $scope.model.courses.filter(predicates.selected).length;
+
 					this.hasError =  numberOfCourses < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course' : undefined;
-				}
 
-				var maxCourses = $scope.model.courseSelectionType.id === 1 
-					? customReportWizardConfig.maxCourses
-					: 1000;
+					var maxCourses = $scope.model.courseSelectionType.id === 1 
+						? customReportWizardConfig.maxCourses
+						: 1000;
 
-				if (numberOfCourses > maxCourses) {
-					this.hasError =  true;
-					this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
+					if (numberOfCourses > maxCourses) {
+						this.hasError =  true;
+						this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
+					}
+				} else {
+					var numberOfSegments =  $scope.model.segments.filter(predicates.selected).length;
+					this.hasError =  numberOfSegments < 1;
+					this.errorMsg = this.hasError ? 'Please select at least one Category' : undefined;
 				}
 
 				this.isDone = !this.hasError;
@@ -470,15 +456,11 @@
 
 		// Step 1: Select PCs
 		var areAllStoreSelected = function() {
-			return $scope.model.stores.every(function(item) {
-				return item.selected === true;
-			});
+			return $scope.model.stores.every(predicates.selected);
 		};
 
 		var areSomeStoreSelected = function() {
-			return !areAllStoreSelected() && $scope.model.stores.some(function(item) {
-				return item.selected === true;
-			});
+			return !areAllStoreSelected() && $scope.model.stores.some(predicates.selected);
 		};
 
 		Object.defineProperty($scope, 'allStoresCheckedState', {
@@ -504,80 +486,48 @@ $scope.datePickerOptions = {
 	showWeeks: false
 };
 
-
-		// courses
+		// Step 3: courses
 		$scope.noCoursesFound = false;
 		$scope.loadingCourses = false;
-		$scope.coursesTypeaheadOptions = {
-			debounce: {
-				default: 500,
-				blur: 250
-			},
-			getterSetter: true
-		};
 
-		$scope.getCourses = function(str) {
-			str = str.toLowerCase().trim();
-			utilsService.safeLog('getCourses', str);
+		// $scope.getCourses = function(str) {
+		// 	str = str.toLowerCase().trim();
+		// 	utilsService.safeLog('getCourses', str);
 
-			// // return $http.get('//api/path/to/courses', {
-			// // 	params: {
-			// // 		searchString: str
-			// // 	}
-			// // 	}).then(function(response){
-			// // 		return response.data.results.map(function(item){
-			// // 			return item.formatted_address;
-			// // 		});
-			// // 	});
+		// 	var filtered =  $scope.lookupCourses.filter(function(course) {
+		// 		return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
+		// 	});
 
-			// var _temp = '123456789'.split('').map(function(i) {
-			// 	return {
-			// 		id: i,
-			// 		name: 'Course ' + i
-			// 	};
-			// });
-			// return _temp.filter(function(course) {
-			// 	return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
-			// });
+		// 	//utilsService.safeLog('filtered', filtered);
 
-
-			var filtered =  $scope.lookupCourses.filter(function(course) {
-				return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
-			});
-
-			//utilsService.safeLog('filtered', filtered);
-
-			return filtered;
-		};
-
-		// $scope.onEntireLearningPathClick = function() {
-		// 	utilsService.safeLog('onEntireLearningPathClick', $scope.model.entireLearningPath);
-
-		// 	// TODO: if entire learning path is selected, we need to set the pathId parameter on the model and ignore courses
-		// 	if ($scope.model.entireLearningPath) {
-		// 		//$scope.model.courses = [];
-		// 		$scope.model.pathId = reportConfigStrategy.pathId;
-		// 	} else {
-		// 		$scope.model.pathId = undefined;
-		// 	}
-
-		// 	$timeout(function() {
-		// 		$scope.wizard.activeStep.validateAction();
-		// 	}, 250);
+		// 	return filtered;
 		// };
+
+		var areAllSegmentsSelected = function() {
+			return $scope.model.segments.every(predicates.selected);
+		};
+
+		var areSomeSegmentsSelected = function() {
+			return !areAllSegmentsSelected() && $scope.model.segments.some(predicates.selected);
+		};
+
+		Object.defineProperty($scope, 'allSegmentsCheckedState', {
+			get: function() {
+				$scope.wizard.activeStep.validateAction && $scope.wizard.activeStep.validateAction();
+				return areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false;
+			}
+		});
+
+		$scope.allSegmentsChecked = areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false;
 
 		$scope.onCourseSelectionTypeChanged = function() {
 			//utilsService.safeLog('onCourseSelectionTypeChanged');
 
-			var setSelectedToFalse = function (item) {
-				item.selected = false;
-			};
-			
-			if ($scope.model.courseSelectionType.id === 2) {
-				_.each($scope.model.segments, setSelectedToFalse);
-			} else {
-				_.each($scope.model.courses, setSelectedToFalse);
-			}
+			var predicate =  predicates.setSelectedFalse;
+			var collection = $scope.model.courseSelectionType.id === 2 
+				? $scope.model.segments 
+				: $scope.model.courses;
+			_.each(collection, predicate);
 		};
 
 		$scope.onCourseSelectedChange = function() {
@@ -590,9 +540,7 @@ $scope.datePickerOptions = {
 			if ($scope.model.courseSelectionType.id === 2) {
 				//utilsService.safeLog('onSegmentSelectedChange');
 
-				var selectedSegs = _.filter($scope.model.segments, function (seg) {
-					return seg.selected;
-				});
+				var selectedSegs = _.filter($scope.model.segments, predicates.selected);
 
 				var allLos = _(selectedSegs).chain()
 					.pluck('los')
@@ -766,8 +714,6 @@ $scope.modalConfirmOpen = function(w) {
 				$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
 					return option.id === params.reportModel.courseSelectionType.id;
 				});		
-
-				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
 			} else {
 				$scope.wizardTitle = customReportWizardConfig.wizardTitle;
 			}

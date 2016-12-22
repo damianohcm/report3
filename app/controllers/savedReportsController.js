@@ -139,9 +139,12 @@
 								otherField: undefined
 							},
 							hiredAfter: undefined,
-							entireLearningPath: false,
-							pathId: undefined,
+							courseSelectionType: {
+								id: 1,
+								text: 'Courses'
+							},
 							courses: [],
+							segments: [],
 							needsSave: false
 						}
 					});
