@@ -59,7 +59,7 @@
                         <th ng-repeat="c in ::model.columns track by $index" ng-if="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)" 
                             ng-click="onHeaderCellClick(c)"
                             title="{{::c.title}}">
-                            <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
+                            <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export this view</button>
                             
                             <!-- begin: column header popover -->
                             <div ng-if="::(c.position > 0)" class="th-top">
