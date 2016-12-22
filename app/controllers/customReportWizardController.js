@@ -785,9 +785,9 @@ $scope.modalConfirmOpen = function(w) {
 
 			// if testing, use local json files
 			if (w === 'test') {
-				_endPoints[0].path = 'data/custom-report-courses.json?' + Math.random();
-				_endPoints[1].path = 'data/learning-path-segments.json?' + Math.random();
-				_endPoints[2].path = 'data/custom-report-stores.json?' + Math.random();
+				_endPoints[0].path = 'data/custom-report-wizard-courses.json?' + Math.random();
+				_endPoints[1].path = 'data/custom-report-wizard-segments.json?' + Math.random();
+				_endPoints[2].path = 'data/custom-report-wizard-stores.json?' + Math.random();
 			}
 
 			utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param

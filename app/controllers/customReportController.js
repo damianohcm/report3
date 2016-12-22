@@ -17,6 +17,9 @@
 				title: 'Unknown report id'
 			};
 		
+		// for custom report (when user selects segments instead of courses in the wizard) we use the pathId of the learning-path config
+		reportConfigStrategy.pathId = reportStrategies['learning-path'].pathId;
+		
 		// important: set reportConfig to use by reportService
 		reportService.setReportConfig(reportConfig);
 
@@ -839,44 +842,66 @@ var getReportParamsModel = function() {
 				$scope.increaseProgressBar();
 			}, 2000);
 
-			var reportParamsModel = getReportParamsModel();
-			delete reportParamsModel.stores;
-			delete reportParamsModel.courses;
-			utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+			if (reportConfigStrategy.pathId < 1) {
+				debugger;
+				alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
+			} else {
 
-			if (w === 'live') {
-				//if (reportConfigStrategy.pathId < 1) {
-				//	alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
-				//} else {
+				var reportParamsModel = getReportParamsModel();
+				delete reportParamsModel.stores;
+				delete reportParamsModel.courses;
+				utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
 
-					var _endPoints = [{
-						key: 'segments', /* lo-list lookup */
-						propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
-						path: configService.apiEndPoints.losList(),
-						method: 'get'
-					}, {
-						key: 'stores',
-						propertyOnData: 'results',
-						path: configService.apiEndPoints.customReportStores(sessionParams.token),
-						method: 'post',
-						postData: JSON.stringify(reportParamsModel)
-					}];
+				var _endPoints = [{
+					key: 'segments', /* lo-list lookup */
+					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+					path: configService.apiEndPoints.losList(),
+					method: 'get'
+				}, {
+					key: 'stores',
+					propertyOnData: 'results',
+					path: configService.apiEndPoints.customReportStores(sessionParams.token),
+					method: 'post',
+					postData: JSON.stringify(reportParamsModel)
+				}];
 
-					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-					utilsService.safeLog('data posted to report-data end point', _endPoints[1].postData);
+				// change end point one properties
+				if (params.reportModel.courseSelectionTypeId === 2) {
+					_endPoints[0].propertyOnData = 'learning_path_items';
+					_endPoints[0].path = configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token);
+				}
 
-					var _endPointsData = {}, _endPointCount = 0;
-					var onEndPointComplete = function(endPoint, data) {
-						if (endPoint.key === 'stores') {
-							$scope.csodProfileId = data.csod_profile_id;
-						}
+				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+				utilsService.safeLog('data posted to report-data end point', _endPoints[1].postData);
 
-						if (endPoint.propertyOnData) {
-							_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
-						} else {
-							if (endPoint.key === 'segments') {
+				// for testing, load data from local json files containing raw data from end points
+				if (w === 'test') {
+
+					if (params.reportModel.courseSelectionTypeId === 1) {
+						_endPoints[0].path = 'data/custom-report-wizard-courses.json?' + Math.random();
+					} else {
+						_endPoints[0].path = 'data/custom-report-wizard-segments.json?' + Math.random();
+					}
+
+					_endPoints[1].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionTypeId) + Math.random();
+					_endPoints[1].method = 'get';
+					// bogus csodProfileId for testing
+					$scope.csodProfileId = 999999999;
+				}
+
+				var _endPointsData = {}, _endPointCount = 0;
+				var onEndPointComplete = function(endPoint, data) {
+					if (endPoint.key === 'stores') {
+						$scope.csodProfileId = data.csod_profile_id;
+					}
+
+					if (endPoint.propertyOnData) {
+						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+					} else {
+						if (endPoint.key === 'segments') {
+
+							if (params.reportModel.courseSelectionTypeId === 1) {
 								// create one single "fake" segment witht he custom report courses
-								
 								_endPointsData[endPoint.key] = [{
 									title: $scope.reportName,
 									item_type: 'Section',
@@ -887,39 +912,28 @@ var getReportParamsModel = function() {
 									})
 								}];
 							} else {
-								_endPointsData[endPoint.key] = data;
+								alert('TODO: handle end point data for courseSelectionTypeId 2');
 							}
+						} else {
+							_endPointsData[endPoint.key] = data;
 						}
+					}
 
-						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+					utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
-						if (++_endPointCount === _endPoints.length) {
-							utilsService.safeLog('_endPointsData', _endPointsData);
+					if (++_endPointCount === _endPoints.length) {
+						utilsService.safeLog('_endPointsData', _endPointsData);
 
-							onDataComplete(_endPointsData);
-						}
-					};
+						onDataComplete(_endPointsData);
+					}
+				};
 
-					utilsService.fastLoop(_endPoints, function(endPoint) {
-						dataService.getData(endPoint.path, endPoint.method, endPoint.postData)
-							.then(function(data) {
-								onEndPointComplete(endPoint, data);
-							}, onDataError);
-					});
-				//}
-			} else {
-
-				var fileName = 'data/custom-report.json?' + Math.random();
-				utilsService.safeLog('fileName', fileName);
-
-				// bogus csodProfileId for testing
-				$scope.csodProfileId = 999999999;
-
-				// simulate delay
-				$timeout(function() {
-					dataService.getData(fileName)
-						.then(onDataComplete, onDataError);
-				}, 500);
+				utilsService.fastLoop(_endPoints, function(endPoint) {
+					dataService.getData(endPoint.path, endPoint.method, endPoint.postData)
+						.then(function(data) {
+							onEndPointComplete(endPoint, data);
+						}, onDataError);
+				});
 			}
 		};
 

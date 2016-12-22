@@ -853,10 +853,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token)
 				}];
 
+				// for testing, load data from local json files containing raw data from end points
 				if (w === 'test') {
-					//for testing with local files containing raw ddata from end points
 					_endPoints[0].path = 'data/[reportType]-segments.json?'.replace('[reportType]', params.reportType) + Math.random();
-					_endPoints[1].path = 'data/[reportType]-stores.json?'.replace('[reportType]', params.reportType) + Math.random();
+					_endPoints[1].path = 'data/[reportType]-rows.json?'.replace('[reportType]', params.reportType) + Math.random();
 				}
 
 				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
