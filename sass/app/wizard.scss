@@ -371,8 +371,11 @@ label {
 .scroll-container > .scroll-pane div.select-all {
     margin-bottom:20px;
 }
-.scroll-container > .scroll-pane div.select-all > label {
+label.select-all {
     font-weight: 700;
+}
+.select-all > label.radio {
+    margin-bottom: 8px;
 }
 /*label > input {
     display: none;
@@ -388,8 +391,7 @@ label {
 }
 
 div.checkboxContainer,
-label.radio,
-.scroll-container > .scroll-pane div > label.radio {
+label.radio {
     margin-bottom: 8px;
 }
 label.checkbox > i {

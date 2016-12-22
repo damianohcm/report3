@@ -6,7 +6,8 @@
     window.controllers.customReportController = function($scope, $location, $timeout, $interval, $document, $uibModal, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
-		var commonConfig = configService.getCommonConfig(),
+		var predicates = utilsService.predicates,
+			commonConfig = configService.getCommonConfig(),
 			reportConfig = configService.getCustomReportConfig(),
 			sessionParams = commonConfig.sessionParams,
 			params = commonConfig.params,
@@ -671,9 +672,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		$scope.displayHideRow = function(parentRow) {
 			if (parentRow) {
 				// if it's a child row and at least one of its sibilings is still visibile
-				return _.filter(parentRow.children, function (r) {
-					return r.show;
-				}).length > 1;
+				return _.filter(parentRow.children, predicates.show).length > 1;
 			} else { 
 				// or is a top level row and at least 2 top level rows are visible
 				return _.filter($scope.model.result.rows, function (r) {
@@ -738,23 +737,16 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		};
 
 /* begin: custom report code */
-var selectedMapper = function(item) {
-	return item.selected;
-};
-var idMapper = function(item) {
-	return item.id;
-};
-
 var getReportParamsModel = function() {
 	// create params model to send to API end point for custom report data 
 	var clone = JSON.parse(angular.toJson(params.reportModel));
-	clone.stores = _.filter(clone.stores, selectedMapper);
-	clone.courses = _.filter(clone.courses, selectedMapper);
-	clone.segments = _.filter(clone.segments, selectedMapper);
+	clone.stores = _.filter(clone.stores, predicates.selected);
+	clone.courses = _.filter(clone.courses, predicates.selected);
+	clone.segments = _.filter(clone.segments, predicates.selected);
 
-	clone.storesIds = clone.stores.map(idMapper);
-	clone.courseIds = clone.courses.map(idMapper);
-	clone.segmentIds = clone.segments.map(idMapper);
+	clone.storesIds = clone.stores.map(predicates.id);
+	clone.courseIds = clone.courses.map(predicates.id);
+	clone.segmentIds = clone.segments.map(predicates.id);
 
 	// having this year for consistency, but back end currently doe snot need this parameter
 	clone.courseSelectionTypeId = clone.courseSelectionType.id;
@@ -1015,7 +1007,7 @@ $scope.saveCustomReport = function(saveAsNew) {
 		var onSaveComplete = function(result) {
 			utilsService.safeLog('reportController.onSaveComplete', result, true);
 			// sample response:
-			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"entireLearningPath\":false,\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
+			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
 			params.reportId = result.id;
 			params.reportModel.reportName = $scope.reportTitle;
 			params.reportModel.needsSave = false;

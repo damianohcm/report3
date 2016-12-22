@@ -34,7 +34,7 @@ origStores = [{
 }, {
     id: 2, name: 'Store2', selected: true
 }],
-origEntireLearningPath = true,
+origDummBool = true,
 origCourses = [{
     id: 1, name: 'Course 1', selected: false
 }, {
@@ -50,7 +50,7 @@ const model = {
     hired: origHiredOption,
     hiredAfter: origHiredAfter, /* dont use undefined */
     // step 3
-    entireLearningPath: origEntireLearningPath,
+    dummBool: origDummBool,
     courses: JSON.parse(JSON.stringify(origCourses))
 };
 
