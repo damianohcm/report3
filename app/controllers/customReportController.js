@@ -739,21 +739,22 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 /* begin: custom report code */
 var getReportParamsModel = function() {
+	const selectedMapper = function(item) {
+		return item.selected;
+	};
+	const idMapper = function(item) {
+		return item.id;
+	};
 	// create params model to send to API end point for custom report data 
 	var clone = JSON.parse(angular.toJson(params.reportModel));
-	clone.stores = _.filter(clone.stores, function(item){
-		return item.selected;
-	});
-	clone.courses = _.filter(clone.courses, function(item){
-		return item.selected;
-	});
+	clone.stores = _.filter(clone.stores, selectedMapper);
+	clone.courses = _.filter(clone.courses, selectedMapper);
+	clone.segments = _.filter(clone.segments, selectedMapper);
 
-	clone.storesIds = clone.stores.map(function(store) {
-		return store.id;
-	});
-	clone.courseIds = clone.courses.map(function(course) {
-		return course.id;
-	});
+	clone.storesIds = clone.stores.map(idMapper);
+	clone.courseIds = clone.courses.map(idMapper);
+	clone.segmentIds = clone.segments.map(idMapper);
+
 	clone.audienceId = clone.audience.id;
 	clone.hiredId = clone.hired.id;
 
@@ -776,13 +777,28 @@ var getReportParamsModel = function() {
 		};
 	
 
-		var onDataComplete  = function(data) {
+		var onDataComplete  = function(data, reportParamsModel) {
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
-			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
+			//utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
+
+			// need to filter columns here as back end is not doing it 
+			if (params.reportModel.courseSelectionTypeId === 1) {
+				// filter the courses that have not be selected in the params model for this custom report
+				$scope.data.segments[0].los = _.filter($scope.data.segments[0].los, function(item) {
+					return reportParamsModel.courseIds.indexOf(item.id) > -1;
+				});
+			} else {
+				// filter the segments that have not be selected in the params model for this custom report
+				$scope.data.segments = _.filter($scope.data.segments, function(item) {
+					return reportParamsModel.segmentIds.indexOf(item.id) > -1;
+				});
+			}
+
+
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 			
@@ -850,6 +866,12 @@ var getReportParamsModel = function() {
 				var reportParamsModel = getReportParamsModel();
 				delete reportParamsModel.stores;
 				delete reportParamsModel.courses;
+				delete reportParamsModel.segments;
+				delete reportParamsModel.audience;
+				delete reportParamsModel.hired;
+				delete reportParamsModel.audienceOptions;
+				delete reportParamsModel.hiredOptions;
+				delete reportParamsModel.needsSave;
 				utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
 
 				var _endPoints = [{
@@ -906,13 +928,12 @@ var getReportParamsModel = function() {
 									title: $scope.reportName,
 									item_type: 'Section',
 									id: params.reportId,
-									// set the los but filter the ones that have not be selected in the params model for this custom report
-									los: _.filter(data, function(item) {
-										return reportParamsModel.courseIds.indexOf(item.id) > -1;
-									})
+									// set the los
+									los: data
 								}];
 							} else {
 								alert('TODO: handle end point data for courseSelectionTypeId 2');
+
 							}
 						} else {
 							_endPointsData[endPoint.key] = data;
@@ -924,7 +945,7 @@ var getReportParamsModel = function() {
 					if (++_endPointCount === _endPoints.length) {
 						utilsService.safeLog('_endPointsData', _endPointsData);
 
-						onDataComplete(_endPointsData);
+						onDataComplete(_endPointsData, reportParamsModel);
 					}
 				};
 
