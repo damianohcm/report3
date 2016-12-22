@@ -902,14 +902,11 @@ input.required {
 .wizard-navigation {
   background: white;
   display: block;
-  min-height: 120px;
   overflow: hidden;
   position: relative;
   float: right;
-  width: 66%;
-  height: 97px;
-  min-height: 97px;
-  max-height: 97px; }
+  width: 70%;
+  min-height: 50px; }
 
 .wizard-navigation div {
   float: left;
@@ -949,7 +946,7 @@ input.required {
 
 .wizard.vertical .steps {
   float: left;
-  width: 34%; }
+  width: 30%; }
 
 /*.wizard .steps > ul > li
 {
@@ -1053,7 +1050,7 @@ input.required {
 
 .wizard.vertical .content {
   float: right;
-  width: 66%;
+  width: 70%;
   height: 415px;
   min-height: 415px; }
 
@@ -1168,7 +1165,7 @@ label {
   font-size: 16px;
   font-weight: normal;
   margin: 0;
-  display: block; }
+  display: block !important; }
 
 .scroll-container > .scroll-pane div.select-all {
   margin-bottom: 20px; }
