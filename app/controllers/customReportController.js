@@ -738,13 +738,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		};
 
 /* begin: custom report code */
+var selectedMapper = function(item) {
+	return item.selected;
+};
+var idMapper = function(item) {
+	return item.id;
+};
+
 var getReportParamsModel = function() {
-	const selectedMapper = function(item) {
-		return item.selected;
-	};
-	const idMapper = function(item) {
-		return item.id;
-	};
 	// create params model to send to API end point for custom report data 
 	var clone = JSON.parse(angular.toJson(params.reportModel));
 	clone.stores = _.filter(clone.stores, selectedMapper);
@@ -754,6 +755,9 @@ var getReportParamsModel = function() {
 	clone.storesIds = clone.stores.map(idMapper);
 	clone.courseIds = clone.courses.map(idMapper);
 	clone.segmentIds = clone.segments.map(idMapper);
+
+	// having this year for consistency, but back end currently doe snot need this parameter
+	clone.courseSelectionTypeId = clone.courseSelectionType.id;
 
 	clone.audienceId = clone.audience.id;
 	clone.hiredId = clone.hired.id;
@@ -786,7 +790,7 @@ var getReportParamsModel = function() {
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 
 			// need to filter columns here as back end is not doing it 
-			if (params.reportModel.courseSelectionTypeId === 1) {
+			if (params.reportModel.courseSelectionType.id === 1) {
 				// filter the courses that have not be selected in the params model for this custom report
 				$scope.data.segments[0].los = _.filter($scope.data.segments[0].los, function(item) {
 					return reportParamsModel.courseIds.indexOf(item.id) > -1;
@@ -864,14 +868,16 @@ var getReportParamsModel = function() {
 			} else {
 
 				var reportParamsModel = getReportParamsModel();
+				delete reportParamsModel.needsSave;
 				delete reportParamsModel.stores;
 				delete reportParamsModel.courses;
 				delete reportParamsModel.segments;
+				delete reportParamsModel.courseSelectionType;
 				delete reportParamsModel.audience;
 				delete reportParamsModel.hired;
+				delete reportParamsModel.courseSelectionTypeOptions;
 				delete reportParamsModel.audienceOptions;
 				delete reportParamsModel.hiredOptions;
-				delete reportParamsModel.needsSave;
 				utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
 
 				var _endPoints = [{
@@ -888,7 +894,7 @@ var getReportParamsModel = function() {
 				}];
 
 				// change end point one properties
-				if (params.reportModel.courseSelectionTypeId === 2) {
+				if (params.reportModel.courseSelectionType.id === 2) {
 					_endPoints[0].propertyOnData = 'learning_path_items';
 					_endPoints[0].path = configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token);
 				}
@@ -899,13 +905,13 @@ var getReportParamsModel = function() {
 				// for testing, load data from local json files containing raw data from end points
 				if (w === 'test') {
 
-					if (params.reportModel.courseSelectionTypeId === 1) {
+					if (params.reportModel.courseSelectionType.id === 1) {
 						_endPoints[0].path = 'data/custom-report-wizard-courses.json?' + Math.random();
 					} else {
 						_endPoints[0].path = 'data/custom-report-wizard-segments.json?' + Math.random();
 					}
 
-					_endPoints[1].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionTypeId) + Math.random();
+					_endPoints[1].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionType.id) + Math.random();
 					_endPoints[1].method = 'get';
 					// bogus csodProfileId for testing
 					$scope.csodProfileId = 999999999;
@@ -922,7 +928,7 @@ var getReportParamsModel = function() {
 					} else {
 						if (endPoint.key === 'segments') {
 
-							if (params.reportModel.courseSelectionTypeId === 1) {
+							if (params.reportModel.courseSelectionType.id === 1) {
 								// create one single "fake" segment witht he custom report courses
 								_endPointsData[endPoint.key] = [{
 									title: $scope.reportName,
@@ -932,7 +938,7 @@ var getReportParamsModel = function() {
 									los: data
 								}];
 							} else {
-								alert('TODO: handle end point data for courseSelectionTypeId 2');
+								alert('TODO: handle end point data for courseSelectionType.id 2');
 
 							}
 						} else {

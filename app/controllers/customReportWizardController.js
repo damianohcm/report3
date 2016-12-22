@@ -81,6 +81,14 @@
 			text: 'After selected date ',
 			otherField: 'hiredAfter'
 		}];
+
+		$scope.courseSelectionTypeOptions = [{
+			id: 1,
+			text: 'Courses'
+		}, {
+			id: 2,
+			text: 'Segments'
+		}];
 		
 		// model for wizard selections
 		$scope.model = {
@@ -92,8 +100,7 @@
 			hiredAfter: undefined,
 			// step 3
 			entireLearningPath: false,
-			pathId: undefined,
-			courseSelectionTypeId: 1,
+			courseSelectionType: $scope.courseSelectionTypeOptions[0],
 			courses: [],
 			segments: [],
 			needsSave: false
@@ -392,7 +399,7 @@
 					this.errorMsg = this.hasError ? 'Please select at least one Course' : undefined;
 				}
 
-				var maxCourses = $scope.model.courseSelectionTypeId === 1 
+				var maxCourses = $scope.model.courseSelectionType.id === 1 
 					? customReportWizardConfig.maxCourses
 					: 1000;
 
@@ -560,16 +567,16 @@ $scope.datePickerOptions = {
 		// };
 
 		$scope.onCourseSelectionTypeChanged = function() {
-			console.log('onCourseSelectionTypeChanged');
+			//utilsService.safeLog('onCourseSelectionTypeChanged');
+
+			var setSelectedToFalse = function (item) {
+				item.selected = false;
+			};
 			
-			if ($scope.model.courseSelectionTypeId === 2) {
-				_.each($scope.model.segments, function (item) {
-					item.selected = false;
-				});
+			if ($scope.model.courseSelectionType.id === 2) {
+				_.each($scope.model.segments, setSelectedToFalse);
 			} else {
-				_.each($scope.model.courses, function (item) {
-					item.selected = false;
-				});
+				_.each($scope.model.courses, setSelectedToFalse);
 			}
 		};
 
@@ -580,8 +587,8 @@ $scope.datePickerOptions = {
 		};
 
 		$scope.onSegmentSelectedChange = function() {
-			if ($scope.model.courseSelectionTypeId === 2) {
-				console.log('onSegmentSelectedChange');
+			if ($scope.model.courseSelectionType.id === 2) {
+				//utilsService.safeLog('onSegmentSelectedChange');
 
 				var selectedSegs = _.filter($scope.model.segments, function (seg) {
 					return seg.selected;
@@ -724,13 +731,6 @@ $scope.modalConfirmOpen = function(w) {
 				});
 				
 				_.each(params.reportModel.courses, function(source) {
-					// var course = _.find($scope.lookupCourses, function(dest) {
-					// 	return dest.id === source.id;
-					// });
-					// if (course) {
-					// 	$scope.model.courses.push(course);
-					// }
-
 					if (source.selected) {
 						var course = _.find($scope.model.courses, function(dest) {
 							return dest.id === source.id;
@@ -740,8 +740,18 @@ $scope.modalConfirmOpen = function(w) {
 						}
 					}
 				});
+				
+				_.each(params.reportModel.segments, function(source) {
+					if (source.selected) {
+						var segm = _.find($scope.model.segments, function(dest) {
+							return dest.id === source.id;
+						});
+						if (segm) {
+							segm.selected = true;
+						}
+					}
+				});
 
-				//params.reportModel.audienceId
 				$scope.model.audience = _.find($scope.audienceOptions, function(option) {
 					return option.id === params.reportModel.audience.id;
 				});
@@ -749,11 +759,13 @@ $scope.modalConfirmOpen = function(w) {
 				$scope.model.hired = _.find($scope.hiredOptions, function(option) {
 					return option.id === params.reportModel.hired.id;
 				});
-
-
 				if (params.reportModel.hiredAfter) {
 					$scope.model.hiredAfter = new Date(params.reportModel.hiredAfter);
 				}
+
+				$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
+					return option.id === params.reportModel.courseSelectionType.id;
+				});		
 
 				$scope.model.entireLearningPath = params.reportModel.entireLearningPath;
 			} else {
