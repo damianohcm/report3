@@ -16,16 +16,15 @@
 			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
 				title: 'Unknown report id'
-			};
-		
-		// for custom report (when user selects segments instead of courses in the wizard) we use the pathId of the learning-path config
-		reportConfigStrategy.pathId = reportStrategies['learning-path'].pathId;
+			},
+			/* get learning-path strategy. We need lpath_id in case user select "Entire Learning Path" in step 3 */
+			ddReportConfigStrategy = configService.getBrandConfig('dd').reportStrategies['learning-path'],
+			brReportConfigStrategy = configService.getBrandConfig('br').reportStrategies['learning-path'];
 		
 		// important: set reportConfig to use by reportService
 		reportService.setReportConfig(reportConfig);
 
 		// utilsService.safeLog('reportController params', params);
-		// utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
 		utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
 
 
@@ -777,6 +776,11 @@ var getReportParamsModel = function() {
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
+
+			if (params.reportModel.courseSelectionType.id === 2) {
+				data.segments = data.segments_dd.concat(data.segments_br);
+			}
+
 			//utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
@@ -854,107 +858,93 @@ var getReportParamsModel = function() {
 				$scope.increaseProgressBar();
 			}, 2000);
 
-			if (reportConfigStrategy.pathId < 1) {
-				debugger;
-				alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
-			} else {
+			var reportParamsModel = getReportParamsModel();
+			delete reportParamsModel.needsSave;
+			delete reportParamsModel.stores;
+			delete reportParamsModel.courses;
+			delete reportParamsModel.segments;
+			delete reportParamsModel.courseSelectionType;
+			delete reportParamsModel.audience;
+			delete reportParamsModel.hired;
+			delete reportParamsModel.courseSelectionTypeOptions;
+			delete reportParamsModel.audienceOptions;
+			delete reportParamsModel.hiredOptions;
+			utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
 
-				var reportParamsModel = getReportParamsModel();
-				delete reportParamsModel.needsSave;
-				delete reportParamsModel.stores;
-				delete reportParamsModel.courses;
-				delete reportParamsModel.segments;
-				delete reportParamsModel.courseSelectionType;
-				delete reportParamsModel.audience;
-				delete reportParamsModel.hired;
-				delete reportParamsModel.courseSelectionTypeOptions;
-				delete reportParamsModel.audienceOptions;
-				delete reportParamsModel.hiredOptions;
-				utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+			var _endPoints = [{
+				key: 'stores',
+				propertyOnData: 'results',
+				path: configService.apiEndPoints.customReportStores(sessionParams.token),
+				method: 'post',
+				postData: JSON.stringify(reportParamsModel)
+			}, {
+				key: 'courses', /* lo-list lookup */
+				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+				path: configService.apiEndPoints.losList()
+			}, {
+				key: 'segments_dd',
+				propertyOnData: 'learning_path_items',
+				path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
+			}, {
+				key: 'segments_br',
+				propertyOnData: 'learning_path_items',
+				path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
+			}];
 
-				var _endPoints = [{
-					key: 'segments', /* lo-list lookup */
-					propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
-					path: configService.apiEndPoints.losList(),
-					method: 'get'
-				}, {
-					key: 'stores',
-					propertyOnData: 'results',
-					path: configService.apiEndPoints.customReportStores(sessionParams.token),
-					method: 'post',
-					postData: JSON.stringify(reportParamsModel)
-				}];
+			utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+			utilsService.safeLog('data posted to report-data end point', _endPoints[0].postData);
 
-				// change end point one properties
-				if (params.reportModel.courseSelectionType.id === 2) {
-					_endPoints[0].propertyOnData = 'learning_path_items';
-					_endPoints[0].path = configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token);
-				}
+			// for testing, load data from local json files containing raw data from end points
+			if (w === 'test') {
 
-				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-				utilsService.safeLog('data posted to report-data end point', _endPoints[1].postData);
+				_endPoints[0].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionType.id) + Math.random();
+				_endPoints[0].method = 'get';
+				
+				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
+				_endPoints[2].path = 'data/custom-report-wizard-segments1.json?' + Math.random();
+				_endPoints[3].path = 'data/custom-report-wizard-segments2.json?' + Math.random();
 
-				// for testing, load data from local json files containing raw data from end points
-				if (w === 'test') {
-
-					if (params.reportModel.courseSelectionType.id === 1) {
-						_endPoints[0].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-					} else {
-						_endPoints[0].path = 'data/custom-report-wizard-segments.json?' + Math.random();
-					}
-
-					_endPoints[1].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionType.id) + Math.random();
-					_endPoints[1].method = 'get';
-					// bogus csodProfileId for testing
-					$scope.csodProfileId = 999999999;
-				}
-
-				var _endPointsData = {}, _endPointCount = 0;
-				var onEndPointComplete = function(endPoint, data) {
-					if (endPoint.key === 'stores') {
-						$scope.csodProfileId = data.csod_profile_id;
-					}
-
-					if (endPoint.propertyOnData) {
-						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
-					} else {
-						if (endPoint.key === 'segments') {
-
-							if (params.reportModel.courseSelectionType.id === 1) {
-								// create one single "fake" segment witht he custom report courses
-								_endPointsData[endPoint.key] = [{
-									title: $scope.reportName,
-									item_type: 'Section',
-									id: params.reportId,
-									// set the los
-									los: data
-								}];
-							} else {
-								alert('TODO: handle end point data for courseSelectionType.id 2');
-
-							}
-						} else {
-							_endPointsData[endPoint.key] = data;
-						}
-					}
-
-					utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
-
-					if (++_endPointCount === _endPoints.length) {
-						utilsService.safeLog('_endPointsData', _endPointsData);
-
-						onDataComplete(_endPointsData, reportParamsModel);
-					}
-				};
-
-				utilsService.fastLoop(_endPoints, function(endPoint) {
-					dataService.getData(endPoint.path, endPoint.method, endPoint.postData)
-						.then(function(data) {
-							onEndPointComplete(endPoint, data);
-						}, onDataError);
-				});
+				// bogus csodProfileId for testing
+				$scope.csodProfileId = 999999999;
 			}
-		};
+
+			var _endPointsData = {}, _endPointCount = 0;
+			var onEndPointComplete = function(endPoint, data) {
+				if (endPoint.key === 'stores') {
+					$scope.csodProfileId = data.csod_profile_id;
+				}
+
+				if (endPoint.propertyOnData) {
+					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+				} else {
+					if (endPoint.key === 'courses' && params.reportModel.courseSelectionType.id === 1) {
+						// create one single "fake" segment with the custom report courses
+						_endPointsData.segments = [{
+							title: $scope.reportName,
+							item_type: 'Section',
+							id: params.reportId,
+							// set the los
+							los: data
+						}];
+					}
+				}
+
+				utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+
+				if (++_endPointCount === _endPoints.length) {
+					utilsService.safeLog('_endPointsData', _endPointsData);
+
+					onDataComplete(_endPointsData, reportParamsModel);
+				}
+			};
+
+			utilsService.fastLoop(_endPoints, function(endPoint) {
+				dataService.getData(endPoint.path, endPoint.method, endPoint.postData)
+					.then(function(data) {
+						onEndPointComplete(endPoint, data);
+					}, onDataError);
+			});
+		}
 
 		// // invoke getData
 		if ($scope.tokenError.length > 0) {

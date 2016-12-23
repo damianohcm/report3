@@ -374,6 +374,9 @@ label {
 .select-all > label.radio {
     margin-bottom: 8px;
 }
+.select-all > label > span {
+    padding: 4px 0!important;
+}
 /*label > input {
     display: none;
 }*/
@@ -390,6 +393,16 @@ label {
 div.checkboxContainer,
 label.radio {
     margin-bottom: 8px;
+    cursor: pointer;
+}
+label.radio > span:hover {
+    background-color: #EEE;
+}
+label.checkbox span {
+    padding: 3px;
+}
+label.checkbox span:hover {
+    background-color: #EEE;
 }
 label.checkbox > i {
     color: transparent;
@@ -436,8 +449,9 @@ label.radio > input:checked + i {
 }
 label.radio .radio-text {
   min-width: 370px;
-  margin-left: -18px;
-  padding-left: 18px;
+  /*margin-left: -18px;
+  padding-left: 18px;*/
+  padding: 0;
 }
 label.radio .radio-text:first-line {
   text-indent: -18px;

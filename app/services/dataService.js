@@ -75,7 +75,7 @@
 		// 	});
 		// };
 
-		const fixSegmentsListAPIData = function (segmentsList) {
+		const fixSegmentsListAPIData = function (segmentsList, pathId) {
 			// // if we ever have to wrap one-level only dat ainto a fake segment, use this:
 			// // if (reportConfigStrategy.oneLevel) {
 			// // 	debugger;
@@ -141,6 +141,10 @@
 				seg.id = segmentId;
 				seg.name = (seg.title || seg.name);
 				seg.type = (seg.item_type || seg.type || 'Not Set');
+
+				if (pathId) {
+					seg.pathId = pathId;
+				}
 
 				var mappedLos = [];
 

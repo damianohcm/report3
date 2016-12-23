@@ -50,6 +50,13 @@
                 </div>
 
                 <div class="select-all" ng-show="storeQuery.length === 0">
+                    <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions">
+                        <input type="radio" name="segmentsFilter" ng-model="model.segmentsFilter" ng-value="option" 
+                            ng-click="onCategoryFilterChanged()"/> 
+                        <i class="fa fa-circle fa-fw m-r-0"></i>
+                        <span class="radio-text"><img ng-if="option.icon" style="width:1.2em;margin-right:3px" ng-src="{{::option.icon}}"/>{{option.text}}</span>
+                    </label>
+
                     <label class="checkbox">
                         <input type="checkbox" ng-checked="allSegmentsChecked"  
                             customcheck 
@@ -58,14 +65,15 @@
                             data-property="selected" />
                         
                         <i class="fa fa-fw {{allSegmentsCheckedState ? 'checked fa-check' : allSegmentsCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
-                        Select the entire learning path
+                        Select all Categories
                     </label>
                 </div>
 
-                <div ng-repeat="segm in model.segments" class="checkboxContainer">
+                <div ng-repeat="segm in model.segments | filter: filterSegmentsByPathId" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="segm.selected" ng-change="onSegmentSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
+                        <img ng-src="{{::segm.icon}}" style="width:1.0em" />
                         <span ng-bind-html="segm.truncName +  ' (' + segm.los.length + ' courses)'"></span>
                     </label>
                 </div>

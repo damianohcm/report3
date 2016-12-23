@@ -11,10 +11,9 @@
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params,
 			customReportWizardConfig = configService.getCustomReportWizardConfig(),
-			brandConfig = configService.getBrandConfig(params.brand),
-			reportStrategies = brandConfig.reportStrategies,
 			/* get learning-path strategy. We need lpath_id in case user select "Entire Learning Path" in step 3 */
-			reportConfigStrategy = reportStrategies['learning-path']; 
+			ddReportConfigStrategy = configService.getBrandConfig('dd').reportStrategies['learning-path'],
+			brReportConfigStrategy = configService.getBrandConfig('br').reportStrategies['learning-path']; 
 		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
@@ -90,6 +89,23 @@
 			id: 2,
 			text: 'Categories'
 		}];
+
+		$scope.segmentsFilterOptions = [{
+			id: -1,
+			text: 'Dunkin and Baskin'
+		}, {
+			id: ddReportConfigStrategy.pathId,
+			text: 'Dunkin only',
+			icon: '../img/dd_logo_btn_sm.png'
+		}, {
+			id: brReportConfigStrategy.pathId,
+			text: 'Baskin only',
+			icon: '../img/br_logo_btn_sm.png'
+		}];
+
+		$scope.filterSegmentsByPathId = function(item) {
+			return $scope.model.segmentsFilter.id === -1 ? true : item.pathId === $scope.model.segmentsFilter.id;
+		};
 		
 		// model for wizard selections
 		$scope.model = {
@@ -101,6 +117,7 @@
 			hiredAfter: undefined,
 			// step 3
 			courseSelectionType: $scope.courseSelectionTypeOptions[0],
+			segmentsFilter: $scope.segmentsFilterOptions[0],
 			courses: [],
 			segments: [],
 			needsSave: false
@@ -128,7 +145,7 @@
 		};
 		Object.defineProperty($scope.summary, 'stores', {
 			get: function() {
-				return $scope.model.stores.filter(predicates.selected);
+				return _.filter($scope.model.stores, predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'learners', {
@@ -154,14 +171,14 @@
 		});
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
-				return $scope.model.courses.filter(function(item) {
+				return _.filter($scope.model.courses, function(item) {
 					return item.selected;
 				});
 			}
 		});
 		Object.defineProperty($scope.summary, 'segments', {
 			get: function() {
-				return $scope.model.segments.filter(predicates.selected);
+				return _.filter(_.filter($scope.model.segments, $scope.filterSegmentsByPathid), predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'entireLearningPath', {
@@ -245,7 +262,7 @@
 
 							model.stores = _.filter(model.stores, predicates.selected);
 							model.courses = _.filter(model.courses, predicates.selected);
-							model.segments = _.filter(model.segments, predicates.selected);
+							model.segments = _.filter(_.filter(model.segments, $scope.filterSegmentsByPathId), predicates.selected);
 
 							configService.setParam('reportModel', model);
 							///utilsService.safeLog('reportModel', model);
@@ -325,7 +342,7 @@
 			isLast: false, 
 			isCurrent: true,
 			validateAction: function validateStep1() {
-				var numberOfStores =  $scope.model.stores.filter(predicates.selected).length;
+				var numberOfStores =  _.filter($scope.model.stores, predicates.selected).length;
 
 				this.hasError =  false;
 				this.errorMsg = '';
@@ -375,7 +392,7 @@
 				this.errorMsg = '';
 
 				if ($scope.model.courseSelectionType.id === 1) {
-					var numberOfCourses =  $scope.model.courses.filter(predicates.selected).length;
+					var numberOfCourses =  _.filter($scope.model.courses, predicates.selected).length;
 
 					this.hasError =  numberOfCourses < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course' : undefined;
@@ -389,7 +406,7 @@
 						this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
 					}
 				} else {
-					var numberOfSegments =  $scope.model.segments.filter(predicates.selected).length;
+					var numberOfSegments =  _.filter($scope.model.segments, predicates.selected).length;
 					this.hasError =  numberOfSegments < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Category' : undefined;
 				}
@@ -490,18 +507,9 @@ $scope.datePickerOptions = {
 		$scope.noCoursesFound = false;
 		$scope.loadingCourses = false;
 
-		// $scope.getCourses = function(str) {
-		// 	str = str.toLowerCase().trim();
-		// 	utilsService.safeLog('getCourses', str);
-
-		// 	var filtered =  $scope.lookupCourses.filter(function(course) {
-		// 		return str.length === 0 || course.name.toLowerCase().indexOf(str) > -1;
-		// 	});
-
-		// 	//utilsService.safeLog('filtered', filtered);
-
-		// 	return filtered;
-		// };
+		$scope.onCategoryFilterChanged = function() {
+			_.each($scope.model.segments, predicates.setSelectedFalse);
+		};
 
 		var areAllSegmentsSelected = function() {
 			return $scope.model.segments.every(predicates.selected);
@@ -633,7 +641,9 @@ $scope.modalConfirmOpen = function(w) {
 			utilsService.safeLog('wizardController.onDataComplete', data);
 
 			// fix segments data as the backend endpoint return inconsistent data
-			data.segments = dataService.fixSegmentsListAPIData(data.segments);
+			data.segments_dd = dataService.fixSegmentsListAPIData(data.segments_dd, data.ddPathId);
+			data.segments_br = dataService.fixSegmentsListAPIData(data.segments_br, data.brPathId);
+			data.segments = data.segments_dd.concat(data.segments_br);
 
 			$scope.data = data;
 			$scope.model.stores = data.stores;
@@ -651,10 +661,16 @@ $scope.modalConfirmOpen = function(w) {
 			});
 			$scope.model.courses = $scope.lookupCourses;
 
+			const segmIconStrategy = {};
+			segmIconStrategy[data.ddPathId] = '../img/dd_logo_btn_sm.png';
+			segmIconStrategy[data.brPathId] = '../img/br_logo_btn_sm.png';
+
 			$scope.lookupSegments =  _.map(data.segments, function(item) {
 				var name = (item.name || '').trim();
 				return {
 					id: item.id,
+					pathId: item.pathId,
+					icon: segmIconStrategy[item.pathId],
 					name: name,
 					selected: false,
 					truncName: (name.length > nameMaxLen ? name.substring(0, nameMaxLen).trim() + ' ...' : name),
@@ -715,7 +731,13 @@ $scope.modalConfirmOpen = function(w) {
 
 				$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
 					return option.id === params.reportModel.courseSelectionType.id;
-				});		
+				});
+
+				$scope.model.segmentsFilter = _.find($scope.segmentsFilterOptions, function(option) {
+					return option.id === params.reportModel.segmentsFilter.id;
+				});
+
+				
 			} else {
 				$scope.wizardTitle = customReportWizardConfig.wizardTitle;
 			}
@@ -729,25 +751,31 @@ $scope.modalConfirmOpen = function(w) {
 		var getData = function(w) {
 			utilsService.safeLog('getData');
 
+			// we need segments for both brands here
 			var _endPoints = [{
+				key: 'stores', /* stores-list lookup */
+				propertyOnData: 'results',
+				path: configService.apiEndPoints.storesList(sessionParams.token)
+			}, {
 				key: 'courses',  /* lo-list lookup */
 				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
 				path: configService.apiEndPoints.losList()
 			}, {
-				key: 'segments',
+				key: 'segments_dd',
 				propertyOnData: 'learning_path_items',
-				path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token)
+				path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
 			}, {
-				key: 'stores', /* stores-list lookup */
-				propertyOnData: 'results',
-				path: configService.apiEndPoints.storesList(sessionParams.token)
+				key: 'segments_br',
+				propertyOnData: 'learning_path_items',
+				path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
 			}];
 
 			// if testing, use local json files
 			if (w === 'test') {
-				_endPoints[0].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-				_endPoints[1].path = 'data/custom-report-wizard-segments.json?' + Math.random();
-				_endPoints[2].path = 'data/custom-report-wizard-stores.json?' + Math.random();
+				_endPoints[0].path = 'data/custom-report-wizard-stores.json?' + Math.random();
+				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
+				_endPoints[2].path = 'data/custom-report-wizard-segments1.json?' + Math.random();
+				_endPoints[3].path = 'data/custom-report-wizard-segments2.json?' + Math.random();
 			}
 
 			utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param
@@ -761,6 +789,9 @@ $scope.modalConfirmOpen = function(w) {
 				}
 				
 				if (++_endPointCount === _endPoints.length) {
+					_endPointsData.ddPathId = ddReportConfigStrategy.pathId;
+					_endPointsData.brPathId = brReportConfigStrategy.pathId;
+
 					utilsService.safeLog('_endPointsData', _endPointsData);
 					onDataComplete(_endPointsData);
 				}
