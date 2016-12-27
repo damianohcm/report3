@@ -675,12 +675,12 @@ div.height-40 {
   right: 0; }
 
 .report-menu-item img {
-  max-width: 90px;
-  width: 90px;
-  margin: 0 5px; }
+  max-width: 70px;
+  width: 70px;
+  margin-left: 20px; }
 
 .report-menu-item .item-text {
-  margin-left: 8px; }
+  margin: auto 4px; }
 
 .report-menu-item .item-title {
   font-family: 'Gotham', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -689,6 +689,9 @@ div.height-40 {
   letter-spacing: -1px;
   color: #FFFFFF;
   text-shadow: 0px 1px 1px black; }
+
+.report-menu-item .item-title.smaller {
+  font-size: 1.5em; }
 
 .report-menu-item .item-descr {
   font-family: 'Gotham', 'Helvetica Neue', Helvetica, Arial, sans-serif;

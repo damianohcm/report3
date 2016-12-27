@@ -17,7 +17,15 @@
             </div>
 
             <div class="row m-t-lg">
-                <div class="col-md-2"><label>Hired:</label></div>
+                <div class="col-md-2">
+                    <label>
+                        Hired: 
+                        <i class="fa fa-info-circle" uib-tooltip="'This 'Hired' date refers to the date the learners was Added to the U.'" 
+                        tooltip-animation="true" 
+                        tooltip-placement="right-top" 
+                        tooltip-append-to-body="true"></i>
+                    </label>
+                </div>
                 <div class="col-md-9">
                     <label class="row radio" ng-repeat="option in hiredOptions">
                         <input type="radio" class="col-md-1" name="hired" ng-model="model.hired" ng-value="option" /> 
