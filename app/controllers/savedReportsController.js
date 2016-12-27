@@ -98,10 +98,7 @@
 				return {
 					id: item.id,
 					name: item.name,
-					statusMsg: '[Modified mm/dd/yyyy]',
-						//.replace('mm', getRandomInt(1, 12))
-						//.replace('dd', getRandomInt(1, 28))
-						//.replace('yyyy', getRandomInt(2016, 2018)),
+					statusMsg: '', //[Modified mm/dd/yyyy]',
 					//isLocked: false,
 					model: item.model
 				};
