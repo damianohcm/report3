@@ -247,6 +247,7 @@
 						if (currentStep.validateAction) {
 							alert('need to validate step');
 						} else {
+							debugger;
 							currentStep.isDone = true;
 							wizard.isComplete = true;
 							//wizard.close();
@@ -261,8 +262,19 @@
 							var model = JSON.parse(jsonModel);
 
 							model.stores = _.filter(model.stores, predicates.selected);
-							model.courses = _.filter(model.courses, predicates.selected);
 							model.segments = _.filter(_.filter(model.segments, $scope.filterSegmentsByPathId), predicates.selected);
+
+							// if selection type is 2, get the courseIds from the segments selected
+							if (model.courseSelectionTypeId === 2) {
+								model.courses = [];
+								_.each(model.segments, function(item) {
+									return _.each(item.los, function(lo) {
+										model.courses.push(lo);
+									});
+								});
+							} else {
+								model.courses = _.filter(model.courses, predicates.selected);
+							}
 
 							configService.setParam('reportModel', model);
 							///utilsService.safeLog('reportModel', model);

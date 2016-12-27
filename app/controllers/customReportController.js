@@ -312,6 +312,12 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}
 				}
 
+				if (params.reportModel.needsSave) {
+					msg = 'Report has unsaved changes - ' + msg;
+				} else {
+					msg = 'Report is not modified ';
+				}
+
 				return msg;
 			} else if (params.reportModel.needsSave) {
 				return 'Report has unsaved changes';
@@ -575,6 +581,20 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					parentRow.refreshing = false;
 				}, 0);
 			} else {
+				debugger;
+				// need to update the model
+				var store = _.find(params.reportModel.stores, function(item) {
+					return item.id === row.id;
+				});
+
+				if (store) {
+					store.selected = false;
+				}
+
+				var selectedStores = _.filter(params.reportModel.stores, predicates.selected);
+				params.reportModel.storesIds = _.map(selectedStores, predicates.id);
+				params.reportModel.needsSave = true;
+
 				$scope.syncTableScroll();
 			}
 		};
@@ -737,18 +757,30 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 /* begin: custom report code */
 var getReportParamsModel = function() {
+
 	// create params model to send to API end point for custom report data 
 	var clone = JSON.parse(angular.toJson(params.reportModel));
 	clone.stores = _.filter(clone.stores, predicates.selected);
 	clone.courses = _.filter(clone.courses, predicates.selected);
 	clone.segments = _.filter(clone.segments, predicates.selected);
 
-	clone.storesIds = clone.stores.map(predicates.id);
-	clone.courseIds = clone.courses.map(predicates.id);
-	clone.segmentIds = clone.segments.map(predicates.id);
+	clone.storesIds = _.map(clone.stores, predicates.id);
+	clone.segmentIds = _.map(clone.segments, predicates.id);
 
 	// having this year for consistency, but back end currently doe snot need this parameter
 	clone.courseSelectionTypeId = clone.courseSelectionType.id;
+
+	// if selection type is 2, get the courseIds from the segments selected
+	if (clone.courseSelectionTypeId === 2) {
+		clone.courseIds = [];
+		_.each(clone.segments, function(item) {
+			return _.each(item.los, function(lo) {
+				clone.courseIds.push(lo.id);
+			});
+		});
+	} else {
+		clone.courseIds = _.pluck(clone.courses, 'id');
+	}
 
 	clone.audienceId = clone.audience.id;
 	clone.hiredId = clone.hired.id;
