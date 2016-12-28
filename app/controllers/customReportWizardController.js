@@ -247,7 +247,6 @@
 						if (currentStep.validateAction) {
 							alert('need to validate step');
 						} else {
-							debugger;
 							currentStep.isDone = true;
 							wizard.isComplete = true;
 							//wizard.close();
@@ -741,13 +740,21 @@ $scope.modalConfirmOpen = function(w) {
 					$scope.model.hiredAfter = new Date(params.reportModel.hiredAfter);
 				}
 
-				$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
-					return option.id === params.reportModel.courseSelectionType.id;
-				});
+				if (params.reportModel.courseSelectionType) {
+					$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
+						return option.id === params.reportModel.courseSelectionType.id;
+					});
+				} else {
+					params.reportModel.courseSelectionType = $scope.courseSelectionTypeOptions[0];
+				}
 
-				$scope.model.segmentsFilter = _.find($scope.segmentsFilterOptions, function(option) {
-					return option.id === params.reportModel.segmentsFilter.id;
-				});
+				if (params.reportModel.segmentsFilter) {
+					$scope.model.segmentsFilter = _.find($scope.segmentsFilterOptions, function(option) {
+						return option.id === params.reportModel.segmentsFilter.id;
+					});
+				} else {
+					$scope.model.segmentsFilter = $scope.segmentsFilterOptions[0];
+				}
 
 				
 			} else {
