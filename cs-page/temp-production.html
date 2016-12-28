@@ -1,9 +1,9 @@
-<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/cspage-reporting-dd.css">
+<link id="csPageStyle" rel="stylesheet" href="//tribridge-amplifyhr.com/static/clients/dbi/reporting-center-production/app/css/cspage-reporting-dd.css">
 <div id="page-container">
-<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
 <span id="intellasync"></span>
-<script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script>
+<script src="https://sync2.tribridge-amplifyhr.com/media_app/dunkin-report/"></script>
 <script>
     window.getQueryStringValue = function(key, defaultValue) {
         if (document.location.search && document.location.search.length > 0) {
@@ -21,7 +21,7 @@
     window.setBrand = function() {
         var csPageStyle = 'cspage-reporting-[brand].css'.replace('[brand]', window.currentBrand.toLowerCase());
         //console.log('csPageStyle', csPageStyle);
-        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/' + csPageStyle + '?' + Math.random());
+        document.getElementById('csPageStyle').setAttribute('href', '//tribridge-amplifyhr.com/static/clients/dbi/reporting-center-production/app/css/' + csPageStyle + '?' + Math.random());
         $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
         setTimeout(function() {
             window.sizeFrame();
@@ -70,7 +70,7 @@
                 //    csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
                 // for production
-                var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/#/',
+                var baseUrl = 'https://tribridge-amplifyhr.com/static/clients/dbi/reporting-center-production/app/#/',
                     csBaseUrl = document.location.href.split('&')[0];
 
                 window.frameUrl = baseUrl
