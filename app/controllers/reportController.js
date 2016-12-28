@@ -417,7 +417,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		$scope.toggleChildRows = function(row, forceExpand) {
 			$scope.closePopovers();
 			
-			utilsService.safeLog('toggleChildRows', row.children.length, true);
+			//utilsService.safeLog('toggleChildRows', row.children.length, true);
 
 			// // // add state item to undo history
 			// // var msgPrefix = row.isCollapsed ? 'Expand store ' : 'Collapse store ';
@@ -803,7 +803,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				var onEndPointComplete = function(endPoint, data) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 
-					utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+					//utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
 					if (++_endPointCount === _endPoints.length) {
 						utilsService.safeLog('_endPointsData', _endPointsData);

@@ -282,7 +282,7 @@
 							var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 								.replace('[brand]', params.brand)
 								.replace('[reportId]', params.reportId);
-							utilsService.safeLog('reportPath', reportPath, true);
+							//utilsService.safeLog('reportPath', reportPath, true);
 							document.location = reportPath;
 						}
 					}

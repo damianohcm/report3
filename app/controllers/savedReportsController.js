@@ -48,7 +48,7 @@
 		};
 
 		$scope.viewReport = function(report) {
-			utilsService.safeLog('viewReport', report.id, true);
+			//utilsService.safeLog('viewReport', report.id, true);
 			
 			configService.setParam('reportId', report.id);
 			var reportModel = typeof report.model === 'string' ? JSON.parse(report.model) : report.model;
@@ -60,7 +60,7 @@
 			var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 				.replace('[brand]', params.brand)
 				.replace('[reportId]', report.id);
-			utilsService.safeLog('reportPath', reportPath, true);
+			//utilsService.safeLog('reportPath', reportPath, true);
 			document.location = reportPath;
 		};
 

@@ -42,12 +42,12 @@
 					// handler for route change success event
 					$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 						var routePath = $location.path();
-						utilsService.safeLog('*** Current route: routePath', routePath, true);
+						//utilsService.safeLog('*** Current route: routePath', routePath, true);
 						//utilsService.safeLog('*** Current route: current ', current, true);
 						//utilsService.safeLog('*** Current route: previous ', previous, true);
 						// Get all URL parameter
-						utilsService.safeLog('*** Current route params: ', $routeParams, true);
-						utilsService.safeLog('document.location.search', document.location.search, true);
+						//utilsService.safeLog('*** Current route params: ', $routeParams, true);
+						//utilsService.safeLog('document.location.search', document.location.search, true);
 
 						// set session params (this should not change so set them only once)
 						if (routePath === '/' && !configService.sessionParamsSet) {

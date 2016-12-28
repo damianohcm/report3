@@ -25,7 +25,7 @@
 		reportService.setReportConfig(reportConfig);
 
 		// utilsService.safeLog('reportController params', params);
-		utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
+		//utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
 
 
 		Object.defineProperty($scope, 'tokenError', {
@@ -164,7 +164,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					.replace('[brand]', $scope.otherBrandObj.key)
 					.replace('[reportType]', params.reportType)
 					.replace('[reportId]', params.reportId);
-				//utilsService.safeLog('viewReportForHref', result, true);
+				//utilsService.safeLog('viewReportForHref', result);
 				return result;
 			}
 		});
@@ -458,7 +458,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		$scope.toggleChildRows = function(row, forceExpand) {
 			$scope.closePopovers();
 			
-			utilsService.safeLog('toggleChildRows', row.children.length, true);
+			//utilsService.safeLog('toggleChildRows', row.children.length, true);
 
 			// // // add state item to undo history
 			// // var msgPrefix = row.isCollapsed ? 'Expand store ' : 'Collapse store ';
@@ -778,7 +778,7 @@ var getReportParamsModel = function() {
 
 	clone.reportName = $scope.reportTitle;
 	
-	utilsService.safeLog('getReportParamsModel clone', clone, true);
+	//utilsService.safeLog('getReportParamsModel clone', clone, true);
 	return clone;
 };
 /* end: custom report code */
@@ -887,7 +887,7 @@ var getReportParamsModel = function() {
 			delete reportParamsModel.courseSelectionTypeOptions;
 			delete reportParamsModel.audienceOptions;
 			delete reportParamsModel.hiredOptions;
-			utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+			//utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
 
 			var _endPoints = [{
 				key: 'stores',
@@ -947,7 +947,7 @@ var getReportParamsModel = function() {
 					}
 				}
 
-				utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+				//utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
 
 				if (++_endPointCount === _endPoints.length) {
 					utilsService.safeLog('_endPointsData', _endPointsData);
@@ -985,7 +985,7 @@ $scope.editCustomReport = function() {
 	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 		.replace('[brand]', params.brand)
 		.replace('[reportId]', params.reportId);
-	utilsService.safeLog('wizardPath', wizardPath, true);
+	//utilsService.safeLog('wizardPath', wizardPath, true);
 	document.location = wizardPath;
 };
 
@@ -1008,7 +1008,7 @@ $scope.saveCustomReport = function(saveAsNew) {
 		alert('Invalid csodProfileId parameter - please contact support');
 	} else {
 		var onSaveError = function(err) {
-			utilsService.safeLog('reportController.onSaveError', err, true);
+			console.log && console.log('reportController.onSaveError', err);
 			$scope.error = 'Could not save report';
 		};
 		
