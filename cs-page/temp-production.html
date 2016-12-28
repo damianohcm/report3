@@ -1,0 +1,91 @@
+<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/cspage-reporting-dd.css">
+<div id="page-container">
+<iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
+</div>
+<span id="intellasync"></span>
+<script src="https://sync2-dev.tribridge-amplifyhr.com/media_app/dunkin-report-pilot/"></script>
+<script>
+    window.getQueryStringValue = function(key, defaultValue) {
+        if (document.location.search && document.location.search.length > 0) {
+            var arr = document.location.search.split(key + '=')[1];
+            if (arr && arr.length > 0) {
+                return arr.split('&')[0];
+            } else {
+                return defaultValue;
+            }
+        } else {
+            return defaultValue;
+        }
+    }
+
+    window.setBrand = function() {
+        var csPageStyle = 'cspage-reporting-[brand].css'.replace('[brand]', window.currentBrand.toLowerCase());
+        //console.log('csPageStyle', csPageStyle);
+        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/' + csPageStyle + '?' + Math.random());
+        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
+        setTimeout(function() {
+            window.sizeFrame();
+        }, 250);
+    };
+
+    window.prevHeight = 0;
+    window.sizeFrame = function() {
+        var h = Number($(window).height());
+        if (h !== window.prevHeight) {
+            window.prevHeight = h;// > 500 ? h : 500;
+            var reduced = window.prevHeight > 250 ? window.prevHeight - 250 : window.prevHeight;
+            var hpx = reduced + 'px';
+			//console.log('cspage height change - window height is [window] - setting iframe height to '.replace('[window]', window.prevHeight) + hpx);
+            $('#iframeTar').attr('style', 'width: 100%;height:' + hpx + ';max-height:' + hpx);
+        }
+    };
+
+    $(function() {
+
+        $(window).resize(function(event) {
+            window.sizeFrame();
+        });
+
+        window.sizeFrame();
+
+        var credsCheck = setInterval(function(){
+            
+            if (userData.csodToken !== (undefined || '')) {
+                clearInterval(credsCheck);
+
+                // organization will be passed as query string parameter to this cs custom page via query string all the time
+                window.organization = window.getQueryStringValue('organization', '').trim().toLowerCase();
+                if (!window.organization || window.organization.length === 0) {
+                    alert('Missing organization query string parameter')
+                }
+                var defaultBrand = window.organization.indexOf('dd') > -1 ? 'dd' : 'br';
+
+                // reportType and brand might change while user is interacting with reporting
+                window.reportType = window.getQueryStringValue('reportType', '');
+                window.reportId = window.getQueryStringValue('reportId', '-1');
+                window.currentBrand = window.getQueryStringValue('brand', defaultBrand);
+
+                //// for local development
+                //var baseUrl = 'http://localhost:8080/',
+                //    csBaseUrl = baseUrl + 'cs-page/?a=1';
+                
+                // for production
+                var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/#/',
+                    csBaseUrl = document.location.href.split('&')[0];
+
+                window.frameUrl = baseUrl
+                    + '?token=' + userData.csodToken
+                    + '&organization=' + window.organization
+                    + '&compKey=' + _company_key
+                    + '&baseUrl=' + _sync_url
+                    + '&csBaseUrl=' + csBaseUrl
+                    + '&reportType=' + window.reportType
+                    + '&reportId=' + window.reportId;
+                    //+ '&widgets=widgetList';
+                
+                console && console.log('frameUrl', frameUrl);
+                window.setBrand();
+            } 
+        }, 100);
+    });
+</script>

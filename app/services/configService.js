@@ -5,11 +5,23 @@
      */
 	var configService = function() {
 
+        // set this to true for local development so it will load data from local json files
+        var _useTestData = false;
+
+        // set environment based on where you deploy the code. 
+        // Can be 'staging' or 'production'
+        var _environment = 'staging';
+
+        var apiBaseUrlStrategy = {
+            staging: 'https://dunk-stg.tribridge-amplifyhr.com',
+            production: 'https://dunk.tribridge-amplifyhr.com'
+        };
+
         var config = {
             common: {
                 // any config that is not specific to a single brand should go here,
                 totCompletionTitlePrefix: 'Tot Completion % for ',
-                apiBaseUrl: 'https://dunk-stg.tribridge-amplifyhr.com',
+                apiBaseUrl: apiBaseUrlStrategy[_environment],
                 apiPaths: {
                     reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]', //&companyKey=[companyKey]',
                     reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
@@ -90,8 +102,6 @@
                 }
             ]
         };
-
-        var _useTestData = false;
 
         /* report config */
         var reportConfig = {
@@ -256,6 +266,9 @@
 
         return {
             enableLog: enableLog,
+            getEnvironment: function () {
+                return _environment;
+            },
 			getCommonConfig: getCommonConfig,
             getBrands: getBrands,
             getBrandConfig: getBrandConfig,

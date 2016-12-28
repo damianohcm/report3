@@ -37,7 +37,7 @@
 				'configService', 
 
 				function($rootScope, $location, $routeParams, utilsService, configService) {
-					//utilsService.safeLog('********** run **********');
+					utilsService.safeLog('********** run ********** environment is: ', configService.getEnvironment(), true);
 
 					// handler for route change success event
 					$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
