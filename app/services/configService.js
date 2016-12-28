@@ -23,8 +23,8 @@
                 totCompletionTitlePrefix: 'Tot Completion % for ',
                 apiBaseUrl: apiBaseUrlStrategy[_environment],
                 apiPaths: {
-                    reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]', //&companyKey=[companyKey]',
-                    reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]', //&companyKey=[companyKey]',
+                    reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]',
+                    reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]',
                     customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
                     customReportLOSList: '/api/curricula_report/v1/lo-list/',
                     customReport:     '/api/curricula_report/v1/report/',
