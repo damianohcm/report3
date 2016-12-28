@@ -581,20 +581,6 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					parentRow.refreshing = false;
 				}, 0);
 			} else {
-				debugger;
-				// need to update the model
-				var store = _.find(params.reportModel.stores, function(item) {
-					return item.id === row.id;
-				});
-
-				if (store) {
-					store.selected = false;
-				}
-
-				var selectedStores = _.filter(params.reportModel.stores, predicates.selected);
-				params.reportModel.storesIds = _.map(selectedStores, predicates.id);
-				params.reportModel.needsSave = true;
-
 				$scope.syncTableScroll();
 			}
 		};

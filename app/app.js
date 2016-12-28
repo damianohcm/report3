@@ -265,7 +265,6 @@
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
 	app.factory('reportService', ['utilsService', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
-	app.factory('customReportParamsService', ['utilsService', services.customReportParamsService]);
 
 	app.component('modalSaveComponent', components.modalSaveComponent);
 	app.component('modalConfirmComponent', components.modalConfirmComponent);
@@ -292,7 +291,6 @@
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
-		'customReportParamsService',
 		'reportService', 
 		controllers.customReportController]);
 	
@@ -301,8 +299,7 @@
 		'$scope',
 		'$route', '$routeParams', '$location', '$timeout', '$filter', '$uibModal', 
 		'utilsService', 'configService',
-		'dataService', 
-		'customReportParamsService',
+		'dataService',
 		'wizardServiceFactory',
 		controllers.customReportWizardController]);
 
