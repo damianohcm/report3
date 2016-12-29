@@ -88,23 +88,23 @@
 		$scope.filterSegmentsByPathId = function(item) {
 			return $scope.paramsModel.segmentsFilter.id === -1 ? true : item.pathId === $scope.paramsModel.segmentsFilter.id;
 		};
-		
-		// model for wizard selections
-		$scope.paramsModel =  customReportParamsService.paramsModel;
-
-		// original model to kee track of changes
-		$scope.originalModel = {};
 
 		$scope.storeQuery = '';
 		$scope.courseQuery = '';
+		
+		// model for wizard selections
+		$scope.paramsModel = customReportParamsService.paramsModel;
+
+		// original model to keep track of changes
+		var originalParamsModel = {};
 		
 		// property that calculates wheter the model has been changed by the user
 		// and we need to present the user with confirm dialogs when she is navigating
 		// away without saving etc.
 		Object.defineProperty($scope, 'paramsModelIsDirty', {
 			get: function() {
-				var origModel = JSON.parse(angular.toJson($scope.originalModel));
-				var model = JSON.parse(angular.toJson($scope.paramsModel));
+				var origModel = JSON.parse(JSON.stringify(originalParamsModel));
+				var model = JSON.parse(JSON.stringify(customReportParamsService.paramsModel));
 				return utilsService.areEqual(origModel, model) === false;
 			}
 		});
@@ -712,7 +712,7 @@ $scope.modalConfirmOpen = function(w) {
 				$scope.wizardTitle = customReportWizardConfig.wizardTitle;
 			}
 
-			$scope.originalModel = JSON.parse(angular.toJson($scope.paramsModel));
+			originalParamsModel = JSON.parse(angular.toJson($scope.paramsModel));
 
 			//utilsService.safeLog('$scope.paramsModel', $scope.paramsModel);
 		};

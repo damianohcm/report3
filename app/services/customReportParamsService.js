@@ -57,6 +57,51 @@
 		areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false
 	};
 
+	var updateSelectedSegments = function updateSelectedSegments(model) {
+		var selectedSegs = _.filter(model.segments, predicates.selected);
+
+		var allLos = _(selectedSegs).chain()
+			.pluck('los')
+			.flatten()
+			.value();
+
+		_.each(model.courses, function (course) {
+			course.selected = _.any(allLos, function(lo) {
+				return lo.id === course.id;
+			});
+		});
+	};
+
+	var unselectStoreById = function unselectStoreById(model, id) {
+		model.stores = _.filter(model.stores, function(item) {
+			return item.id !== id;
+		});
+
+		model.needsSave = true;
+	};
+
+	var unselectCourseById = function unselectCourseById(model, id) {
+		model.courses = _.filter(model.courses, function(item) {
+			return item.id !== id;
+		});
+
+		model.needsSave = true;
+	};
+
+	var unselectSegmentById = function unselectSegmentById(model, id) {
+		debugger;
+		var segment = _.find(model.segments, function(item) {
+			return item.id === id;
+		});
+
+		if (segment) {
+			segment.selected = false;
+			updateSelectedSegments(model);
+		}
+
+		model.needsSave = true;
+	};
+
     var customReportParamsService = function(utils, configService) {
         utilsService = utils;
 		predicates = utilsService.predicates;
@@ -125,7 +170,12 @@
 			courseSelectionTypeOptions: courseSelectionTypeOptions,
 			segmentsFilterOptions: segmentsFilterOptions,
 			allStoresCheckedState: allStoresCheckedState,
-			allSegmentsCheckedState: allSegmentsCheckedState
+			allSegmentsCheckedState: allSegmentsCheckedState,
+
+			updateSelectedSegments: updateSelectedSegments,
+			unselectStoreById: unselectStoreById,
+			unselectCourseById: unselectCourseById,
+			unselectSegmentById: unselectSegmentById
         };
     };
 

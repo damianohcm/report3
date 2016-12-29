@@ -51,9 +51,21 @@
 				return params.reportId;
 			}
 		});
-		
-		$scope.needsSave = params.reportParamsModel.needsSave;
 
+		// original model to keep track of changes
+		var originalParamsModel = {};
+		
+		// property that calculates wheter the model has been changed by the user
+		// and we need to present the user with confirm dialogs when she is navigating
+		// away without saving etc.
+		Object.defineProperty($scope, 'paramsModelIsDirty', {
+			get: function() {
+				var origModel = JSON.parse(JSON.stringify(originalParamsModel));
+				var model = JSON.parse(JSON.stringify(params.reportParamsModel));
+				return utilsService.areEqual(origModel, model) === false;
+			}
+		});
+		
 		var backToReportingHome = function backToReportingHome() {
 			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
 				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
@@ -64,7 +76,7 @@
 
 		$scope.goHome = function goHome() {
 			$scope.currentBackAction = backToReportingHome;
-			if ($scope.needsSave) {
+			if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToReportingHome();
@@ -79,7 +91,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scope.needsSave) {
+			if ($scpe.paramsModelIsDirty || params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToSavedReports();
@@ -312,14 +324,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}
 				}
 
-				if (params.reportParamsModel.needsSave) {
+				if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
 					msg = 'Report has unsaved changes - ' + msg;
 				} else {
 					msg = 'Report is not modified ';
 				}
 
 				return msg;
-			} else if (params.reportParamsModel.needsSave) {
+			} else if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
 				return 'Report has unsaved changes';
 			} else {
 				return 'Report is not modified';
@@ -509,6 +521,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 			// if col is a child
 			if (col.isChild) {
+				// need to update params.reportParamsModel
+				customReportParamsService.unselectCourseById(params.reportParamsModel, col.id);
+
 				// add undo state for column being excluded from calculation
 				undoProperties.push({
 					name: 'calculate',
@@ -523,6 +538,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				
 				utilsService.safeLog('hideCol child column. Calculate is', col.calculate);
 			} else if (col.isGroup) {
+				// need to update params.reportParamsModel
+				customReportParamsService.unselectSegmentById(params.reportParamsModel, col.id);
+
 				// if col.isGroup, we have to make sure we purge any pending changes to its child columns from the undo history
 				var children = _.filter($scope.model.columns, function(item) {
 					return item.isChild && item.parentId === col.id;
@@ -583,15 +601,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			} else {
 
 				// need to update params.reportParamsModel
-				var store = _.find(params.reportParamsModel.stores, function(item) {
-					return item.id === row.id;
-				});
+				customReportParamsService.unselectStoreById(params.reportParamsModel, row.id);
 
-				if (store) {
-					store.selected = false;
-					params.reportParamsModel.needsSave = true;
-				}
-
+				// update tables scroll so that headers stay in sync
 				$scope.syncTableScroll();
 			}
 		};
@@ -1030,9 +1042,9 @@ $scope.saveCustomReport = function(saveAsNew) {
 			params.reportId = result.id;
 			params.reportParamsModel.reportName = $scope.reportTitle;
 			params.reportParamsModel.needsSave = false;
-			$scope.needsSave = params.reportParamsModel.needsSave;
 			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
+			originalParamsModel = JSON.parse(JSON.stringify(params.reportParamsModel));
 		};
 		
 		var apiEndPoint = configService.apiEndPoints.customReport();
@@ -1041,9 +1053,9 @@ $scope.saveCustomReport = function(saveAsNew) {
 			//utilsService.safeLog('saving as new', true);
 			params.reportId = -1;
 			params.reportParamsModel.needsSave = true;
-			$scope.needsSave = params.reportParamsModel.needsSave;
 			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
+			originalParamsModel = JSON.parse(JSON.stringify(params.reportParamsModel));
 		}
 		
 		if (params.reportId > -1) {
