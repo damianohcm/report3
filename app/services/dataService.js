@@ -195,7 +195,10 @@
 					if (!org) {
 						var msg = 'dataService.fixReportData: could not find mapping for org_guid ' + person.org_guid;
 						console.log(msg);
-						alert(msg);
+						console.log('dataService.fixReportData: defaulting org_guid to Dunkin (75) for person ', person.name);
+						//alert(msg);
+						org = peopleOrgStrategy['75'];
+						peopleOrgs.push(org);
 					} else if (peopleOrgs.indexOf(org) === -1) {
 						peopleOrgs.push(org);
 					}
