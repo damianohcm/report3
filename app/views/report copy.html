@@ -1,0 +1,167 @@
+<div class="banner">
+    <img src="../img/learning-path-icon.png"/>
+    <h2 ng-bind="::title"></h2>
+
+    <span class="banner-button" style="text-align:center;font-size:10pt;background-color:transparent">
+        User org: [{{::organization}}]<br/>People orgs: {{::peopleOrgs}}
+    </span>
+    <a class="banner-button return" target="_parent" ng-href="{{::backToHref}}">
+        <img class="return" src="../img/back-arrow.png"/>
+        <div class="text">Back to <br/><strong>Reporting Center</strong></div>
+    </a>
+    <a class="banner-button viewFor" ng-show="displayViewReportFor" target="_parent" ng-href="{{::viewReportForHref}}">
+        <img ng-class="::otherBrandObj.key" ng-src="../img/{{::otherBrandObj.key}}_logo_btn_sm.png"/>
+        <div class="text">View report for <br/><strong ng-bind="::otherBrandObj.title"></strong></div>
+    </a>
+</div>
+
+<div class="container loading-msg" ng-show="loading">
+    <h1>Loading, please wait...</h1>
+    <img src="../img/dd-loader.gif">
+    <uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar>
+</div>
+
+<div class="container report m-t-lg" ng-show="!loading">
+    <script type="text/ng-template" id="colHeaderPopoverTemplate.html">
+        <div style="color:black">
+            <div><a ng-if="::(!c.locked && !c.isChild)" ng-click="expandChildColumns(c)">
+                <i class="fa fa-expand"></i> Expand Category</a></div>
+            <div><a ng-if="::(!c.locked)" ng-show="displayHideGroupCol()" ng-click="hideCol(c)">
+                <i class="fa fa-minus-circle"></i> Remove Category</a></div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="rowHeaderPopoverTemplate.html">
+        <div style="color:black">
+            <div ng-show="::(r.children.length > 0)"><a ng-click="toggleChildRows(r)">
+                <i ng-class="'fa fa-' + (r.isCollapsed ? 'expand' : 'compress')"></i> {{r.isCollapsed ? 'Show' : 'Hide' }} all Learners in this PC</a></div>
+            <div><a ng-if="displayHideRow()" ng-click="hideRow(r)">
+                <i class="fa fa-minus-circle"></i> Remove this PC from the Report</a></div>
+        </div>
+    </script>
+    <div class="height-40">
+        <div>
+             <div class="pull-left now-viewing m-t-md">
+                <span ng-show="::(topLevelColumn && !model.isDetailOnly)">Now Viewing: <strong ng-bind="::(topLevelColumn && topLevelColumn.name)"></strong> | </span>
+                <span ng-bind="modifiedMessage()"></span>
+            </div>
+            <div class="pull-right m-t-sm">
+                <i class="calculating" ng-if="refreshing">Calculating...</i>
+                <span ng-if="undoService.undoState.length > 0">
+                    <button class="undo small m-l-sm" 
+                        ng-click="undoLastAction()" 
+                        uib-tooltip="{{'Undo ' + undoService.getLastActionMessage()}}"
+                        tooltip-animation="false" 
+                        tooltip-placement="left">
+                        <i class="fa fa-undo"></i> <span>Undo</span>
+                    </button>
+                    <button class="reset small m-l-sm" ng-click="undoAllActions()" title="Reset">
+                        <i class="fa fa-refresh"></i> <span>Reset</span>
+                    </button>
+                </span>
+                <button class="back-to-top small m-l-sm" ng-show="topLevelColumn && !model.isDetailOnly" ng-click="backToTopLevel()" title="Back to top level">
+                    <i class="fa fa-arrow-left"></i> <span>Back to Top Level</span>
+                </button>
+            </div>
+       </div>
+    </div>
+
+    <div class="m-t-lg">
+
+        <!-- begin: table container -->
+        <div class="table-outer">
+            <div class="table-inner">
+
+                <table class="table">
+                    <thead>
+                        <tr class="tr-head">
+                            <th ng-repeat="c in ::model.columns track by $index" ng-show="c.show" ng-class="::c.css" ng-style="colHeaderStyle(c)">
+                                <button class="csv" ng-if="::(c.position === 0)" ng-click="exportToCsv()" title="Export current view to CSV file">Export</button>
+                                <div ng-if="::(c.position > 0)">
+                                    <!-- begin: column header popover -->
+                                    <div class="th-top">
+                                        <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
+
+                                        <span ng-if="!c.locked && c.isGroup && c.show" ng-init="c=c" 
+                                            uib-popover-template="::colHeaderPopover.templateUrl" 
+                    
+                                            popover-append-to-body="true" 
+                                            popover-trigger="'click outsideClick'"
+                                            popover-placement="{{popoverPlacement(c)}}">
+                                            <a type="button">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </span>
+                                        <a ng-show="displayHideChildCol(c)" ng-click="hideCol(c)"><i class="fa fa-minus-circle"></i></a>
+                                    </div>
+                                    <!-- end: column header popover -->
+                                    <div class="th-middle">
+                                        <div class="th-middle-inner">
+                                             <!-- column text -->
+                                            <div ng-class="thTextCss(c)" ng-click="onHeaderCellClick(c)" ng-bind="::c.name"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="row in model.result.rows track by $index" ng-show="row.show">
+                        <tr>
+                            <td ng-repeat="c in ::model.columns track by $index" 
+                                ng-class="flashCss('pointer ' + row[c.key].css, row[c.key].value, !c.show, c.position)">
+
+                    <!--div ng-if="false && c.position === 0 && row.isGroup" 
+                        ng-click="toggleChildRows(row)" class="pull-left row-icon">
+                        <i class="fa fa-caret-{{row.isCollapsed ? 'down' : 'up'}}"></i>
+                    </div-->
+
+                                <div ng-if="::(c.position === 0)">
+                                    <!-- begin: row header popover -->
+                                    <div class="row-th-top">
+                                        <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
+
+                                        <span ng-init="::(r=row)" 
+                                            uib-popover-template="::rowHeaderPopover.templateUrl" 
+                                            popover-append-to-body="true" 
+                                            popover-trigger="'click outsideClick'"
+                                            popover-placement="right">
+                                            <a type="button">
+                                                <i class="fa fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <!-- end: row header popover -->
+                                </div>
+
+
+                                <div ng-class="::(c.position === 0 ? 'row-th-middle' : 'row-text')">
+                                    <div ng-class="::(c.position === 0 ? 'row-th-middle-inner' : '')">
+                                        <div ng-class="::(c.position === 0 ? 'row-th-text' : '')" ng-click="onRowCellClick(c, row)" 
+                                            title="{{row[c.key].value + ' (id: [id])'.replace('[id]', row.id)}}">
+                                            {{row[c.key].value}}{{row[c.key].suffix}}
+                                            <div ng-if="::(c.position === 0 && row.children.length < 1)" style="font-weight:normal;font-size:0.9em">(No learners)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </td>
+                        </tr>
+                        <tr ng-repeat="child in row.children track by $index" ng-show="!row.isCollapsed && child.show">
+                            <td ng-repeat="c in ::model.columns" ng-class="child[c.key].css + (!c.show ? ' hidden' : '') + (c.position === 0 ? ' person' : '')">
+                                <div class="pull-left row-text">
+                                    <span ng-class="::(c.position === 0 ? 'person' : '')" ng-bind="child[c.key].value + child[c.key].suffix"></span>
+                                    <span ng-if="::child[c.key].value2" class="person-title" ng-bind="::child[c.key].value2"></span>
+                                </div>
+                                <div ng-if="::(c.position === 0)" class="pull-right row-icon">
+                                    <a ng-show="displayHideRow(row)" ng-click="hideRow(child, row)"><i class="fa fa-minus-circle"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- end: table container -->
+
+    </div>
+</div>

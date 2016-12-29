@@ -1,34 +1,81 @@
 (function() {
 
-	window.services = window.services || {};
-  
-    window.services.dataService = function($http, utilsService) {
+    var dataService = function($http, utilsService) {
 		
-		var getData = function(url) {
+		var getData = function(url, method, payload) {
 
-			return $http
-				.get(url)
-				.then(function(response) {
-					return response.data;
-				});
+			if (method && method === 'post') {
+
+				return $http
+					.post(url, payload)
+					.then(function(response) {
+						return response.data;
+					});
+
+			} else {
+
+				return $http
+					.get(url)
+					.then(function(response) {
+						return response.data;
+					});
+			}
 		
 		};
 
-		// var postData = function(url) {
+		var postData = function(url, payload) {
+			return $http
+				.post(url, payload)
+				.then(function(response) {
+					return response.data;
+				});
+		};
 
-		// 	return $http
-		// 		.get(url)
-		// 		.then(function(response) {
-		// 			return response.data;
+		var putData = function(url, payload) {
+			return $http
+				.put(url, payload)
+				.then(function(response) {
+					return response.data;
+				});
+		};
+
+		var deleteData = function(url) {
+			return $http
+				.delete(url)
+				.then(function(response) {
+					return response.data;
+				});
+		};
+
+		// const validateStoresLOsAgainstSegmentsLOs = function(data) {
+
+		// 	// loop through each store
+		// 	utilsService.fastLoop(data.stores, function(store) {
+
+		// 		// loop through store's people
+		// 		utilsService.fastLoop(store.people, function(person) {
+					
+		// 			// loop through person los
+		// 			utilsService.fastLoop(person.los, function(personLo) {
+						
+		// 				var segementsLen = data.segments.mength;
+
+		// 				for (var i = segementsLen; i > 0;){
+		// 					return item.id === personLo.segmentId;
+		// 				};
+
+		// 				if (!segment) {
+		// 					alert('Could not find segment for perons LO with id ' + personLo.id);
+		// 				}
+						
+		// 			});
+
 		// 		});
+
+		// 	});
 		// };
 
-		/**
-		 * @method fixReportAPIData
-		 * Helper to bring deep-dested data from segment api down one level
-		 */
-		const fixReportAPIData = function(dataToFix, reportConfigStrategy) {
-
+		const fixSegmentsListAPIData = function (segmentsList, pathId) {
 			// // if we ever have to wrap one-level only dat ainto a fake segment, use this:
 			// // if (reportConfigStrategy.oneLevel) {
 			// // 	debugger;
@@ -41,7 +88,7 @@
 			// // 	}];
 			// // }
 
-			var segments = dataToFix.segments;
+			var segments = [];
 
 /* // example segments data as from API endpoint
 {
@@ -68,10 +115,16 @@
 */
 
 			// helper to map lo fields and ensure consistency for Learning Objects
-			const mapLoFields = function(lo) {
+			const mapLoFields = function(lo, segmentId) {
+				if (!segmentId) {
+					var errMsg = 'dataService: segmentId cannot be undefined';
+					alert(errMsg);
+					throw Error(errMsg);
+				}
 				lo.id = (lo.loid || lo.object_id || lo.id);
 				lo.type = (lo.item_type || lo.type || 'Not Set');
 				lo.name = (lo.name || lo.title);
+				lo.segmentId = segmentId;
 				return lo;
 			};
 
@@ -82,16 +135,21 @@
 				}
 			};
 
-			utilsService.fastLoop(segments, function(seg) {
+			utilsService.fastLoop(segmentsList, function(seg) {
 				// since we are already looping on Segments, make their properties consistent
-				seg.id = (seg.id || seg.item_id);
+				var segmentId = Number(seg.id || seg.item_id);
+				seg.id = segmentId;
 				seg.name = (seg.title || seg.name);
 				seg.type = (seg.item_type || seg.type || 'Not Set');
+
+				if (pathId) {
+					seg.pathId = pathId;
+				}
 
 				var mappedLos = [];
 
 				utilsService.fastLoop(seg.los, function(lo) {
-					lo = mapLoFields(lo);
+					lo = mapLoFields(lo, segmentId);
 
 					// update mappedLos 
 					updateMappedLos(mappedLos, lo);
@@ -99,7 +157,7 @@
 					// if there are children los, add them all
 					if (lo.los && lo.los.length > 0) {
 						utilsService.fastLoop(lo.los, function(childLo) {
-							childLo = mapLoFields(childLo);
+							childLo = mapLoFields(childLo, segmentId);
 							// update mappedLos 
 							updateMappedLos(mappedLos, childLo);
 						});
@@ -107,24 +165,27 @@
 				});
 
 				seg.los = mappedLos;
+				segments.push(seg);
 			});
 
-			dataToFix.segments = segments;
-			utilsService.safeLog('dataService: dataToFix.segments', dataToFix.segments, true);
+			//// utilsService.safeLog('dataService: segments', segments, true);
+			// console.log(JSON.stringify(segments));
+			// debugger;
+			return segments;
+		};
 
+		/**
+		 * @method fixReportAPIData
+		 * Helper to bring deep-dested data from segment api down one level
+		 */
+		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
+			
+			dataToFix.segments = fixSegmentsListAPIData(dataToFix.segments);
+			
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
 				? dataToFix.stores
 				: [];
-
-			// map store people lo id to lookup
-			// this is because the backend does not return which parent Segment id the person LOs belong to
-			// also determine if all people org_quid are the same
-			var peopleOrgStrategy = {
-				74: 'br', //Baskin-Robbins
-				75: 'dd', // Dunkin' Donuts
-				76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
-			};
 
 			var peopleOrgs = [];
 			utilsService.fastLoop(stores, function(store) {
@@ -134,22 +195,28 @@
 					if (!org) {
 						var msg = 'dataService.fixReportData: could not find mapping for org_guid ' + person.org_guid;
 						console.log(msg);
-						alert(msg);
+						console.log('dataService.fixReportData: defaulting org_guid to Dunkin (75) for person ', person.name);
+						//alert(msg);
+						org = peopleOrgStrategy['75'];
+						peopleOrgs.push(org);
 					} else if (peopleOrgs.indexOf(org) === -1) {
 						peopleOrgs.push(org);
 					}
 
 					utilsService.fastLoop(person.los, function(personLo) {
-						if (personLo) {
-							utilsService.fastLoop(segments, function(segm) {
-								var itemLo = _.find(segm.los, function(lookupLo) {
-									return lookupLo.id === personLo.id;
-								});
-
-								if (itemLo) {
-									personLo.segmentId = segm.id;
-								}
+						utilsService.fastLoop(dataToFix.segments, function(segm) {
+							var itemLo = _.find(segm.los, function(lookupLo) {
+								return lookupLo.id === personLo.id;
 							});
+
+							if (itemLo) {
+								personLo.segmentId = itemLo.segmentId;
+							}
+						});
+
+						if (!personLo.segmentId) {
+							var errMsg = 'dataService.fixReportData: Error mapping segmentId for personLo ' + personLo.id;
+							console.log(errMsg);
 						}
 					});
 				});
@@ -160,13 +227,28 @@
 			
 			// returned fixed data
 			dataToFix.stores = stores;
+
 			return dataToFix;
 		};
 
 		return {
 			getData: getData,
+			postData: postData,
+			putData: putData,
+			deleteData: deleteData,
+			fixSegmentsListAPIData: fixSegmentsListAPIData,
 			fixReportAPIData: fixReportAPIData
 		};
 	};
+
+	if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = dataService;
+        }
+        exports = dataService;
+    } else {
+        window.services = window.services || {};
+        window.services.dataService = dataService;
+    }
 
 }());

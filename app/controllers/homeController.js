@@ -30,18 +30,20 @@
 		// use document.location here; do not use $location 
 		var menuItemsStrategy = {
 			openReport: {
-				action: function(reportId) {
-					configService.setParam('reportId', reportId);
-					document.location = '#/report?a=1&brand=[brand]&reportId=[reportId]'
+				action: function(reportType) {
+					configService.setParam('reportType', reportType);
+					document.location = '#/report?a=1&brand=[brand]&reportType=[reportType]'
 						.replace('[brand]', params.brand)
-						.replace('[reportId]', params.reportId);
-					// $location.path('/report?a=1&brand=[brand]&reportId=[reportId]'
+						.replace('[reportType]', params.reportType);
+					// $location.path('/report?a=1&brand=[brand]&reportType=[reportType]'
 					// 	.replace('[brand]', params.brand)
-					// 	.replace('[reportId]', params.reportId));
+					// 	.replace('[reportType]', params.reportType));
 				}
 			},
 			customReportWizard: {
 				action: function() {
+					// starting a brand new report, reset param reportId before navigating to customReportWizard
+					configService.setParam('reportId', -1);
 					//document.location = '#/customReportWizard';
 					$location.path('/customReportWizard');
 				}
@@ -54,7 +56,7 @@
 			}
 		};
 
-		$scope.menuItemClick = function(key, reportId) {
+		$scope.menuItemClick = function(key, reportType) {
 			if ($scope.tokenError.length > 0) {
 				alert($scope.tokenError);
 			} else {
@@ -62,7 +64,7 @@
 				if (!strategy) {
 					alert('menu item click for ' + key + ' not implemented');
 				} else {
-					strategy.action(reportId);
+					strategy.action(reportType);
 				};
 			}
 		};

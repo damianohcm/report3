@@ -1,0 +1,18 @@
+<div class="ribbon-wrapper-green"><div class="ribbon-green">COMING SOON</div></div>
+
+<div class="report-menu-cell">
+    <div class="report-menu-item saved-reports" ng-click="menuItemClick('savedReports')">
+        <div class="menu-item-inner">
+            <img src="../img/saved-reports-icon.png"/>
+        </div>
+        <div class="menu-item-inner fill">
+            <div class="item-text">
+                <div class="item-title">MY SAVED REPORTS</div>
+                <div class="item-descr">Access your saved reports</div>
+            </div>
+        </div>
+        <div class="ribbon-wrapper-green"><div class="ribbon-green">COMING SOON</div></div>
+    </div>
+</div>
+
+

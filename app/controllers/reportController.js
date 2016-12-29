@@ -3,42 +3,26 @@
 	// create controller
 	window.controllers = window.controllers || {};
   
-    window.controllers.reportController = function($scope, $location, $timeout, $interval, 
+    window.controllers.reportController = function($scope, $location, $timeout, $interval, $document, 
 		utilsService, configService, undoServiceFactory, dataService, reportService) {
 		
 		var commonConfig = configService.getCommonConfig(),
-		 sessionParams = commonConfig.sessionParams,
-		 params = commonConfig.params,
-		 brandConfig = configService.getBrandConfig(params.brand),
-		 reportStrategies = brandConfig.reportStrategies,
-		 reportConfigStrategy = reportStrategies && reportStrategies[params.reportId] || {
+			reportConfig = configService.getReportConfig(),
+		 	sessionParams = commonConfig.sessionParams,
+			params = commonConfig.params,
+			brandConfig = configService.getBrandConfig(params.brand),
+			reportStrategies = brandConfig.reportStrategies,
+			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
 				title: 'Unknown report id'
 			};
 
+		// important: set reportConfig to use by reportService
+		reportService.setReportConfig(reportConfig);
+
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
-		
-		// get undo service instance
-		$scope.undoService = undoServiceFactory.getService('reportController');
-		
-		// switch css
-		var elMainCss = document.getElementById('mainCss');
-		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
-		
-		utilsService.safeLog('reportController: token/lang/brand/reportId', {
-			token: sessionParams.token,
-			lang: sessionParams.lang,
-			csBaseUrl: sessionParams.csBaseUrl,
-			organization: sessionParams.organization,
-			brand: params.brand,
-			reportId: params.reportId
-		}, true);
 
-		$scope.reportTitle = reportConfigStrategy.title;
-		
-		$scope.title = $scope.reportTitle + ' Report';
-		$scope.refreshing = false;
 
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
@@ -57,6 +41,67 @@
 				return sessionParams.csBaseUrl;
 			}
 		});
+		
+		// get undo service instance
+		$scope.undoService = undoServiceFactory.getService('reportController');
+		
+		// switch css
+		var elMainCss = document.getElementById('mainCss');
+		elMainCss.setAttribute('href', 'css/main-[brand].css'.replace('[brand]', params.brand));
+		
+		utilsService.safeLog('reportController: token/lang/brand/reportType', {
+			token: sessionParams.token,
+			lang: sessionParams.lang,
+			csBaseUrl: sessionParams.csBaseUrl,
+			organization: sessionParams.organization,
+			brand: params.brand,
+			reportType: params.reportType
+		}, true);
+
+		$scope.reportTitle = reportConfigStrategy.title;
+		
+		$scope.title = $scope.reportTitle + ' Report';
+		$scope.refreshing = false;
+
+
+		$scope.dom = {
+			tableFixed: angular.element(document.getElementById('table-fixed')),
+			tableScroll: angular.element(document.getElementById('table-scroll')),
+			tableHorizScrollContainer: angular.element(document.getElementById('table-horiz-scroll')),
+			tableVertScrollContainer: angular.element(document.getElementById('table-vert-scroll'))
+		};
+
+		$scope.dom.tableHorizScrollContainer.on('scroll', function() {
+			$timeout(function() {
+				var numWidth = Number($scope.dom.tableScroll[0].offsetWidth) + 20;
+				var width = 'width: ' + (numWidth + 'px');
+				$scope.dom.tableVertScrollContainer.attr('style', width);
+				//$scope.dom.tableFixed.attr('style', width); /* causes flashing: need to do more testing to see if this line can be removed */
+
+				// var thFixed = angular.element(document.querySelector('.table-fixed > thead .th-category'));
+				// var thScroll = angular.element(document.querySelector('.table-scroll > thead .th-category'));
+				// var width = 'width: ' + (thScroll[0].offsetWidth + 'px');
+				// utilsService.safeLog('category width', width);
+				// thFixed.attr('style', width);
+				// thScroll.attr('style', width);
+$('.table-scroll tr:eq(1) td').each(function (i) {
+	var _this = $(this);
+	$('.table-fixed tr:eq(1) td:eq(' + i + ')').width(_this.width());
+});
+			}, 0);
+		});
+
+		$scope.syncTableScroll = function() {
+			var el = $scope.dom.tableHorizScrollContainer;
+			$timeout(function() {
+				//el.scrollLeft(left), 
+				el.triggerHandler('scroll');
+
+			// 	$timeout(function() {
+			// 		el.scrollLeft(0), el.triggerHandler('scroll');
+			// 	}, 0);
+			}, 0);
+		};
 
 		$scope.displayViewReportFor = false;
 
@@ -68,11 +113,11 @@
 
 		Object.defineProperty($scope, 'viewReportForHref', {
 			get: function() {
-				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportId=[reportId]'
+				var result = '[csBaseUrl]&organization=[organization]&brand=[brand]&reportType=[reportType]'
 					.replace('[csBaseUrl]', sessionParams.csBaseUrl)
 					.replace('[organization]', sessionParams.organization)
 					.replace('[brand]', $scope.otherBrandObj.key)
-					.replace('[reportId]', params.reportId);
+					.replace('[reportType]', params.reportType);
 				//utilsService.safeLog('viewReportForHref', result, true);
 				return result;
 			}
@@ -96,6 +141,12 @@
 			intervalId: undefined
 		};
 
+		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
+			if (angular.isDefined($scope.progressBar.intervalId)) {
+				$interval.cancel($scope.progressBar.intervalId);
+			}
+		});
+
 		$scope.increaseProgressBar = function() {
 			var step = 10;
 			if ($scope.progressBar.value > 70) {
@@ -115,7 +166,7 @@
 				// "properties":[{"name":"show","oldValue":true,"newValue":false},
 				// "msg":"Exclude column Guest Service",
 				// "item":{"isGroup":true,"id":"guest-services","key":"guest-services","show":true,"position":14,"groupPosition":4,"locked":false,
-				// "css":"th-course valign-top","name":"Guest Service","$$hashKey":"object:35"}]
+				// "css":"th-segment valign-top","name":"Guest Service","$$hashKey":"object:35"}]
 				// }
 
 				// keep row collapsed when undoing rows
@@ -158,9 +209,10 @@
 			});
 
 			var rows = $scope.model.result.rows;
-				if (rows && rows.length === 1) {
-					$scope.toggleChildRows(rows[0]);
-				}
+
+			if (rows && rows.length === 1) {
+				$scope.toggleChildRows(rows[0]);
+			}
 
 			if ($scope.model.isDetailOnly) {
 				// if it is a detail-only report, just recalculate
@@ -315,18 +367,24 @@
 			$scope.model.topLevelColumn = $scope.topLevelColumn;
 			reportService.recalculate($scope.model);
 			utilsService.safeLog('recalculate completed');
+			
+			$scope.syncTableScroll();
 
 			$timeout(function() {
 				$scope.refreshing = false;
-			}, 500);
+			}, 125);
 		};
 
 		// method that handles clicks on the header cell text
 		$scope.onHeaderCellClick = function(col) {
-			//utilsService.safeLog('onHeaderCellClick');
-			utilsService.safeLog('onHeaderCellClick col', col);
+			//utilsService.safeLog('onHeaderCellClick col', col.key);
 			if (col.position > 1) {
 				$scope.expandChildColumns(col);
+			} else if (col.key === 'summary') {
+				// toggle average calculation from normal to weighted and viceversa
+				var newMode = reportService.toggleAverageCalculationMode();
+				alert('Switched average calculation denominator to be: ' + newMode);
+				$scope.recalculate();
 			}
 		};
 
@@ -359,7 +417,7 @@
 		$scope.toggleChildRows = function(row, forceExpand) {
 			$scope.closePopovers();
 			
-			utilsService.safeLog('toggleChildRows', row.children.length, true);
+			//utilsService.safeLog('toggleChildRows', row.children.length, true);
 
 			// // // add state item to undo history
 			// // var msgPrefix = row.isCollapsed ? 'Expand store ' : 'Collapse store ';
@@ -441,9 +499,10 @@
 				properties: undoProperties,
 				msg: undoMsg + ' column ' + col.name
 			});
-
+			
 			// update values
 			$scope.recalculate();
+			$scope.syncTableScroll();
 		};
 
 		/**
@@ -467,18 +526,21 @@
 				msg: 'Hide row ' + row.category.value
 			});
 
-			if (parentRow) {
-				parentRow.refreshing = true;
-			}
 			row.show = false;
 
-			// update values
-			$scope.recalculate();
-
+			// only if we are hiding a childRow we'll refresh the calculations
+			// (no need to recalculate when hiding a group row)
 			if (parentRow) {
+				parentRow.refreshing = true;
+
+				// update values
+				$scope.recalculate();
+
 				$timeout(function() {
 					parentRow.refreshing = false;
-				}, 125);
+				}, 0);
+			} else {
+				$scope.syncTableScroll();
 			}
 		};
 
@@ -557,18 +619,17 @@
 			}
 		};
 
-		$scope.displayHideGroupCol = function() {
-			return _.filter($scope.model.columns, function (c) {
-				return c.isGroup && c.show;
-			}).length > 1;
-		};
-
-		$scope.displayHideChildCol = function(col) {
-			return !col.locked 
-				&& col.isChild 
+		$scope.displayRemoveCol = function(col) {
+			if (col.isChild) {
+				return !col.locked 
 				&& _.filter($scope.model.columns, function (c) {
 					return c.parentId === col.parentId && c.show;
 				}).length > 1;
+			} else {
+				return _.filter($scope.model.columns, function (c) {
+					return c.isGroup && c.show;
+				}).length > 1;
+			}
 		};
 
 		$scope.displayHideRow = function(parentRow) {
@@ -602,19 +663,22 @@
 			totColumns = totColumns < 3 ? 3 : totColumns;
 
 			var storeWidthPercent = 10, summaryWidthPercent = 5;
-			var useFixedWidth = totColumns > 10;
+			var useFixedWidth = reportConfig.useFixedWidthForCols; //totColumns > 10;
+			
 			var styleObj = {
 			};
 
 			if (col.key === 'category') {
-				styleObj.width = '200px'; //useFixedWidth ? '200px' : storeWidthPercent + '%';
+				styleObj.width = reportConfig.colCategoryWidth; //useFixedWidth ? '200px' : storeWidthPercent + '%';
 				styleObj['min-width'] = styleObj.width;
+				styleObj['max-width'] = styleObj.width;
 			} else if (col.key === 'summary') {
-			 	styleObj.width = '130px'; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
-				 styleObj['min-width'] = styleObj.width;
+			 	styleObj.width = reportConfig.colSummaryWidth; //useFixedWidth ? '130px' : summaryWidthPercent + '%';
+				styleObj['min-width'] = styleObj.width;
+				styleObj['max-width'] = styleObj.width;
 			} else {
 				if (useFixedWidth) {
-					styleObj.width = '130px';
+					styleObj.width = reportConfig.colSegmentWidth;
 				} else {
 					var availableWidthInPercent = 100 - storeWidthPercent - summaryWidthPercent; // this is 100 minus PC and Summary widths
 					styleObj.width = Math.round(availableWidthInPercent / totColumns) + '%';
@@ -622,6 +686,7 @@
 
 				if (useFixedWidth) {
 					styleObj['min-width'] = styleObj.width;
+					styleObj['max-width'] = styleObj.width;
 				}
 			}
 			
@@ -629,17 +694,17 @@
 		};
 
 		$scope.thTextCss = function(c) {
-			var result = 'th-text' + (c.position > 1 ? ' pointer' : '');
-			if ((c.isGroup || c.isChild || c.key === 'summary') && c.name.length > 39) {
-				result += ' smaller-text';
+			if ((c.isGroup || c.isChild || c.key === 'summary') && (c.name || '').length > 39) {
+				return 'th-text smaller-text';
+			} else {
+				return 'th-text';
 			}
-
-			return result;
 		};
-
+		
 
 		var onDataError = function(err) {
-			utilsService.safeLog('reportController.onDataError', err);
+			console.log('reportController.onDataError', err);
+			alert('Error retrieving data');
 			$scope.error = 'Could not fetch data';
 		};
 	
@@ -648,12 +713,12 @@
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
-			utilsService.safeLog('reportController.onDataComplete', JSON.stringify(data), true);
+			utilsService.safeLog('reportController.onDataComplete', data);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
-			$scope.data = dataService.fixReportAPIData(data, reportConfigStrategy);
+			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
-			
+		
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
 			$scope.displayViewReportFor = sessionParams.organization === 'ddbr' || data.peopleOrgs.length > 1;
@@ -671,6 +736,8 @@
 						return col.isGroup;
 					});
 					$scope.expandChildColumns(firstColGroup);
+				} else {
+					$scope.syncTableScroll();
 				}
 			};
 
@@ -695,87 +762,62 @@
 			}, 25);
 		};
 
-		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
-		});
-
 		// helper to get the data
 		var getData = function(w) {
 
 			// show loader
 			$scope.loading = true;
 
-			utilsService.safeLog('getData: reportId', params.reportId);
+			utilsService.safeLog('getData: reportType', params.reportType);
 
 			$scope.progressBar.value = 0;
 			$scope.progressBar.intervalId = $interval(function() {
 				$scope.increaseProgressBar();
 			}, 2000);
 
-			if (w === 'live') {
-				if (reportConfigStrategy.pathId < 1) {
-					debugger;
-					alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
-				} else {
-					var _endPoints = [{
-						key: 'segments',
-						propertyOnData: 'learning_path_items',
-						path: commonConfig.apiBaseUrl 
-							+ '/api/curricula_report/v1/segments-list/[path_id]/?format=json&user=[user]&companyKey=[companyKey]'
-								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', sessionParams.token)
-								.replace('[companyKey]', sessionParams.compKey)
-					}, {
-						key: 'stores',
-						propertyOnData: 'results',
-						//path: 'data/luca-stores.json?' + Math.random()
-						path: commonConfig.apiBaseUrl 
-							+ '/api/curricula_report/v1/stores/?format=json&lpath_id=[path_id]&user=[user]&companyKey=[companyKey]'
-								.replace('[path_id]', reportConfigStrategy.pathId)
-								.replace('[user]', sessionParams.token)
-								.replace('[companyKey]', sessionParams.compKey)
-					}];
-
-					utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
-					
-					var _endPointsData = {}, _endPointCount = 0;
-					var onEndPointComplete = function(endPoint, data) {
-						_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
-
-						utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
-
-						if (++_endPointCount === _endPoints.length) {
-							utilsService.safeLog('_endPointsData', _endPointsData);
-
-							onDataComplete(_endPointsData);
-						}
-					};
-
-					utilsService.fastLoop(_endPoints, function(endPoint) {
-						dataService.getData(endPoint.path)
-							.then(function(data) {
-								onEndPointComplete(endPoint, data);
-							}, onDataError);
-					});
-				}
+			if (reportConfigStrategy.pathId < 1) {
+				debugger;
+				alert('Invalid pathId from reportConfigStrategy', reportConfigStrategy.pathId);
 			} else {
-				//var fileName = 'data/report.json?' + Math.random();
-				// //var fileName = 'data/report-generated1.json?' + Math.random();
-				// //var fileName = 'data/report-generated2.json?' + Math.random();
-				// //var fileName = 'data/single-pc.json?' + Math.random();
-				// //var fileName = 'data/single-pc-single-segment.json?' + Math.random();
+				var _endPoints = [{
+					key: 'segments',
+					propertyOnData: 'learning_path_items',
+					path: configService.apiEndPoints.segments(reportConfigStrategy.pathId, sessionParams.token),
+					pathId: reportConfigStrategy.pathId
+				}, {
+					key: 'stores',
+					propertyOnData: 'results',
+					path: configService.apiEndPoints.storesAndPeople(reportConfigStrategy.pathId, sessionParams.token),
+					pathId: reportConfigStrategy.pathId
+				}];
 
-				var fileName = 'data/janic-' + params.reportId + '.json?' + Math.random();
+				// for testing, load data from local json files containing raw data from end points
+				if (w === 'test') {
+					_endPoints[0].path = 'data/[reportType]-segments.json?'.replace('[reportType]', params.reportType) + Math.random();
+					_endPoints[1].path = 'data/[reportType]-rows.json?'.replace('[reportType]', params.reportType) + Math.random();
+				}
 
-				//var fileName = 'data/' + params.reportId + '.json?' + Math.random();
-				utilsService.safeLog('fileName', fileName);
-				// simulate delay
-				setTimeout(function() {
-					dataService.getData(fileName)
-						.then(onDataComplete, onDataError);
-				}, 500);
+				utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
+					
+				var _endPointsData = {}, _endPointCount = 0;
+				var onEndPointComplete = function(endPoint, data) {
+					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
+
+					//utilsService.safeLog(endPoint.key + ' data return by API', data[endPoint.propertyOnData], true);
+
+					if (++_endPointCount === _endPoints.length) {
+						utilsService.safeLog('_endPointsData', _endPointsData);
+
+						onDataComplete(_endPointsData);
+					}
+				};
+
+				utilsService.fastLoop(_endPoints, function(endPoint) {
+					dataService.getData(endPoint.path)
+						.then(function(data) {
+							onEndPointComplete(endPoint, data);
+						}, onDataError);
+				});
 			}
 		};
 
@@ -783,7 +825,7 @@
 		if ($scope.tokenError.length > 0) {
 			alert($scope.tokenError);
 		} else {
-			var what = reportService.reportConfig.useTestData ? 'test' : 'live';
+			var what = reportConfig.useTestData ? 'test' : 'live';
 			getData(what);
 		}
 	};

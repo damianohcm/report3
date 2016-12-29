@@ -22,7 +22,9 @@
 	var app = angular.module('Main', 
 			[
 				'ngRoute', 
-				'ngAnimate', 
+				'ngSanitize', 
+				/*'ngAnimate', */
+				'duScroll',
 				'ui.bootstrap',
 				'ngTagsInput'
 			]
@@ -35,28 +37,28 @@
 				'configService', 
 
 				function($rootScope, $location, $routeParams, utilsService, configService) {
-					console.log('********** run **********');
+					utilsService.safeLog('********** run ********** environment is: ', configService.getEnvironment(), true);
 
 					// handler for route change success event
 					$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 						var routePath = $location.path();
-						utilsService.safeLog('*** Current route: routePath', routePath, true);
+						//utilsService.safeLog('*** Current route: routePath', routePath, true);
 						//utilsService.safeLog('*** Current route: current ', current, true);
 						//utilsService.safeLog('*** Current route: previous ', previous, true);
 						// Get all URL parameter
-						utilsService.safeLog('*** Current route params: ', $routeParams, true);
-						utilsService.safeLog('document.location.search', document.location.search, true);
+						//utilsService.safeLog('*** Current route params: ', $routeParams, true);
+						//utilsService.safeLog('document.location.search', document.location.search, true);
 
 						// set session params (this should not change so set them only once)
 						if (routePath === '/' && !configService.sessionParamsSet) {
 							var token = getRouteParamValue($routeParams, 'token', ''),
-								compKey = getRouteParamValue($routeParams, 'compKey', ''),
+								//compKey = getRouteParamValue($routeParams, 'compKey', ''),
 								csBaseUrl = getRouteParamValue($routeParams, 'csBaseUrl', ''),
 								lang = getRouteParamValue($routeParams, 'lang', 'eng').toLowerCase(),
 								organization = getRouteParamValue($routeParams, 'organization', '').toLowerCase();
 							
 							configService.setSessionParam('token', token);
-							configService.setSessionParam('compKey', compKey);
+							//configService.setSessionParam('compKey', compKey);
 							configService.setSessionParam('csBaseUrl', csBaseUrl);
 							configService.setSessionParam('lang', lang);
 							configService.setSessionParam('organization', organization);
@@ -67,7 +69,7 @@
 							utilsService.safeLog('*** session params (set only once)', {
 								//'document.location.search': document.location.search,
 								token: token,
-								compKey: compKey,
+								//compKey: compKey,
 								lang: lang,
 								organization: organization,
 							}, true);
@@ -75,21 +77,23 @@
 
 						// set params passed via query string (these are params that can change)
 						var brand = getRouteParamValue($routeParams, 'brand', '').toLowerCase(),
-							reportId = getRouteParamValue($routeParams, 'reportId', '').toLowerCase();
+							reportType = getRouteParamValue($routeParams, 'reportType', '').toLowerCase(),
+							reportId = getRouteParamValue($routeParams, 'reportId', '-1').toLowerCase();
 
-						if (['/', '/report', '/customReport'].indexOf(routePath) > -1) {
-							////$rootScope.reportId = reportId;
+						if (['/', '/report', '/customReport', '/customReportWizard'].indexOf(routePath) > -1) {
 							configService.setParam('brand', brand);
 
-							if (reportId.length > 0) {
-								configService.setParam('reportId', reportId);
+							if (reportType.length > 0) {
+								configService.setParam('reportType', reportType);
 							}
+
+							configService.setParam('reportId', reportId);
 						}
 
-						utilsService.safeLog('app.js: brand/reportID', {
+						utilsService.safeLog('app.js: brand/reportType', {
 							//'document.location.search': document.location.search,
 							brand: brand,
-							reportId: reportId
+							reportType: reportType
 						}, true);
 
 						if ((brand && brand.toLowerCase()) === 'br') {
@@ -97,11 +101,12 @@
 							elMainCss.setAttribute('href', 'css/main-br.css');
 						}
 
-						if (reportId && reportId.length > 0 && reportId !== 'custom') {
-							utilsService.safeLog('app.js: reportId exists: redirect ro /report');
+						if (reportType && reportType.length > 0 && reportType !== 'custom') {
+							utilsService.safeLog('app.js: reportType exists: redirect ro /report');
 							// use document.location here; do not use $location 
-							document.location = '#/report?a=1&brand=[brand]&reportId=[reportId]'
+							document.location = '#/report?a=1&brand=[brand]&reportType=[reportType]&reportId=[reportId]'
 								.replace('[brand]', brand)
+								.replace('[reportType]', reportType)
 								.replace('[reportId]', reportId);
 						}
 					});
@@ -115,12 +120,12 @@
 			// Restrict the directive so it can only be used as an attribute
 			restrict: 'A',
 			link: function link(scope, elem, attrs) {
-				//console.log('attrs', attrs);
+				//utilsService.safeLog('customcheck attrs', attrs);
 				var childList = scope.$eval(attrs.childList),
             		property = attrs.property;
 
 				var areAllSelected = function(arr) {
-					console.log('areAllSelected function: arr.length:', arr.length);
+					//utilsService.safeLog('areAllSelected function: arr.length:', arr.length);
 					return arr && arr.length > 0 && arr.every(function(item) {
 						return item.selected === true;
 					});
@@ -131,7 +136,7 @@
 						return item.selected === true;
 					});
 				};
-
+				
 				var setAllSelected = function(val) {
 					childList = scope.$eval(attrs.childList);
 					angular.forEach(childList, function(child) {
@@ -144,23 +149,26 @@
 					childList = scope.$eval(attrs.childList);
 					if (childList) {
 						return childList.map(function(obj) {
-								return {
-									selected: obj.selected
-								};
-							});
+							return {
+								selected: obj.selected
+							};
+						});
 					} else {
 						return [];
 					}
 				}, function (items) {
-					//console.log('childListWatcher items', items);
-					//console.log('childListWatcher areAllSelected', areAllSelected(items));
-					//console.log('childListWatcher areSomeSelected', areSomeSelected(items));
+					//utilsService.safeLog('childListWatcher items', items);
+					//utilsService.safeLog('childListWatcher areAllSelected', areAllSelected(items));
+					//utilsService.safeLog('childListWatcher areSomeSelected', areSomeSelected(items));
 					var someSelected = areSomeSelected(items);
+					//console.log('customcheck someSelected', someSelected);
+
 					if (!someSelected) {
 						var allSelected = areAllSelected(items);
+						//console.log('customcheck allSelected', allSelected);
 						//setAllSelected(allSelected);
-						//console.log('attrs.ngChecked', attrs.ngChecked);
-						//console.log('allSelected', allSelected);
+						//utilsService.safeLog('attrs.ngChecked', attrs.ngChecked);
+						//utilsService.safeLog('allSelected', allSelected);
 						//attrs.ngChecked = allSelected;
 						scope.$eval(attrs.ngChecked + ' = ' + allSelected);
 					} else {
@@ -170,18 +178,25 @@
 				}, true);
 
 				var checkedWatcher = scope.$watch(attrs.checked, function(value) {
-					//console.log('checkedWatcher', value);
-					//console.log('checkedWatcher loop set set property on children');
-					setAllSelected(value);
+					//utilsService.safeLog('checkedWatcher', value);
+					//utilsService.safeLog('checkedWatcher loop set set property on children');
+					//console.log('checkedWatcher checked', value);
+					var checkedState = scope.$eval(attrs.checkedState);
+					console.log('checkedWatcher checkedState', checkedState);
+					//console.log('checkedWatcher typeof checkedState', typeof checkedState);
+					//console.log('customcheck checkedWatcher call setAllSelected');
+					if (typeof checkedState === 'boolean') {
+						setAllSelected(checkedState);
+					}
 				});
 
 				/*// Whenever the bound value of the attribute changes we update
 				// the internal 'indeterminate' flag on the attached dom element
 				var checkedStateWatcher = scope.$watch(attrs.checkedState, function(value) {
-					console.log('checkedStateWatcher', value);
+					utilsService.safeLog('checkedStateWatcher', value);
 					//elem[0].indeterminate = value;
 					if (value !== undefined) {
-						console.log('checkedStateWatcher loop set set property on children');
+						utilsService.safeLog('checkedStateWatcher loop set set property on children');
 						angular.forEach(childList, function(child) {
 							child[property] = value;
 						});
@@ -198,7 +213,7 @@
 				elem.bind('change', function() {
 					scope.$apply(function () {
 						var isChecked = elem.prop('checked');
-						//console.log('isChecked', isChecked);
+						//utilsService.safeLog('isChecked', isChecked);
 						
 						// Set each child's selected property to the checkbox's checked property
 						angular.forEach(childList, function(child) {
@@ -213,7 +228,9 @@
 	// configure
 	app.config([
 		'$routeProvider',
-		function($routeProvider) {
+		'$compileProvider', 
+		function($routeProvider, $compileProvider) {
+			//$compileProvider.debugInfoEnabled(false);
 		
 			$routeProvider
 				.when('/', {
@@ -246,12 +263,12 @@
 	app.factory('utilsService', ['configService', services.utilsService]);
 	app.factory('dataService', ['$http', 'utilsService', services.dataService]);
 	app.factory('undoServiceFactory', ['utilsService', services.undoServiceFactory]);
-	app.factory('reportServiceConfig', ['utilsService', services.reportServiceConfig]);
-	app.factory('reportService', ['utilsService', 'reportServiceConfig', services.reportService]);
+	app.factory('reportService', ['utilsService', services.reportService]);
 	app.factory('wizardServiceFactory', ['utilsService', services.wizardServiceFactory]);
 
 	app.component('modalSaveComponent', components.modalSaveComponent);
-
+	app.component('modalConfirmComponent', components.modalConfirmComponent);
+	
 	// register controllers
 	// home controllers
 	app.controller('homeController', [
@@ -261,7 +278,7 @@
 	
 	// report controller
 	app.controller('reportController', [
-		'$scope', '$location', '$timeout', '$interval', 
+		'$scope', '$location', '$timeout', '$interval', '$document', 
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
@@ -270,9 +287,7 @@
 	
 	// custom report controller (same as report controller - but for now keeping separate to not affect current functionality)
 	app.controller('customReportController', [
-		'$scope', 
-		'$rootScope', /* TODO remove rootScope as in reportController */
-		'$location', '$timeout', '$interval', '$uibModal', 
+		'$scope', '$location', '$timeout', '$interval', '$document', '$uibModal', 
 		'utilsService', 'configService',
 		'undoServiceFactory', 
 		'dataService', 
@@ -282,7 +297,7 @@
 	// custom report wizard controller
 	app.controller('customReportWizardController', [
 		'$scope',
-		'$route', '$routeParams', '$location', '$filter', 
+		'$route', '$routeParams', '$location', '$timeout', '$filter', '$uibModal', 
 		'utilsService', 'configService',
 		'dataService',
 		'wizardServiceFactory',
@@ -291,11 +306,10 @@
 	// saved reports controller
 	app.controller('savedReportsController', [
 		'$scope',
-		'$route', '$routeParams', '$location', '$filter', 
+		'$route', '$routeParams', '$location', '$filter', '$uibModal', 
 		'utilsService', 'configService',
 		'dataService',
 		controllers.savedReportsController]);
 
-		
 
 }(window.angular));

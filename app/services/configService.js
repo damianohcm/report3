@@ -1,23 +1,43 @@
 (function() {
-    window.services = window.services || {};
-
     /**
      * @service configService
      * Use this to set config values 
      */
-	window.services.configService = function() {
+	var configService = function() {
+
+        // set this to true for local development so it will load data from local json files
+        var _useTestData = false;
+
+        // set environment based on where you deploy the code. 
+        // Can be 'staging' or 'production'
+        var _environment = 'production';
+
+        var apiBaseUrlStrategy = {
+            staging: 'https://dunk-stg.tribridge-amplifyhr.com',
+            production: 'https://dunk.tribridge-amplifyhr.com'
+        };
 
         var config = {
             common: {
                 // any config that is not specific to a single brand should go here,
                 totCompletionTitlePrefix: 'Tot Completion % for ',
-                apiBaseUrl: 'https://dunk-dev.tribridge-amplifyhr.com',
+                apiBaseUrl: apiBaseUrlStrategy[_environment],
+                apiPaths: {
+                    reportSegments: '/api/curricula_report/v1/segments-list/[path_id]/?user=[user]',
+                    reportStores: '/api/curricula_report/v1/stores/?lpath_id=[path_id]&user=[user]',
+                    customReportStoresList: '/api/curricula_report/v1/stores-list/?user=[user]',
+                    customReportLOSList: '/api/curricula_report/v1/lo-list/',
+                    customReport:     '/api/curricula_report/v1/report/',
+                    customReportList: '/api/curricula_report/v1/report/?user=[user]',
+                    customReportStores: '/api/curricula_report/v1/report-data/',
+                },
                 params: {
                     // these will contain query string params that we keep passing around
                     // and will be set in angular.run, instead of saving them on $rootScope or $scope
                     brand: '',
+                    reportType: '',
                     reportId: '',
-                    newCustomReportModel: ''
+                    reportModel: ''
                 },
                 sessionParams: {
                     // these will contain session params set only once from query string the first time the / path is called
@@ -28,25 +48,33 @@
                     lang: '',
                     organization: ''
                 },
-                logEnabled: false /* if true, utilsService.safeLog will output message to the console.log (also dependends on window.logEnabled) */
+                logEnabled: false, /* if true, utilsService.safeLog will output message to the console.log */
+                // map store people lo id to lookup
+                // this is because the backend does not return which parent Segment id the person LOs belong to
+                // also determine if all people org_quid are the same
+                peopleOrgStrategy: {
+                    74: 'br', //Baskin-Robbins
+                    75: 'dd', // Dunkin' Donuts
+                    76: 'ddbr' //Dunkin' Donuts/Baskin-Robbins Combo
+                }
             },
-            brands: [
+            brands: [ /* lookup strategies based on brand by brand key (i.e. br or dd) */
                 {
                     key: 'br',
-                    title: 'Baskin-Robbins',
+                    title: 'Baskin-Robbins', /* brand displayed text */
                     reportStrategies: {
-                        'learning-path': {
-                            pathId: 15,
-                            title: 'Learning Path',
+                        'learning-path': { /* learning path report information */
+                            pathId: 6, //19, /* learning path id to use for this brand */
+                            title: 'Learning Path', /* report name displayed on the report page */
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 18,
-                            title: 'New & Trending',
+                            pathId: 5, //20, /* learning path id to use for this brand */
+                            title: 'New & Trending', /* report name displayed on the report page */
                             oneLevel: true
                         },
                         custom: {
-                            pathId: -1,
+                            pathId: -1, /* for custom report, we just ignore this */
                             title: 'Custom',
                             oneLevel: false
                         }
@@ -56,12 +84,12 @@
                     title: 'Dunkin Donuts',
                     reportStrategies: {
                         'learning-path': {
-                            pathId: 15,
+                            pathId: 1, //15,
                             title: 'Learning Path',
                             oneLevel: false
                         },
                         'new-and-trending': {
-                            pathId: 18,
+                            pathId: 4, //18,
                             title: 'New & Trending',
                             oneLevel: true
                         },
@@ -75,9 +103,69 @@
             ]
         };
 
+        /* report config */
+        var reportConfig = {
+            useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            debug: false, /* true will output additional info in the cells to help identify the code in reportService that populates them */
+
+            averageCalculationMode: 'los', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
+            
+            notApplicableLabel: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+            notApplicableIncludeInCalc: true, /* whether to include the N/A columns in the average aggregated calculation for summary */
+            colorPersonSegmentCell: false, /* use to drive the addition of css class "with-color" - Dunking does not want them colored but other customers might want it */
+            
+            colSummaryHeaderMaxLength: 85, /* max length of Summary column header (Tot Completion For ...) */
+            colGroupHeaderMaxLength: 85, /* max length of group columns headers (Segments) */
+            colChildheaderMaxLength: 75, /* max length of child columns headers (Learning objects) */
+            rowGroupHeaderMaxLength: 27, /* max length of PC/store name */
+            rowChildheaderMaxLength: 22, /* max length of Person name */
+
+            displayPersonHireDate: false, /* currently for custom report only so setting false here and override in customReportConfig */
+
+            useFixedWidthForCols: true,
+            colCategoryWidth: '280px',
+            colSummaryWidth: '120px',
+            colSegmentWidth: '120px'
+        };
+
+        /* custom report wizard config */
+        var customReportWizardConfig = {
+            useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+            wizardTitle: 'Create a Report',
+            maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
+            maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
+        };
+
+        /* custom report config */
+        var customReportConfig = JSON.parse(JSON.stringify(reportConfig));
+        customReportConfig.useTestData = _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+        customReportConfig.displayPersonHireDate = true; /* set to true to display the hire_date value next to the person title in the report */
+
+        /* savedReportsConfig */
+        var savedReportsConfig = {
+            useTestData: _useTestData /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
+        };
+
+        var enableLog = function() {
+            config.common.logEnabled = true;
+        };
 
         var getCommonConfig = function() {
             return config.common;
+        };
+
+        var getReportConfig = function() {
+		    return reportConfig;
+	    };
+        var getCustomReportWizardConfig = function() {
+		    return customReportWizardConfig;
+	    };
+        var getCustomReportConfig = function () {
+            return customReportConfig;
+        };
+
+        var getSavedReportsConfig = function () {
+            return savedReportsConfig;
         };
 
         var getBrands = function() {
@@ -115,14 +203,103 @@
 
         var sessionParamsSet = false;
 
+        /* api end points helpers */
+        var getSegmentsEndPoint = function(pathId, token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.reportSegments
+                    .replace('[path_id]', pathId)
+                    .replace('[user]', token)
+                + '&format=json';
+        };
+
+        var getStoresAndPeopleEndPoint = function(pathId, token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.reportStores
+                    .replace('[path_id]', pathId)
+                    .replace('[user]', token)
+                + '&format=json';
+        };
+
+        var getStoresListEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportStoresList
+                    .replace('[user]', token)
+                + '&format=json';
+        };
+
+        var getLOSListEndPoint = function() {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportLOSList
+                + '?format=json';
+        };
+
+        // end point to retrieve/create/modify a single custom report
+        var getCustomReportEndPoint = function() {
+            var commonConfig = config.common;
+            var result = commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReport;
+
+            return result;
+        };
+
+        // end point to retrieve a list of custom reports for a specific user
+        var getCustomReportListEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportList
+                    .replace('[user]', token)
+                + '&format=json';
+        };
+
+        // end point to retrieve the custom report data 
+        var getCustomReportStoresEndPoint = function(token) {
+            var commonConfig = config.common;
+            return commonConfig.apiBaseUrl 
+                + commonConfig.apiPaths.customReportStores
+                    .replace('[user]', token)
+                + '?format=json';
+        };
+
         return {
+            enableLog: enableLog,
+            getEnvironment: function () {
+                return _environment;
+            },
 			getCommonConfig: getCommonConfig,
             getBrands: getBrands,
             getBrandConfig: getBrandConfig,
+            getReportConfig: getReportConfig,
+            getCustomReportWizardConfig: getCustomReportWizardConfig,
+            getCustomReportConfig: getCustomReportConfig,
+            getSavedReportsConfig: getSavedReportsConfig,
             setParam: setParam,
             setSessionParam: setSessionParam,
-            sessionParamsSet: sessionParamsSet
+            sessionParamsSet: sessionParamsSet,
+
+            apiEndPoints: {
+                segments: getSegmentsEndPoint,
+                storesAndPeople: getStoresAndPeopleEndPoint,
+                storesList: getStoresListEndPoint,
+                losList: getLOSListEndPoint,
+                customReport: getCustomReportEndPoint,
+                customReportList: getCustomReportListEndPoint,
+                customReportStores: getCustomReportStoresEndPoint
+            }
 		};
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = configService;
+        }
+        exports = configService;
+    } else {
+        window.services = window.services || {};
+        window.services.configService = configService;
+    }
 
 }());

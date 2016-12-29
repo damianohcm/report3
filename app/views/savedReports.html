@@ -1,12 +1,37 @@
+<div class="banner banner-narrow">
+    <img src="../img/learning-path-icon.png"/>
+    <h2>My Saved Reports</h2>
+
+    <button class="banner-button return" ng-click="goHome()">
+        <img class="return" src="../img/back-arrow.png"/>
+        <div class="text">Back to <br/><strong>Reporting Center</strong></div>
+    </button>
+</div>
+
+<div class="container loading-msg" ng-show="loading">
+    <h1>Loading, please wait...</h1>
+    <img src="../img/dd-loader.gif">
+    <!--uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar-->
+</div>
+<script type="text/ng-template" id="modalConfirm.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
+    </div>
+    <div class="modal-body p-tb-0" id="modal-body">
+        {{$ctrl.data.message}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning cancel" type="button" ng-click="$ctrl.cancel()">{{$ctrl.data.cancelCaption}}</button>
+        <button class="btn btn-primary ok" type="button" ng-click="$ctrl.ok()">{{$ctrl.data.okCaption}}</button>
+    </div>
+</script>
 <div class="wizard-container saved-reports">
     <div class="wizard vertical">
 
         <div class="wizard-header">
-            <button type="button" class="close" ng-click="cancel()">
+            <button type="button" class="close" ng-show="false" ng-click="exit()">
                 <i class="fa fa-arrow-left"></i> Exit
             </button>
-
-            <div class="title">My Saved Reports</div>
         </div>
 
         <div class="wizard-body">
@@ -14,7 +39,7 @@
                 <div class="content clear full-width">
 
                     <div class="step-content">
-                        <h1>Your saved reports</h1>
+                        <h1 style="display:none">Your saved reports</h1>
                         <div class="sub-title">Select a report that you’ve saved below to run the report. You can rename or delete a saved report.</div>
 
                         <div class="scroll-container">

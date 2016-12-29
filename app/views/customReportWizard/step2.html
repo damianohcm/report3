@@ -1,5 +1,5 @@
 <div class="step-content">
-    <h1>Select Learners</h1>
+    <h1>Select Learners <small>{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">Do you want to include All Crew and Managers within the selected PC(s), or only those hired since a certain date?</div>
 
     <div class="scroll-container">
@@ -7,22 +7,30 @@
 
             <div class="row">
                 <div class="col-md-2"><label>Audience:</label></div>
-                <div class="col-md-9 p-l-30">
-                    <label class="radio" ng-repeat="option in audienceOptions">
-                        <input type="radio" name="audience" ng-model="model.audience" ng-value="option" /> 
-                        <i class="fa fa-circle fa-fw"></i>
-                        <span>{{option.text}}</span>
+                <div class="col-md-9">
+                    <label class="row radio" ng-repeat="option in audienceOptions">
+                        <input type="radio" class="col-md-1" name="audience" ng-model="model.audience" ng-value="option" /> 
+                        <i class="col-md-1 fa fa-circle fa-fw"></i>
+                        <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
                 </div>
             </div>
 
             <div class="row m-t-lg">
-                <div class="col-md-2"><label>Hired:</label></div>
-                <div class="col-md-9 p-l-30">
-                    <label class="radio" ng-repeat="option in hiredOptions">
-                        <input type="radio" name="hired" ng-model="model.hired" ng-value="option" ng-change="hiredChanged(option)" /> 
-                        <i class="fa fa-circle fa-fw"></i>
-                        <span>{{option.text}}</span>
+                <div class="col-md-2">
+                    <label>
+                        Hired: 
+                        <i class="fa fa-info-circle" uib-tooltip="'This 'Hired' date refers to the date the learner was Added to the U.'" 
+                        tooltip-animation="true" 
+                        tooltip-placement="right-top" 
+                        tooltip-append-to-body="true"></i>
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <label class="row radio" ng-repeat="option in hiredOptions">
+                        <input type="radio" class="col-md-1" name="hired" ng-model="model.hired" ng-value="option" /> 
+                        <i class="col-md-1 fa fa-circle fa-fw"></i>
+                        <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
 
                     <!--div uib-datepicker ng-model="model.hiredAfter" class="well well-sm" datepicker-options="datePickerOptions"></div-->

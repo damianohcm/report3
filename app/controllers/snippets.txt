@@ -1,0 +1,39 @@
+$scope.saveCustomReport = function() {
+			console.log('saveCustomReport');
+			$scope.modalSave.open();
+		};
+
+$scope.modalSaveData = {
+	title: 'Save Report',
+	reportName: ''
+};
+
+$scope.modalSave = {
+	open: function (size, parentSelector) {
+		var parentElem = undefined; //parentSelector ? 
+			//angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+		var modalInstance = $uibModal.open({
+			animation: false,
+			// ariaLabelledBy: 'modal-title',
+			// ariaDescribedBy: 'modal-body',
+			// templateUrl: 'modalSave.html',
+			// //controller: 'customReportController',
+			// //controllerAs: '$ctrl',
+			// size: size,
+			// appendTo: parentElem,
+			component: 'modalSaveComponent',
+			resolve: {
+				data: function () {
+					console.log('Modal resolve: pass modalSaveData');
+					return $scope.modalSaveData;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (result) {
+			console.log('Modal result', result);
+		}, function () {
+			console.log('Modal dismissed at');
+		});
+	}
+};

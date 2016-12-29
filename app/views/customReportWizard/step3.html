@@ -6,7 +6,7 @@
 </script>
 
 <div class="step-content">
-    <h1>Select Courses</h1>
+    <h1>Select Courses <small>{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">
         Select a course from the list below to report on. You can select multiple courses within a Learning Path.
     </div>
@@ -15,37 +15,17 @@
         <div class="scroll-pane">
 
             <div class="select-all">
-                <label class="checkbox">
-                    <input type="checkbox" ng-model="model.entireLearningPath"/> 
-                    <i class="fa fa-check fa-fw"></i>
-                    <span>Select the entire learning path</span>
+                <label class="radio m-r-md" ng-repeat="option in courseSelectionTypeOptions">
+                    <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="model.courseSelectionType" ng-value="option" 
+                        ng-click="onCourseSelectionTypeChanged()"/> 
+                    <i class="fa fa-circle fa-fw"></i>
+                    <span class="radio-text">{{option.text}}</span>
                 </label>
             </div>
 
-            <div ng-if="!model.entireLearningPath">
-                <label style="float:left; margin-top: 8px;">Search courses</label>
-                <!--input type="text" class="text-search" value="Search..." /-->
-
-                <!--input type="text" ng-model="model.courses" 
-                    uib-typeahead="course for course in getCourses($viewValue)" 
-                    ng-model-options="coursesTypeaheadOptions" 
-                    typeahead-template-url="coursesTypeAheadTemplate.html" 
-                    placeholder="Courses..." 
-                    typeahead-loading="loadingCourses" 
-                    typeahead-no-results="noCoursesFound" 
-                    class="form-control"-->
-                
-                <tags-input style="float:left" ng-model="model.courses" 
-                    display-property="name" key-property="id" placeholder="Search..." minTags="1">
-                    <auto-complete source="getCourses($query)" 
-                        min-length="0" 
-                        maxResultsToShow="15" 
-                        loadOnDownArrow="false" 
-                        loadOnEmpty="false" 
-                        loadOnFocus="false" 
-                        selectFirstMatch="false"
-                        debounce-delay="250"></auto-complete>
-                </tags-input>
+            <div ng-if="model.courseSelectionType.id === 1">
+                <label class="filter-label">Filter courses:</label>
+                <input type="text"class="search-input m-b-md" ng-model="courseQuery"/>
 
                 <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
 
@@ -53,11 +33,49 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div style="clear:both;display:none">
-                    <label>Courses:</label>
-                    <span>
-                        <span ng-repeat="course in model.courses">{{course.name}} | </span>
-                    </span>
+                <div ng-repeat="course in model.courses | filter: courseQuery" class="checkboxContainer">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="course.selected" ng-change="onCourseSelectedChange()"/> 
+                        <i class="fa fa-check fa-fw"></i>
+                        <span ng-bind-html="course.truncName | uibTypeaheadHighlight: courseQuery"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div ng-if="model.courseSelectionType.id === 2">
+                <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
+
+                <div ng-show="noCoursesFound">
+                    <i class="glyphicon glyphicon-remove"></i> No Segments Found
+                </div>
+
+                <div class="select-all" ng-show="storeQuery.length === 0">
+                    <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions">
+                        <input type="radio" name="segmentsFilter" ng-model="model.segmentsFilter" ng-value="option" 
+                            ng-click="onCategoryFilterChanged()"/> 
+                        <i class="fa fa-circle fa-fw m-r-0"></i>
+                        <span class="radio-text"><img ng-if="option.icon" style="width:1.2em;margin-right:3px" ng-src="{{::option.icon}}"/>{{option.text}}</span>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" ng-checked="allSegmentsChecked"  
+                            customcheck 
+                            data-checked-state="allSegmentsCheckedState" 
+                            data-child-list="model.segments" 
+                            data-property="selected" />
+                        
+                        <i class="fa fa-fw {{allSegmentsCheckedState ? 'checked fa-check' : allSegmentsCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
+                        Select all Categories
+                    </label>
+                </div>
+
+                <div ng-repeat="segm in model.segments | filter: filterSegmentsByPathId" class="checkboxContainer">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="segm.selected" ng-change="onSegmentSelectedChange()"/> 
+                        <i class="fa fa-check fa-fw"></i>
+                        <img ng-src="{{::segm.icon}}" style="width:1.0em" />
+                        <span ng-bind-html="segm.truncName +  ' (' + segm.los.length + ' courses)'"></span>
+                    </label>
                 </div>
             </div>
 

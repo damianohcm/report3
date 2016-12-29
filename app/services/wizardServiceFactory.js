@@ -1,9 +1,6 @@
 (function() {
 
     var utilsService;
-    
-    // service to be exported to angular
-	window.services = window.services || {};
 
     /**
      * @class WizardStep
@@ -22,6 +19,11 @@
 
         this.validateAction = args.validateAction;
         this.errorMsg = undefined;
+
+        this.resetError = function() {
+            this.errorMsg = undefined;
+            this.hasError = false;
+        };
     };
 
     WizardStep.prototype = {
@@ -157,32 +159,29 @@
     /**
      * @method getService
      * @description 
-     * Returns a service instance associated with a controller (using a controll key)
+     * Returns a new service instance
      */
-    var getService = function(controllerKey) {
-        // // singleton, do not recreate instance ifit already exists
-        // if (!_instances[controllerKey]) {
-
-        //     // create service instance
-        //     var instance = new WizardModel();
-            
-        //     // save instance
-        //     _instances[controllerKey] = instance;
-
-        //     return instance;
-        // } else {
-        //     return _instances[controllerKey];
-        // }
-
+    var getService = function() {
         return new WizardModel();
     };
   
-    window.services.wizardServiceFactory = function(utils) {
+    
+    var wizardServiceFactory = function(utils) {
         utilsService = utils;
         return {
             getService: getService
             //destroyService: destroyService
         };
     };
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = wizardServiceFactory;
+        }
+        exports = wizardServiceFactory;
+    } else {
+        window.services = window.services || {};
+        window.services.wizardServiceFactory = wizardServiceFactory;
+    }
 
 }());

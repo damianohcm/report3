@@ -1,0 +1,23 @@
+#mainContainer {
+  padding: 2px 0 10px 0 !important;
+  background: url($csPageBackgroundImg) repeat;
+  background-size: initial;
+  font-size: 12px;
+  margin-top: -20px;
+}
+
+#page-header {
+    text-align: center;
+}
+
+#page-container {
+  margin: 0 auto;
+}
+
+div[id*="pnlCustomFooter"] {
+    padding: 0!important;
+    position: fixed;
+    bottom: 7px;
+    left: 7px;
+    width: 99%;
+}

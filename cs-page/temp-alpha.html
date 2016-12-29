@@ -1,4 +1,4 @@
-<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/css/dd-learning-path-report-page.css">
+<link id="csPageStyle" rel="stylesheet" href="//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/cspage-reporting-dd.css">
 <div id="page-container">
 <iframe id="iframeTar" frameborder="0" style="width: 100%;" src="https://ux.tribridge-amplifyhr.com/static/clients/dbi/learningPath/app/loading-dd.html"></iframe>
 </div>
@@ -19,22 +19,35 @@
     }
 
     window.setBrand = function() {
-        var csPageStyle = '[brand]-learning-path-report-page.css'.replace('[brand]', window.currentBrand.toLowerCase());
-        console.log('csPageStyle', csPageStyle);
-        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/css/' + csPageStyle);
-        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand);
+        var csPageStyle = 'cspage-reporting-[brand].css'.replace('[brand]', window.currentBrand.toLowerCase());
+        //console.log('csPageStyle', csPageStyle);
+        document.getElementById('csPageStyle').setAttribute('href', '//ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center-alpha/app/css/' + csPageStyle + '?' + Math.random());
+        $('#iframeTar').attr('src', window.frameUrl + '&brand=' + window.currentBrand + '&' + Math.random());
+        setTimeout(function() {
+            window.sizeFrame();
+        }, 250);
     };
 
-    window.onresize = function(event) {
-        console.log('sizeFrame');
-        sizeFrame();
+    window.prevHeight = 0;
+    window.sizeFrame = function() {
+        var h = Number($(window).height());
+        if (h !== window.prevHeight) {
+            window.prevHeight = h;// > 500 ? h : 500;
+            var reduced = window.prevHeight > 250 ? window.prevHeight - 250 : window.prevHeight;
+            var hpx = reduced + 'px';
+			//console.log('cspage height change - window height is [window] - setting iframe height to '.replace('[window]', window.prevHeight) + hpx);
+            $('#iframeTar').attr('style', 'width: 100%;height:' + hpx + ';max-height:' + hpx);
+        }
     };
-
-    function sizeFrame() {
-        var availableHeight = 200;
-    }
 
     $(function() {
+
+        $(window).resize(function(event) {
+            window.sizeFrame();
+        });
+
+        window.sizeFrame();
+
         var credsCheck = setInterval(function(){
             
             if (userData.csodToken !== (undefined || '')) {
@@ -47,8 +60,9 @@
                 }
                 var defaultBrand = window.organization.indexOf('dd') > -1 ? 'dd' : 'br';
 
-                // reportId and brand might change while user is interacting with reporting
-                window.reportId = window.getQueryStringValue('reportId', '');
+                // reportType and brand might change while user is interacting with reporting
+                window.reportType = window.getQueryStringValue('reportType', '');
+                window.reportId = window.getQueryStringValue('reportId', '-1');
                 window.currentBrand = window.getQueryStringValue('brand', defaultBrand);
 
                 //// for local development
@@ -65,6 +79,7 @@
                     + '&compKey=' + _company_key
                     + '&baseUrl=' + _sync_url
                     + '&csBaseUrl=' + csBaseUrl
+                    + '&reportType=' + window.reportType
                     + '&reportId=' + window.reportId;
                     //+ '&widgets=widgetList';
                 

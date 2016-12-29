@@ -1,0 +1,333 @@
+{
+	"segments": [{
+        "los": [{
+            "los": [{
+                "loid": "3f8c8bd7-5aae-4184-a824-68edf528a011",
+                "name": "Dunkin' Donuts: Brand Orientation"
+            }],
+            "item_type": "Curriculum",
+            "id": "94e19989-729b-424c-8340-dab235e9a6a0",
+            "name": "Welcome to Dunkin' Donuts"
+        }],
+        "item_type": "Section",
+        "id": 12,
+        "title": "Welcome to Dunkin' Donuts"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "3998b70f-e7a8-4d38-b1d6-c99afeb0f021",
+                "name": "Food Safety: Imminent Health Risks"
+            }, {
+                "loid": "30955ec2-8fb7-45fe-9793-23baa403dbae",
+                "name": "Food Safety: Hand Washing and Bare Hand Contact"
+            }, {
+                "loid": "b96a5b96-601b-4bc3-8da5-2aff3f277fbf",
+                "name": "Food Safety: Employee Health and Habits"
+            }, {
+                "loid": "704b0075-528b-4337-a606-a8071ab1e50d",
+                "name": "Food Safety: Managing Product"
+            }, {
+                "loid": "424eb23d-0fc0-4b2f-960d-2a33a22e05c6",
+                "name": "Food Safety: Allergen Management"
+            }, {
+                "loid": "f05a4dc9-bc17-4372-831c-0ce5ca3b7bc6",
+                "name": "Food Safety: Time and Temperature"
+            }, {
+                "loid": "682a967c-6754-4431-83c3-63dabe292e39",
+                "name": "Food Safety: Cleaning and Sanitization"
+            }, {
+                "loid": "bd17da51-8fcc-4ffa-9abe-56ca78f0469a",
+                "name": "Food Safety: Incident Response and Management"
+            }, {
+                "loid": "bcec4c7c-b529-4998-b459-01e69d0852c3",
+                "name": "Food Safety: Assessment"
+            }, {
+                "loid": "4db3410b-c495-4fc5-81e3-dac04a902b8c",
+                "name": "Dunkin' Brands: 2016 HazCom Training"
+            }, {
+                "loid": "4b2e4b32-044f-493f-82ae-3e88de082158",
+                "name": "Food Safety: Overview"
+            }],
+            "item_type": "Curriculum",
+            "id": "2e61ec0d-9af1-4b3e-b018-7f0f8a66a02c",
+            "name": "Food Safety and HAZCOM--Crew"
+        }],
+        "item_type": "Section",
+        "id": 3,
+        "title": "Food Safety and Hazcom"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "66c6c39f-b053-47da-983f-ca4da77285ad",
+                "name": "Dunkin' Donuts Guest Service: Guest First Commitment"
+            }, {
+                "loid": "ebbaefb8-1d8d-4628-ac63-3f1db8cf0e80",
+                "name": "Dunkin' Donuts Guest Service: The Six Steps of Guest Service"
+            }, {
+                "loid": "27279562-cc7c-40d2-91e2-e412fd04b3b5",
+                "name": "Dunkin' Donuts Guest Service: Serving Guests with Disabilities"
+            }, {
+                "loid": "02aa0e43-fb99-4f50-9616-cc0f4939c3ea",
+                "name": "Dunkin' Donuts Guest Service: Meeting Guest Expectations"
+            }, {
+                "loid": "2e16e99d-1d52-4c13-8640-d020f0249fa4",
+                "name": "Dunkin' Donuts Guest Service: L.A.S.T Resolution and Recovery"
+            }, {
+                "loid": "14558d01-6254-4434-9ead-de9534d337cc",
+                "name": "Dunkin' Donuts Best In Class Guest Service"
+            }, {
+                "loid": "3b293dcf-5dc9-4c9b-bd18-98edae8e828c",
+                "name": "Dunkin' Donuts Guest Service: Voice of the Guest"
+            }, {
+                "loid": "e1bb63b0-c113-4e03-8830-52697b9765f4",
+                "name": "Dunkin' Donuts Guest Service: Assessment"
+            }],
+            "item_type": "Curriculum",
+            "id": "4e4b4967-1ebf-4dd3-ad97-05f376686072",
+            "name": "Guest Service"
+        }],
+        "item_type": "Section",
+        "id": 4,
+        "title": "Guest Service"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "857617c2-04b3-40f8-babf-6412791f5d9d",
+                "name": "Front Counter Cashier POS"
+            }, {
+                "loid": "b271ca58-5355-4c49-8362-e3e1c2879d12",
+                "name": "Dunkin' Donuts Mobile Payment"
+            }, {
+                "loid": "70ef3302-3eda-44b0-8a45-0e367234d716",
+                "name": "PCI Overview"
+            }, {
+                "loid": "bc1c0b96-f838-4efd-a71f-088d9ab7e01b",
+                "name": "DD Perks"
+            }],
+            "item_type": "Curriculum",
+            "id": "70c3e72b-ecb8-43ec-8b6e-8974adc68245",
+            "name": "Cashier for Crew"
+        }],
+        "item_type": "Section",
+        "id": 5,
+        "title": "Cashier for Crew"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "c741dda8-ac8c-4a2e-83f1-70d3ad934e90",
+                "name": "Dunkin' Donuts Hot Coffee: Assembling Hot Coffees"
+            }, {
+                "loid": "40df3447-ad9c-4ced-8172-ea71583b942c",
+                "name": "Dunkin' Donuts Hot Coffee: Box O' Joe"
+            }, {
+                "loid": "a7057a91-00ef-417a-b3cf-b16c972beae5",
+                "name": "Dunkin' Donuts Hot Coffee: Dark Roast"
+            }, {
+                "loid": "c9cb832f-81be-4100-868c-c709bd781c3f",
+                "name": "Dunkin' Donuts Hot Coffee: Assessment"
+            }, {
+                "loid": "4056074a-7015-446e-b789-f7bb6371b64f",
+                "name": "Dunkin' Donuts: Hot Winter Beverages"
+            }, {
+                "loid": "df5c3461-9296-4d37-8d64-8e344dda54f0",
+                "name": "Dunkin' Donuts Hot Coffee: Glass Carafe Grinding and Brewing"
+            }],
+            "item_type": "Curriculum",
+            "id": "7f02db33-25db-472c-9374-173f99d7db85",
+            "name": "All about Hot Coffees and Hot Chocolate"
+        }],
+        "item_type": "Section",
+        "id": 6,
+        "title": "All About Hot Coffees and Hot Chocolate"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "476771aa-41d7-4099-a56c-1133c984afc4",
+                "name": "Dunkin' Donuts Iced Coffee: Overview"
+            }, {
+                "loid": "dfc11683-0fa0-4480-b917-5917c36b5117",
+                "name": "Dunkin' Donuts Iced Coffee: How to Prepare the Reservoir"
+            }, {
+                "loid": "6d916ca2-ea2f-4e06-baf8-1c53d0068c38",
+                "name": "Dunkin' Donuts Iced Coffee: How to Brew Iced Coffee with Bunn IC3"
+            }, {
+                "loid": "0d7d1d1c-04e7-414d-805d-7c9735648534",
+                "name": "Dunkin' Donuts Iced Coffee: How to Assemble Iced Coffee"
+            }, {
+                "loid": "a3662bce-4faf-471f-a992-ed1ecb9846b4",
+                "name": "Dunkin' Donuts: Iced Tea: Brewing and Holding"
+            }, {
+                "loid": "cdf4f83d-6b1f-41fa-9da5-0dcf0aac0bb7",
+                "name": "Dunkin' Donuts Iced Tea: Preparing Lemons"
+            }, {
+                "loid": "5a2a45bc-3f3c-42cc-9450-1db5a0a86e11",
+                "name": "Dunkin' Donuts Iced Tea: Serving Iced Tea"
+            }, {
+                "loid": "0bfb1081-6fed-4b30-9893-869d0aa78763",
+                "name": "Dunkin' Donuts Iced Tea: Assessment"
+            }, {
+                "loid": "60a0a6bc-bb54-4d95-b8f3-3630ade14fa1",
+                "name": "Dunkin' Donuts Iced Tea: Overview"
+            }, {
+                "loid": "3b0c72d3-343b-44b4-906d-c7f1cea60f0b",
+                "name": "Dunkin' Donuts Iced Coffee: Assessment"
+            }],
+            "item_type": "Curriculum",
+            "id": "3ed65c6c-fde0-49fa-b8cb-1d28c8ecc5e4",
+            "name": "All about Ice Coffees and Iced Teas"
+        }],
+        "item_type": "Section",
+        "id": 7,
+        "title": "All About Iced Coffees and Iced Teas"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "b084b20d-a178-4cc0-a29b-969ef197bdf7",
+                "name": "Dunkin' Donuts Frozen Beverages (Taylor®): Maintenance and Equipment"
+            }, {
+                "loid": "265a36ed-601b-44c7-97b3-8d93c50f259c",
+                "name": "Dunkin™ Donuts Frozen Beverages (Taylor®): Assessment"
+            }, {
+                "loid": "b31d03d0-ed1c-41b9-b816-fa54436d6960",
+                "name": "Dunkin™ Donuts Frozen Beverages (Taylor®): Product Builds"
+            }, {
+                "loid": "afd73e79-b052-4c9a-b95b-81ab448c6be1",
+                "name": "Dunkin' Donuts Frozen Beverages (Taylor®): Product Preparation"
+            }, {
+                "loid": "9df843dc-ad32-4420-b680-67b135db8335",
+                "name": "Dunkin' Donuts Frozen Beverages (Taylor®): Product Knowledge"
+            }],
+            "item_type": "Curriculum",
+            "id": "6c65b28c-2a95-412c-8869-6f64d8edad00",
+            "name": "Frozen Beverages (Taylor Machine) Courses"
+        }, {
+            "los": [{
+                "loid": "349cfeb2-0eca-41b6-bff6-779d73e19aa7",
+                "name": "Dunkin' Donuts Island Oasis: Overview"
+            }, {
+                "loid": "808cfe39-36fe-41ef-9530-34b00ed0702c",
+                "name": "Dunkin' Donuts Island Oasis: Equipment and Station Setup"
+            }, {
+                "loid": "a39e5963-7fe1-4c3d-b508-896b59f0218e",
+                "name": "Dunkin' Donuts Island Oasis: Calibration"
+            }, {
+                "loid": "c1429a42-6693-4f25-8726-c59df5337b0b",
+                "name": "Dunkin' Donuts Island Oasis: Building Beverages"
+            }, {
+                "loid": "5513e599-40a7-43cb-94ed-2ad46bf4e784",
+                "name": "Dunkin' Donuts Island Oasis: Ice Management"
+            }, {
+                "loid": "e480ceed-b34b-4b2e-8453-6b356035c92f",
+                "name": "Dunkin' Donuts Island Oasis: Blender Cleaning"
+            }, {
+                "loid": "d1251237-8a2c-45bc-bdb4-61ed69d847e6",
+                "name": "Dunkin' Donuts Island Oasis: Assessment"
+            }],
+            "item_type": "Curriculum",
+            "id": "2dcc531f-7fab-49a5-b22a-c5f6d4310334",
+            "name": "Frozen Beverages (Island Oasis) Courses"
+        }],
+        "item_type": "Section",
+        "id": 8,
+        "title": "All About COOLATTA and Smoothies"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "41ae5480-82cd-41dc-b88f-3d433b0bffaf",
+                "name": "Dunkin' Donuts Cup Marking"
+            }, {
+                "loid": "ed37feb5-fa0b-46a4-bdb3-c4cfb69ce31d",
+                "name": "Dunkin' Donuts Espresso Beverages: WMF Station Overview"
+            }, {
+                "loid": "f361cf32-8641-48f2-9da3-4a196cae1859",
+                "name": "Dunkin' Donuts Espresso Beverages: WMF Beverage Assembly"
+            }, {
+                "loid": "b60cccb5-2762-41e4-9742-a4f1e571446e",
+                "name": "Dunkin' Donuts Espresso Beverages: WMF Assessment"
+            }, {
+                "loid": "798f9b9b-11e0-474f-beb1-6464fc8b5144",
+                "name": "Dunkin' Donuts Espresso Beverages: Overview"
+            }],
+            "item_type": "Curriculum",
+            "id": "e29bb5ce-92fb-4d50-9a14-ac9c843b16c5",
+            "name": "Espresso WMF Courses"
+        }, {
+            "los": [{
+                "loid": "057abd17-4106-427c-bb8f-2608438e971c",
+                "name": "Dunkin' Donuts Espresso Beverages: Coffee Art Station Overview"
+            }, {
+                "loid": "1a95fce0-0807-4e7a-bd4b-e20a2426e156",
+                "name": "Dunkin' Donuts Espresso Beverages: Coffee Art Beverage Assembly"
+            }, {
+                "loid": "ddf064bb-2fe7-42dd-a20d-bddd82769d73",
+                "name": "Dunkin' Donuts Espresso Beverages: Coffee Art Assessment"
+            }],
+            "item_type": "Curriculum",
+            "id": "6ad0e05e-1e85-458b-a7af-1ea04200ff48",
+            "name": "Espresso Coffee Art Courses"
+        }, {
+            "los": [{
+                "loid": "06696d01-6062-484c-a60f-4a5f6be61c5e",
+                "name": "Dunkin' Donuts Espresso Beverages: Ambiente Beverage Assembly"
+            }, {
+                "loid": "721e3e3b-0159-4908-8083-bf32a8942ad9",
+                "name": "Dunkin' Donuts Espresso Beverages: Ambiente Assesment"
+            }, {
+                "loid": "6621e5e1-71e1-4e3b-8ba8-afb6a9e2aa12",
+                "name": "Dunkin' Donuts Espresso Beverages: Ambiente Station Overview"
+            }],
+            "item_type": "Curriculum",
+            "id": "553cba93-3260-4bf4-9457-1b6ae02ca9ff",
+            "name": "Espresso Ambiente Courses"
+        }],
+        "item_type": "Section",
+        "id": 9,
+        "title": "All About Espresso Beverages"
+    }, {
+        "los": [{
+            "los": [{
+                "loid": "3bfa64fc-f9f1-44bc-80a1-b21826d6b857",
+                "name": "Dunkin' Donuts Sandwich Station: Hot Holding"
+            }, {
+                "loid": "e9dd323d-0b1a-48b4-b7f7-9d5faabdd583",
+                "name": "Dunkin' Donuts Sandwich Station: Technology at the Sandwich Station"
+            }, {
+                "loid": "50f0b426-409f-41d6-8361-cb54ce8b8431",
+                "name": "Dunkin' Donuts Sandwich Station: Labeling"
+            }, {
+                "loid": "626eec60-e1ea-49c2-9d0f-705d6a821c1a",
+                "name": "Dunkin' Donuts Sandwich Station: Thawing and Portioning"
+            }, {
+                "loid": "356bfeec-be09-4198-a7ec-91fd64a0e9d9",
+                "name": "Dunkin' Donuts Sandwich Station: Cleaning"
+            }, {
+                "loid": "ab26fcd1-1be1-4952-8fbf-397612304f6b",
+                "name": "Dunkin' Donuts Sandwich Station:  Overview of the Sandwich Station_"
+            }, {
+                "loid": "c5f471e4-c67d-453d-9e9a-2aff8e15e85d",
+                "name": "Dunkin' Donuts Sandwich Station: Components of the Sandwich Station"
+            }, {
+                "loid": "d497f54c-c9a9-4af8-88a7-8626ddd0b11d",
+                "name": "Dunkin' Donuts Sandwich Station: Breakfast Sandwiches"
+            }, {
+                "loid": "770580b6-6c13-4ba7-ba1d-1a79e56954d9",
+                "name": "Dunkin' Donuts Sandwich Station: Bakery Sandwiches_"
+            }, {
+                "loid": "97c0fa8e-de94-479e-b2b8-583fb208a062",
+                "name": "Dunkin' Donuts Sandwich Station: TurboChef Oven"
+            }, {
+                "loid": "e5803c6c-881a-495c-b6a7-75208a1799e7",
+                "name": "Dunkin' Donuts Sandwich Station: Toasting_"
+            }, {
+                "loid": "87f056ec-6f81-4d01-b010-bf3a3a7a95b0",
+                "name": "Dunkin' Donuts Sandwich Station: Recommended Sandwich Station Roles"
+            }],
+            "item_type": "Curriculum",
+            "id": "e8324c5f-3031-4b25-a830-bf1fac34db47",
+            "name": "All about the Sandwich Station"
+        }],
+        "item_type": "Section",
+        "id": 10,
+        "title": "All About the Sandwich Station"
+    }]
+}
