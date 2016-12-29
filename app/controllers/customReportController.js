@@ -91,7 +91,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scpe.paramsModelIsDirty || params.reportParamsModel.needsSave) {
+			if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToSavedReports();

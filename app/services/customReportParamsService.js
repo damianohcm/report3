@@ -89,7 +89,6 @@
 	};
 
 	var unselectSegmentById = function unselectSegmentById(model, id) {
-		debugger;
 		var segment = _.find(model.segments, function(item) {
 			return item.id === id;
 		});
