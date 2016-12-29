@@ -45,7 +45,7 @@
 			//this.hide();
 			// TODO: need to prompt user for confirmation in case there are pending changes
 			$scope.currentBackAction = backToReportingHome;
-			if ($scope.paramsModelIsDirty || $scope.paramsModel.needsSave) {
+			if ($scope.paramsModel.needsSave || $scope.paramsModelIsDirty) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
 				backToReportingHome();
@@ -54,7 +54,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scope.paramsModelIsDirty || $scope.paramsModel.needsSave) {
+			if ($scope.paramsModel.needsSave || $scope.paramsModelIsDirty) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
 				backToSavedReports();

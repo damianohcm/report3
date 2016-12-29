@@ -76,7 +76,7 @@
 
 		$scope.goHome = function goHome() {
 			$scope.currentBackAction = backToReportingHome;
-			if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
+			if (params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToReportingHome();
@@ -91,7 +91,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
+			if (params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToSavedReports();
@@ -324,14 +324,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}
 				}
 
-				if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
+				if (params.reportParamsModel.needsSave) {
 					msg = 'Report has unsaved changes - ' + msg;
 				} else {
 					msg = 'Report is not modified ';
 				}
 
 				return msg;
-			} else if ($scope.paramsModelIsDirty || params.reportParamsModel.needsSave) {
+			} else if (params.reportParamsModel.needsSave) {
 				return 'Report has unsaved changes';
 			} else {
 				return 'Report is not modified';
@@ -1005,6 +1005,8 @@ $scope.editCustomReport = function() {
 	configService.setParam('reportParamsModel', params.reportParamsModel);
 	utilsService.safeLog('editCustomReport params.reportParamsModel', params.reportParamsModel);
 
+	$scope.undoService.clearState();
+
 	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 		.replace('[brand]', params.brand)
 		.replace('[reportId]', params.reportId);
@@ -1039,6 +1041,7 @@ $scope.saveCustomReport = function(saveAsNew) {
 			utilsService.safeLog('reportController.onSaveComplete', result, true);
 			// sample response:
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
+			$scope.undoService.clearState();
 			params.reportId = result.id;
 			params.reportParamsModel.reportName = $scope.reportTitle;
 			params.reportParamsModel.needsSave = false;

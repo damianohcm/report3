@@ -230,6 +230,15 @@
                 return 'Nothing do undo';
             }
         }.bind(this);
+
+        /**
+         * @method clearState
+         * @dscription
+         * Reset to blank state without undoing any action
+         */
+        this.clearState = function() {
+            this.undoState = [];
+        }.bind(this);
     };
 
     /**
