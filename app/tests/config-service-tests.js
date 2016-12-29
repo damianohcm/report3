@@ -172,13 +172,13 @@
                             'brand', 
                             'reportType', 
                             'reportId',
-                            'reportModel'
+                            'reportParamsModel'
                         ]);
 
                         expect(params.brand).to.be.a('string');
                         expect(params.reportType).to.be.a('string');
                         expect(params.reportId).to.be.a('string');
-                        expect(params.reportModel).to.be.a('string');
+                        expect(params.reportParamsModel).to.be.a('string');
 
                         done();
                     });

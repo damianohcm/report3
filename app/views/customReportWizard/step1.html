@@ -13,7 +13,7 @@
                     <input type="checkbox" ng-checked="allStoresChecked"  
                         customcheck 
                         data-checked-state="allStoresCheckedState" 
-                        data-child-list="model.stores" 
+                        data-child-list="paramsModel.stores" 
                         data-property="selected" />
                      
                     <i class="fa fa-fw {{allStoresCheckedState ? 'checked fa-check' : allStoresCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
@@ -21,7 +21,7 @@
                 </label>
             </div>
 
-            <div ng-repeat="store in model.stores | filter: storeQuery" class="checkboxContainer">
+            <div ng-repeat="store in paramsModel.stores | filter: storeQuery" class="checkboxContainer">
                 <label class="checkbox">
                     <input type="checkbox" ng-model="store.selected"/> 
                     <i class="fa fa-check fa-fw"></i>

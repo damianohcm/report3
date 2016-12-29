@@ -16,14 +16,14 @@
 
             <div class="select-all">
                 <label class="radio m-r-md" ng-repeat="option in courseSelectionTypeOptions">
-                    <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="model.courseSelectionType" ng-value="option" 
+                    <input type="radio" class="col-md-1" name="courseSelectionType" ng-model="paramsModel.courseSelectionType" ng-value="option" 
                         ng-click="onCourseSelectionTypeChanged()"/> 
                     <i class="fa fa-circle fa-fw"></i>
                     <span class="radio-text">{{option.text}}</span>
                 </label>
             </div>
 
-            <div ng-if="model.courseSelectionType.id === 1">
+            <div ng-if="paramsModel.courseSelectionType.id === 1">
                 <label class="filter-label">Filter courses:</label>
                 <input type="text"class="search-input m-b-md" ng-model="courseQuery"/>
 
@@ -33,7 +33,7 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div ng-repeat="course in model.courses | filter: courseQuery" class="checkboxContainer">
+                <div ng-repeat="course in paramsModel.courses | filter: courseQuery" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="course.selected" ng-change="onCourseSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div ng-if="model.courseSelectionType.id === 2">
+            <div ng-if="paramsModel.courseSelectionType.id === 2">
                 <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
 
                 <div ng-show="noCoursesFound">
@@ -51,7 +51,7 @@
 
                 <div class="select-all" ng-show="storeQuery.length === 0">
                     <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions">
-                        <input type="radio" name="segmentsFilter" ng-model="model.segmentsFilter" ng-value="option" 
+                        <input type="radio" name="segmentsFilter" ng-model="paramsModel.segmentsFilter" ng-value="option" 
                             ng-click="onCategoryFilterChanged()"/> 
                         <i class="fa fa-circle fa-fw m-r-0"></i>
                         <span class="radio-text"><img ng-if="option.icon" style="width:1.2em;margin-right:3px" ng-src="{{::option.icon}}"/>{{option.text}}</span>
@@ -61,7 +61,7 @@
                         <input type="checkbox" ng-checked="allSegmentsChecked"  
                             customcheck 
                             data-checked-state="allSegmentsCheckedState" 
-                            data-child-list="model.segments" 
+                            data-child-list="paramsModel.segments" 
                             data-property="selected" />
                         
                         <i class="fa fa-fw {{allSegmentsCheckedState ? 'checked fa-check' : allSegmentsCheckedState === false ? 'unchecked fa-square-o' : 'undetermined fa-minus'}}"></i>
@@ -69,7 +69,7 @@
                     </label>
                 </div>
 
-                <div ng-repeat="segm in model.segments | filter: filterSegmentsByPathId" class="checkboxContainer">
+                <div ng-repeat="segm in paramsModel.segments | filter: filterSegmentsByPathId" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="segm.selected" ng-change="onSegmentSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>

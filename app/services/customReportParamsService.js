@@ -1,111 +1,125 @@
 (function() {
 
-    var utilsService, predicates;
+    var utilsService, predicates, ddReportConfigStrategy, brReportConfigStrategy, 
+		audienceOptions, hiredOptions, courseSelectionTypeOptions, segmentsFilterOptions, 
+		paramsModel;
 
-	var audienceOptions = [{
-		id: 1,
-		text: 'All Store Personnel'
-	}, {
-		id: 2,
-		text: 'Only Management Personnel (Shift Leader, Restaurant Manager and ARL)'
-	}];
-
-	var hiredOptions = [{
-		id: 1,
-		text: 'Since the beginning of time',
-		otherField: undefined
-	}, {
-		id: 2,
-		text: 'After selected date ',
-		otherField: 'hiredAfter'
-	}];
-
-	var courseSelectionTypeOptions = [{
-		id: 1,
-		text: 'Courses'
-	}, {
-		id: 2,
-		text: 'Categories'
-	}];
-
-	var segmentsFilterOptions = [{
-		id: -1,
-		text: 'Dunkin and Baskin'
-	}, {
-		id: ddReportConfigStrategy.pathId,
-		text: 'Dunkin only',
-		icon: '../img/dd_logo_btn_sm.png'
-	}, {
-		id: brReportConfigStrategy.pathId,
-		text: 'Baskin only',
-		icon: '../img/br_logo_btn_sm.png'
-	}];
-
-    /**
-     * @class model
-     */
-	var model = function(args) {
-		// step 1
-		this.stores = args && args.stores || [],
-		// step 2:
-		this.audience = args && args.audience || audienceOptions[0],
-		this.hired = args && args.hired || hiredOptions[0],
-		this.hiredAfter = args ? args.hiredAfter : undefined,
-		// step 3
-		this.courseSelectionType = args && args.courseSelectionType || courseSelectionTypeOptions[0],
-		this.segmentsFilter = args && args.segmentsFilter || segmentsFilterOptions[0],
-		this.courses = args && args.courses || [],
-		this.segments = args && args.segments || [],
-		this.needsSave = args ? args.needsSave : false
-	};
+    // var paramsModel = function(args) {
+	// 	// step 1
+	// 	this.stores = args && args.stores || [],
+	// 	// step 2:
+	// 	this.audience = args && args.audience || audienceOptions[0],
+	// 	this.hired = args && args.hired || hiredOptions[0],
+	// 	this.hiredAfter = args ? args.hiredAfter : undefined,
+	// 	// step 3
+	// 	this.courseSelectionType = args && args.courseSelectionType || courseSelectionTypeOptions[0],
+	// 	this.segmentsFilter = args && args.segmentsFilter || segmentsFilterOptions[0],
+	// 	this.courses = args && args.courses || [],
+	// 	this.segments = args && args.segments || [],
+	// 	this.needsSave = args ? args.needsSave : false
+	// };
 
 	
 	var selectedStores = function selectedStores() {
-		return _.filter(this.stores, predicates.selected);
-	}.bind(model);
+		return _.filter(paramsModel.stores, predicates.selected);
+	};
 
 	var selectedCourses = function selectedCourses() {
-		return _.filter(this.courses, predicates.selected);
-	}.bind(model);
+		return _.filter(paramsModel.courses, predicates.selected);
+	};
 
 	var selectedSegments = function selectedSegments() {
-		return _.filter(this.segments, predicates.selected);
-	}.bind(model);
+		return _.filter(paramsModel.segments, predicates.selected);
+	};
 
 
 	var areAllStoreSelected = function areAllStoreSelected() {
-		return this.stores.every(predicates.selected);
-	}.bind(model);
+		return paramsModel.stores.every(predicates.selected);
+	};
 
 	var areSomeStoreSelected = function areSomeStoreSelected() {
-		return !areAllStoreSelected() && this.stores.some(predicates.selected);
-	}.bind(model);
+		return !areAllStoreSelected() && paramsModel.stores.some(predicates.selected);
+	};
 
 	var areAllSegmentsSelected = function areAllSegmentsSelected() {
-		return this.segments.every(predicates.selected);
-	}.bind(model);
+		return paramsModel.segments.every(predicates.selected);
+	};
 
 	var areSomeSegmentsSelected = function areSomeSegmentsSelected() {
-		return !areAllSegmentsSelected() && this.segments.some(predicates.selected);
-	}.bind(model);
+		return !areAllSegmentsSelected() && paramsModel.segments.some(predicates.selected);
+	};
 
 	var allStoresCheckedState = function allStoresCheckedState() {
 		return areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
-	}.bind(model);
+	};
 
 	var allSegmentsCheckedState = function allSegmentsCheckedState() {
 		areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false
-	}.bind(model);
+	};
 
-	var getParamsmodel = function(args) {
-        return new model(args);
-    };
-
-    var customReportParamsService = function(utils) {
+    var customReportParamsService = function(utils, configService) {
         utilsService = utils;
 		predicates = utilsService.predicates;
+		/* get learning-path strategy. We need lpath_id in case user select "Entire Learning Path" in step 3 */
+		ddReportConfigStrategy = configService.getBrandConfig('dd').reportStrategies['learning-path'];
+		brReportConfigStrategy = configService.getBrandConfig('br').reportStrategies['learning-path'];
+
+		audienceOptions = [{
+			id: 1,
+			text: 'All Store Personnel'
+		}, {
+			id: 2,
+			text: 'Only Management Personnel (Shift Leader, Restaurant Manager and ARL)'
+		}];
+
+		hiredOptions = [{
+			id: 1,
+			text: 'Since the beginning of time',
+			otherField: undefined
+		}, {
+			id: 2,
+			text: 'After selected date ',
+			otherField: 'hiredAfter'
+		}];
+
+		courseSelectionTypeOptions = [{
+			id: 1,
+			text: 'Courses'
+		}, {
+			id: 2,
+			text: 'Categories'
+		}];
+
+		segmentsFilterOptions = [{
+			id: -1,
+			text: 'Dunkin and Baskin'
+		}, {
+			id: ddReportConfigStrategy.pathId,
+			text: 'Dunkin only',
+			icon: '../img/dd_logo_btn_sm.png'
+		}, {
+			id: brReportConfigStrategy.pathId,
+			text: 'Baskin only',
+			icon: '../img/br_logo_btn_sm.png'
+		}];
+
+		paramsModel = {
+			// step 1
+			stores: [],
+			// step 2:
+			audience: audienceOptions[0],
+			hired: hiredOptions[0],
+			hiredAfter: undefined,
+			// step 3
+			courseSelectionType: courseSelectionTypeOptions[0],
+			segmentsFilter: segmentsFilterOptions[0],
+			courses: [],
+			segments: [],
+			needsSave: false
+		}
+
         return {
-            getParamsmodel: getParamsmodel,
+            paramsModel: paramsModel,
 			audienceOptions: audienceOptions,
 			hiredOptions: hiredOptions,
 			courseSelectionTypeOptions: courseSelectionTypeOptions,

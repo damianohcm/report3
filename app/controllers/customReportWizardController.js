@@ -4,7 +4,7 @@
 	window.controllers = window.controllers || {};
   
 	window.controllers.customReportWizardController = function($scope, $route, $routeParams, $location, $timeout, $filter, $uibModal, 
-		utilsService, configService, dataService, wizardServiceFactory) {
+		utilsService, configService, dataService, customReportParamsService, wizardServiceFactory) {
 
 		var predicates = utilsService.predicates,
 			commonConfig = configService.getCommonConfig(),
@@ -45,7 +45,7 @@
 			//this.hide();
 			// TODO: need to prompt user for confirmation in case there are pending changes
 			$scope.currentBackAction = backToReportingHome;
-			if ($scope.modelIsDirty || $scope.model.needsSave) {
+			if ($scope.paramsModelIsDirty || $scope.paramsModel.needsSave) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
 				backToReportingHome();
@@ -54,7 +54,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scope.modelIsDirty || $scope.model.needsSave) {
+			if ($scope.paramsModelIsDirty || $scope.paramsModel.needsSave) {
 				$scope.modalConfirmOpen('closeWizard');
 			} else {
 				backToSavedReports();
@@ -64,64 +64,33 @@
 		this.params = $routeParams;
 
 		// model lookups 
-		$scope.audienceOptions = [{
-			id: 1,
-			text: 'All Store Personnel'
-		}, {
-			id: 2,
-			text: 'Only Management Personnel (Shift Leader, Restaurant Manager and ARL)'
-		}];
-
-		$scope.hiredOptions = [{
-			id: 1,
-			text: 'Since the beginning of time',
-			otherField: undefined
-		}, {
-			id: 2,
-			text: 'After selected date ',
-			otherField: 'hiredAfter'
-		}];
-
-		$scope.courseSelectionTypeOptions = [{
-			id: 1,
-			text: 'Courses'
-		}, {
-			id: 2,
-			text: 'Categories'
-		}];
-
-		$scope.segmentsFilterOptions = [{
-			id: -1,
-			text: 'Dunkin and Baskin'
-		}, {
-			id: ddReportConfigStrategy.pathId,
-			text: 'Dunkin only',
-			icon: '../img/dd_logo_btn_sm.png'
-		}, {
-			id: brReportConfigStrategy.pathId,
-			text: 'Baskin only',
-			icon: '../img/br_logo_btn_sm.png'
-		}];
+		Object.defineProperty($scope, 'audienceOptions', {
+			get: function() {
+				return customReportParamsService.audienceOptions;
+			}
+		});
+		Object.defineProperty($scope, 'hiredOptions', {
+			get: function() {
+				return customReportParamsService.hiredOptions;
+			}
+		});
+		Object.defineProperty($scope, 'courseSelectionTypeOptions', {
+			get: function() {
+				return customReportParamsService.courseSelectionTypeOptions;
+			}
+		});
+		Object.defineProperty($scope, 'segmentsFilterOptions', {
+			get: function() {
+				return customReportParamsService.segmentsFilterOptions;
+			}
+		});
 
 		$scope.filterSegmentsByPathId = function(item) {
-			return $scope.model.segmentsFilter.id === -1 ? true : item.pathId === $scope.model.segmentsFilter.id;
+			return $scope.paramsModel.segmentsFilter.id === -1 ? true : item.pathId === $scope.paramsModel.segmentsFilter.id;
 		};
 		
 		// model for wizard selections
-		$scope.model = {
-			// step 1
-			stores: [],
-			// step 2:
-			audience: $scope.audienceOptions[0],
-			hired: $scope.hiredOptions[0],
-			hiredAfter: undefined,
-			// step 3
-			courseSelectionType: $scope.courseSelectionTypeOptions[0],
-			segmentsFilter: $scope.segmentsFilterOptions[0],
-			courses: [],
-			segments: [],
-			needsSave: false
-		};
+		$scope.paramsModel =  customReportParamsService.paramsModel;
 
 		// original model to kee track of changes
 		$scope.originalModel = {};
@@ -132,10 +101,10 @@
 		// property that calculates wheter the model has been changed by the user
 		// and we need to present the user with confirm dialogs when she is navigating
 		// away without saving etc.
-		Object.defineProperty($scope, 'modelIsDirty', {
+		Object.defineProperty($scope, 'paramsModelIsDirty', {
 			get: function() {
 				var origModel = JSON.parse(angular.toJson($scope.originalModel));
-				var model = JSON.parse(angular.toJson($scope.model));
+				var model = JSON.parse(angular.toJson($scope.paramsModel));
 				return utilsService.areEqual(origModel, model) === false;
 			}
 		});
@@ -145,25 +114,25 @@
 		};
 		Object.defineProperty($scope.summary, 'stores', {
 			get: function() {
-				return _.filter($scope.model.stores, predicates.selected);
+				return _.filter($scope.paramsModel.stores, predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'learners', {
 			get: function() {
-				return $scope.model.audience.text;
+				return $scope.paramsModel.audience.text;
 			}
 		});
 		Object.defineProperty($scope.summary, 'hired', {
 			get: function() {
-				return $scope.model.hired.otherField 
+				return $scope.paramsModel.hired.otherField 
 					? undefined 
-					: $scope.model.hired.text;
+					: $scope.paramsModel.hired.text;
 			}
 		});
 		Object.defineProperty($scope.summary, 'hiredAfter', {
 			get: function() {
-				if ($scope.model.hiredAfter) {
-					return $filter('date')($scope.model.hiredAfter, 'shortDate');
+				if ($scope.paramsModel.hiredAfter) {
+					return $filter('date')($scope.paramsModel.hiredAfter, 'shortDate');
 				} else {
 					return 'Not Selected';
 				}
@@ -171,19 +140,17 @@
 		});
 		Object.defineProperty($scope.summary, 'courses', {
 			get: function() {
-				return _.filter($scope.model.courses, function(item) {
-					return item.selected;
-				});
+				return _.filter($scope.paramsModel.courses, predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'segments', {
 			get: function() {
-				return _.filter(_.filter($scope.model.segments, $scope.filterSegmentsByPathid), predicates.selected);
+				return _.filter(_.filter($scope.paramsModel.segments, $scope.filterSegmentsByPathid), predicates.selected);
 			}
 		});
 		Object.defineProperty($scope.summary, 'entireLearningPath', {
 			get: function() {
-				if ($scope.model.segments.every(predicates.selected)) {
+				if ($scope.paramsModel.segments.every(predicates.selected)) {
 					return 'Entire Learning Path';
 				} else {
 					return undefined;
@@ -251,32 +218,32 @@
 							wizard.isComplete = true;
 							//wizard.close();
 
-							if ($scope.modelIsDirty) {
-								$scope.model.needsSave = true;
+							if ($scope.paramsModelIsDirty) {
+								$scope.paramsModel.needsSave = true;
 							}
 
 							// create params model to send to API end point for custom report data 
 							// clone angular model to avoid carrying over angular properties
-							var jsonModel = angular.toJson($scope.model);
-							var model = JSON.parse(jsonModel);
+							var jsonModel = angular.toJson($scope.paramsModel);
+							var paramsClone = JSON.parse(jsonModel);
 
-							model.stores = _.filter(model.stores, predicates.selected);
-							model.segments = _.filter(_.filter(model.segments, $scope.filterSegmentsByPathId), predicates.selected);
+							paramsClone.stores = _.filter(paramsClone.stores, predicates.selected);
+							paramsClone.segments = _.filter(_.filter(paramsClone.segments, $scope.filterSegmentsByPathId), predicates.selected);
 
 							// if selection type is 2, get the courseIds from the segments selected
-							if (model.courseSelectionTypeId === 2) {
-								model.courses = [];
-								_.each(model.segments, function(item) {
+							if (paramsClone.courseSelectionTypeId === 2) {
+								paramsClone.courses = [];
+								_.each(paramsClone.segments, function(item) {
 									return _.each(item.los, function(lo) {
-										model.courses.push(lo);
+										paramsClone.courses.push(lo);
 									});
 								});
 							} else {
-								model.courses = _.filter(model.courses, predicates.selected);
+								paramsClone.courses = _.filter(paramsClone.courses, predicates.selected);
 							}
 
-							configService.setParam('reportModel', model);
-							///utilsService.safeLog('reportModel', model);
+							configService.setParam('reportParamsModel', paramsClone);
+							///utilsService.safeLog('reportParamsModel', paramsClone);
 
 							// changes to the following code here will have to be replicated also in savedReportController
 							var reportPath = '#/customReport?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
@@ -353,7 +320,7 @@
 			isLast: false, 
 			isCurrent: true,
 			validateAction: function validateStep1() {
-				var numberOfStores =  _.filter($scope.model.stores, predicates.selected).length;
+				var numberOfStores =  _.filter($scope.paramsModel.stores, predicates.selected).length;
 
 				this.hasError =  false;
 				this.errorMsg = '';
@@ -379,8 +346,8 @@
 			isCurrent: false,
 			validateAction: function validateStep2() {
 				this.errorMsg = '';
-				if ($scope.model.hired.otherField) {
-					var otherFieldValue = $scope.model[$scope.model.hired.otherField];
+				if ($scope.paramsModel.hired.otherField) {
+					var otherFieldValue = $scope.paramsModel[$scope.paramsModel.hired.otherField];
 					this.hasError = otherFieldValue === undefined;
 					this.errorMsg = this.hasError ? 'Please select a date' : undefined;
 				} else {
@@ -402,13 +369,13 @@
 				this.hasError = false;
 				this.errorMsg = '';
 
-				if ($scope.model.courseSelectionType.id === 1) {
-					var numberOfCourses =  _.filter($scope.model.courses, predicates.selected).length;
+				if ($scope.paramsModel.courseSelectionType.id === 1) {
+					var numberOfCourses =  _.filter($scope.paramsModel.courses, predicates.selected).length;
 
 					this.hasError =  numberOfCourses < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Course' : undefined;
 
-					var maxCourses = $scope.model.courseSelectionType.id === 1 
+					var maxCourses = $scope.paramsModel.courseSelectionType.id === 1 
 						? customReportWizardConfig.maxCourses
 						: 1000;
 
@@ -417,7 +384,7 @@
 						this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
 					}
 				} else {
-					var numberOfSegments =  _.filter($scope.model.segments, predicates.selected).length;
+					var numberOfSegments =  _.filter($scope.paramsModel.segments, predicates.selected).length;
 					this.hasError =  numberOfSegments < 1;
 					this.errorMsg = this.hasError ? 'Please select at least one Category' : undefined;
 				}
@@ -472,7 +439,7 @@
 
 		Object.defineProperty($scope, 'showHiredAfterDateinput', {
 			get: function() {
-				return $scope.model.hired.otherField === 'hiredAfter';
+				return $scope.paramsModel.hired.otherField === 'hiredAfter';
 			}
 		});
 
@@ -483,22 +450,14 @@
 		//};
 
 		// Step 1: Select PCs
-		var areAllStoreSelected = function() {
-			return $scope.model.stores.every(predicates.selected);
-		};
-
-		var areSomeStoreSelected = function() {
-			return !areAllStoreSelected() && $scope.model.stores.some(predicates.selected);
-		};
-
 		Object.defineProperty($scope, 'allStoresCheckedState', {
 			get: function() {
 				$scope.wizard.activeStep.validateAction();
-				return areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
+				return customReportParamsService.allStoresCheckedState();
 			}
 		});
 
-		$scope.allStoresChecked = areAllStoreSelected() ? true : areSomeStoreSelected() ? undefined : false;
+		$scope.allStoresChecked = customReportParamsService.allStoresCheckedState();
 
 		// Step 2 of wizard: Select Learners
 $scope.hiredAfterDatepickerPopup = {
@@ -519,25 +478,17 @@ $scope.datePickerOptions = {
 		$scope.loadingCourses = false;
 
 		$scope.onCategoryFilterChanged = function() {
-			_.each($scope.model.segments, predicates.setSelectedFalse);
-		};
-
-		var areAllSegmentsSelected = function() {
-			return $scope.model.segments.every(predicates.selected);
-		};
-
-		var areSomeSegmentsSelected = function() {
-			return !areAllSegmentsSelected() && $scope.model.segments.some(predicates.selected);
+			_.each($scope.paramsModel.segments, predicates.setSelectedFalse);
 		};
 
 		Object.defineProperty($scope, 'allSegmentsCheckedState', {
 			get: function() {
 				$scope.wizard.activeStep.validateAction && $scope.wizard.activeStep.validateAction();
-				return areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false;
+				return customReportParamsService.allSegmentsCheckedState();
 			}
 		});
 
-		$scope.allSegmentsChecked = areAllSegmentsSelected() ? true : areSomeSegmentsSelected() ? undefined : false;
+		$scope.allSegmentsChecked = customReportParamsService.allSegmentsCheckedState();
 
 		$scope.onCourseSelectionTypeChanged = function() {
 			//utilsService.safeLog('onCourseSelectionTypeChanged');
@@ -545,9 +496,9 @@ $scope.datePickerOptions = {
 			$scope.wizard.activeStep.validateAction && $scope.wizard.activeStep.validateAction();
 
 			var predicate =  predicates.setSelectedFalse;
-			var collection = $scope.model.courseSelectionType.id === 2 
-				? $scope.model.segments 
-				: $scope.model.courses;
+			var collection = $scope.paramsModel.courseSelectionType.id === 2 
+				? $scope.paramsModel.segments 
+				: $scope.paramsModel.courses;
 			_.each(collection, predicate);
 		};
 
@@ -558,17 +509,17 @@ $scope.datePickerOptions = {
 		};
 
 		$scope.onSegmentSelectedChange = function() {
-			if ($scope.model.courseSelectionType.id === 2) {
+			if ($scope.paramsModel.courseSelectionType.id === 2) {
 				//utilsService.safeLog('onSegmentSelectedChange');
 
-				var selectedSegs = _.filter($scope.model.segments, predicates.selected);
+				var selectedSegs = _.filter($scope.paramsModel.segments, predicates.selected);
 
 				var allLos = _(selectedSegs).chain()
 					.pluck('los')
 					.flatten()
 					.value();
 
-				_.each($scope.model.courses, function (course) {
+				_.each($scope.paramsModel.courses, function (course) {
 					course.selected = _.any(allLos, function(lo) {
 						return lo.id === course.id;
 					});
@@ -657,7 +608,7 @@ $scope.modalConfirmOpen = function(w) {
 			data.segments = data.segments_dd.concat(data.segments_br);
 
 			$scope.data = data;
-			$scope.model.stores = data.stores;
+			$scope.paramsModel.stores = data.stores;
 			$scope.lookupStores =  data.stores;
 			
 			var nameMaxLen = 80;
@@ -670,7 +621,7 @@ $scope.modalConfirmOpen = function(w) {
 					truncName: (name.length > nameMaxLen ? name.substring(0, nameMaxLen).trim() + ' ...' : name)
 				};
 			});
-			$scope.model.courses = $scope.lookupCourses;
+			$scope.paramsModel.courses = $scope.lookupCourses;
 
 			const segmIconStrategy = {};
 			segmIconStrategy[data.ddPathId] = '../img/dd_logo_btn_sm.png';
@@ -688,17 +639,17 @@ $scope.modalConfirmOpen = function(w) {
 					los: item.los
 				};
 			});
-			$scope.model.segments = $scope.lookupSegments;
+			$scope.paramsModel.segments = $scope.lookupSegments;
 
-			// if modifying a report, sync $scope.model with passed in params.reportModel
-			if (params.reportModel) {
-				$scope.model.needsSave = params.reportModel.needsSave;
-				$scope.model.reportName = params.reportModel.reportName;
-				$scope.wizardTitle = 'Edit: ' + params.reportModel.reportName;
+			// if modifying a report, sync $scope.paramsModel with passed in params.reportParamsModel
+			if (params.reportParamsModel) {
+				$scope.paramsModel.needsSave = params.reportParamsModel.needsSave;
+				$scope.paramsModel.reportName = params.reportParamsModel.reportName;
+				$scope.wizardTitle = 'Edit: ' + params.reportParamsModel.reportName;
 				
-				_.each(params.reportModel.stores, function(source) {
+				_.each(params.reportParamsModel.stores, function(source) {
 					if (source.selected) {
-						var store = _.find($scope.model.stores, function(dest) {
+						var store = _.find($scope.paramsModel.stores, function(dest) {
 							return dest.id === source.id;
 						});
 						if (store) {
@@ -707,9 +658,9 @@ $scope.modalConfirmOpen = function(w) {
 					}
 				});
 				
-				_.each(params.reportModel.courses, function(source) {
+				_.each(params.reportParamsModel.courses, function(source) {
 					if (source.selected) {
-						var course = _.find($scope.model.courses, function(dest) {
+						var course = _.find($scope.paramsModel.courses, function(dest) {
 							return dest.id === source.id;
 						});
 						if (course) {
@@ -718,9 +669,9 @@ $scope.modalConfirmOpen = function(w) {
 					}
 				});
 				
-				_.each(params.reportModel.segments, function(source) {
+				_.each(params.reportParamsModel.segments, function(source) {
 					if (source.selected) {
-						var segm = _.find($scope.model.segments, function(dest) {
+						var segm = _.find($scope.paramsModel.segments, function(dest) {
 							return dest.id === source.id;
 						});
 						if (segm) {
@@ -729,31 +680,31 @@ $scope.modalConfirmOpen = function(w) {
 					}
 				});
 
-				$scope.model.audience = _.find($scope.audienceOptions, function(option) {
-					return option.id === params.reportModel.audience.id;
+				$scope.paramsModel.audience = _.find($scope.audienceOptions, function(option) {
+					return option.id === params.reportParamsModel.audience.id;
 				});
 
-				$scope.model.hired = _.find($scope.hiredOptions, function(option) {
-					return option.id === params.reportModel.hired.id;
+				$scope.paramsModel.hired = _.find($scope.hiredOptions, function(option) {
+					return option.id === params.reportParamsModel.hired.id;
 				});
-				if (params.reportModel.hiredAfter) {
-					$scope.model.hiredAfter = new Date(params.reportModel.hiredAfter);
+				if (params.reportParamsModel.hiredAfter) {
+					$scope.paramsModel.hiredAfter = new Date(params.reportParamsModel.hiredAfter);
 				}
 
-				if (params.reportModel.courseSelectionType) {
-					$scope.model.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
-						return option.id === params.reportModel.courseSelectionType.id;
+				if (params.reportParamsModel.courseSelectionType) {
+					$scope.paramsModel.courseSelectionType = _.find($scope.courseSelectionTypeOptions, function(option) {
+						return option.id === params.reportParamsModel.courseSelectionType.id;
 					});
 				} else {
-					params.reportModel.courseSelectionType = $scope.courseSelectionTypeOptions[0];
+					params.reportParamsModel.courseSelectionType = $scope.courseSelectionTypeOptions[0];
 				}
 
-				if (params.reportModel.segmentsFilter) {
-					$scope.model.segmentsFilter = _.find($scope.segmentsFilterOptions, function(option) {
-						return option.id === params.reportModel.segmentsFilter.id;
+				if (params.reportParamsModel.segmentsFilter) {
+					$scope.paramsModel.segmentsFilter = _.find($scope.segmentsFilterOptions, function(option) {
+						return option.id === params.reportParamsModel.segmentsFilter.id;
 					});
 				} else {
-					$scope.model.segmentsFilter = $scope.segmentsFilterOptions[0];
+					$scope.paramsModel.segmentsFilter = $scope.segmentsFilterOptions[0];
 				}
 
 				
@@ -761,9 +712,9 @@ $scope.modalConfirmOpen = function(w) {
 				$scope.wizardTitle = customReportWizardConfig.wizardTitle;
 			}
 
-			$scope.originalModel = JSON.parse(angular.toJson($scope.model));
+			$scope.originalModel = JSON.parse(angular.toJson($scope.paramsModel));
 
-			//utilsService.safeLog('$scope.model', $scope.model);
+			//utilsService.safeLog('$scope.paramsModel', $scope.paramsModel);
 		};
 
 		// helper to get the data

@@ -4,7 +4,7 @@
 	window.controllers = window.controllers || {};
   
     window.controllers.customReportController = function($scope, $location, $timeout, $interval, $document, $uibModal, 
-		utilsService, configService, undoServiceFactory, dataService, reportService) {
+		utilsService, configService, undoServiceFactory, dataService, customReportParamsService, reportService) {
 		
 		var predicates = utilsService.predicates,
 			commonConfig = configService.getCommonConfig(),
@@ -25,7 +25,7 @@
 		reportService.setReportConfig(reportConfig);
 
 		// utilsService.safeLog('reportController params', params);
-		//utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
+		//utilsService.safeLog('customReportController params.reportParamsModel', params.reportParamsModel, true);
 
 
 		Object.defineProperty($scope, 'tokenError', {
@@ -52,7 +52,7 @@
 			}
 		});
 		
-		$scope.needsSave = params.reportModel.needsSave;
+		$scope.needsSave = params.reportParamsModel.needsSave;
 
 		var backToReportingHome = function backToReportingHome() {
 			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
@@ -103,7 +103,7 @@
 			reportId: params.reportId
 		}, true);
 
-		$scope.reportTitle = params.reportModel.reportName || reportConfigStrategy.title;
+		$scope.reportTitle = params.reportParamsModel.reportName || reportConfigStrategy.title;
 		
 		$scope.title = $scope.reportTitle; //$scope.reportTitle + ' Report';
 		$scope.refreshing = false;
@@ -312,14 +312,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}
 				}
 
-				if (params.reportModel.needsSave) {
+				if (params.reportParamsModel.needsSave) {
 					msg = 'Report has unsaved changes - ' + msg;
 				} else {
 					msg = 'Report is not modified ';
 				}
 
 				return msg;
-			} else if (params.reportModel.needsSave) {
+			} else if (params.reportParamsModel.needsSave) {
 				return 'Report has unsaved changes';
 			} else {
 				return 'Report is not modified';
@@ -581,6 +581,17 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					parentRow.refreshing = false;
 				}, 0);
 			} else {
+
+				// need to update params.reportParamsModel
+				var store = _.find(params.reportParamsModel.stores, function(item) {
+					return item.id === row.id;
+				});
+
+				if (store) {
+					store.selected = false;
+					params.reportParamsModel.needsSave = true;
+				}
+
 				$scope.syncTableScroll();
 			}
 		};
@@ -742,10 +753,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		};
 
 /* begin: custom report code */
-var getReportParamsModel = function() {
+var getReportParamsModelClone = function() {
 
 	// create params model to send to API end point for custom report data 
-	var clone = JSON.parse(angular.toJson(params.reportModel));
+	var clone = JSON.parse(angular.toJson(params.reportParamsModel));
 	clone.stores = _.filter(clone.stores, predicates.selected);
 	clone.courses = _.filter(clone.courses, predicates.selected);
 	clone.segments = _.filter(clone.segments, predicates.selected);
@@ -778,7 +789,7 @@ var getReportParamsModel = function() {
 
 	clone.reportName = $scope.reportTitle;
 	
-	//utilsService.safeLog('getReportParamsModel clone', clone, true);
+	//utilsService.safeLog('getReportParamsModelClone clone', clone, true);
 	return clone;
 };
 /* end: custom report code */
@@ -790,12 +801,12 @@ var getReportParamsModel = function() {
 		};
 	
 
-		var onDataComplete  = function(data, reportParamsModel) {
+		var onDataComplete  = function(data, paramsClone) {
 			if (angular.isDefined($scope.progressBar.intervalId)) {
 				$interval.cancel($scope.progressBar.intervalId);
 			}
 
-			if (params.reportModel.courseSelectionType.id === 2) {
+			if (params.reportParamsModel.courseSelectionType.id === 2) {
 				data.segments = data.segments_dd.concat(data.segments_br);
 			}
 
@@ -804,15 +815,15 @@ var getReportParamsModel = function() {
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 
 			// need to filter columns here as back end is not doing it 
-			if (params.reportModel.courseSelectionType.id === 1) {
+			if (params.reportParamsModel.courseSelectionType.id === 1) {
 				// filter the courses that have not be selected in the params model for this custom report
 				$scope.data.segments[0].los = _.filter($scope.data.segments[0].los, function(item) {
-					return reportParamsModel.courseIds.indexOf(item.id) > -1;
+					return paramsClone.courseIds.indexOf(item.id) > -1;
 				});
 			} else {
 				// filter the segments that have not be selected in the params model for this custom report
 				$scope.data.segments = _.filter($scope.data.segments, function(item) {
-					return reportParamsModel.segmentIds.indexOf(item.id) > -1;
+					return paramsClone.segmentIds.indexOf(item.id) > -1;
 				});
 			}
 
@@ -876,25 +887,25 @@ var getReportParamsModel = function() {
 				$scope.increaseProgressBar();
 			}, 2000);
 
-			var reportParamsModel = getReportParamsModel();
-			delete reportParamsModel.needsSave;
-			delete reportParamsModel.stores;
-			delete reportParamsModel.courses;
-			delete reportParamsModel.segments;
-			delete reportParamsModel.courseSelectionType;
-			delete reportParamsModel.audience;
-			delete reportParamsModel.hired;
-			delete reportParamsModel.courseSelectionTypeOptions;
-			delete reportParamsModel.audienceOptions;
-			delete reportParamsModel.hiredOptions;
-			//utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+			var paramsClone = getReportParamsModelClone();
+			delete paramsClone.needsSave;
+			delete paramsClone.stores;
+			delete paramsClone.courses;
+			delete paramsClone.segments;
+			delete paramsClone.courseSelectionType;
+			delete paramsClone.audience;
+			delete paramsClone.hired;
+			delete paramsClone.courseSelectionTypeOptions;
+			delete paramsClone.audienceOptions;
+			delete paramsClone.hiredOptions;
+			//utilsService.safeLog('paramsClone to post to end point', paramsClone, true);
 
 			var _endPoints = [{
 				key: 'stores',
 				propertyOnData: 'results',
 				path: configService.apiEndPoints.customReportStores(sessionParams.token),
 				method: 'post',
-				postData: JSON.stringify(reportParamsModel)
+				postData: JSON.stringify(paramsClone)
 			}, {
 				key: 'courses', /* lo-list lookup */
 				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
@@ -915,7 +926,7 @@ var getReportParamsModel = function() {
 			// for testing, load data from local json files containing raw data from end points
 			if (w === 'test') {
 
-				_endPoints[0].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionType.id) + Math.random();
+				_endPoints[0].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportParamsModel.courseSelectionType.id) + Math.random();
 				_endPoints[0].method = 'get';
 				
 				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
@@ -935,7 +946,7 @@ var getReportParamsModel = function() {
 				if (endPoint.propertyOnData) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 				} else {
-					if (endPoint.key === 'courses' && params.reportModel.courseSelectionType.id === 1) {
+					if (endPoint.key === 'courses' && params.reportParamsModel.courseSelectionType.id === 1) {
 						// create one single "fake" segment with the custom report courses
 						_endPointsData.segments = [{
 							title: $scope.reportName,
@@ -952,7 +963,7 @@ var getReportParamsModel = function() {
 				if (++_endPointCount === _endPoints.length) {
 					utilsService.safeLog('_endPointsData', _endPointsData);
 
-					onDataComplete(_endPointsData, reportParamsModel);
+					onDataComplete(_endPointsData, paramsClone);
 				}
 			};
 
@@ -978,9 +989,9 @@ $scope.isCustomReport = true;
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
 
-	params.reportModel.reportName = $scope.reportTitle;
-	configService.setParam('reportModel', params.reportModel);
-	utilsService.safeLog('editCustomReport params.reportModel', params.reportModel);
+	params.reportParamsModel.reportName = $scope.reportTitle;
+	configService.setParam('reportParamsModel', params.reportParamsModel);
+	utilsService.safeLog('editCustomReport params.reportParamsModel', params.reportParamsModel);
 
 	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 		.replace('[brand]', params.brand)
@@ -990,7 +1001,7 @@ $scope.editCustomReport = function() {
 };
 
 $scope.saveCustomReport = function(saveAsNew) {
-	var model = getReportParamsModel();
+	var model = getReportParamsModelClone();
 	clonedModel = JSON.parse(JSON.stringify(model));
 	delete clonedModel.user;
 
@@ -1017,10 +1028,10 @@ $scope.saveCustomReport = function(saveAsNew) {
 			// sample response:
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
 			params.reportId = result.id;
-			params.reportModel.reportName = $scope.reportTitle;
-			params.reportModel.needsSave = false;
-			$scope.needsSave = params.reportModel.needsSave;
-			configService.setParam('reportModel', params.reportModel);
+			params.reportParamsModel.reportName = $scope.reportTitle;
+			params.reportParamsModel.needsSave = false;
+			$scope.needsSave = params.reportParamsModel.needsSave;
+			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
 		};
 		
@@ -1029,9 +1040,9 @@ $scope.saveCustomReport = function(saveAsNew) {
 		if (saveAsNew) {
 			//utilsService.safeLog('saving as new', true);
 			params.reportId = -1;
-			params.reportModel.needsSave = true;
-			$scope.needsSave = params.reportModel.needsSave;
-			configService.setParam('reportModel', params.reportModel);
+			params.reportParamsModel.needsSave = true;
+			$scope.needsSave = params.reportParamsModel.needsSave;
+			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
 		}
 		
