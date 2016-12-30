@@ -6,10 +6,11 @@
 </script>
 
 <div class="step-content">
-    <h1>Select Courses <small>{{wizard.activeStep.errorMsg}}</small></h1>
+    <h1>Select Courses <small ng-if="(wizard.activeStep.errorMsg || '').length <= 50">{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">
         Select a course from the list below to report on. You can select multiple courses within a Learning Path.
     </div>
+    <div class="alert alert-warning" ng-if="(wizard.activeStep.errorMsg || '').length > 50">{{wizard.activeStep.errorMsg}}</div>
 
     <div class="scroll-container">
         <div class="scroll-pane">

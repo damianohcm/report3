@@ -324,13 +324,21 @@
 
 				this.hasError =  false;
 				this.errorMsg = '';
+
 				if (numberOfStores < 1) {
 					this.hasError =  true;
 					this.errorMsg = 'Please select at least one PC';
 				}
+
 				if (numberOfStores > customReportWizardConfig.maxStores) {
-					this.hasError =  true;
-					this.errorMsg = 'Please select [max] PCs or less'.replace('[max]', customReportWizardConfig.maxStores);
+					if (customReportWizardConfig.maxStoresLimitType === 1) {
+						this.hasError =  true;
+						this.errorMsg = 'Please select [max] PCs or less'.replace('[max]', customReportWizardConfig.maxStores);
+					} else {
+						this.hasError =  false;
+						this.errorMsg = 'We noticed you have a large number of PCs selected. Generating this view will take some time. In order for the view to present more quickly, you may wish to select [max] PCs or less'
+							.replace('[max]', customReportWizardConfig.maxStores);
+					}
 				}
 
 				this.isDone = !this.hasError;
@@ -377,11 +385,17 @@
 
 					var maxCourses = $scope.paramsModel.courseSelectionType.id === 1 
 						? customReportWizardConfig.maxCourses
-						: 1000;
+						: 10000;
 
 					if (numberOfCourses > maxCourses) {
-						this.hasError =  true;
-						this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
+						if (customReportWizardConfig.maxCoursesLimitType === 1) {
+							this.hasError =  true;
+							this.errorMsg = 'Please select [max] Courses or less'.replace('[max]', maxCourses);
+						} else {
+							this.hasError =  false;
+							this.errorMsg = 'We noticed you have a large number of Courses selected. Generating this view will take some time. In order for the view to present more quickly, you may wish to limit the number of Courses selected to [max] or less'
+								.replace('[max]', maxCourses);
+						}
 					}
 				} else {
 					var numberOfSegments =  _.filter($scope.paramsModel.segments, predicates.selected).length;

@@ -294,19 +294,28 @@ describe('configService', () => {
         it('configService: customReportWizardConfig: should have valid properties', function(done) {
             //console.log('customReportWizardConfig keys', Object.keys(customReportWizardConfig));
 
-            expect(customReportWizardConfig).to.have.all.keys([
+             expect(customReportWizardConfig).to.have.all.keys([
                 'useTestData',
                 'wizardTitle',
                 'maxStores',
-                'maxCourses'
+                'maxStoresLimitType', 
+                'maxCourses',
+                'maxCoursesLimitType'
             ]);
 
             expect(customReportWizardConfig.useTestData).to.be.a('boolean'); 
             expect(customReportWizardConfig.wizardTitle).to.be.a('string').to.have.length.above(5); 
             expect(customReportWizardConfig.maxStores).to.be.a('number');
-            expect(customReportWizardConfig.maxCourses).to.be.a('number');
             expect(customReportWizardConfig.maxStores).to.be.at.least(1);
+
+            expect(customReportWizardConfig.maxStoresLimitType).to.be.a('number');
+            expect([1, 2]).to.contain(customReportWizardConfig.maxStoresLimitType);
+
+            expect(customReportWizardConfig.maxCourses).to.be.a('number');
             expect(customReportWizardConfig.maxCourses).to.be.at.least(1);
+
+            expect(customReportWizardConfig.maxCoursesLimitType).to.be.a('number');
+            expect([1, 2]).to.contain(customReportWizardConfig.maxCoursesLimitType);
             
             done();
         });
