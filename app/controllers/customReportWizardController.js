@@ -95,6 +95,22 @@
 		// model for wizard selections
 		$scope.paramsModel = customReportParamsService.paramsModel;
 
+		Object.defineProperty($scope, 'storesSortedBySelected', {
+			get: function() {
+				return _.sortBy($scope.paramsModel.stores, predicates.unselected);
+			}
+		});
+		Object.defineProperty($scope, 'coursesSortedBySelected', {
+			get: function() {
+				return _.sortBy($scope.paramsModel.courses, predicates.unselected);
+			}
+		});
+		Object.defineProperty($scope, 'segmentsSortedBySelected', {
+			get: function() {
+				return _.sortBy($scope.paramsModel.segments, predicates.unselected);
+			}
+		});
+
 		// original model to keep track of changes
 		var originalParamsModel = {};
 		

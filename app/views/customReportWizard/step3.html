@@ -34,7 +34,7 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div ng-repeat="course in paramsModel.courses | filter: courseQuery | orderBy:'selected':true" class="checkboxContainer">
+                <div ng-repeat="course in coursesSortedBySelected | filter: courseQuery" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="course.selected" ng-change="onCourseSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
@@ -70,7 +70,7 @@
                     </label>
                 </div>
 
-                <div ng-repeat="segm in paramsModel.segments | filter: filterSegmentsByPathId | orderBy:'selected':true" class="checkboxContainer">
+                <div ng-repeat="segm in segmentsSortedBySelected | filter: filterSegmentsByPathId" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="segm.selected" ng-change="onSegmentSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
