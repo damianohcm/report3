@@ -20,17 +20,17 @@
 	// };
 
 	
-	var selectedStores = function selectedStores() {
-		return _.filter(paramsModel.stores, predicates.selected);
-	};
+	// var selectedStores = function selectedStores() {
+	// 	return _.filter(paramsModel.stores, predicates.selected);
+	// };
 
-	var selectedCourses = function selectedCourses() {
-		return _.filter(paramsModel.courses, predicates.selected);
-	};
+	// var selectedCourses = function selectedCourses() {
+	// 	return _.filter(paramsModel.courses, predicates.selected);
+	// };
 
-	var selectedSegments = function selectedSegments() {
-		return _.filter(paramsModel.segments, predicates.selected);
-	};
+	// var selectedSegments = function selectedSegments() {
+	// 	return _.filter(paramsModel.segments, predicates.selected);
+	// };
 
 
 	var areAllStoreSelected = function areAllStoreSelected() {
@@ -135,9 +135,6 @@
 		}];
 
 		segmentsFilterOptions = [{
-			id: -1,
-			text: 'Dunkin and Baskin'
-		}, {
 			id: ddReportConfigStrategy.pathId,
 			text: 'Dunkin only',
 			icon: '../img/dd_logo_btn_sm.png'
@@ -145,6 +142,9 @@
 			id: brReportConfigStrategy.pathId,
 			text: 'Baskin only',
 			icon: '../img/br_logo_btn_sm.png'
+		}, {
+			id: -1,
+			text: 'Dunkin and Baskin'
 		}];
 
 		paramsModel = {
