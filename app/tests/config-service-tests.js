@@ -492,7 +492,8 @@
 
             // apiEndPoints tests
             it('apiEndPoints.segments: should return correct value', function(done) {
-                var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/segments-list/15/?user=uJas34Df&format=json';
+                var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+                var expected = apiBaseUrl + '/api/curricula_report/v1/segments-list/15/?user=uJas34Df&format=json';
                 var result = apiEndPoints.segments(15, 'uJas34Df', 'asdcef');
                 //console.log('result', result);
                 expect(result).to.be.a('string');
@@ -501,7 +502,8 @@
                 done();
             });
             it('apiEndPoints.storesAndPeople: should return correct value', function(done) {
-                var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/stores/?lpath_id=15&user=uJas34Df&format=json';
+                var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+                var expected = apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15&user=uJas34Df&format=json';
                 var result = apiEndPoints.storesAndPeople(15, 'uJas34Df', 'asdcef');
                 //console.log('result', result);
                 expect(result).to.be.a('string');
@@ -510,7 +512,8 @@
                 done();
             });
             it('apiEndPoints.storesList: should return correct value', function(done) {
-                var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/stores-list/?user=15&format=json';
+                var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+                var expected = apiBaseUrl + '/api/curricula_report/v1/stores-list/?user=15&format=json';
                 var result = apiEndPoints.storesList(15, 'uJas34Df');
                 console.log('result', result);
                 expect(result).to.be.a('string');
@@ -519,7 +522,8 @@
                 done();
             });
             it('apiEndPoints.losList: should return correct value', function(done) {
-                var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/lo-list/?format=json';
+                var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+                var expected = apiBaseUrl + '/api/curricula_report/v1/lo-list/?format=json';
                 var result = apiEndPoints.losList();
                 console.log('result', result);
                 expect(result).to.be.a('string');
