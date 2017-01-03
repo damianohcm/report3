@@ -742,28 +742,40 @@ div.height-40 {
     box-shadow: inset 0 -8px 0 0 #AD5796;
 }
 .report-menu-item.learning-path:hover {
-    background-color: lighten(#E874C9, 5%);
+    /*background-color: lighten(#E874C9, 5%);*/
+    background-color: $menuItemHoverColor;
+    background-image: linear-gradient($menuItemHoverColor, $menuItemHoverColor2);
+    box-shadow: inset 0 -8px 0 0 darken($menuItemHoverColor2, 20%);
 }
 .report-menu-item.new-and-trending {
     background-color: #663600;
     box-shadow: inset 0 -8px 0 0 #532D01;
 }
 .report-menu-item.new-and-trending:hover {
-    background-color: lighten(#663600, 10%);
+    /*background-color: lighten(#663600, 10%);*/
+    background-color: $menuItemHoverColor;
+    background-image: linear-gradient($menuItemHoverColor, $menuItemHoverColor2);
+    box-shadow: inset 0 -8px 0 0 darken($menuItemHoverColor2, 20%);
 }
 .report-menu-item.create-report {
     background-color: #F58220;
     box-shadow: inset 0 -8px 0 0 #B76117;
 }
 .report-menu-item.create-report:hover {
-    background-color: lighten(#F58220, 5%);
+    /*background-color: lighten(#F58220, 5%);*/
+    background-color: $menuItemHoverColor;
+    background-image: linear-gradient($menuItemHoverColor, $menuItemHoverColor2);
+    box-shadow: inset 0 -8px 0 0 darken($menuItemHoverColor2, 20%);
 }
 .report-menu-item.saved-reports {
     background-color: #0039A6;
     box-shadow: inset 0 -8px 0 0 #012B7C;
 }
 .report-menu-item.saved-reports:hover {
-    background-color: lighten(#0039A6, 5%);
+    /*background-color: lighten(#0039A6, 5%);*/
+    background-color: $menuItemHoverColor;
+    background-image: linear-gradient($menuItemHoverColor, $menuItemHoverColor2);
+    box-shadow: inset 0 -8px 0 0 darken($menuItemHoverColor2, 20%);
 }
 
 
