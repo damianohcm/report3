@@ -125,7 +125,9 @@
             useFixedWidthForCols: true,
             colCategoryWidth: '280px',
             colSummaryWidth: '120px',
-            colSegmentWidth: '120px'
+            colSegmentWidth: '120px',
+
+            showAdditionalLoadingMessageAfter: 30 /* seconds after which will show an additional loading message saying they might have a lot of stores and might take a few minutes to load */
         };
 
         /* custom report wizard config */

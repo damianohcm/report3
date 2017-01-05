@@ -252,7 +252,9 @@ describe('configService', () => {
                 'useFixedWidthForCols',
                 'colCategoryWidth',
                 'colSummaryWidth',
-                'colSegmentWidth'
+                'colSegmentWidth',
+
+                'showAdditionalLoadingMessageAfter'
             ]);
 
             expect(reportConfig.useTestData).to.be.a('boolean');
@@ -281,6 +283,8 @@ describe('configService', () => {
             expect(reportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
             expect(reportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
             expect(reportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
+
+            expect(reportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
             
             done();
         });
@@ -348,7 +352,9 @@ describe('configService', () => {
                 'useFixedWidthForCols',
                 'colCategoryWidth',
                 'colSummaryWidth',
-                'colSegmentWidth'
+                'colSegmentWidth',
+
+                'showAdditionalLoadingMessageAfter'
             ]);
 
             expect(customReportConfig.useTestData).to.be.a('boolean');
@@ -377,6 +383,8 @@ describe('configService', () => {
             expect(customReportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
             expect(customReportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
             expect(customReportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
+
+            expect(customReportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
     
             done();
         });

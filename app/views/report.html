@@ -15,13 +15,14 @@
     </a>
 </div>
 
-<div class="container loading-msg" ng-show="loading">
-    <h1>Loading, please wait...</h1>
+<div class="container loading-msg" ng-show="progress.loading">
+    <h1>Loading, please wait ...</h1>
     <img src="../img/dd-loader.gif">
-    <!--uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar-->
+    <h4 ng-if="progress.additionalMessage" ng-bind="progress.additionalMessage"></h4>
+    <!--uib-progressbar class="progress-striped active m-t-lg" value="progress.barValue" type="{{progress.barType}}">{{progress.barValue}}%</uib-progressbar-->
 </div>
 
-<div class="container report" ng-show="!loading">
+<div class="container report" ng-show="!progress.loading">
     <div class="height-40">
         <div>
              <div class="pull-left now-viewing m-t-md">

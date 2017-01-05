@@ -19,13 +19,14 @@
     </a>
 </div>
 
-<div class="container loading-msg" ng-show="loading">
+<div class="container loading-msg" ng-show="progress.loading">
     <h1>Loading, please wait...</h1>
     <img src="../img/dd-loader.gif">
-    <!--uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar-->
+    <h4 ng-if="progress.additionalMessage" ng-bind="progress.additionalMessage"></h4>
+    <!--uib-progressbar class="progress-striped active m-t-lg" value="progress.value" type="{{progress.type}}">{{progress.value}}%</uib-progressbar-->
 </div>
 
-<div class="container report" ng-show="!loading">
+<div class="container report" ng-show="!progress.loading">
     <script type="text/ng-template" id="modalSave.html">
         <div class="modal-header">
             <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
