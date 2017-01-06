@@ -1048,7 +1048,6 @@ input.required {
   font-family: 'Gotham';
   font-weight: 300;
   color: black;
-  cursor: auto;
   display: block;
   width: auto;
   height: 97px;
@@ -1058,23 +1057,22 @@ input.required {
   -webkit-box-shadow: inset -1px -1px 0px #DFDFDF;
   box-shadow: inset -1px -1px 0px #DFDFDF; }
 
-/*.wizard .steps a:hover
-{
-    color: red;
-}*/
+.wizard .steps a:hover {
+  color: red; }
+
 .wizard .steps a.disabled,
 .wizard .steps a.disabled:hover,
 .wizard .steps a.disabled:active {
   background-color: #eee;
   color: #aaa;
-  cursor: auto; }
+  cursor: default; }
 
 .wizard .steps a.current,
 .wizard .steps a.current:hover,
 .wizard .steps a.current:active {
   background-color: #E82B87;
   color: #fff;
-  cursor: auto;
+  cursor: default;
   -moz-box-shadow: inset 0px 0px 0px #DFDFDF;
   -webkit-box-shadow: inset 0px 0px 0px #DFDFDF;
   box-shadow: inset 0px 0px 0px #DFDFDF; }

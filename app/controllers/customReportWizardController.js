@@ -89,10 +89,7 @@
 			return $scope.paramsModel.segmentsFilter.id === -1 ? true : item.pathId === $scope.paramsModel.segmentsFilter.id;
 		};
 
-		$scope.storeFilter = {
-			text: ''
-		};
-
+		$scope.storeQuery = '';
 		$scope.courseQuery = '';
 		
 		// model for wizard selections
@@ -100,13 +97,7 @@
 
 		Object.defineProperty($scope, 'storesSortedBySelected', {
 			get: function() {
-				var query = (this.storeFilter && this.storeFilter.text || '').toLowerCase();
-				var filtered = _.filter(this.paramsModel.stores, function(item) {
-					
-					return item.selected || item.name.toLowerCase().indexOf(query) > -1;
-				});
-
-				return _.sortBy(filtered, predicates.unselected);
+				return _.sortBy($scope.paramsModel.stores, predicates.unselected);
 			}
 		});
 		Object.defineProperty($scope, 'coursesSortedBySelected', {
@@ -133,7 +124,7 @@
 				return utilsService.areEqual(origModel, model) === false;
 			}
 		});
-		
+
 		// summary model for final step
 		$scope.summary = {
 		};
@@ -545,11 +536,6 @@ $scope.datePickerOptions = {
 			$timeout(function() {
 				$scope.wizard.activeStep.validateAction();
 			}, 250);
-		};
-
-		$scope.onStoreSelectedChange = function() {
-			$scope.storeFilter.text = '';
-			$('#storeFilter').focus();
 		};
 
 		$scope.onSegmentSelectedChange = function() {

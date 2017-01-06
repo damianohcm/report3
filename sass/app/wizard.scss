@@ -135,7 +135,6 @@
     font-family: 'Gotham';
     font-weight: 300;
     color: black;
-    cursor: auto;
 
     display: block;
     width: auto;
@@ -148,10 +147,10 @@
     box-shadow: inset -1px -1px 0px #DFDFDF;
 }
 
-/*.wizard .steps a:hover
+.wizard .steps a:hover
 {
     color: red;
-}*/
+}
 
 .wizard .steps a.disabled,
 .wizard .steps a.disabled:hover,
@@ -159,7 +158,7 @@
 {
     background-color: #eee;
     color: #aaa;
-    cursor: auto;
+    cursor: default;
 }
 
 .wizard .steps a.current,
@@ -168,7 +167,7 @@
 {
     background-color: #E82B87;;
     color: #fff;
-    cursor: auto;
+    cursor: default;
 
     -moz-box-shadow: inset 0px 0px 0px #DFDFDF;
     -webkit-box-shadow: inset 0px 0px 0px #DFDFDF;
