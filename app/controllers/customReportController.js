@@ -202,7 +202,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		$scope.progress.increase = function() {
 			$scope.progress.timeElapsed += 1;
 			if ($scope.progress.timeElapsed >= reportConfig.showAdditionalLoadingMessageAfter) {
-				$scope.progress.additionalMessage = 'It looks like you have a large number of stores. We are still processing your information, this could take a few more minutes.';
+				$scope.progress.additionalMessage = reportConfig.additionalLoadingMessage;
 			}
 			var step = 10;
 			if ($scope.progress.barValue > 70) {

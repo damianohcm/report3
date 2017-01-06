@@ -127,7 +127,8 @@
             colSummaryWidth: '120px',
             colSegmentWidth: '120px',
 
-            showAdditionalLoadingMessageAfter: 30 /* seconds after which will show an additional loading message saying they might have a lot of stores and might take a few minutes to load */
+            showAdditionalLoadingMessageAfter: 20, /* seconds after which will show an additional loading message saying they might have a lot of stores and might take a few minutes to load */
+            additionalLoadingMessage: 'It looks like you have a large number of stores on your profile. We are still processing your information, this could take a few more minutes.'
         };
 
         /* custom report wizard config */

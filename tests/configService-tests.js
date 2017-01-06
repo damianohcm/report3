@@ -254,7 +254,8 @@ describe('configService', () => {
                 'colSummaryWidth',
                 'colSegmentWidth',
 
-                'showAdditionalLoadingMessageAfter'
+                'showAdditionalLoadingMessageAfter',
+                'additionalLoadingMessage'
             ]);
 
             expect(reportConfig.useTestData).to.be.a('boolean');
@@ -285,6 +286,7 @@ describe('configService', () => {
             expect(reportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
 
             expect(reportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
+            expect(reportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
             
             done();
         });
@@ -354,7 +356,8 @@ describe('configService', () => {
                 'colSummaryWidth',
                 'colSegmentWidth',
 
-                'showAdditionalLoadingMessageAfter'
+                'showAdditionalLoadingMessageAfter',
+                'additionalLoadingMessage'
             ]);
 
             expect(customReportConfig.useTestData).to.be.a('boolean');
@@ -385,6 +388,7 @@ describe('configService', () => {
             expect(customReportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
 
             expect(customReportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
+            expect(customReportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
     
             done();
         });
