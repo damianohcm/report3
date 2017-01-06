@@ -51,7 +51,7 @@
                     <i class="glyphicon glyphicon-remove"></i> No Segments Found
                 </div>
 
-                <div class="select-all" ng-show="storeQuery.length === 0">
+                <div class="select-all" ng-show="courseFilter.text.length === 0">
                     <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions">
                         <input type="radio" name="segmentsFilter" ng-model="paramsModel.segmentsFilter" ng-value="option" 
                             ng-click="onCategoryFilterChanged()"/> 

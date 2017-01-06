@@ -210,6 +210,17 @@
 					wizard.setActiveStep(prev);
 				//});
 			}
+
+			if (wizard.activeStep.id === 1) {
+				$timeout(function(){
+					$('#storeFilter').focus();
+				}, 125);
+			}
+			if (wizard.activeStep.id === 3) {
+				$timeout(function(){
+					$('#courseFilter').focus();
+				}, 125);
+			}
 		};
 
 		/**
@@ -244,6 +255,13 @@
 								$timeout(function(){
 									$('#courseFilter').focus();
 								}, 125);
+							}
+
+							if (wizard.activeStep.id > 1) {
+								$scope.storeFilter.text = '';
+							}
+							if (wizard.activeStep.id > 3) {
+								$scope.courseFilter.text = '';
 							}
 						}
 					} else {
@@ -542,6 +560,14 @@ $scope.datePickerOptions = {
 
 		$scope.onCourseSelectionTypeChanged = function() {
 			//utilsService.safeLog('onCourseSelectionTypeChanged');
+
+			$scope.courseFilter.text = '';
+
+			if ($scope.paramsModel.courseSelectionType.id === 1) {
+				$timeout(function(){
+					$('#courseFilter').focus();
+				}, 125);
+			}
 
 			$scope.wizard.activeStep.validateAction && $scope.wizard.activeStep.validateAction();
 
