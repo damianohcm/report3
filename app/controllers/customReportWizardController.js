@@ -89,15 +89,25 @@
 			return $scope.paramsModel.segmentsFilter.id === -1 ? true : item.pathId === $scope.paramsModel.segmentsFilter.id;
 		};
 
-		$scope.storeQuery = '';
-		$scope.courseQuery = '';
+		$scope.storeFilter = {
+			text: ''
+		};
+		$scope.courseFilter = {
+			text: ''
+		};
 		
 		// model for wizard selections
 		$scope.paramsModel = customReportParamsService.paramsModel;
 
 		Object.defineProperty($scope, 'storesSortedBySelected', {
 			get: function() {
-				return _.sortBy($scope.paramsModel.stores, predicates.unselected);
+				var query = (this.storeFilter && this.storeFilter.text || '').toLowerCase();
+				var filtered = _.filter(this.paramsModel.stores, function(item) {
+					
+					return item.selected || item.name.toLowerCase().indexOf(query) > -1;
+				});
+
+				return _.sortBy(filtered, predicates.unselected);
 			}
 		});
 		Object.defineProperty($scope, 'coursesSortedBySelected', {
@@ -224,6 +234,12 @@
 							} else {
 								currentStep.isDone = true;
 								wizard.setActiveStep(next);
+							}
+
+							if (wizard.activeStep.id === 3) {
+								$timeout(function(){
+									$('#courseFilter').focus();
+								}, 50);
 							}
 						}
 					} else {
@@ -534,8 +550,14 @@ $scope.datePickerOptions = {
 
 		$scope.onCourseSelectedChange = function() {
 			$timeout(function() {
+				$('#courseFilter').focus();
 				$scope.wizard.activeStep.validateAction();
-			}, 250);
+			}, 50);
+		};
+
+		$scope.onStoreSelectedChange = function() {
+			$scope.storeFilter.text = '';
+			$('#storeFilter').focus();
 		};
 
 		$scope.onSegmentSelectedChange = function() {
