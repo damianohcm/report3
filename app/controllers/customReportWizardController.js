@@ -239,7 +239,7 @@
 							if (wizard.activeStep.id === 3) {
 								$timeout(function(){
 									$('#courseFilter').focus();
-								}, 50);
+								}, 125);
 							}
 						}
 					} else {
@@ -551,13 +551,16 @@ $scope.datePickerOptions = {
 		$scope.onCourseSelectedChange = function() {
 			$timeout(function() {
 				$('#courseFilter').focus();
+				$scope.courseFilter.text = '';
 				$scope.wizard.activeStep.validateAction();
 			}, 50);
 		};
 
 		$scope.onStoreSelectedChange = function() {
-			$scope.storeFilter.text = '';
-			$('#storeFilter').focus();
+			$timeout(function() {
+				$scope.storeFilter.text = '';
+				$('#storeFilter').focus();
+			}, 50);
 		};
 
 		$scope.onSegmentSelectedChange = function() {
