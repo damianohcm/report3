@@ -8,7 +8,8 @@
 <div class="step-content">
     <h1>Select Courses or Categories <small ng-if="(wizard.activeStep.errorMsg || '').length <= 50">{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">
-        Select EITHER Courses or Categories from the lists below.
+        Select EITHER Courses or Categories from the lists below. 
+        {{paramsModel.courseSelectionType.id}}
     </div>
     <div class="alert alert-warning" ng-if="(wizard.activeStep.errorMsg || '').length > 50">{{wizard.activeStep.errorMsg}}</div>
 
@@ -24,9 +25,9 @@
                 </label>
             </div>
 
-            <div ng-if="paramsModel.courseSelectionType.id === 1">
+            <div ng-show="paramsModel.courseSelectionType.id === 1">
                 <label class="filter-label">Filter courses:</label>
-                <input type="text"class="search-input m-b-md" ng-model="courseQuery"/>
+                <input type="text" id="courseFilter" class="search-input m-b-md" ng-model="courseFilter.text"/>
 
                 <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
 
@@ -34,16 +35,16 @@
                     <i class="glyphicon glyphicon-remove"></i> No Courses Found
                 </div>
 
-                <div ng-repeat="course in coursesSortedBySelected | filter: courseQuery" class="checkboxContainer">
+                <div ng-repeat="course in coursesSortedBySelected" class="checkboxContainer">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="course.selected" ng-change="onCourseSelectedChange()"/> 
                         <i class="fa fa-check fa-fw"></i>
-                        <span ng-bind-html="course.truncName | uibTypeaheadHighlight: courseQuery"></span>
+                        <span ng-bind-html="course.truncName | uibTypeaheadHighlight: courseFilter.text"></span>
                     </label>
                 </div>
             </div>
 
-            <div ng-if="paramsModel.courseSelectionType.id === 2">
+            <div ng-show="paramsModel.courseSelectionType.id === 2">
                 <i ng-show="loadingCourses" class="glyphicon glyphicon-refresh"></i>
 
                 <div ng-show="noCoursesFound">

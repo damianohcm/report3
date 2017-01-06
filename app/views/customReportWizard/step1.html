@@ -1,15 +1,15 @@
 <div class="step-content">
-    <h1>Select PCs <small ng-if="(wizard.activeStep.errorMsg || '').length <= 50">{{wizard.activeStep.errorMsg}}</small></h1>
+    <h1>Select PCs <small ng-show="(wizard.activeStep.errorMsg || '').length <= 50">{{wizard.activeStep.errorMsg}}</small></h1>
     <div class="sub-title">From the options below, choose a PC to focus the report on. You can select your store PC, or browse other PCs.</div>
-    <div class="alert alert-warning" ng-if="(wizard.activeStep.errorMsg || '').length > 50">{{wizard.activeStep.errorMsg}}</div>
+    <div class="alert alert-warning" ng-show="(wizard.activeStep.errorMsg || '').length > 50">{{wizard.activeStep.errorMsg}}</div>
     
     <div class="scroll-container">
         <div class="scroll-pane">
 
             <label class="filter-label">Filter PCs:</label>
-            <input type="text"class="search-input m-b-md" ng-model="storeQuery"/>
+            <input type="text" id="storeFilter" class="search-input m-b-md" ng-model="storeFilter.text" autofocus/>
 
-            <div class="select-all" ng-show="storeQuery.length === 0">
+            <div class="select-all" ng-show="storeFilter.text.length === 0">
                 <label class="checkbox">
                     <input type="checkbox" ng-checked="allStoresChecked"  
                         customcheck 
@@ -22,11 +22,11 @@
                 </label>
             </div>
 
-            <div ng-repeat="store in storesSortedBySelected | filter: storeQuery" class="checkboxContainer">
+            <div ng-repeat="store in storesSortedBySelected" class="checkboxContainer">
                 <label class="checkbox">
-                    <input type="checkbox" ng-model="store.selected"/> 
+                    <input type="checkbox" ng-model="store.selected" ng-change="onStoreSelectedChange()"/> 
                     <i class="fa fa-check fa-fw"></i>
-                    <span ng-bind-html="store.name | uibTypeaheadHighlight: storeQuery"></span>
+                    <span ng-bind-html="store.name | uibTypeaheadHighlight: storeFilter.text"></span>
                 </label>
             </div>
         </div>
