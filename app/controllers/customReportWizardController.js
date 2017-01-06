@@ -103,7 +103,6 @@
 			get: function() {
 				var query = (this.storeFilter && this.storeFilter.text || '').toLowerCase();
 				var filtered = _.filter(this.paramsModel.stores, function(item) {
-					
 					return item.selected || item.name.toLowerCase().indexOf(query) > -1;
 				});
 
@@ -112,7 +111,12 @@
 		});
 		Object.defineProperty($scope, 'coursesSortedBySelected', {
 			get: function() {
-				return _.sortBy($scope.paramsModel.courses, predicates.unselected);
+				var query = (this.courseFilter && this.courseFilter.text || '').toLowerCase();
+				var filtered = _.filter(this.paramsModel.courses, function(item) {
+					return item.selected || item.name.toLowerCase().indexOf(query) > -1;
+				});
+
+				return _.sortBy(filtered, predicates.unselected);
 			}
 		});
 		Object.defineProperty($scope, 'segmentsSortedBySelected', {
