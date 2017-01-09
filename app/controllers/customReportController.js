@@ -914,12 +914,17 @@ var getReportParamsModelClone = function() {
 				$scope.progress.increase();
 			}, 1000);
 
+			// get reportParams clon and remove any property not needed for the end point
 			var paramsClone = getReportParamsModelClone();
+			delete paramsClone.reportName;
 			delete paramsClone.needsSave;
 			delete paramsClone.stores;
 			delete paramsClone.courses;
 			delete paramsClone.segments;
+			delete paramsClone.segmentIds;
+			delete paramsClone.segmentFilter;
 			delete paramsClone.courseSelectionType;
+			delete paramsClone.courseSelectionTypeId;
 			delete paramsClone.audience;
 			delete paramsClone.hired;
 			delete paramsClone.courseSelectionTypeOptions;
