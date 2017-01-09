@@ -14,7 +14,8 @@
 			reportStrategies = brandConfig.reportStrategies,
 			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
-				title: 'Unknown report id'
+				title: 'Unknown report id',
+				titleSuffix: ''
 			};
 
 		// important: set reportConfig to use by reportService
@@ -59,8 +60,7 @@
 		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
-		
-		$scope.title = $scope.reportTitle + ' Report';
+		$scope.title = $scope.reportTitle + ' ' + reportConfigStrategy.titleSuffix;
 		$scope.refreshing = false;
 
 
@@ -299,7 +299,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 				return msg;
 			} else {
-				return 'Report is not modified';
+				return 'Dashboard is not modified';
 			}
 		};
 

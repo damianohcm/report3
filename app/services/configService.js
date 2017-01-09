@@ -66,16 +66,19 @@
                         'learning-path': { /* learning path report information */
                             pathId: 6, //19, /* learning path id to use for this brand */
                             title: 'Learning Path', /* report name displayed on the report page */
+                            titleSuffix: 'Dashboard',
                             oneLevel: false
                         },
                         'new-and-trending': {
                             pathId: 5, //20, /* learning path id to use for this brand */
                             title: 'New & Trending', /* report name displayed on the report page */
+                            titleSuffix: 'Report',
                             oneLevel: true
                         },
                         custom: {
                             pathId: -1, /* for custom report, we just ignore this */
                             title: 'Custom',
+                            titleSuffix: 'Report',
                             oneLevel: false
                         }
                     }
@@ -86,16 +89,19 @@
                         'learning-path': {
                             pathId: 1, //15,
                             title: 'Learning Path',
+                            titleSuffix: 'Dashboard',
                             oneLevel: false
                         },
                         'new-and-trending': {
                             pathId: 4, //18,
                             title: 'New & Trending',
+                            titleSuffix: 'Report',
                             oneLevel: true
                         },
                         custom: {
                             pathId: -1,
                             title: 'Custom',
+                            titleSuffix: 'Report',
                             oneLevel: false
                         }
                     }

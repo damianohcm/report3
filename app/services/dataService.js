@@ -87,9 +87,7 @@
 			// // 		los: dataToFix.segments
 			// // 	}];
 			// // }
-
-			var segments = [];
-
+ 
 /* // example segments data as from API endpoint
 {
 	"learning_path_id": "15",
@@ -121,10 +119,13 @@
 					alert(errMsg);
 					throw Error(errMsg);
 				}
-				lo.id = (lo.loid || lo.object_id || lo.id);
+				lo.id = (lo.id || lo.loid || lo.object_id);
 				lo.type = (lo.item_type || lo.type || 'Not Set');
 				lo.name = (lo.name || lo.title);
 				lo.segmentId = segmentId;
+
+				delete lo.loid;
+				delete lo.item_type;
 				return lo;
 			};
 
@@ -165,13 +166,12 @@
 				});
 
 				seg.los = mappedLos;
-				segments.push(seg);
 			});
 
-			//// utilsService.safeLog('dataService: segments', segments, true);
-			// console.log(JSON.stringify(segments));
+			//// utilsService.safeLog('dataService: segments', segmentsList, true);
+			// console.log(JSON.stringify(segmentsList));
 			// debugger;
-			return segments;
+			return segmentsList;
 		};
 
 		/**
@@ -181,7 +181,7 @@
 		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
 			
 			dataToFix.segments = fixSegmentsListAPIData(dataToFix.segments);
-			
+
 			var stores = dataToFix.stores 
 				&& dataToFix.stores.length 
 				? dataToFix.stores

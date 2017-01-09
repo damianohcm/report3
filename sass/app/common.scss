@@ -676,8 +676,15 @@ div.height-40 {
     text-align: center;
     color: #331B00;
     font-family: 'Gotham', 'Verdana', Helvetica, Arial, sans-serif;
-    padding-top: 30px;
-    padding-bottom: 20px;
+}
+
+.report-menu-container .title-welcome {
+    font-size: 24px;
+    font-weight: normal;
+    font-family: 'Gotham', 'Verdana', Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: #331B00;
+    padding-top: 8px;
 }
 
 .report-menu-container .subtitle {
@@ -691,11 +698,12 @@ div.height-40 {
     font-family: 'Gotham', 'Verdana', Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #331B00;
+    padding-top: 1em;
 }
 
 .report-menu {
     display: table;
-    margin: 30px auto;
+    margin: 1em auto;
     padding: 5px;
 }
 .report-menu-row {

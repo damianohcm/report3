@@ -855,7 +855,6 @@ var getReportParamsModelClone = function() {
 				});
 			}
 
-
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 			
@@ -927,7 +926,7 @@ var getReportParamsModelClone = function() {
 			delete paramsClone.courses;
 			delete paramsClone.segments;
 			delete paramsClone.segmentIds;
-			delete paramsClone.segmentFilter;
+			delete paramsClone.segmentsFilter;
 			delete paramsClone.courseSelectionType;
 			delete paramsClone.courseSelectionTypeId;
 			delete paramsClone.audience;
@@ -1010,7 +1009,7 @@ var getReportParamsModelClone = function() {
 						onEndPointComplete(endPoint, data);
 					}, onDataError);
 			});
-		}
+		};
 
 		// // invoke getData
 		if ($scope.tokenError.length > 0) {
