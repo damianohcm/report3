@@ -831,7 +831,7 @@ var getReportParamsModelClone = function() {
 		};
 	
 
-		var onDataComplete  = function(data, paramsClone) {
+		var onDataComplete  = function(data, tempStuff) {
 			$scope.progress.reset();
 
 			if (params.reportParamsModel.courseSelectionType.id === 2) {
@@ -846,12 +846,12 @@ var getReportParamsModelClone = function() {
 			if (params.reportParamsModel.courseSelectionType.id === 1) {
 				// filter the courses that have not be selected in the params model for this custom report
 				$scope.data.segments[0].los = _.filter($scope.data.segments[0].los, function(item) {
-					return paramsClone.courseIds.indexOf(item.id) > -1;
+					return tempStuff.courseIds.indexOf(item.id) > -1;
 				});
 			} else {
 				// filter the segments that have not be selected in the params model for this custom report
 				$scope.data.segments = _.filter($scope.data.segments, function(item) {
-					return paramsClone.segmentIds.indexOf(item.id) > -1;
+					return tempStuff.segmentIds.indexOf(item.id) > -1;
 				});
 			}
 
@@ -916,6 +916,11 @@ var getReportParamsModelClone = function() {
 
 			// get reportParams clon and remove any property not needed for the end point
 			var paramsClone = getReportParamsModelClone();
+			var tempStuff = {
+				courseIds: paramsClone.courseIds,
+				segmentIds: JSON.parse(JSON.stringify(paramsClone.segmentIds))
+			};
+
 			delete paramsClone.reportName;
 			delete paramsClone.needsSave;
 			delete paramsClone.stores;
@@ -995,7 +1000,7 @@ var getReportParamsModelClone = function() {
 				if (++_endPointCount === _endPoints.length) {
 					utilsService.safeLog('_endPointsData', _endPointsData);
 
-					onDataComplete(_endPointsData, paramsClone);
+					onDataComplete(_endPointsData, tempStuff);
 				}
 			};
 
