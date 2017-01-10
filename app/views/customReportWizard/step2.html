@@ -9,7 +9,7 @@
                 <div class="col-md-2"><label>Audience:</label></div>
                 <div class="col-md-9">
                     <label class="row radio" ng-repeat="option in audienceOptions">
-                        <input type="radio" class="col-md-1" name="audience" ng-model="model.audience" ng-value="option" /> 
+                        <input type="radio" class="col-md-1" name="audience" ng-model="paramsModel.audience" ng-value="option" /> 
                         <i class="col-md-1 fa fa-circle fa-fw"></i>
                         <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
@@ -28,12 +28,12 @@
                 </div>
                 <div class="col-md-9">
                     <label class="row radio" ng-repeat="option in hiredOptions">
-                        <input type="radio" class="col-md-1" name="hired" ng-model="model.hired" ng-value="option" /> 
+                        <input type="radio" class="col-md-1" name="hired" ng-model="paramsModel.hired" ng-value="option" /> 
                         <i class="col-md-1 fa fa-circle fa-fw"></i>
                         <span class="col-md-11 radio-text">{{option.text}}</span>
                     </label>
 
-                    <!--div uib-datepicker ng-model="model.hiredAfter" class="well well-sm" datepicker-options="datePickerOptions"></div-->
+                    <!--div uib-datepicker ng-model="paramsModel.hiredAfter" class="well well-sm" datepicker-options="datePickerOptions"></div-->
 
                     <div class="input-group m-t-md" ng-show="showHiredAfterDateinput">
                         <span class="input-group-addon">Select date:</span>
@@ -41,7 +41,7 @@
                             datepicker-append-to-body="true" 
                             show-button-bar="false" 
                             datepicker-options="datePickerOptions" 
-                            ng-model="model.hiredAfter" 
+                            ng-model="paramsModel.hiredAfter" 
                             is-open="hiredAfterDatepickerPopup.opened" ng-required="true" close-text="Close" 
                             alt-input-formats="'M!/d!/yyyy'" />
                         <span class="input-group-btn">

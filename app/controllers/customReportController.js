@@ -4,7 +4,7 @@
 	window.controllers = window.controllers || {};
   
     window.controllers.customReportController = function($scope, $location, $timeout, $interval, $document, $uibModal, 
-		utilsService, configService, undoServiceFactory, dataService, reportService) {
+		utilsService, configService, undoServiceFactory, dataService, customReportParamsService, reportService) {
 		
 		var predicates = utilsService.predicates,
 			commonConfig = configService.getCommonConfig(),
@@ -25,7 +25,7 @@
 		reportService.setReportConfig(reportConfig);
 
 		// utilsService.safeLog('reportController params', params);
-		//utilsService.safeLog('customReportController params.reportModel', params.reportModel, true);
+		//utilsService.safeLog('customReportController params.reportParamsModel', params.reportParamsModel, true);
 
 
 		Object.defineProperty($scope, 'tokenError', {
@@ -51,9 +51,21 @@
 				return params.reportId;
 			}
 		});
-		
-		$scope.needsSave = params.reportModel.needsSave;
 
+		// original model to keep track of changes
+		var originalParamsModel = {};
+		
+		// property that calculates wheter the model has been changed by the user
+		// and we need to present the user with confirm dialogs when she is navigating
+		// away without saving etc.
+		Object.defineProperty($scope, 'paramsModelIsDirty', {
+			get: function() {
+				var origModel = JSON.parse(JSON.stringify(originalParamsModel));
+				var model = JSON.parse(JSON.stringify(params.reportParamsModel));
+				return utilsService.areEqual(origModel, model) === false;
+			}
+		});
+		
 		var backToReportingHome = function backToReportingHome() {
 			var path = '[csBaseUrl]&organization=[organization]&brand=[brand]'
 				.replace('[csBaseUrl]', sessionParams.csBaseUrl)
@@ -64,7 +76,7 @@
 
 		$scope.goHome = function goHome() {
 			$scope.currentBackAction = backToReportingHome;
-			if ($scope.needsSave) {
+			if (params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToReportingHome();
@@ -79,7 +91,7 @@
 
 		$scope.goToSavedReports = function goToSavedReports() {
 			$scope.currentBackAction = backToSavedReports;
-			if ($scope.needsSave) {
+			if (params.reportParamsModel.needsSave) {
 				$scope.modalConfirmOpen('closeReport');
 			} else {
 				backToSavedReports();
@@ -103,7 +115,7 @@
 			reportId: params.reportId
 		}, true);
 
-		$scope.reportTitle = params.reportModel.reportName || reportConfigStrategy.title;
+		$scope.reportTitle = params.reportParamsModel.reportName || reportConfigStrategy.title;
 		
 		$scope.title = $scope.reportTitle; //$scope.reportTitle + ' Report';
 		$scope.refreshing = false;
@@ -169,26 +181,44 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			}
 		});
 
-		$scope.progressBar = {
-			type: 'warning',
-			value: 0,
-			intervalId: undefined
+		$scope.progress = {
+			barType: 'warning',
+			barValue: 0,
+			loading: true,
+			intervalId: undefined,
+			timeElapsed: 0,
+			additionalMessage: ''
+		};
+
+		$scope.progress.reset = function() {
+			$scope.progress.timeElapsed = 0;
+			$scope.progress.additionalMessage = '';
+			if (angular.isDefined($scope.progress.intervalId)) {
+				$interval.cancel($scope.progress.intervalId);
+				$scope.progress.intervalId = undefined;
+			}
+		};
+
+		$scope.progress.increase = function() {
+			$scope.progress.timeElapsed += 1;
+			if ($scope.progress.timeElapsed >= reportConfig.showAdditionalLoadingMessageAfter) {
+				$scope.progress.additionalMessage = reportConfig.additionalLoadingMessage;
+			}
+			var step = 10;
+			if ($scope.progress.barValue > 70) {
+				step = 1;
+			}
+			$scope.progress.barValue += $scope.progress.barValue < 100 ? step : 0;
+			utilsService.safeLog('progress.increase', $scope.progress.barValue);
 		};
 
 		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
+			$scope.progress.reset();
 		});
 
-		$scope.increaseProgressBar = function() {
-			var step = 10;
-			if ($scope.progressBar.value > 70) {
-				step = 1;
-			}
-			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
-			utilsService.safeLog('increaseProgressBar', $scope.progressBar.value);
-		};
+		$scope.$on('$destroy', function() {
+        	$scope.progress.reset();
+        });
 
 		$scope.undoLastAction = function() {
 			var isDetailView = $scope.model.topLevelColumn !== undefined;
@@ -312,14 +342,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					}
 				}
 
-				if (params.reportModel.needsSave) {
+				if (params.reportParamsModel.needsSave) {
 					msg = 'Report has unsaved changes - ' + msg;
 				} else {
 					msg = 'Report is not modified ';
 				}
 
 				return msg;
-			} else if (params.reportModel.needsSave) {
+			} else if (params.reportParamsModel.needsSave) {
 				return 'Report has unsaved changes';
 			} else {
 				return 'Report is not modified';
@@ -509,6 +539,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 			// if col is a child
 			if (col.isChild) {
+				// need to update params.reportParamsModel
+				customReportParamsService.unselectCourseById(params.reportParamsModel, col.id);
+
 				// add undo state for column being excluded from calculation
 				undoProperties.push({
 					name: 'calculate',
@@ -523,6 +556,9 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 				
 				utilsService.safeLog('hideCol child column. Calculate is', col.calculate);
 			} else if (col.isGroup) {
+				// need to update params.reportParamsModel
+				customReportParamsService.unselectSegmentById(params.reportParamsModel, col.id);
+
 				// if col.isGroup, we have to make sure we purge any pending changes to its child columns from the undo history
 				var children = _.filter($scope.model.columns, function(item) {
 					return item.isChild && item.parentId === col.id;
@@ -581,6 +617,11 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 					parentRow.refreshing = false;
 				}, 0);
 			} else {
+
+				// need to update params.reportParamsModel
+				customReportParamsService.unselectStoreById(params.reportParamsModel, row.id);
+
+				// update tables scroll so that headers stay in sync
 				$scope.syncTableScroll();
 			}
 		};
@@ -742,10 +783,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		};
 
 /* begin: custom report code */
-var getReportParamsModel = function() {
+var getReportParamsModelClone = function() {
 
 	// create params model to send to API end point for custom report data 
-	var clone = JSON.parse(angular.toJson(params.reportModel));
+	var clone = JSON.parse(angular.toJson(params.reportParamsModel));
 	clone.stores = _.filter(clone.stores, predicates.selected);
 	clone.courses = _.filter(clone.courses, predicates.selected);
 	clone.segments = _.filter(clone.segments, predicates.selected);
@@ -778,7 +819,7 @@ var getReportParamsModel = function() {
 
 	clone.reportName = $scope.reportTitle;
 	
-	//utilsService.safeLog('getReportParamsModel clone', clone, true);
+	//utilsService.safeLog('getReportParamsModelClone clone', clone, true);
 	return clone;
 };
 /* end: custom report code */
@@ -790,12 +831,10 @@ var getReportParamsModel = function() {
 		};
 	
 
-		var onDataComplete  = function(data, reportParamsModel) {
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
+		var onDataComplete  = function(data, tempStuff) {
+			$scope.progress.reset();
 
-			if (params.reportModel.courseSelectionType.id === 2) {
+			if (params.reportParamsModel.courseSelectionType.id === 2 && tempStuff.segmentsFilter.id === -1) {
 				data.segments = data.segments_dd.concat(data.segments_br);
 			}
 
@@ -804,18 +843,17 @@ var getReportParamsModel = function() {
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 
 			// need to filter columns here as back end is not doing it 
-			if (params.reportModel.courseSelectionType.id === 1) {
+			if (params.reportParamsModel.courseSelectionType.id === 1) {
 				// filter the courses that have not be selected in the params model for this custom report
 				$scope.data.segments[0].los = _.filter($scope.data.segments[0].los, function(item) {
-					return reportParamsModel.courseIds.indexOf(item.id) > -1;
+					return tempStuff.courseIds.indexOf(item.id) > -1;
 				});
 			} else {
 				// filter the segments that have not be selected in the params model for this custom report
 				$scope.data.segments = _.filter($scope.data.segments, function(item) {
-					return reportParamsModel.segmentIds.indexOf(item.id) > -1;
+					return tempStuff.segmentIds.indexOf(item.id) > -1;
 				});
 			}
-
 
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
@@ -846,7 +884,7 @@ var getReportParamsModel = function() {
 			$timeout(function(){
 
 				// hide loader
-				$scope.loading = false;
+				$scope.progress.loading = false;
 				
 				utilsService.safeLog('add');
 				var rowGroups = $scope.model.result._rowGroups;
@@ -866,48 +904,80 @@ var getReportParamsModel = function() {
 		// helper to get the data
 		var getData = function(w) {
 
-			// show loader
-			$scope.loading = true;
-
 			utilsService.safeLog('getData: reportType', params.reportType);
+			
+			// show loader
+			$scope.progress.loading = true;
+			$scope.progress.reset();
+			$scope.progress.intervalId = $interval(function() {
+				$scope.progress.increase();
+			}, 1000);
 
-			$scope.progressBar.value = 0;
-			$scope.progressBar.intervalId = $interval(function() {
-				$scope.increaseProgressBar();
-			}, 2000);
+			// get reportParams clon and remove any property not needed for the end point
+			var paramsClone = getReportParamsModelClone();
+			var tempStuff = {
+				courseSelectionType: JSON.parse(JSON.stringify(paramsClone.courseSelectionType)),
+				segmentsFilter: JSON.parse(JSON.stringify(paramsClone.segmentsFilter)),
+				courseIds: paramsClone.courseIds,
+				segmentIds: JSON.parse(JSON.stringify(paramsClone.segmentIds))
+			};
 
-			var reportParamsModel = getReportParamsModel();
-			delete reportParamsModel.needsSave;
-			delete reportParamsModel.stores;
-			delete reportParamsModel.courses;
-			delete reportParamsModel.segments;
-			delete reportParamsModel.courseSelectionType;
-			delete reportParamsModel.audience;
-			delete reportParamsModel.hired;
-			delete reportParamsModel.courseSelectionTypeOptions;
-			delete reportParamsModel.audienceOptions;
-			delete reportParamsModel.hiredOptions;
-			//utilsService.safeLog('reportParamsModel to post to end point', reportParamsModel, true);
+			delete paramsClone.reportName;
+			delete paramsClone.needsSave;
+			delete paramsClone.stores;
+			delete paramsClone.courses;
+			delete paramsClone.segments;
+			delete paramsClone.segmentIds;
+			delete paramsClone.segmentsFilter;
+			delete paramsClone.courseSelectionType;
+			delete paramsClone.courseSelectionTypeId;
+			delete paramsClone.audience;
+			delete paramsClone.hired;
+			delete paramsClone.courseSelectionTypeOptions;
+			delete paramsClone.audienceOptions;
+			delete paramsClone.hiredOptions;
+			//utilsService.safeLog('paramsClone to post to end point', paramsClone, true);
 
 			var _endPoints = [{
 				key: 'stores',
 				propertyOnData: 'results',
 				path: configService.apiEndPoints.customReportStores(sessionParams.token),
 				method: 'post',
-				postData: JSON.stringify(reportParamsModel)
+				postData: JSON.stringify(paramsClone)
 			}, {
 				key: 'courses', /* lo-list lookup */
-				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+				propertyOnData: undefined, // propertyOnData: 'results': backend should wrap items array into results like for other APIs
 				path: configService.apiEndPoints.losList()
-			}, {
-				key: 'segments_dd',
-				propertyOnData: 'learning_path_items',
-				path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
-			}, {
-				key: 'segments_br',
-				propertyOnData: 'learning_path_items',
-				path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
 			}];
+
+			// if course selection type is Categories, need to load segments lookup data
+			if (tempStuff.courseSelectionType.id === 2) {
+				if (tempStuff.segmentsFilter.id > -1) {
+					// if segments filter is Dunkin only or Baskin only
+					_endPoints.push({
+						key: 'segments',
+						propertyOnData: 'learning_path_items',
+						path: configService.apiEndPoints.segments(tempStuff.segmentsFilter.id, sessionParams.token)
+					});
+				} else {
+					// if segments filter isboth Dunkin and Baskin
+					// TODO eventually but need more changes down stream as well in the code
+					// we need to both and load both and later make sure we map the learning object parentId to 
+					// the different segments (make sure each segment from each brand has the right mapping)
+					// then in later code will need to handle differently as well
+					// ddReportConfigStrategy.pathId and brReportConfigStrategy.pathId
+					// _endPoint.push({
+					// 	key: 'segments_dd',
+					// 	propertyOnData: 'learning_path_items',
+					// 	path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
+					// });
+					// _endPoint.push({
+					// 	key: 'segments_br',
+					// 	propertyOnData: 'learning_path_items',
+					// 	path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
+					// });
+				}
+			}
 
 			utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 			utilsService.safeLog('data posted to report-data end point', _endPoints[0].postData);
@@ -915,12 +985,23 @@ var getReportParamsModel = function() {
 			// for testing, load data from local json files containing raw data from end points
 			if (w === 'test') {
 
-				_endPoints[0].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportModel.courseSelectionType.id) + Math.random();
+				_endPoints[0].path = 'data/custom-report-rows[typeId].json?'.replace('[typeId]', params.reportParamsModel.courseSelectionType.id) + Math.random();
 				_endPoints[0].method = 'get';
 				
 				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-				_endPoints[2].path = 'data/custom-report-wizard-segments1.json?' + Math.random();
-				_endPoints[3].path = 'data/custom-report-wizard-segments2.json?' + Math.random();
+
+				// if course selection type is Categories, need to load segments lookup data
+				if (tempStuff.courseSelectionType.id === 2) {
+					if (tempStuff.segmentsFilter.id > -1) {
+						// if segments filter is Dunkin only or Baskin only
+						_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', tempStuff.segmentsFilter.id) + Math.random();
+					} else {
+						// if segments filter isboth Dunkin and Baskin
+						// TODO eventually but need more changes down stream as well in the code
+						//_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', ddReportConfigStrategy.pathId) + Math.random();
+						//_endPoints[3].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', brReportConfigStrategy.pathId) + Math.random();
+					}
+				}
 
 				// bogus csodProfileId for testing
 				$scope.csodProfileId = 999999999;
@@ -935,7 +1016,7 @@ var getReportParamsModel = function() {
 				if (endPoint.propertyOnData) {
 					_endPointsData[endPoint.key] = data[endPoint.propertyOnData];
 				} else {
-					if (endPoint.key === 'courses' && params.reportModel.courseSelectionType.id === 1) {
+					if (endPoint.key === 'courses' && params.reportParamsModel.courseSelectionType.id === 1) {
 						// create one single "fake" segment with the custom report courses
 						_endPointsData.segments = [{
 							title: $scope.reportName,
@@ -952,7 +1033,7 @@ var getReportParamsModel = function() {
 				if (++_endPointCount === _endPoints.length) {
 					utilsService.safeLog('_endPointsData', _endPointsData);
 
-					onDataComplete(_endPointsData, reportParamsModel);
+					onDataComplete(_endPointsData, tempStuff);
 				}
 			};
 
@@ -962,7 +1043,7 @@ var getReportParamsModel = function() {
 						onEndPointComplete(endPoint, data);
 					}, onDataError);
 			});
-		}
+		};
 
 		// // invoke getData
 		if ($scope.tokenError.length > 0) {
@@ -978,9 +1059,11 @@ $scope.isCustomReport = true;
 $scope.editCustomReport = function() {
 	utilsService.safeLog('editCustomReport');
 
-	params.reportModel.reportName = $scope.reportTitle;
-	configService.setParam('reportModel', params.reportModel);
-	utilsService.safeLog('editCustomReport params.reportModel', params.reportModel);
+	params.reportParamsModel.reportName = $scope.reportTitle;
+	configService.setParam('reportParamsModel', params.reportParamsModel);
+	utilsService.safeLog('editCustomReport params.reportParamsModel', params.reportParamsModel);
+
+	$scope.undoService.clearState();
 
 	var wizardPath = '#/customReportWizard?a=1&brand=[brand]&reportType=custom&reportId=[reportId]'
 		.replace('[brand]', params.brand)
@@ -990,7 +1073,7 @@ $scope.editCustomReport = function() {
 };
 
 $scope.saveCustomReport = function(saveAsNew) {
-	var model = getReportParamsModel();
+	var model = getReportParamsModelClone();
 	clonedModel = JSON.parse(JSON.stringify(model));
 	delete clonedModel.user;
 
@@ -1016,12 +1099,13 @@ $scope.saveCustomReport = function(saveAsNew) {
 			utilsService.safeLog('reportController.onSaveComplete', result, true);
 			// sample response:
 			// {"id":4,"csod_profile":null,"name":"Damiano Custom Report1","model":"{\"audience\":{\"id\":1,\"text\":\"All Active Store Personnel\"},\"hired\":{\"id\":1,\"text\":\"Since the beginning of time\"},\"storesIds\":[330,4870,4868],\"courseIds\":[\"bc1c0b96-f838-4efd-a71f-088d9ab7e01b\",\"6c54a81b-b844-4442-abc4-15b96f38d28d\",\"c5f471e4-c67d-453d-9e9a-2aff8e15e85d\"],\"audienceId\":1,\"hiredId\":1,\"user\":\"Q2hpcmFnO0phbmk7amFuaWM7amFuaWM7Y2phbmlAc2JjZ2xvYmFsLm5ldDtkdW5raW5icmFuZHM7MjAxNi0xMi0wMlQwNDoyNjowOFo7NEUxNkE3MjA5RjM0NDdEMDQzOUIxNzY1Njc1NkNBODA1NzExNDYwMQ\"}"}
+			$scope.undoService.clearState();
 			params.reportId = result.id;
-			params.reportModel.reportName = $scope.reportTitle;
-			params.reportModel.needsSave = false;
-			$scope.needsSave = params.reportModel.needsSave;
-			configService.setParam('reportModel', params.reportModel);
+			params.reportParamsModel.reportName = $scope.reportTitle;
+			params.reportParamsModel.needsSave = false;
+			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
+			originalParamsModel = JSON.parse(JSON.stringify(params.reportParamsModel));
 		};
 		
 		var apiEndPoint = configService.apiEndPoints.customReport();
@@ -1029,10 +1113,10 @@ $scope.saveCustomReport = function(saveAsNew) {
 		if (saveAsNew) {
 			//utilsService.safeLog('saving as new', true);
 			params.reportId = -1;
-			params.reportModel.needsSave = true;
-			$scope.needsSave = params.reportModel.needsSave;
-			configService.setParam('reportModel', params.reportModel);
+			params.reportParamsModel.needsSave = true;
+			configService.setParam('reportParamsModel', params.reportParamsModel);
 			configService.setParam('reportId', params.reportId);
+			originalParamsModel = JSON.parse(JSON.stringify(params.reportParamsModel));
 		}
 		
 		if (params.reportId > -1) {

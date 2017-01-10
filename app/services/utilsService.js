@@ -280,6 +280,9 @@
 			selected: function(item) {
 				return item.selected === true;
 			},
+			unselected: function(item) {
+				return !item.selected;
+			},
 			id: function(item) {
 				return item.id;
 			},

@@ -14,7 +14,8 @@
 			reportStrategies = brandConfig.reportStrategies,
 			reportConfigStrategy = reportStrategies && reportStrategies[params.reportType] || {
 				pathId: -1,
-				title: 'Unknown report id'
+				title: 'Unknown report id',
+				titleSuffix: ''
 			};
 
 		// important: set reportConfig to use by reportService
@@ -59,8 +60,7 @@
 		}, true);
 
 		$scope.reportTitle = reportConfigStrategy.title;
-		
-		$scope.title = $scope.reportTitle + ' Report';
+		$scope.title = $scope.reportTitle + ' ' + reportConfigStrategy.titleSuffix;
 		$scope.refreshing = false;
 
 
@@ -135,26 +135,44 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		});
 
 
-		$scope.progressBar = {
-			type: 'warning',
-			value: 0,
-			intervalId: undefined
+		$scope.progress = {
+			barType: 'warning',
+			barValue: 0,
+			loading: true,
+			intervalId: undefined,
+			timeElapsed: 0,
+			additionalMessage: ''
+		};
+
+		$scope.progress.reset = function() {
+			$scope.progress.timeElapsed = 0;
+			$scope.progress.additionalMessage = '';
+			if (angular.isDefined($scope.progress.intervalId)) {
+				$interval.cancel($scope.progress.intervalId);
+				$scope.progress.intervalId = undefined;
+			}
+		};
+
+		$scope.progress.increase = function() {
+			$scope.progress.timeElapsed += 1;
+			if ($scope.progress.timeElapsed >= reportConfig.showAdditionalLoadingMessageAfter) {
+				$scope.progress.additionalMessage = reportConfig.additionalLoadingMessage;
+			}
+			var step = 10;
+			if ($scope.progress.barValue > 70) {
+				step = 1;
+			}
+			$scope.progress.barValue += $scope.progress.barValue < 100 ? step : 0;
+			utilsService.safeLog('progress.increase', $scope.progress.barValue);
 		};
 
 		$scope.$on('$routeChangeStart', function () { // (scope, next, current)
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
+			$scope.progress.reset();
 		});
 
-		$scope.increaseProgressBar = function() {
-			var step = 10;
-			if ($scope.progressBar.value > 70) {
-				step = 1;
-			}
-			$scope.progressBar.value += $scope.progressBar.value < 100 ? step : 0;
-			utilsService.safeLog('increaseProgressBar', $scope.progressBar.value);
-		};
+		$scope.$on('$destroy', function() {
+        	$scope.progress.reset();
+        });
 
 		$scope.undoLastAction = function() {
 			var isDetailView = $scope.model.topLevelColumn !== undefined;
@@ -281,7 +299,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 
 				return msg;
 			} else {
-				return 'Report is not modified';
+				return 'Dashboard is not modified';
 			}
 		};
 
@@ -710,9 +728,8 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 	
 
 		var onDataComplete  = function(data) {
-			if (angular.isDefined($scope.progressBar.intervalId)) {
-				$interval.cancel($scope.progressBar.intervalId);
-			}
+			$scope.progress.reset();
+
 			utilsService.safeLog('reportController.onDataComplete', data);
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
@@ -745,7 +762,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			$timeout(function(){
 
 				// hide loader
-				$scope.loading = false;
+				$scope.progress.loading = false;
 				
 				utilsService.safeLog('add');
 				var rowGroups = $scope.model.result._rowGroups;
@@ -765,15 +782,14 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 		// helper to get the data
 		var getData = function(w) {
 
-			// show loader
-			$scope.loading = true;
-
 			utilsService.safeLog('getData: reportType', params.reportType);
 
-			$scope.progressBar.value = 0;
-			$scope.progressBar.intervalId = $interval(function() {
-				$scope.increaseProgressBar();
-			}, 2000);
+			// show loader
+			$scope.progress.loading = true;
+			$scope.progress.reset();
+			$scope.progress.intervalId = $interval(function() {
+				$scope.progress.increase();
+			}, 1000);
 
 			if (reportConfigStrategy.pathId < 1) {
 				debugger;

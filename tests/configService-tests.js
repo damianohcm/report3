@@ -172,13 +172,13 @@ describe('configService', () => {
                     'brand', 
                     'reportType', 
                     'reportId',
-                    'reportModel'
+                    'reportParamsModel'
                 ]);
 
                 expect(params.brand).to.be.a('string');
                 expect(params.reportType).to.be.a('string');
                 expect(params.reportId).to.be.a('string');
-                expect(params.reportModel).to.be.a('string');
+                expect(params.reportParamsModel).to.be.a('string');
 
                 done();
             });
@@ -252,7 +252,10 @@ describe('configService', () => {
                 'useFixedWidthForCols',
                 'colCategoryWidth',
                 'colSummaryWidth',
-                'colSegmentWidth'
+                'colSegmentWidth',
+
+                'showAdditionalLoadingMessageAfter',
+                'additionalLoadingMessage'
             ]);
 
             expect(reportConfig.useTestData).to.be.a('boolean');
@@ -281,6 +284,9 @@ describe('configService', () => {
             expect(reportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
             expect(reportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
             expect(reportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
+
+            expect(reportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
+            expect(reportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
             
             done();
         });
@@ -294,19 +300,28 @@ describe('configService', () => {
         it('configService: customReportWizardConfig: should have valid properties', function(done) {
             //console.log('customReportWizardConfig keys', Object.keys(customReportWizardConfig));
 
-            expect(customReportWizardConfig).to.have.all.keys([
+             expect(customReportWizardConfig).to.have.all.keys([
                 'useTestData',
                 'wizardTitle',
                 'maxStores',
-                'maxCourses'
+                'maxStoresLimitType', 
+                'maxCourses',
+                'maxCoursesLimitType'
             ]);
 
             expect(customReportWizardConfig.useTestData).to.be.a('boolean'); 
             expect(customReportWizardConfig.wizardTitle).to.be.a('string').to.have.length.above(5); 
             expect(customReportWizardConfig.maxStores).to.be.a('number');
-            expect(customReportWizardConfig.maxCourses).to.be.a('number');
             expect(customReportWizardConfig.maxStores).to.be.at.least(1);
+
+            expect(customReportWizardConfig.maxStoresLimitType).to.be.a('number');
+            expect([1, 2]).to.contain(customReportWizardConfig.maxStoresLimitType);
+
+            expect(customReportWizardConfig.maxCourses).to.be.a('number');
             expect(customReportWizardConfig.maxCourses).to.be.at.least(1);
+
+            expect(customReportWizardConfig.maxCoursesLimitType).to.be.a('number');
+            expect([1, 2]).to.contain(customReportWizardConfig.maxCoursesLimitType);
             
             done();
         });
@@ -339,7 +354,10 @@ describe('configService', () => {
                 'useFixedWidthForCols',
                 'colCategoryWidth',
                 'colSummaryWidth',
-                'colSegmentWidth'
+                'colSegmentWidth',
+
+                'showAdditionalLoadingMessageAfter',
+                'additionalLoadingMessage'
             ]);
 
             expect(customReportConfig.useTestData).to.be.a('boolean');
@@ -368,6 +386,9 @@ describe('configService', () => {
             expect(customReportConfig.colCategoryWidth).to.be.a('string').to.have.length.above(4);
             expect(customReportConfig.colSummaryWidth).to.be.a('string').to.have.length.above(4);
             expect(customReportConfig.colSegmentWidth).to.be.a('string').to.have.length.above(4);
+
+            expect(customReportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
+            expect(customReportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
     
             done();
         });
@@ -426,7 +447,8 @@ describe('configService', () => {
             expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                 'pathId', 
                 'title', 
-                'oneLevel'
+                'oneLevel',
+                'titleSuffix'
             ]);
             
             done();
@@ -455,7 +477,8 @@ describe('configService', () => {
             expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                 'pathId', 
                 'title', 
-                'oneLevel'
+                'oneLevel',
+                'titleSuffix'
             ]);
             
             done();
@@ -479,7 +502,8 @@ describe('configService', () => {
 
         // apiEndPoints tests
         it('apiEndPoints.segments: should return correct value', function(done) {
-            var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/segments-list/15/?user=uJas34Df&format=json';
+            var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+            var expected = apiBaseUrl + '/api/curricula_report/v1/segments-list/15/?user=uJas34Df&format=json';
             var result = apiEndPoints.segments(15, 'uJas34Df', 'asdcef');
             //console.log('result', result);
             expect(result).to.be.a('string');
@@ -488,7 +512,8 @@ describe('configService', () => {
             done();
         });
         it('apiEndPoints.storesAndPeople: should return correct value', function(done) {
-            var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/stores/?lpath_id=15&user=uJas34Df&format=json';
+            var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+            var expected = apiBaseUrl + '/api/curricula_report/v1/stores/?lpath_id=15&user=uJas34Df&format=json';
             var result = apiEndPoints.storesAndPeople(15, 'uJas34Df', 'asdcef');
             //console.log('result', result);
             expect(result).to.be.a('string');
@@ -497,7 +522,8 @@ describe('configService', () => {
             done();
         });
         it('apiEndPoints.storesList: should return correct value', function(done) {
-            var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/stores-list/?user=15&format=json';
+            var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+            var expected = apiBaseUrl + '/api/curricula_report/v1/stores-list/?user=15&format=json';
             var result = apiEndPoints.storesList(15, 'uJas34Df');
             console.log('result', result);
             expect(result).to.be.a('string');
@@ -506,7 +532,8 @@ describe('configService', () => {
             done();
         });
         it('apiEndPoints.losList: should return correct value', function(done) {
-            var expected = 'https://dunk.tribridge-amplifyhr.com/api/curricula_report/v1/lo-list/?format=json';
+            var apiBaseUrl = configService.getCommonConfig().apiBaseUrl;
+            var expected = apiBaseUrl + '/api/curricula_report/v1/lo-list/?format=json';
             var result = apiEndPoints.losList();
             console.log('result', result);
             expect(result).to.be.a('string');

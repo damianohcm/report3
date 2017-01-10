@@ -37,7 +37,7 @@
                     brand: '',
                     reportType: '',
                     reportId: '',
-                    reportModel: ''
+                    reportParamsModel: ''
                 },
                 sessionParams: {
                     // these will contain session params set only once from query string the first time the / path is called
@@ -66,16 +66,19 @@
                         'learning-path': { /* learning path report information */
                             pathId: 6, //19, /* learning path id to use for this brand */
                             title: 'Learning Path', /* report name displayed on the report page */
+                            titleSuffix: 'Dashboard',
                             oneLevel: false
                         },
                         'new-and-trending': {
                             pathId: 5, //20, /* learning path id to use for this brand */
                             title: 'New & Trending', /* report name displayed on the report page */
+                            titleSuffix: 'Dashboard',
                             oneLevel: true
                         },
                         custom: {
                             pathId: -1, /* for custom report, we just ignore this */
                             title: 'Custom',
+                            titleSuffix: 'Report',
                             oneLevel: false
                         }
                     }
@@ -86,16 +89,19 @@
                         'learning-path': {
                             pathId: 1, //15,
                             title: 'Learning Path',
+                            titleSuffix: 'Dashboard',
                             oneLevel: false
                         },
                         'new-and-trending': {
                             pathId: 4, //18,
                             title: 'New & Trending',
+                            titleSuffix: 'Dashboard',
                             oneLevel: true
                         },
                         custom: {
                             pathId: -1,
                             title: 'Custom',
+                            titleSuffix: 'Report',
                             oneLevel: false
                         }
                     }
@@ -124,16 +130,21 @@
 
             useFixedWidthForCols: true,
             colCategoryWidth: '280px',
-            colSummaryWidth: '120px',
-            colSegmentWidth: '120px'
+            colSummaryWidth: '110px',
+            colSegmentWidth: '110px',
+
+            showAdditionalLoadingMessageAfter: 20, /* seconds after which will show an additional loading message saying they might have a lot of stores and might take a few minutes to load */
+            additionalLoadingMessage: 'It looks like you have a large number of stores on your profile. We are still processing your information, this could take a few more minutes.'
         };
 
         /* custom report wizard config */
         var customReportWizardConfig = {
             useTestData: _useTestData, /* set to true to load static json data from app/data/ folder instead of using the live API endpoints */
             wizardTitle: 'Create a Report',
-            maxStores: 25, /* max selection of PCs allowed in the custom report wizard */
-            maxCourses: 10 /* max selection of Courses allowed in the custom report wizard */
+            maxStores: 25, /* max selection of PCs allowed in the custom report wizard or above which a warning is given to the user */
+            maxStoresLimitType: 2, /* 1 means hard stop; 2 means only a warning will be displayed but user can still select more than maxStores value */
+            maxCourses: 10, /* max selection of Courses allowed in the custom report wizard or above which a warning is given to the user */
+            maxCoursesLimitType: 1 /* 1 means hard stop; 2 means only a warning will be displayed but user can still select more than maxCourses value */
         };
 
         /* custom report config */

@@ -10,7 +10,7 @@
 
 .wizard-header {
     box-shadow: inset 0px -1px 0px 0px #DFDFDF;
-    min-height:40px;
+    min-height: 30px;
 }
 
 .wizard-header .title {
@@ -20,7 +20,14 @@
   letter-spacing: 1.1;
   color: black;
   text-transform: uppercase;
-  padding-top: 17px; }
+  padding-top: 17px; 
+}
+
+.wizard-header .saved-reports-title {
+    margin: 10px 0 0 0;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 .wizard-header button.close {
     float: left;
@@ -135,6 +142,7 @@
     font-family: 'Gotham';
     font-weight: 300;
     color: black;
+    cursor: auto;
 
     display: block;
     width: auto;
@@ -147,10 +155,10 @@
     box-shadow: inset -1px -1px 0px #DFDFDF;
 }
 
-.wizard .steps a:hover
+/*.wizard .steps a:hover
 {
     color: red;
-}
+}*/
 
 .wizard .steps a.disabled,
 .wizard .steps a.disabled:hover,
@@ -158,7 +166,7 @@
 {
     background-color: #eee;
     color: #aaa;
-    cursor: default;
+    cursor: auto;
 }
 
 .wizard .steps a.current,
@@ -167,7 +175,7 @@
 {
     background-color: #E82B87;;
     color: #fff;
-    cursor: default;
+    cursor: auto;
 
     -moz-box-shadow: inset 0px 0px 0px #DFDFDF;
     -webkit-box-shadow: inset 0px 0px 0px #DFDFDF;
@@ -315,7 +323,6 @@
     color: #aaa;
 }
 */
-
 
 
 /* css for step sub-views */

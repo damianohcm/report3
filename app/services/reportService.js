@@ -232,7 +232,7 @@
 // }
 							
 							// if person lo is missing, we assume N/A (which is -1) for the lo
-							var loValue = personLo ? personLo.value : -1;
+							var loValue = personLo && !isNaN(personLo.value) ? personLo.value : -1;
 
 							// child cell
 							var childCell;

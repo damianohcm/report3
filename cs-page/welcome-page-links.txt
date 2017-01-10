@@ -1,0 +1,24 @@
+
+
+
+Dunkin
+
+<div class="manager-buttons">
+<a class="button" href="/admin/Users.aspx?tab_page_id=-38">Learner Management Center</a>
+<a class="button" href="/catalog/CustomPage.aspx?id=20000511&amp;organization=dd">Reporting Center</a>
+</div>
+
+Baskin
+
+<div class="manager-buttons">
+<a class="button" href="/admin/Users.aspx?tab_page_id=-38">Learner Management Center</a>
+<a class="button" href="/catalog/CustomPage.aspx?id=20000511&amp;organization=br">Reporting Center</a>
+</div>
+
+
+Dunkin and Baskin combo
+
+<div class="manager-buttons">
+<a class="button" href="/admin/Users.aspx?tab_page_id=-38">Learner Management Center</a>
+<a class="button" href="/catalog/CustomPage.aspx?id=20000511&amp;organization=ddbr">Reporting Center</a>
+</div>

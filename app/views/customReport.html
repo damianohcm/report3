@@ -19,13 +19,14 @@
     </a>
 </div>
 
-<div class="container loading-msg" ng-show="loading">
+<div class="container loading-msg" ng-show="progress.loading">
     <h1>Loading, please wait...</h1>
     <img src="../img/dd-loader.gif">
-    <!--uib-progressbar class="progress-striped active m-t-lg" value="progressBar.value" type="{{progressBar.type}}">{{progressBar.value}}%</uib-progressbar-->
+    <h4 ng-if="progress.additionalMessage" ng-bind="progress.additionalMessage"></h4>
+    <!--uib-progressbar class="progress-striped active m-t-lg" value="progress.value" type="{{progress.type}}">{{progress.value}}%</uib-progressbar-->
 </div>
 
-<div class="container report" ng-show="!loading">
+<div class="container report" ng-show="!progress.loading">
     <script type="text/ng-template" id="modalSave.html">
         <div class="modal-header">
             <h3 class="modal-title" id="modal-title">{{$ctrl.data.title}}</h3>
@@ -96,7 +97,7 @@
                             <button class="save" style="display:none" ng-if="c.position === 0" ng-click="modalConfirmOpen('closeReport')">Close Report</button>
                             
                             <!-- begin: column header popover -->
-                            <div ng-if="::(!isCustomReport && c.position > 0)" class="th-top">
+                            <div ng-if="::(c.position > 0)" class="th-top">
                                 <i class="fa fa-spinner fa-fw" ng-show="!!c.refreshing"></i>
                                 <i ng-if="::(!c.locked && !c.isChild)" class="fa fa-expand"></i>
                                 <a ng-if="::(!c.locked)" ng-show="displayRemoveCol(c)" 
@@ -137,14 +138,10 @@
                                 ng-click="onRowCellClick(c, row)"
                                 title="Click to {{row.isCollapsed ? 'Show' : 'Hide' }} all Learners in this PC">
 
-                                <div ng-if="::(c.position === 0)">
-                                    <!-- begin: row header popover -->
-                                    <div class="row-th-top" style="visibility:hidden">
-                                        <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
-                                        <i ng-if="::(row.children.length > 0)" ng-class="'fa fa-' + (row.isCollapsed ? 'expand' : 'compress')"></i>
-                                        <a ng-if="displayHideRow()" ng-click="hideRow(row)" title="Remove this PC from the Report"><i class="fa fa-minus-circle"></i></a>
-                                    </div>
-                                    <!-- end: row header popover -->
+                                <div class="row-th-top" ng-if="::(c.position === 0)">
+                                    <i class="fa fa-spinner fa-fw" ng-show="row.refreshing"></i>
+                                    <i ng-if="::(row.children.length > 0)" ng-class="'fa fa-' + (row.isCollapsed ? 'expand' : 'compress')"></i>
+                                    <a ng-if="displayHideRow()" ng-click="hideRow(row)" title="Remove this PC from the Report"><i class="fa fa-minus-circle"></i></a>
                                 </div>
 
                                 <div ng-class="::c.addCss.rowThMiddle">

@@ -30,14 +30,14 @@
                 </span>
             </div>
 
-            <div ng-if="model.courseSelectionType.id === 1" ng-click="$parent.backToStepById(3)">
+            <div ng-if="paramsModel.courseSelectionType.id === 1" ng-click="$parent.backToStepById(3)">
                 <label>Courses:</label>
                 <span>
                     <span class="btn pc" ng-repeat="course in summary.courses">{{course.name}}</span>
                 </span>
             </div>
 
-            <div ng-if="model.courseSelectionType.id === 2" ng-click="$parent.backToStepById(3)">
+            <div ng-if="paramsModel.courseSelectionType.id === 2" ng-click="$parent.backToStepById(3)">
                 <label>Categories:</label>
                 <span>
                     <span class="btn pc" ng-if="summary.entireLearningPath">{{summary.entireLearningPath}}</span>
