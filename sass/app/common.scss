@@ -171,11 +171,12 @@ i.fa {
 
 .row-th-top {
     text-align:right;
-    min-height: 22px;
+    min-height: 19px;
+    margin-top: 3px;
 }
-.row-th-middle{
+.row-th-middle {
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 .row-th-middle-inner{
     display: table-cell;
@@ -195,8 +196,9 @@ i.fa {
 .table > thead > tr > th,
 .table > tbody > tr > td {
 	border: 1px solid rgba(0, 0, 0, 0.25);
-	padding: 5px;
-	vertical-align: middle!important;;
+	padding: 7px 5px 2px 5px;
+	vertical-align: middle!important;
+    line-height: 1.2;
 }
 .table > thead > tr > th.valign-top,
 .table > tbody > tr > td.valign-top {
