@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="select-all" ng-show="courseFilter.text.length === 0">
-                    <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions">
+                    <label class="radio m-r-lg" ng-repeat="option in segmentsFilterOptions" ng-show="option.show">
                         <input type="radio" name="segmentsFilter" ng-model="paramsModel.segmentsFilter" ng-value="option" 
                             ng-click="onCategoryFilterChanged()"/> 
                         <i class="fa fa-circle fa-fw m-r-0"></i>

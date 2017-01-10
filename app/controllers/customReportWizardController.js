@@ -829,8 +829,8 @@ $scope.modalConfirmOpen = function(w) {
 			if (w === 'test') {
 				_endPoints[0].path = 'data/custom-report-wizard-stores.json?' + Math.random();
 				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-				_endPoints[2].path = 'data/custom-report-wizard-segments1.json?' + Math.random();
-				_endPoints[3].path = 'data/custom-report-wizard-segments2.json?' + Math.random();
+				_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', ddReportConfigStrategy.pathId) + Math.random();
+				_endPoints[3].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', brReportConfigStrategy.pathId) + Math.random();
 			}
 
 			utilsService.safeLog('_endPoints', _endPoints);// force loggin all the time by passing true as 3rd param

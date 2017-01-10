@@ -6,7 +6,7 @@
 	var configService = function() {
 
         // set this to true for local development so it will load data from local json files
-        var _useTestData = false;
+        var _useTestData = true;
 
         // set environment based on where you deploy the code. 
         // Can be 'staging' or 'production'

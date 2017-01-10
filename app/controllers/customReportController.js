@@ -834,7 +834,7 @@ var getReportParamsModelClone = function() {
 		var onDataComplete  = function(data, tempStuff) {
 			$scope.progress.reset();
 
-			if (params.reportParamsModel.courseSelectionType.id === 2) {
+			if (params.reportParamsModel.courseSelectionType.id === 2 && tempStuff.segmentsFilter.id === -1) {
 				data.segments = data.segments_dd.concat(data.segments_br);
 			}
 
@@ -916,6 +916,7 @@ var getReportParamsModelClone = function() {
 			// get reportParams clon and remove any property not needed for the end point
 			var paramsClone = getReportParamsModelClone();
 			var tempStuff = {
+				segmentsFilter: JSON.parse(JSON.stringify(paramsClone.segmentsFilter)),
 				courseIds: paramsClone.courseIds,
 				segmentIds: JSON.parse(JSON.stringify(paramsClone.segmentIds))
 			};
@@ -944,17 +945,33 @@ var getReportParamsModelClone = function() {
 				postData: JSON.stringify(paramsClone)
 			}, {
 				key: 'courses', /* lo-list lookup */
-				propertyOnData: undefined, // TODO: propertyOnData: 'results': backend should wrap items array into results like for other APIs
+				propertyOnData: undefined, // propertyOnData: 'results': backend should wrap items array into results like for other APIs
 				path: configService.apiEndPoints.losList()
-			}, {
-				key: 'segments_dd',
-				propertyOnData: 'learning_path_items',
-				path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
-			}, {
-				key: 'segments_br',
-				propertyOnData: 'learning_path_items',
-				path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
 			}];
+
+			if (tempStuff.segmentsFilter.id > -1) {
+				_endPoints.push({
+					key: 'segments',
+					propertyOnData: 'learning_path_items',
+					path: configService.apiEndPoints.segments(tempStuff.segmentsFilter.id, sessionParams.token)
+				});
+			} else {
+				// TODO.
+				// we need to both and load both and later make sure we map the learning object parentId to 
+				// the different segments (make sure each segment from each brand has the right mapping)
+				// then in later code will need to handle differently as well
+				// ddReportConfigStrategy.pathId and brReportConfigStrategy.pathId
+				// _endPoint.push({
+				// 	key: 'segments_dd',
+				// 	propertyOnData: 'learning_path_items',
+				// 	path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
+				// });
+				// _endPoint.push({
+				// 	key: 'segments_br',
+				// 	propertyOnData: 'learning_path_items',
+				// 	path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
+				// });
+			}
 
 			utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
 			utilsService.safeLog('data posted to report-data end point', _endPoints[0].postData);
@@ -966,8 +983,13 @@ var getReportParamsModelClone = function() {
 				_endPoints[0].method = 'get';
 				
 				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-				_endPoints[2].path = 'data/custom-report-wizard-segments1.json?' + Math.random();
-				_endPoints[3].path = 'data/custom-report-wizard-segments2.json?' + Math.random();
+				if (tempStuff.segmentsFilter.id > -1) {
+					_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', tempStuff.segmentsFilter.id) + Math.random();
+				} else {
+					// TODO both brands
+					//_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', ddReportConfigStrategy.pathId) + Math.random();
+					//_endPoints[3].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', brReportConfigStrategy.pathId) + Math.random();
+				}
 
 				// bogus csodProfileId for testing
 				$scope.csodProfileId = 999999999;

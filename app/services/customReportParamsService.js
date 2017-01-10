@@ -137,14 +137,17 @@
 		segmentsFilterOptions = [{
 			id: ddReportConfigStrategy.pathId,
 			text: 'Dunkin only',
-			icon: '../img/dd_logo_btn_sm.png'
+			icon: '../img/dd_logo_btn_sm.png',
+			show: true
 		}, {
 			id: brReportConfigStrategy.pathId,
 			text: 'Baskin only',
-			icon: '../img/br_logo_btn_sm.png'
+			icon: '../img/br_logo_btn_sm.png',
+			show: true
 		}, {
 			id: -1,
-			text: 'Dunkin and Baskin'
+			text: 'Dunkin and Baskin',
+			show: false
 		}];
 
 		paramsModel = {
