@@ -916,6 +916,7 @@ var getReportParamsModelClone = function() {
 			// get reportParams clon and remove any property not needed for the end point
 			var paramsClone = getReportParamsModelClone();
 			var tempStuff = {
+				courseSelectionType: JSON.parse(JSON.stringify(paramsClone.courseSelectionType)),
 				segmentsFilter: JSON.parse(JSON.stringify(paramsClone.segmentsFilter)),
 				courseIds: paramsClone.courseIds,
 				segmentIds: JSON.parse(JSON.stringify(paramsClone.segmentIds))
@@ -949,28 +950,33 @@ var getReportParamsModelClone = function() {
 				path: configService.apiEndPoints.losList()
 			}];
 
-			if (tempStuff.segmentsFilter.id > -1) {
-				_endPoints.push({
-					key: 'segments',
-					propertyOnData: 'learning_path_items',
-					path: configService.apiEndPoints.segments(tempStuff.segmentsFilter.id, sessionParams.token)
-				});
-			} else {
-				// TODO.
-				// we need to both and load both and later make sure we map the learning object parentId to 
-				// the different segments (make sure each segment from each brand has the right mapping)
-				// then in later code will need to handle differently as well
-				// ddReportConfigStrategy.pathId and brReportConfigStrategy.pathId
-				// _endPoint.push({
-				// 	key: 'segments_dd',
-				// 	propertyOnData: 'learning_path_items',
-				// 	path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
-				// });
-				// _endPoint.push({
-				// 	key: 'segments_br',
-				// 	propertyOnData: 'learning_path_items',
-				// 	path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
-				// });
+			// if course selection type is Categories, need to load segments lookup data
+			if (tempStuff.courseSelectionType.id === 2) {
+				if (tempStuff.segmentsFilter.id > -1) {
+					// if segments filter is Dunkin only or Baskin only
+					_endPoints.push({
+						key: 'segments',
+						propertyOnData: 'learning_path_items',
+						path: configService.apiEndPoints.segments(tempStuff.segmentsFilter.id, sessionParams.token)
+					});
+				} else {
+					// if segments filter isboth Dunkin and Baskin
+					// TODO eventually but need more changes down stream as well in the code
+					// we need to both and load both and later make sure we map the learning object parentId to 
+					// the different segments (make sure each segment from each brand has the right mapping)
+					// then in later code will need to handle differently as well
+					// ddReportConfigStrategy.pathId and brReportConfigStrategy.pathId
+					// _endPoint.push({
+					// 	key: 'segments_dd',
+					// 	propertyOnData: 'learning_path_items',
+					// 	path: configService.apiEndPoints.segments(ddReportConfigStrategy.pathId, sessionParams.token)
+					// });
+					// _endPoint.push({
+					// 	key: 'segments_br',
+					// 	propertyOnData: 'learning_path_items',
+					// 	path: configService.apiEndPoints.segments(brReportConfigStrategy.pathId, sessionParams.token)
+					// });
+				}
 			}
 
 			utilsService.safeLog('_endPoints', _endPoints, true);// force loggin all the time by passing true as 3rd param
@@ -983,12 +989,18 @@ var getReportParamsModelClone = function() {
 				_endPoints[0].method = 'get';
 				
 				_endPoints[1].path = 'data/custom-report-wizard-courses.json?' + Math.random();
-				if (tempStuff.segmentsFilter.id > -1) {
-					_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', tempStuff.segmentsFilter.id) + Math.random();
-				} else {
-					// TODO both brands
-					//_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', ddReportConfigStrategy.pathId) + Math.random();
-					//_endPoints[3].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', brReportConfigStrategy.pathId) + Math.random();
+
+				// if course selection type is Categories, need to load segments lookup data
+				if (tempStuff.courseSelectionType.id === 2) {
+					if (tempStuff.segmentsFilter.id > -1) {
+						// if segments filter is Dunkin only or Baskin only
+						_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', tempStuff.segmentsFilter.id) + Math.random();
+					} else {
+						// if segments filter isboth Dunkin and Baskin
+						// TODO eventually but need more changes down stream as well in the code
+						//_endPoints[2].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', ddReportConfigStrategy.pathId) + Math.random();
+						//_endPoints[3].path = 'data/custom-report-wizard-segments[pathId].json?'.replace('[pathId]', brReportConfigStrategy.pathId) + Math.random();
+					}
 				}
 
 				// bogus csodProfileId for testing
