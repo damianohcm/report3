@@ -10,7 +10,7 @@
 
         // set environment based on where you deploy the code. 
         // Can be 'staging' or 'production'
-        var _environment = 'production';
+        var _environment = 'staging';
 
         var apiBaseUrlStrategy = {
             staging: 'https://dunk-stg.tribridge-amplifyhr.com',
