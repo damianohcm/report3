@@ -72,7 +72,7 @@
                         'new-and-trending': {
                             pathId: 5, //20, /* learning path id to use for this brand */
                             title: 'New & Trending', /* report name displayed on the report page */
-                            titleSuffix: 'Report',
+                            titleSuffix: 'Dashboard',
                             oneLevel: true
                         },
                         custom: {
@@ -95,7 +95,7 @@
                         'new-and-trending': {
                             pathId: 4, //18,
                             title: 'New & Trending',
-                            titleSuffix: 'Report',
+                            titleSuffix: 'Dashboard',
                             oneLevel: true
                         },
                         custom: {
