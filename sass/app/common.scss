@@ -447,10 +447,10 @@ td.person > .row-text > .person-title {
 }
 td.person > .row-text > .person-hire-date {
 	float: right;
-    line-height: 2;
+    line-height: 1.3;
 	/*color: #4A4A4A; */
-    font-size: 0.8em;
-	color: lighten($black, 40%);
+    font-size: 0.95em;
+	color: $black;
 }
 
 .row-icon {
