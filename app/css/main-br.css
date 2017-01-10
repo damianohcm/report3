@@ -952,7 +952,7 @@ input.required {
 
 .wizard-header {
   box-shadow: inset 0px -1px 0px 0px #DFDFDF;
-  min-height: 40px; }
+  min-height: 30px; }
 
 .wizard-header .title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -962,6 +962,11 @@ input.required {
   color: black;
   text-transform: uppercase;
   padding-top: 17px; }
+
+.wizard-header .saved-reports-title {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  font-weight: bold; }
 
 .wizard-header button.close {
   float: left;

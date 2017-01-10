@@ -10,7 +10,7 @@
 
 .wizard-header {
     box-shadow: inset 0px -1px 0px 0px #DFDFDF;
-    min-height:40px;
+    min-height: 30px;
 }
 
 .wizard-header .title {
@@ -20,7 +20,14 @@
   letter-spacing: 1.1;
   color: black;
   text-transform: uppercase;
-  padding-top: 17px; }
+  padding-top: 17px; 
+}
+
+.wizard-header .saved-reports-title {
+    margin: 10px 0 0 0;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 .wizard-header button.close {
     float: left;
@@ -316,7 +323,6 @@
     color: #aaa;
 }
 */
-
 
 
 /* css for step sub-views */

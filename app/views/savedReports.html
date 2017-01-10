@@ -29,6 +29,9 @@
     <div class="wizard vertical">
 
         <div class="wizard-header">
+            <div class="saved-reports-title">
+                All of your Saved Reports are listed below.
+            </div>
             <button type="button" class="close" ng-show="false" ng-click="exit()">
                 <i class="fa fa-arrow-left"></i> Exit
             </button>
@@ -39,8 +42,11 @@
                 <div class="content clear full-width">
 
                     <div class="step-content">
-                        <h1 style="display:none">Your saved reports</h1>
-                        <div class="sub-title">Select a report that you’ve saved below to run the report. You can rename or delete a saved report.</div>
+                        <div class="sub-title">
+                            Clicking on any of these will produce an updated report with refreshed data as of today. 
+                            You can use the edit function <i class="fa fa-pencil-square-o"></i> to modify any of these reports or re-name them. 
+                            Use the trashcan function <i class="fa fa-trash"></i> to delete a report.
+                        </div>
 
                         <div class="scroll-container">
                             <div class="scroll-pane saved-reports-menu">
