@@ -449,7 +449,8 @@
                     expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                         'pathId', 
                         'title', 
-                        'oneLevel'
+                        'oneLevel',
+                        'titleSuffix'
                     ]);
                     
 					done();
@@ -478,7 +479,8 @@
                     expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                         'pathId', 
                         'title', 
-                        'oneLevel'
+                        'oneLevel',
+                        'titleSuffix'
                     ]);
                     
 					done();

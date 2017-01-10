@@ -447,7 +447,8 @@ describe('configService', () => {
             expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                 'pathId', 
                 'title', 
-                'oneLevel'
+                'oneLevel',
+                'titleSuffix'
             ]);
             
             done();
@@ -476,7 +477,8 @@ describe('configService', () => {
             expect(brand.reportStrategies['learning-path']).to.have.all.keys([
                 'pathId', 
                 'title', 
-                'oneLevel'
+                'oneLevel',
+                'titleSuffix'
             ]);
             
             done();
