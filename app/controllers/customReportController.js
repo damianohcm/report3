@@ -27,7 +27,8 @@
 		// utilsService.safeLog('reportController params', params);
 		//utilsService.safeLog('customReportController params.reportParamsModel', params.reportParamsModel, true);
 
-
+		$scope.environment = configService.getEnvironment();
+		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
 				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';

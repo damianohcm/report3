@@ -15,6 +15,8 @@
 			ddReportConfigStrategy = configService.getBrandConfig('dd').reportStrategies['learning-path'],
 			brReportConfigStrategy = configService.getBrandConfig('br').reportStrategies['learning-path']; 
 		
+		$scope.environment = configService.getEnvironment();
+		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
 				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';

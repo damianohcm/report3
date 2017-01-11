@@ -9,6 +9,8 @@
 			sessionParams = commonConfig.sessionParams,
 		 	params = commonConfig.params;
 		
+		$scope.environment = configService.getEnvironment();
+
 		Object.defineProperty($scope, 'organization', {
 			get: function() {
 				return (sessionParams.organization && sessionParams.organization.toLowerCase() || '');
