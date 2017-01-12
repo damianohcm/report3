@@ -96,18 +96,30 @@ const generate = (dataModel, filename) => {
     });
 
     //console.log('final data model', JSON.stringify(dataModel));
-    fs.writeFileSync(__dirname + '/../app/data/[filename].json'.replace('[filename]', filename), 
-        JSON.stringify(dataModel));
+    
+    fs.writeFileSync(__dirname + '/../app/data/[filename]-segments.json'.replace('[filename]', filename), 
+        JSON.stringify({
+            learning_path_id: 1,
+            learning_path_name: 'Dunkin\' Donuts Crew (Generated)',
+	        learning_path_items: dataModel.segments
+        }));
 
+    //console.log('final data model', JSON.stringify(dataModel));
+    fs.writeFileSync(__dirname + '/../app/data/[filename]-rows.json'.replace('[filename]', filename), 
+        JSON.stringify({
+            count: dataModel.stores.length,
+            next: null,
+            previous: null,
+            results: dataModel.stores
+        }));
 
 };
-
 
 let fakeSegments = JSON.parse(fs.readFileSync('fake-segments.json')).segments,
     fakeStores = JSON.parse(fs.readFileSync('fake-stores.json')).stores,
     fakePeople = JSON.parse(fs.readFileSync('fake-people.json')).people;
 
-let howManyStores = 25, howManyPeople = 25;
+let howManyStores = 5, howManyPeople = 3;
 completedChance = 0.4;
 progressChance = 0.3;
 
