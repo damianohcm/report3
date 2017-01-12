@@ -991,3 +991,11 @@ input.required {
     background-color: yellow;
     opacity: 0.7;
 }
+
+.data-last-updated {
+    position: static;
+    right: 10px;
+    font-size: 10px;
+    text-align: right;
+    font-style: italic;
+}

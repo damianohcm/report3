@@ -951,6 +951,13 @@ input.required {
   background-color: yellow;
   opacity: 0.7; }
 
+.data-last-updated {
+  position: static;
+  right: 10px;
+  font-size: 10px;
+  text-align: right;
+  font-style: italic; }
+
 .wizard-container {
   background-color: #F3F3F3;
   width: 1100px;

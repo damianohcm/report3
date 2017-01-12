@@ -82,8 +82,7 @@
 
 			var ret = [];
 
-			var today = new Date(), strToday = 'M/D/Y'.replace('M', today.getMonth() + 1).replace('D', today.getDate()).replace('Y', today.getFullYear());
-			ret.push('"Exported Data as of [date]"'.replace('[date]', strToday));
+			ret.push('"Data last updated on [date]"'.replace('[date]', model.cronLastRunAt));
 
 			// ret.push('"' + instanceect.keys(arr[0]).join('","') + '"');
 			// for (var i = 0, len = arr.length; i < len; i++) {
