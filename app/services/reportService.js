@@ -5,7 +5,7 @@
 		
 			// label to be used when learning objects are missing
 			// (missing los are considered N/A - not applicable)
-			notApplicableLabel,
+			notApplicableLabels,
 			notApplicableIncludeInCalc,
 			_personSegmentCellCssWithColor;
 
@@ -41,7 +41,7 @@
 		 */
 		var setReportConfig = function(value) {
 			reportConfig = value;
-			notApplicableLabel = reportConfig.notApplicableLabel,
+			notApplicableLabels = reportConfig.notApplicableLabels,
 			notApplicableIncludeInCalc = reportConfig.notApplicableIncludeInCalc;
 			_personSegmentCellCssWithColor = reportConfig.colorPersonSegmentCell ? ' with-color' : '';
 		};
@@ -256,7 +256,7 @@
 // }
 
 						cell.isNA = true;
-						cell.value = notApplicableLabel;
+						cell.value = notApplicableLabels.personRow;
 						cell.suffix = '';
 
 						utilsService.fastLoop(segment.los, function(lo) {
@@ -390,7 +390,7 @@
 					finalValue = private.safePercent(aggregated, peopleRowsCount);
 				} else {
 					// if all people are N/A, then aggregated value is also N/A
-					finalValue = notApplicableLabel;
+					finalValue = notApplicableLabels.aggregateSegmentByStore;
 				}
 
 				return finalValue;
@@ -475,7 +475,7 @@
 				finalValue = private.safePercent(aggregated, peopleRowsCount, 100);
 			} else {
 				// if all people are N/A, then aggregated value is also N/A
-				finalValue = notApplicableLabel;
+				finalValue = notApplicableLabels.aggregateLoByStore;
 			}
 			return finalValue;
 		};
@@ -552,7 +552,7 @@
 
 							//utilsService.safeLog('groupCell.value', groupCell.value, true);
 
-							if (groupCell.value === notApplicableLabel) {
+							if (groupCell.value === notApplicableLabels.aggregateSegmentByStore) {
 								cellSuffix = '';
 								naColGroupsCount++;
 								if (notApplicableIncludeInCalc === false) {
@@ -589,7 +589,7 @@
 									
 									//utilsService.safeLog('childCell.value ' + colChild.calculate, childCell.value);
 
-									if (childCell.value === notApplicableLabel) {
+									if (childCell.value === notApplicableLabels.aggregateLoByStore) {
 										childCellSuffix = '';
 										//naColGroupsCount++;
 									} else {
@@ -626,7 +626,7 @@
 						rowGroupSummarySuffix = '%';
 					} else {
 						// if all segments are N/A, then aggregated value is also N/A
-						rowGroupSummaryValue = notApplicableLabel;
+						rowGroupSummaryValue = notApplicableLabels.aggregateSegmentByStore;
 						rowGroupSummarySuffix = '';
 					}
 
@@ -706,7 +706,7 @@
 											colGroupsCount--;
 										}
 										personCourseCell.isNA = true;
-										personCourseCell.value = notApplicableLabel;
+										personCourseCell.value = notApplicableLabels.personRow;
 										personCourseCell.suffix = '';
 									}
 
@@ -725,7 +725,7 @@
 								personRowSummarySuffix = '%';
 							} else {
 								// if all segments are N/A, then aggregated value is also N/A
-								personRowSummaryValue = notApplicableLabel;
+								personRowSummaryValue = notApplicableLabels.aggregateSegmentByStore;
 								personRowSummarySuffix = '';
 							}
 

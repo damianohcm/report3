@@ -70,8 +70,7 @@
 							isGroup: true,
 							id: 9003,
 							key: 9003,
-							value: reportConfig.notApplicableLabel,
-							//value: reportConfig.notApplicableLabels.personRow,
+							value: reportConfig.notApplicableLabels.personRow,
 							suffix: ''
 						}
 					}
@@ -160,8 +159,7 @@
 							suffix: '%'
 						},
 						'crew-only-3': {
-							value: reportConfig.notApplicableLabel,
-							//value: reportConfig.notApplicableLabels.personRow,
+							value: reportConfig.notApplicableLabels.personRow,
 							suffix: ''
 						},
 					}
@@ -257,8 +255,7 @@
 					var fn = function () { 
 						try {
 							var cell = {
-								value: reportConfig.notApplicableLabel
-								//value: reportConfig.notApplicableLabels.aggregateSegmentByStore
+								value: reportConfig.notApplicableLabels.aggregateSegmentByStore
 							};
 
 							getPersonSegmentCellCss(cell);
@@ -288,8 +285,7 @@
 				});
 				it('service.private.getPersonSegmentCellCss: should return correct css when value is N/A or not a number', function(done) {
 					var cell = {
-						value: reportConfig.notApplicableLabel
-						//value: reportConfig.notApplicableLabels.aggregateSegmentByStore
+						value: reportConfig.notApplicableLabels.aggregateSegmentByStore
 					}, item = getPersonSegmentCellCss(cell);
 					expect(item).to.be.a('string')
 						.to.equal('col-group person na');
@@ -492,8 +488,7 @@
 						expect(courseCell.id).to.equal(expectedCell.id);
 						expect(courseCell.suffix).to.equal(expectedCell.suffix);
 
-						if (courseCell.value === reportConfig.notApplicableLabel) {
-						//if (courseCell.value === reportConfig.notApplicableLabels.personRow) {
+						if (courseCell.value === reportConfig.notApplicableLabels.personRow) {
 							expect(courseCell.isNA).to.equal(true);
 						}
 					});
@@ -519,8 +514,7 @@
 						expect(courseCell.id).to.equal(expectedCell.id);
 						expect(courseCell.suffix).to.equal(expectedCell.suffix);
 
-						if (courseCell.value === reportConfig.notApplicableLabel) {
-						//if (courseCell.value === reportConfig.notApplicableLabels.aggregateSegmentByStore) {
+						if (courseCell.value === reportConfig.notApplicableLabels.aggregateSegmentByStore) {
 							expect(courseCell.isNA).to.equal(true);
 						}
 					});
@@ -595,7 +589,6 @@
 						fn = function () { 
 							try {
 								// var cell = {
-								// 	value: reportConfig.notApplicableLabel
 								// 	value: reportConfig.notApplicableLabels.aggregateLoByStore
 								// };
 

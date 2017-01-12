@@ -120,8 +120,8 @@ let fakeSegments = JSON.parse(fs.readFileSync('fake-segments.json')).segments,
     fakePeople = JSON.parse(fs.readFileSync('fake-people.json')).people;
 
 let howManyStores = 5, howManyPeople = 3;
-completedChance = 0.4;
-progressChance = 0.3;
+completedChance = 0.2;
+progressChance = 0.1;
 
 // make a random person Manager
 let people = fakePeople.slice(0, howManyPeople).map((p, index) => {
