@@ -81,6 +81,9 @@
 				});
 
 			var ret = [];
+
+			ret.push('"Data last updated on [date]"'.replace('[date]', model.cronLastRunAt));
+
 			// ret.push('"' + instanceect.keys(arr[0]).join('","') + '"');
 			// for (var i = 0, len = arr.length; i < len; i++) {
 			// 	var line = [];

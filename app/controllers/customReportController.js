@@ -27,7 +27,8 @@
 		// utilsService.safeLog('reportController params', params);
 		//utilsService.safeLog('customReportController params.reportParamsModel', params.reportParamsModel, true);
 
-
+		$scope.environment = configService.getEnvironment();
+		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
 				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
@@ -857,6 +858,10 @@ var getReportParamsModelClone = function() {
 
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
+
+			// TODO: stubbing cronLastRunAt, later need to replace value with the one coming from the back end data
+			var today = new Date(), strToday = 'M/D/Y'.replace('M', today.getMonth() + 1).replace('D', today.getDate()).replace('Y', today.getFullYear());
+			$scope.model.cronLastRunAt = strToday;
 			
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;

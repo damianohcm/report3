@@ -226,7 +226,7 @@
             
 			});
 
-             // reportConfig tests
+            // reportConfig tests
             describe('configService: reportConfig: tests', function() {
                 var reportConfig = configService.getReportConfig();
 
@@ -238,7 +238,7 @@
                         'useTestData', 
                         'debug', 
                         'averageCalculationMode', 
-                        'notApplicableLabel', 
+                        'notApplicableLabels', 
                         'notApplicableIncludeInCalc', 
                         'colorPersonSegmentCell', 
 
@@ -263,7 +263,7 @@
                     expect(reportConfig.debug).to.be.a('boolean');
                     expect(reportConfig.averageCalculationMode).to.be.a('string');
 
-                    expect(reportConfig.notApplicableLabel).to.be.a('string');
+                    expect(reportConfig.notApplicableLabels).to.be.a('object');
                     expect(reportConfig.notApplicableIncludeInCalc).to.be.a('boolean');
                     expect(reportConfig.colorPersonSegmentCell).to.be.a('boolean');
 
@@ -288,6 +288,26 @@
 
                     expect(reportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
                     expect(reportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
+
+                    // notApplicableLabels tests
+                    describe('configService: reportConfig.notApplicableLabels: tests', function() {
+                        var notApplicableLabels = reportConfig.notApplicableLabels;
+
+                        it('configService: reportConfig: notApplicableLabels: should have valid properties', function(notApplicableLabelsDone) {
+                            //console.log('notApplicableLabels keys', Object.keys(reportConfig));
+                            expect(notApplicableLabels).to.have.all.keys([
+                                'aggregateSegmentByStore', 
+                                'aggregateLoByStore', 
+                                'personRow'
+                            ]);
+
+                            expect(notApplicableLabels.aggregateSegmentByStore).to.be.a('string').to.have.length.above(0);
+                            expect(notApplicableLabels.aggregateLoByStore).to.be.a('string').to.have.length.above(0);
+                            expect(notApplicableLabels.personRow).to.be.a('string').to.have.length.above(0);
+
+                            notApplicableLabelsDone();
+                        });
+                    });
                     
                     done();
                 });
@@ -341,7 +361,7 @@
                         'useTestData', 
                         'debug', 
                         'averageCalculationMode', 
-                        'notApplicableLabel', 
+                        'notApplicableLabels', 
                         'notApplicableIncludeInCalc', 
                         'colorPersonSegmentCell', 
 
@@ -366,7 +386,7 @@
                     expect(customReportConfig.debug).to.be.a('boolean');
                     expect(customReportConfig.averageCalculationMode).to.be.a('string');
 
-                    expect(customReportConfig.notApplicableLabel).to.be.a('string');
+                    expect(customReportConfig.notApplicableLabels).to.be.a('object');
                     expect(customReportConfig.notApplicableIncludeInCalc).to.be.a('boolean');
                     expect(customReportConfig.colorPersonSegmentCell).to.be.a('boolean');
 
@@ -391,6 +411,26 @@
 
                     expect(customReportConfig.showAdditionalLoadingMessageAfter).to.be.a('number').to.be.at.least(1);
                     expect(customReportConfig.additionalLoadingMessage).to.be.a('string').to.have.length.above(20);
+
+                    // notApplicableLabels tests
+                    describe('configService: customReportConfig.notApplicableLabels: tests', function() {
+                        var notApplicableLabels = customReportConfig.notApplicableLabels;
+
+                        it('configService: customReportConfig: notApplicableLabels: should have valid properties', function(notApplicableLabelsDone) {
+                            //console.log('notApplicableLabels keys', Object.keys(customReportConfig));
+                            expect(notApplicableLabels).to.have.all.keys([
+                                'aggregateSegmentByStore', 
+                                'aggregateLoByStore', 
+                                'personRow'
+                            ]);
+
+                            expect(notApplicableLabels.aggregateSegmentByStore).to.be.a('string').to.have.length.above(0);
+                            expect(notApplicableLabels.aggregateLoByStore).to.be.a('string').to.have.length.above(0);
+                            expect(notApplicableLabels.personRow).to.be.a('string').to.have.length.above(0);
+
+                            notApplicableLabelsDone();
+                        });
+                    });
             
                     done();
                 });

@@ -116,7 +116,11 @@
 
             averageCalculationMode: 'los', /* 'segments' = Segments average; 'los' = Learning Objects Weighted Average */
             
-            notApplicableLabel: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+            notApplicableLabels: {
+                aggregateSegmentByStore: '0%', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+                aggregateLoByStore: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+                personRow: '0% *', /* the label used when Learning Objects are Not Applicabile - they are missing from the person los arrays */
+            },
             notApplicableIncludeInCalc: true, /* whether to include the N/A columns in the average aggregated calculation for summary */
             colorPersonSegmentCell: false, /* use to drive the addition of css class "with-color" - Dunking does not want them colored but other customers might want it */
             

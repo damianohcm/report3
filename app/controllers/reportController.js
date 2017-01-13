@@ -24,7 +24,8 @@
 		utilsService.safeLog('reportController params', params);
 		utilsService.safeLog('reportController reportConfigStrategy', reportConfigStrategy);
 
-
+		$scope.environment = configService.getEnvironment();
+		
 		Object.defineProperty($scope, 'tokenError', {
 			get: function() {
 				return (sessionParams.token || '').length === 0 ? 'Invalid token or missing token' : '';
@@ -735,6 +736,10 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
+
+			// TODO: stubbing cronLastRunAt, later need to replace value with the one coming from the back end data
+			var today = new Date(), strToday = 'M/D/Y'.replace('M', today.getMonth() + 1).replace('D', today.getDate()).replace('Y', today.getFullYear());
+			$scope.model.cronLastRunAt = strToday;
 		
 			// distinct peopleOrgs
 			$scope.peopleOrgs = data.peopleOrgs;
