@@ -173,7 +173,7 @@
 						value: private.escapeSpecialChars(personName),
 						valueTrunc: private.truncateText(personName, reportConfig.rowChildheaderMaxLength),
 						value2: person.title,
-						value3: reportConfig.displayPersonHireDate ? (person.hire_date ? person.hireDate : 'Unknown') : undefined,
+						value3: reportConfig.displayPersonHireDate ? (person.hire_date || 'Unknown') : undefined,
 						css: 'person',
 						cssValueSpan: 'person'
 					},
