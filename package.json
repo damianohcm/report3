@@ -7,10 +7,12 @@
 		"start": "node nodeServer.js"
 	},
 	"dependencies": {
-		"express": "4.14.0",
+		"express": "^4.17.1",
+		"require-dir": "^1.2.0",
 		"socket.io": "1.5.0"
 	},
 	"devDependencies": {
+		"chai": "3.5.0",
 		"del": "2.2.2",
 		"eslint": "3.6.1",
 		"gulp": "3.9.1",
@@ -20,12 +22,10 @@
 		"gulp-htmlmin": "3.0.0",
 		"gulp-plumber": "1.1.0",
 		"gulp-sass": "2.3.2",
-		"require-dir": "0.3.1",
-		"run-sequence": "1.2.2",
-		"vinyl-paths": "2.1.0",
 		"mocha": "3.2.0",
 		"mocha-testdata": "1.2.0",
-		"chai": "3.5.0",
-		"underscore": "1.8.3"
+		"run-sequence": "1.2.2",
+		"underscore": "1.8.3",
+		"vinyl-paths": "2.1.0"
 	}
 }

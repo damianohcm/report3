@@ -65,13 +65,13 @@
                 window.reportId = window.getQueryStringValue('reportId', '-1');
                 window.currentBrand = window.getQueryStringValue('brand', defaultBrand);
 
-                //// for local development
-                //var baseUrl = 'http://localhost:8080/',
-                //    csBaseUrl = baseUrl + 'cs-page/?a=1';
+                // for local development
+                var baseUrl = 'http://localhost:8080/',
+                   csBaseUrl = baseUrl + 'cs-page/?a=1';
                 
-                // for production
-                var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/#/',
-                    csBaseUrl = document.location.href.split('&')[0];
+                // // for production
+                // var baseUrl = 'https://ux.tribridge-amplifyhr.com/static/clients/dbi/reporting-center/app/#/',
+                //     csBaseUrl = document.location.href.split('&')[0];
 
                 window.frameUrl = baseUrl
                     + '?token=' + userData.csodToken
