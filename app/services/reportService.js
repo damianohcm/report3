@@ -261,7 +261,6 @@
 
 						utilsService.fastLoop(segment.los, function(lo) {
 							// child cell
-							var childCell;
 							var childCell = JSON.parse(JSON.stringify(private.personLoCells[-1]));
 							childCell.parentId = segment.id;
 							childCell.id = lo.id;
@@ -573,6 +572,7 @@
 							// loop through child columns
 							var aggregatedLos = 0;
 
+							// begin: segment los (child columns) loop
 							utilsService.fastLoop(colChildren, function(colChild) {
 								var childCell = rowGroup[colChild.key]
 									, childCellSuffix = '';
@@ -603,7 +603,8 @@
 									utilsService.safeLog('warning: could not find childCell in rowGroup for colChild.key', colChild.key);
 								}
 
-							}); // end: segment los (child columns) loop
+							});
+							// end: segment los (child columns) loop
 
 
 							rowGroupAggregatedWeighted += (aggregatedLos);
@@ -613,7 +614,8 @@
 							colGroupsCount = private.decreaseCount(colGroupsCount);
 						}
 
-					}); // end: segment (columnGroup) loop
+					}); 
+					// end: segment (columnGroup) loop
 
 					// the row (horizontal) percentage for the rowGroup (store)
 					var rowGroupSummaryValue = 0, rowGroupSummarySuffix = '';
@@ -744,7 +746,8 @@
 					// just ignore, no need to do anything... might want to remove this code after development is complete
 				}
 
-			}); // end: store (rowGroup) loop
+			}); 
+			// end: store (rowGroup) loop
 			
 		};
 
@@ -959,7 +962,7 @@
 						}.bind(colChild)
 					});
 
-					// push row
+					// push child column
 					model.columns.push(colChild);
 				});
 			});
@@ -1072,7 +1075,7 @@
 			utilsService.safeLog('model', JSON.stringify(model));
 
 			// calculate
-			recalculate(model, data);
+			recalculate(model);
 
 			// remove rows - they will load in the controller from _rowGroups with a timeout for performance
 			model.result.rows = [];
