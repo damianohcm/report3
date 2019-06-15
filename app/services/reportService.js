@@ -325,12 +325,14 @@
 					// include row in calculation only if personRow.show is true
 					if (personRow.show) {
 
-						var currentLos = [];
-						utilsService.fastLoop(Object.keys(personRow), function(k) {
-							if (personRow[k].hasOwnProperty('parentId') && personRow[k].parentId === colGroup.id) {
-								currentLos.push(personRow[k]);
-							}
-						});
+						// var currentLos = [];
+						// utilsService.fastLoop(Object.keys(personRow), function(k) {
+						// 	if (personRow[k].hasOwnProperty('parentId') && personRow[k].parentId === colGroup.id) {
+						// 		currentLos.push(personRow[k]);
+						// 	}
+						// });
+						const currentLos = Object.values(personRow)
+							.filter((cell) => cell.parentId === colGroup.id);
 						//utilsService.safeLog('aggregateSegmentByStore: personRow ' + personRow.id + ' currentLos', currentLos);
 
 						var aggregatedLos = 0, losCount = currentLos.length, naLosCount = 0;
@@ -661,9 +663,11 @@
 									var personCourseCell = personRow[colGroup.key];
 
 									// the person cells for each lo
-									var currentLos = _.filter(personRow, function(lo) {
-										return lo.parentId === colGroup.id;
-									});
+									// var currentLos = _.filter(personRow, function(lo) {
+									// 	return lo.parentId === colGroup.id;
+									// });
+									// the person cells for each lo (use Object.values to convert cells properties to array)
+									var currentLos = Object.values(personRow).filter((cell) => cell.parentId === colGroup.id);
 
 									// aggregate lo value
 									var aggregatedLos = 0, losCount = currentLos.length, naLosCount = 0;

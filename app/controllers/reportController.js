@@ -413,7 +413,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			//utilsService.safeLog('onRowCellClick col', col);
 			//utilsService.safeLog('onRowCellClick row', row);
 
-			var rowGroupStrategies  = {
+			var rowGroupStrategies = {
 				category: function(c, r) {
 					$scope.toggleChildRows(r);
 				}, 
