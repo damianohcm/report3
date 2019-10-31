@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"del": "2.2.2",
-		"eslint": "3.6.1",
+		"eslint": "6.6.0",
 		"gulp": "3.9.1",
 		"gulp-concat": "2.6.0",
 		"gulp-debug": "3.0.0",
