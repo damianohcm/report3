@@ -176,7 +176,7 @@
 
 		/**
 		 * @method fixReportAPIData
-		 * Helper to bring deep-dested data from segment api down one level
+		 * Helper to bring deep-nested data from segment api down one level
 		 */
 		const fixReportAPIData = function(dataToFix, peopleOrgStrategy, reportConfigStrategy) {
 			

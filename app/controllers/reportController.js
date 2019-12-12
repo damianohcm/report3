@@ -735,6 +735,7 @@ $('.table-scroll tr:eq(1) td').each(function (i) {
 			// fix data as the backend endpoint return inconsistent data and also not mapped properties
 			$scope.data = dataService.fixReportAPIData(data, commonConfig.peopleOrgStrategy, reportConfigStrategy);
 			// get the report model from reportService
+			//console.log('data', JSON.stringify(data));
 			$scope.model = reportService.getModel(data, commonConfig.totCompletionTitlePrefix + $scope.reportTitle);
 
 			// TODO: stubbing cronLastRunAt, later need to replace value with the one coming from the back end data
